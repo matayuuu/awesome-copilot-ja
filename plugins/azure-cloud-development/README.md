@@ -1,17 +1,17 @@
-# Azure & Cloud Development Plugin
+# Azure & Cloud Development プラグイン
 
-Comprehensive Azure cloud development tools including Infrastructure as Code, serverless functions, architecture patterns, and cost optimization for building scalable cloud applications.
+スケーラブルなクラウドアプリケーションを構築するための、Infrastructure as Code、サーバーレス関数、アーキテクチャパターン、コスト最適化を含む包括的な Azure クラウド開発ツールです。
 
-## Installation
+## インストール
 
 ```bash
 # Using Copilot CLI
 copilot plugin install azure-cloud-development@awesome-copilot
 ```
 
-## What's Included
+## 含まれるもの
 
-### Commands (Slash Commands)
+### コマンド（スラッシュコマンド）
 
 | Command | Description |
 |---------|-------------|
@@ -30,10 +30,10 @@ copilot plugin install azure-cloud-development@awesome-copilot
 | `terraform-azure-planning` | Act as implementation planner for your Azure Terraform Infrastructure as Code task. |
 | `terraform-azure-implement` | Act as an Azure Terraform Infrastructure as Code coding specialist that creates and reviews Terraform for Azure resources. |
 
-## Source
+## ソース
 
-This plugin is part of [Awesome Copilot](https://github.com/github/awesome-copilot), a community-driven collection of GitHub Copilot extensions.
+このプラグインは、コミュニティ主導の GitHub Copilot 拡張機能コレクションである [Awesome Copilot](https://github.com/github/awesome-copilot) の一部です。
 
-## License
+## ライセンス
 
 MIT

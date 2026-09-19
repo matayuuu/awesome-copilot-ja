@@ -1,34 +1,33 @@
 ---
 name: winmd-api-search
-description: 'Find and explore Windows desktop APIs. Use when building features that need platform capabilities — camera, file access, notifications, UI controls, AI/ML, sensors, networking, etc. Discovers the right API for a task and retrieves full type details (methods, properties, events, enumeration values).'
+description: 'Windows デスクトップ API を検索・調査する。カメラ、ファイルアクセス、通知、UI コントロール、AI/ML、センサー、ネットワークなど、プラットフォーム機能を必要とする機能を構築するときに使う。タスクに適した API を見つけ、型の詳細（メソッド、プロパティ、イベント、列挙値）を取得する。'
 license: Complete terms in LICENSE.txt
 ---
+# WinMD API 検索
 
-# WinMD API Search
+この Skill は、任意の機能に適した Windows API を見つけ、完全な詳細を取得するのに役立つ。次のすべての WinMD メタデータを含むローカルキャッシュを検索する:
 
-This skill helps you find the right Windows API for any capability and get its full details. It searches a local cache of all WinMD metadata from:
+- **Windows Platform SDK** — すべての `Windows.*` WinRT API（常に利用可能で、復元不要）
+- **WinAppSDK / WinUI** — キャッシュ生成ツールにベースラインとして組み込み済み（常に利用可能で、復元不要）
+- **NuGet packages** — 復元済みプロジェクトに含まれる `.winmd` ファイルを持つ追加パッケージ
+- **Project-output WinMD** — ビルド出力として `.winmd` を生成するクラス ライブラリ（C++/WinRT、C#）
 
-- **Windows Platform SDK** — all `Windows.*` WinRT APIs (always available, no restore needed)
-- **WinAppSDK / WinUI** — bundled as a baseline in the cache generator (always available, no restore needed)
-- **NuGet packages** — any additional packages in restored projects that contain `.winmd` files
-- **Project-output WinMD** — class libraries (C++/WinRT, C#) that produce `.winmd` as build output
+復元もビルドもしていない新しいクローンでも、Platform SDK と WinAppSDK の全範囲を利用できる。
 
-Even on a fresh clone with no restore or build, you still get full Platform SDK + WinAppSDK coverage.
+## この Skill を使う場面
 
-## When to Use This Skill
+- ユーザーが機能を構築したいが、その機能を提供する API を見つける必要がある場合
+- X がプラットフォーム機能（カメラ、ファイル、通知、センサー、AI など）に関係する「X はどう実装するか」という質問
+- コードを書く前に、型の正確なメソッド、プロパティ、イベント、列挙値が必要な場合
+- UI またはシステムタスクにどのコントロール、クラス、インターフェイスを使うべきか不明な場合
 
-- User wants to build a feature and you need to find which API provides that capability
-- User asks "how do I do X?" where X involves a platform feature (camera, files, notifications, sensors, AI, etc.)
-- You need the exact methods, properties, events, or enumeration values of a type before writing code
-- You're unsure which control, class, or interface to use for a UI or system task
+## 前提条件
 
-## Prerequisites
+- **.NET SDK 8.0 以降** — キャッシュ生成ツールのビルドに必要。不足している場合は [dotnet.microsoft.com](https://dotnet.microsoft.com/download) からインストールする。
 
-- **.NET SDK 8.0 or later** — required to build the cache generator. Install from [dotnet.microsoft.com](https://dotnet.microsoft.com/download) if not available.
+## キャッシュのセットアップ（初回使用前に必須）
 
-## Cache Setup (Required Before First Use)
-
-All query and search commands read from a local JSON cache. **You must generate the cache before running any queries.**
+すべてのクエリと検索コマンドはローカル JSON キャッシュを読む。**クエリを実行する前に必ずキャッシュを生成する。**
 
 ```powershell
 # All projects in the repo (recommended for first run)
@@ -38,92 +37,92 @@ All query and search commands read from a local JSON cache. **You must generate 
 .\.github\skills\winmd-api-search\scripts\Update-WinMdCache.ps1 -ProjectDir <project-folder>
 ```
 
-No project restore or build is needed for baseline coverage (Platform SDK + WinAppSDK). For additional NuGet packages, the project needs `dotnet restore` (which generates `project.assets.json`) or a `packages.config` file.
+ベースラインの範囲（Platform SDK + WinAppSDK）には、プロジェクトの復元やビルドは必要ない。追加の NuGet パッケージを使う場合は、`project.assets.json` を生成する `dotnet restore` または `packages.config` ファイルが必要になる。
 
-Cache is stored at `Generated Files\winmd-cache\`, deduplicated per-package+version.
+キャッシュは `Generated Files\winmd-cache\` に保存され、パッケージとバージョンの組み合わせごとに重複排除される。
 
-### What gets indexed
+### インデックス対象
 
-| Source | When available |
+| ソース | 利用可能になる条件 |
 |--------|----------------|
-| Windows Platform SDK | Always (reads from local SDK install) |
-| WinAppSDK (latest) | Always (bundled as baseline in cache generator) |
-| WinAppSDK Runtime | When installed on the system (detected via `Get-AppxPackage`) |
-| Project NuGet packages | After `dotnet restore` or with `packages.config` |
-| Project-output `.winmd` | After project build (class libraries that produce WinMD) |
+| Windows Platform SDK | 常時（ローカル SDK のインストール先から読み取る） |
+| WinAppSDK (latest) | 常時（キャッシュ生成ツールにベースラインとして同梱） |
+| WinAppSDK Runtime | システムにインストールされている場合（`Get-AppxPackage` で検出） |
+| プロジェクトの NuGet パッケージ | `dotnet restore` 実行後、または `packages.config` がある場合 |
+| プロジェクト出力の `.winmd` | プロジェクトのビルド後（WinMD を生成するクラス ライブラリ） |
 
-> **Note:** This cache directory should be in `.gitignore` — it's generated, not source.
+> **注:** このキャッシュ ディレクトリは生成物でありソースではないため、`.gitignore` に含めること。
 
-## How to Use
+## 使用方法
 
-Pick the path that matches the situation:
+状況に合う経路を選ぶ:
 
 ---
 
-### Discover — "I don't know which API to use"
+### 発見 — 「どの API を使えばよいか分からない」
 
-The user describes a capability in their own words. You need to find the right API.
+ユーザーが自分の言葉で機能を説明する。適切な API を見つける必要がある。
 
-**0. Ensure the cache exists**
+**0. キャッシュが存在することを確認する**
 
-If the cache hasn't been generated yet, run `Update-WinMdCache.ps1` first — see [Cache Setup](#cache-setup-required-before-first-use) above.
+キャッシュがまだ生成されていない場合は、まず `Update-WinMdCache.ps1` を実行する。上記の [キャッシュのセットアップ（初回使用前に必須）](#キャッシュのセットアップ（初回使用前に必須）) を参照する。
 
-**1. Translate user language → search keywords**
+**1. ユーザーの表現を検索キーワードへ変換する**
 
-Map the user's daily language to programming terms. Try multiple variations:
+ユーザーの日常的な表現をプログラミング用語に対応付ける。複数の表現を試す:
 
-| User says | Search keywords to try (in order) |
+| ユーザーの表現 | 試す検索キーワード（順番どおり） |
 |-----------|-----------------------------------|
-| "take a picture" | `camera`, `capture`, `photo`, `MediaCapture` |
-| "load from disk" | `file open`, `picker`, `FileOpen`, `StorageFile` |
-| "describe what's in it" | `image description`, `Vision`, `Recognition` |
-| "show a popup" | `dialog`, `flyout`, `popup`, `ContentDialog` |
-| "drag and drop" | `drag`, `drop`, `DragDrop` |
-| "save settings" | `settings`, `ApplicationData`, `LocalSettings` |
+| 「写真を撮る」 | `camera`, `capture`, `photo`, `MediaCapture` |
+| 「ディスクから読み込む」 | `file open`, `picker`, `FileOpen`, `StorageFile` |
+| 「画像の内容を説明する」 | `image description`, `Vision`, `Recognition` |
+| 「ポップアップを表示する」 | `dialog`, `flyout`, `popup`, `ContentDialog` |
+| 「ドラッグ アンド ドロップする」 | `drag`, `drop`, `DragDrop` |
+| 「設定を保存する」 | `settings`, `ApplicationData`, `LocalSettings` |
 
-Start with simple everyday words. If results are weak or irrelevant, try the more technical variation.
+簡単な日常語から始める。結果が少ない、または無関係な場合は、より技術的な表現を試す。
 
-**2. Run searches**
+**2. 検索を実行する**
 
 ```powershell
 .\.github\skills\winmd-api-search\scripts\Invoke-WinMdQuery.ps1 -Action search -Query "<keyword>"
 ```
 
-This returns ranked namespaces with top matching types and the **JSON file path**.
+これにより、上位の一致する型と **JSON ファイルのパス** を含む、順位付けされた名前空間が返される。
 
-If results have **low scores (below 60) or are irrelevant**, fall back to searching online documentation:
+結果の **スコアが低い（60 未満）か無関係な場合** は、オンライン ドキュメントの検索に切り替える:
 
-1. Use web search to find the right API on Microsoft Learn, for example:
-   - `site:learn.microsoft.com/uwp/api <capability keywords>` for `Windows.*` APIs
-   - `site:learn.microsoft.com/windows/windows-app-sdk/api/winrt <capability keywords>` for `Microsoft.*` WinAppSDK APIs
-2. Read the documentation pages to identify which type matches the user's requirement.
-3. Once you know the type name, come back and use `-Action members` or `-Action enums` to get the exact local signatures.
+1. Web 検索を使って Microsoft Learn で適切な API を探す。例:
+   - `site:learn.microsoft.com/uwp/api <capability keywords>`（`Windows.*` API 用）
+   - `site:learn.microsoft.com/windows/windows-app-sdk/api/winrt <capability keywords>`（`Microsoft.*` WinAppSDK API 用）
+2. ドキュメント ページを読み、ユーザーの要件に一致する型を特定する。
+3. 型名が分かったら戻り、`-Action members` または `-Action enums` を使ってローカルの正確なシグネチャを取得する。
 
-**3. Read the JSON to choose the right API**
+**3. JSON を読んで適切な API を選ぶ**
 
-Read the file at the path(s) from the top results. The JSON has all types in that namespace — full members, signatures, parameters, return types, enumeration values.
+上位結果に示されたパスのファイルを読む。JSON にはその名前空間のすべての型、完全なメンバー、シグネチャ、パラメーター、戻り値、列挙値が含まれる。
 
-Read and decide which types and members fit the user's requirement.
+内容を読み、ユーザーの要件に適合する型とメンバーを判断する。
 
-**4. Look up official documentation for context**
+**4. 公式ドキュメントで背景を確認する**
 
-The cache contains only signatures — no descriptions or usage guidance. For explanations, examples, and remarks, look up the type on Microsoft Learn:
+キャッシュにはシグネチャだけが含まれ、説明や使用方法は含まれない。説明、例、注意事項については Microsoft Learn で型を調べる:
 
-| Namespace prefix | Documentation base URL |
+| 名前空間の接頭辞 | ドキュメントのベース URL |
 |-----------------|----------------------|
 | `Windows.*` | `https://learn.microsoft.com/uwp/api/{fully.qualified.typename}` |
 | `Microsoft.*` (WinAppSDK) | `https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/{fully.qualified.typename}` |
 
-For example, `Microsoft.UI.Xaml.Controls.NavigationView` maps to:
+たとえば、`Microsoft.UI.Xaml.Controls.NavigationView` は次に対応する:
 `https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.navigationview`
 
-**5. Use the API knowledge to answer or write code**
+**5. API の知識を使って回答またはコードを作成する**
 
 ---
 
-### Lookup — "I know the API, show me the details"
+### 参照 — 「API は分かっているので詳細を見たい」
 
-You already know (or suspect) the type or namespace name. Go direct:
+型または名前空間の名前が分かっている、または候補がある場合は、直接参照する:
 
 ```powershell
 # Get all members of a known type
@@ -139,11 +138,11 @@ You already know (or suspect) the type or namespace name. Go direct:
 .\.github\skills\winmd-api-search\scripts\Invoke-WinMdQuery.ps1 -Action namespaces -Filter "Microsoft.UI"
 ```
 
-If you need full detail beyond what `-Action members` shows, use `-Action search` to get the JSON file path, then read the JSON file directly.
+`-Action members` の表示より詳しい情報が必要な場合は、`-Action search` で JSON ファイルのパスを取得し、その JSON ファイルを直接読む。
 
 ---
 
-### Other Commands
+### その他のコマンド
 
 ```powershell
 # List cached projects
@@ -156,37 +155,37 @@ If you need full detail beyond what `-Action members` shows, use `-Action search
 .\.github\skills\winmd-api-search\scripts\Invoke-WinMdQuery.ps1 -Action stats
 ```
 
-> If only one project is cached, `-Project` is auto-selected.
-> If multiple projects exist, add `-Project <name>` (use `-Action projects` to see available names).
-> In scan mode, manifest names include a short hash suffix to avoid collisions; you can pass the base project name without the suffix if it's unambiguous.
+> キャッシュされたプロジェクトが 1 つだけの場合、`-Project` は自動選択される。
+> 複数のプロジェクトがある場合は `-Project <name>` を追加する（利用可能な名前は `-Action projects` で確認する）。
+> スキャン モードでは衝突を避けるためマニフェスト名に短いハッシュ接尾辞が付く。曖昧でなければ接尾辞なしの基本プロジェクト名を指定できる。
 
-## Search Scoring
+## 検索スコア
 
-The search ranks type names and member names against your query:
+検索では、クエリに対する型名とメンバー名の一致度を順位付けする:
 
-| Score | Match type | Example |
+| スコア | 一致種別 | 例 |
 |-------|-----------|---------|
-| 100 | Exact name | `Button` → `Button` |
-| 80 | Starts with | `Navigation` → `NavigationView` |
-| 60 | Contains | `Dialog` → `ContentDialog` |
-| 50 | PascalCase initials | `ASB` → `AutoSuggestBox` |
-| 40 | Multi-keyword AND | `navigation item` → `NavigationViewItem` |
-| 20 | Fuzzy character match | `NavVw` → `NavigationView` |
+| 100 | 名前の完全一致 | `Button` → `Button` |
+| 80 | 前方一致 | `Navigation` → `NavigationView` |
+| 60 | 部分一致 | `Dialog` → `ContentDialog` |
+| 50 | PascalCase の頭文字 | `ASB` → `AutoSuggestBox` |
+| 40 | 複数キーワードの AND | `navigation item` → `NavigationViewItem` |
+| 20 | あいまいな文字一致 | `NavVw` → `NavigationView` |
 
-Results are grouped by namespace. Higher-scored namespaces appear first.
+結果は名前空間ごとにまとめられ、スコアの高い名前空間が先に表示される。
 
-## Troubleshooting
+## トラブルシューティング
 
-| Issue | Fix |
+| 問題 | 対処 |
 |-------|-----|
-| "Cache not found" | Run `Update-WinMdCache.ps1` |
-| "Multiple projects cached" | Add `-Project <name>` |
-| "Namespace not found" | Use `-Action namespaces` to list available ones |
-| "Type not found" | Use fully qualified name (e.g., `Microsoft.UI.Xaml.Controls.Button`) |
-| Stale after NuGet update | Re-run `Update-WinMdCache.ps1` |
-| Cache in git history | Add `Generated Files/` to `.gitignore` |
+| 「キャッシュが見つからない」 | `Update-WinMdCache.ps1` を実行する |
+| 「複数のプロジェクトがキャッシュされている」 | `-Project <name>` を追加する |
+| 「名前空間が見つからない」 | `-Action namespaces` で利用可能な名前空間を一覧表示する |
+| 「型が見つからない」 | 完全修飾名を使う（例: `Microsoft.UI.Xaml.Controls.Button`） |
+| NuGet 更新後に古い | `Update-WinMdCache.ps1` を再実行する |
+| キャッシュが Git 履歴に入る | `.gitignore` に `Generated Files/` を追加する |
 
-## References
+## 参照
 
-- [Windows Platform SDK API reference](https://learn.microsoft.com/uwp/api/) — documentation for `Windows.*` namespaces
-- [Windows App SDK API reference](https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/) — documentation for `Microsoft.*` WinAppSDK namespaces
+- [Windows Platform SDK API リファレンス](https://learn.microsoft.com/uwp/api/) — `Windows.*` 名前空間のドキュメント
+- [Windows App SDK API リファレンス](https://learn.microsoft.com/windows/windows-app-sdk/api/winrt/) — `Microsoft.*` WinAppSDK 名前空間のドキュメント

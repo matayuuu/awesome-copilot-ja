@@ -1,68 +1,68 @@
 ---
 name: copilot-spaces
-description: 'Use Copilot Spaces to provide project-specific context to conversations. Use this skill when users mention a "Copilot space", want to load context from a shared knowledge base, discover available spaces, or ask questions grounded in curated project documentation, code, and instructions.'
+description: 'Copilot Spacesを使って、会話へプロジェクト固有のコンテキストを提供する。ユーザーがCopilot spaceに言及する、共有ナレッジベースからコンテキストを読み込む、利用可能なSpaceを探す、または厳選されたプロジェクト文書、コード、指示に基づいて質問するときに使用する。'
 ---
 
 # Copilot Spaces
 
-Use Copilot Spaces to bring curated, project-specific context into conversations. A Space is a shared collection of repositories, files, documentation, and instructions that grounds Copilot responses in your team's actual code and knowledge.
+Copilot Spacesを使い、厳選されたプロジェクト固有のコンテキストを会話へ取り込む。Spaceはリポジトリ、ファイル、文書、指示を共有するコレクションであり、チームの実際のコードと知識に基づいてCopilotが応答できるようにする。
 
-## Available Tools
+## 利用可能なツール
 
-### MCP Tools (Read-only)
+### MCPツール（読み取り専用）
 
-| Tool | Purpose |
+| ツール | 用途 |
 |------|---------|
-| `mcp__github__list_copilot_spaces` | List all spaces accessible to the current user |
-| `mcp__github__get_copilot_space` | Load a space's full context by owner and name |
+| `mcp__github__list_copilot_spaces` | 現在のユーザーがアクセスできるすべてのSpaceを一覧表示する |
+| `mcp__github__get_copilot_space` | ownerとnameを指定してSpaceの完全なコンテキストを読み込む |
 
-### REST API via `gh api` (Full CRUD)
+### `gh api` 経由のREST API（完全なCRUD）
 
-The Spaces REST API supports creating, updating, deleting spaces, and managing collaborators. The MCP server only exposes read operations, so use `gh api` for writes.
+Spaces REST APIは、Spaceの作成、更新、削除、コラボレーター管理に対応する。MCP serverが公開するのは読み取り操作だけなので、書き込みには `gh api` を使う。
 
-**User Spaces:**
+**ユーザーのSpace:**
 
-| Method | Endpoint | Purpose |
+| メソッド | エンドポイント | 用途 |
 |--------|----------|---------|
-| `POST` | `/users/{username}/copilot-spaces` | Create a space |
-| `GET` | `/users/{username}/copilot-spaces` | List spaces |
-| `GET` | `/users/{username}/copilot-spaces/{number}` | Get a space |
-| `PUT` | `/users/{username}/copilot-spaces/{number}` | Update a space |
-| `DELETE` | `/users/{username}/copilot-spaces/{number}` | Delete a space |
+| `POST` | `/users/{username}/copilot-spaces` | Spaceを作成する |
+| `GET` | `/users/{username}/copilot-spaces` | Spaceを一覧表示する |
+| `GET` | `/users/{username}/copilot-spaces/{number}` | Spaceを取得する |
+| `PUT` | `/users/{username}/copilot-spaces/{number}` | Spaceを更新する |
+| `DELETE` | `/users/{username}/copilot-spaces/{number}` | Spaceを削除する |
 
-**Organization Spaces:** Same pattern under `/orgs/{org}/copilot-spaces/...`
+**OrganizationのSpace:** `/orgs/{org}/copilot-spaces/...` 配下で同じパターンを使う。
 
-**Collaborators:** Add, list, update, and remove collaborators at `.../collaborators`
+**コラボレーター:** `.../collaborators` でコラボレーターを追加、一覧表示、更新、削除する。
 
-**Scope requirements:** PAT needs `read:user` for reads, `user` for writes. Add with `gh auth refresh -h github.com -s user`.
+**scope要件:** PATには、読み取り用の `read:user`、書き込み用の `user` が必要である。`gh auth refresh -h github.com -s user` で追加する。
 
-**Note:** This API is functional but not yet in the public REST API docs. It may require the `copilot_spaces_api` feature flag.
+**注:** このAPIは機能するが、公開REST API文書にはまだ掲載されていない。`copilot_spaces_api` feature flagが必要な場合がある。
 
-## When to Use Spaces
+## Spacesを使う場面
 
-- User mentions "Copilot space" or asks to "load a space"
-- User wants answers grounded in specific project docs, code, or standards
-- User asks "what spaces are available?" or "find a space for X"
-- User needs onboarding context, architecture docs, or team-specific guidance
-- User wants to follow a structured workflow defined in a Space (templates, checklists, multi-step processes)
+- ユーザーが「Copilot space」に言及する、または「Spaceを読み込む」よう求める
+- 特定のプロジェクト文書、コード、標準に基づく回答を求める
+- 利用可能なSpaceの確認、または特定目的のSpaceの検索を求める
+- オンボーディング用コンテキスト、アーキテクチャ文書、チーム固有の指針を必要とする
+- Spaceで定義された構造化Workflow（テンプレート、チェックリスト、複数ステップの手順）に従いたい
 
 ## Workflow
 
-### 1. Discover Spaces
+### 1. Spaceを検出する
 
-When a user asks what spaces are available or you need to find the right space:
+ユーザーが利用可能なSpaceを尋ねた場合、または適切なSpaceを探す必要がある場合:
 
 ```
 Call mcp__github__list_copilot_spaces
 ```
 
-This returns all spaces the user can access, each with a `name` and `owner_login`. Present relevant matches to the user.
+これにより、ユーザーがアクセスできるすべてのSpaceが、それぞれの `name` と `owner_login` とともに返される。関連する候補をユーザーへ提示する。
 
-To filter for a specific user's spaces, match `owner_login` against the username (e.g., "show me my spaces").
+特定ユーザーのSpaceへ絞るには、`owner_login` をユーザー名と照合する。
 
-### 2. Load a Space
+### 2. Spaceを読み込む
 
-When a user names a specific space or you've identified the right one:
+ユーザーが特定のSpaceを指定した場合、または適切なSpaceを特定した場合:
 
 ```
 Call mcp__github__get_copilot_space with:
@@ -70,42 +70,42 @@ Call mcp__github__get_copilot_space with:
   name: "Space Name"      (exact space name, case-sensitive)
 ```
 
-This returns the space's full content: attached documentation, code context, custom instructions, and any other curated materials. Use this context to inform your responses.
+これにより、添付文書、コードコンテキスト、カスタム指示、その他の厳選された資料を含むSpaceの全内容が返される。このコンテキストを回答へ反映する。
 
-### 3. Follow the Breadcrumbs
+### 3. 参照先をたどる
 
-Space content often references external resources: GitHub issues, dashboards, repos, discussions, or other tools. Proactively fetch these using other MCP tools to gather complete context. For example:
-- A space references an initiative tracking issue. Use `issue_read` to get the latest comments.
-- A space links to a project board. Use project tools to check current status.
-- A space mentions a repo's masterplan. Use `get_file_contents` to read it.
+Spaceの内容は、GitHub Issue、ダッシュボード、リポジトリ、Discussion、他のツールなどの外部リソースを参照することが多い。完全なコンテキストを集めるため、他のMCPツールで先回りして取得する。例:
+- Spaceが施策追跡Issueを参照する場合は、`issue_read` で最新コメントを取得する
+- Spaceがproject boardへリンクする場合は、projectツールで現在の状態を確認する
+- Spaceがリポジトリのmasterplanへ言及する場合は、`get_file_contents` で読む
 
-### 4. Answer or Execute
+### 4. 回答または実行する
 
-Once loaded, use the space content based on what it contains:
+読み込み後は、Spaceの内容に応じて利用する。
 
-**If the space contains reference material** (docs, code, standards):
-- Answer questions about the project's architecture, patterns, or standards
-- Generate code that follows the team's conventions
-- Debug issues using project-specific knowledge
+**Spaceに参考資料が含まれる場合**（文書、コード、標準）:
+- プロジェクトのアーキテクチャ、パターン、標準に関する質問へ回答する
+- チームの規約に従うコードを生成する
+- プロジェクト固有の知識を使って問題をデバッグする
 
-**If the space contains workflow instructions** (templates, step-by-step processes):
-- Follow the workflow as defined, step by step
-- Gather data from the sources the workflow specifies
-- Produce output in the format the workflow defines
-- Show progress after each step so the user can steer
+**SpaceにWorkflowの指示が含まれる場合**（テンプレート、段階的な手順）:
+- 定義されたWorkflowへ1ステップずつ従う
+- Workflowで指定された情報源からデータを収集する
+- Workflowで定義された形式で出力する
+- ユーザーが方向修正できるよう、各ステップ後に進捗を示す
 
-### 5. Manage Spaces (via `gh api`)
+### 5. Spaceを管理する（`gh api` 経由）
 
-When a user wants to create, update, or delete a space, use `gh api`. First, find the space number from the list endpoint.
+ユーザーがSpaceの作成、更新、削除を求めた場合は `gh api` を使う。まず一覧エンドポイントからSpace番号を探す。
 
-**Update a space's instructions:**
+**Spaceの指示を更新する:**
 ```bash
 gh api users/{username}/copilot-spaces/{number} \
   -X PUT \
   -f general_instructions="New instructions here"
 ```
 
-**Update name, description, or instructions together:**
+**名前、説明、指示をまとめて更新する:**
 ```bash
 gh api users/{username}/copilot-spaces/{number} \
   -X PUT \
@@ -114,7 +114,7 @@ gh api users/{username}/copilot-spaces/{number} \
   -f general_instructions="Updated instructions"
 ```
 
-**Create a new space:**
+**新しいSpaceを作成する:**
 ```bash
 gh api users/{username}/copilot-spaces \
   -X POST \
@@ -123,7 +123,7 @@ gh api users/{username}/copilot-spaces \
   -f visibility="private"
 ```
 
-**Attach resources (replaces entire resource list):**
+**リソースを添付する（リソース一覧全体を置換）:**
 ```json
 {
   "resources_attributes": [
@@ -134,72 +134,72 @@ gh api users/{username}/copilot-spaces \
 }
 ```
 
-**Delete a space:**
+**Spaceを削除する:**
 ```bash
 gh api users/{username}/copilot-spaces/{number} -X DELETE
 ```
 
-**Updatable fields:** `name`, `description`, `general_instructions`, `icon_type`, `icon_color`, `visibility` ("private"/"public"), `base_role` ("no_access"/"reader"), `resources_attributes`
+**更新可能なフィールド:** `name`、`description`、`general_instructions`、`icon_type`、`icon_color`、`visibility`（`"private"`/`"public"`）、`base_role`（`"no_access"`/`"reader"`）、`resources_attributes`
 
-## Examples
+## 例
 
-### Example 1: User Asks for a Space
+### 例1: ユーザーがSpaceを指定する
 
-**User**: "Load the Accessibility copilot space"
+**ユーザー**: 「Accessibility Copilot spaceを読み込んで」
 
-**Action**:
-1. Call `mcp__github__get_copilot_space` with owner `"github"`, name `"Accessibility"`
-2. Use the returned context to answer questions about accessibility standards, MAS grades, compliance processes, etc.
+**アクション**:
+1. ownerを `"github"`、nameを `"Accessibility"` として `mcp__github__get_copilot_space` を呼び出す
+2. 返されたコンテキストを使い、アクセシビリティ標準、MAS等級、コンプライアンスプロセスなどの質問へ回答する
 
-### Example 2: User Wants to Find Spaces
+### 例2: ユーザーがSpaceを探す
 
-**User**: "What copilot spaces are available for our team?"
+**ユーザー**: 「チームで利用できるCopilot spaceは何ですか？」
 
-**Action**:
-1. Call `mcp__github__list_copilot_spaces`
-2. Filter/present spaces relevant to the user's org or interests
-3. Offer to load any space they're interested in
+**アクション**:
+1. `mcp__github__list_copilot_spaces` を呼び出す
+2. ユーザーのOrganizationまたは関心に関連するSpaceへ絞って提示する
+3. 関心のあるSpaceを読み込むことを提案する
 
-### Example 3: Context-Grounded Question
+### 例3: コンテキストに基づく質問
 
-**User**: "Using the security space, what's our policy on secret scanning?"
+**ユーザー**: 「security spaceを使って、secret scanningに関する方針を教えて」
 
-**Action**:
-1. Call `mcp__github__get_copilot_space` with the appropriate owner and name
-2. Find the relevant policy in the space content
-3. Answer based on the actual internal documentation
+**アクション**:
+1. 適切なownerとnameを指定して `mcp__github__get_copilot_space` を呼び出す
+2. Spaceの内容から関連する方針を探す
+3. 実際の内部文書に基づいて回答する
 
-### Example 4: Space as a Workflow Engine
+### 例4: WorkflowエンジンとしてのSpace
 
-**User**: "Write my weekly update using the PM Weekly Updates space"
+**ユーザー**: 「PM Weekly Updates spaceを使って週次報告を書いて」
 
-**Action**:
-1. Call `mcp__github__get_copilot_space` to load the space. It contains a template format and step-by-step instructions.
-2. Follow the space's workflow: pull data from attached initiative issues, gather metrics, draft each section.
-3. Fetch external resources referenced by the space (tracking issues, dashboards) using other MCP tools.
-4. Show the draft after each section so the user can review and fill in gaps.
-5. Produce the final output in the format the space defines.
+**アクション**:
+1. `mcp__github__get_copilot_space` を呼び出してSpaceを読み込む。Spaceにはテンプレート形式と段階的な手順が含まれる
+2. SpaceのWorkflowに従い、添付された施策Issueからデータを取得し、メトリクスを収集して各セクションの下書きを作る
+3. 他のMCPツールで、Spaceが参照する外部リソース（追跡Issue、ダッシュボード）を取得する
+4. ユーザーが確認して不足を補えるよう、各セクションの後に下書きを示す
+5. Spaceで定義された形式の最終出力を作成する
 
-### Example 5: Update Space Instructions Programmatically
+### 例5: Spaceの指示をプログラムで更新する
 
-**User**: "Update my PM Weekly Updates space to include a new writing guideline"
+**ユーザー**: 「PM Weekly Updates spaceへ新しい文章作成ガイドラインを追加して」
 
-**Action**:
-1. Call `mcp__github__list_copilot_spaces` and find the space number (e.g., 19).
-2. Call `mcp__github__get_copilot_space` to read current instructions.
-3. Modify the instructions text as requested.
-4. Push the update:
+**アクション**:
+1. `mcp__github__list_copilot_spaces` を呼び出し、Space番号（例: 19）を探す
+2. `mcp__github__get_copilot_space` を呼び出して現在の指示を読む
+3. 依頼どおり指示テキストを変更する
+4. 更新を反映する:
 ```bash
 gh api users/labudis/copilot-spaces/19 -X PUT -f general_instructions="updated instructions..."
 ```
 
-## Tips
+## ヒント
 
-- Space names are **case-sensitive**. Use the exact name from `list_copilot_spaces`.
-- Spaces can be owned by users or organizations. Always provide both `owner` and `name`.
-- Space content can be large (20KB+). If returned as a temp file, use grep or view_range to find relevant sections rather than reading everything at once.
-- If a space isn't found, suggest listing available spaces to find the right name.
-- Spaces auto-update as underlying repos change, so the context is always current.
-- Some spaces contain custom instructions that should guide your behavior (coding standards, preferred patterns, workflows). Treat these as directives, not suggestions.
-- **Write operations** (`gh api` for create/update/delete) require the `user` PAT scope. If you get a 404 on write operations, run `gh auth refresh -h github.com -s user`.
-- Resource updates **replace the entire array**. To add a resource, include all existing resources plus the new one. To remove one, include `{ "id": 123, "_destroy": true }` in the array.
+- Space名では**大文字と小文字を区別する**。`list_copilot_spaces` の正確な名前を使う
+- SpaceはユーザーまたはOrganizationが所有できる。常に `owner` と `name` の両方を指定する
+- Spaceの内容は大きい場合がある（20KB以上）。一時ファイルとして返された場合は、一度にすべて読まず、grepまたはview_rangeで関連セクションを探す
+- Spaceが見つからない場合は、利用可能なSpaceを一覧表示して正しい名前を探すよう提案する
+- 基になるリポジトリの変更に合わせてSpaceは自動更新されるため、コンテキストは常に最新である
+- 一部のSpaceには、コーディング標準、推奨パターン、Workflowなど、動作を導くカスタム指示が含まれる。提案ではなく指示として扱う
+- **書き込み操作**（作成、更新、削除の `gh api`）にはPATの `user` scopeが必要である。書き込み操作で404になった場合は `gh auth refresh -h github.com -s user` を実行する
+- リソース更新は**配列全体を置換する**。リソースを追加するときは既存リソースすべてと新しいリソースを含める。削除するときは配列へ `{ "id": 123, "_destroy": true }` を含める

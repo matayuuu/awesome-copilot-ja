@@ -1,8 +1,8 @@
 # Site Studio Plugin
 
-Plan, draft, and track a personal website section by section — a shared canvas where you and your agent author content, watch progress, and review every change.
+個人Webサイトをセクションごとに計画、下書き、追跡します。あなたとエージェントが共同でコンテンツを作成し、進捗を確認し、すべての変更をレビューできる共有キャンバスです。
 
-## Installation
+## インストール
 
 ``bash
 copilot plugin install site-studio@awesome-copilot

@@ -1,8 +1,8 @@
-# Java MCP Server Development Plugin
+# Java MCP Server Development プラグイン
 
-Complete toolkit for building Model Context Protocol servers in Java using the official MCP Java SDK with reactive streams and Spring Boot integration.
+リアクティブストリームと Spring Boot 統合を備えた公式 MCP Java SDK を使って、Java で Model Context Protocol server を構築するための完全なツールキットです。
 
-## Installation
+## インストール
 
 ```bash
 # Using Copilot CLI

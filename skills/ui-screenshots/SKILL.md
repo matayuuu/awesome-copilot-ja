@@ -1,31 +1,30 @@
 ---
 name: ui-screenshots
-description: 'Capture screenshots of web apps during development using Playwright and PIL. Supports full-page captures, interactive states, and an iterate-on-crop workflow that avoids slow re-screenshots.'
+description: 'PlaywrightとPILを使って開発中のWebアプリをスクリーンショット撮影します。ページ全体の撮影、インタラクティブ状態、再撮影の遅さを避ける切り抜き反復ワークフローに対応します。'
 ---
+# UIスクリーンショット
 
-# UI Screenshots
+開発中のWebアプリやグラフィカルUIを撮影し、見た目の変更を記録します。
 
-Capture screenshots of web apps and graphical UIs during development to document visual changes.
+## このSkillを使う場面
 
-## When to Use This Skill
+次の作業が必要なときに使用します。
 
-Use this skill when you need to:
+- 実行中のWebアプリの現在の状態を撮影する
+- コード変更前後のUIを記録する
+- インタラクティブ状態（ツールチップ、ホバー、選択要素）を撮影する
+- 再撮影せずにページの特定部分を撮影する
 
-- Capture the current state of a running web app
-- Document a UI before and after a code change
-- Screenshot interactive states (tooltips, hovers, selected elements)
-- Capture specific sections of a page without re-screenshotting
-
-## Prerequisites
+## 前提条件
 
 ```bash
 pip install playwright Pillow -q
 playwright install chromium
 ```
 
-## Core Workflow
+## 基本ワークフロー
 
-### 1. Take a raw full-page screenshot
+### 1. 生のページ全体スクリーンショットを撮る
 
 ```python
 from playwright.async_api import async_playwright
@@ -40,13 +39,13 @@ async def capture(url="http://localhost:3000", out="screenshot-raw.png", width=1
         await browser.close()
 ```
 
-- Use a **tall viewport** (height=5000) so the page renders everything without scrolling
-- `wait_until="networkidle"` + `wait_for_timeout(4000)` ensures async charts load
-- `full_page=True` captures the entire scrollable content
+- ページがスクロールなしですべてを描画できるよう、**縦長のビューポート**（height=5000）を使う
+- `wait_until="networkidle"` と `wait_for_timeout(4000)`で非同期チャートの読み込みを待つ
+- `full_page=True`でスクロール可能なコンテンツ全体を撮影する
 
-### 2. View the raw image, then crop with PIL
+### 2. 生画像を確認してからPILで切り抜く
 
-**Do NOT try to get perfect crops via Playwright's `clip` parameter.** It's unreliable with full-page captures.
+**Playwrightの`clip`パラメーターで完璧な切り抜きを得ようとしないでください。**ページ全体の撮影では信頼性がありません。
 
 ```python
 from PIL import Image
@@ -56,18 +55,18 @@ cropped = img.crop((left, top, right, bottom))  # adjust based on what you see
 cropped.save("screenshot-final.png")
 ```
 
-1. Take the raw screenshot
-2. View it to see actual pixel positions
-3. Crop with PIL based on what you see
-4. View the result — if not right, re-crop (instant, no re-screenshot needed)
+1. 生スクリーンショットを撮る
+2. 実際のピクセル位置を確認する
+3. 確認結果に基づいてPILで切り抜く
+4. 結果を確認し、適切でなければ再度切り抜く（即時に反映され、再撮影は不要）
 
-### 3. Iterate on crop, not on capture
+### 3. 撮影ではなく切り抜きを反復する
 
-- Re-screenshotting is slow (browser launch + page load + render wait)
-- Re-cropping is instant (just PIL)
-- Get one good raw capture, then slice it as many ways as needed
+- 再撮影は遅い（ブラウザー起動、ページ読み込み、描画待ちが必要）
+- 再切り抜きは即時に行える（PILだけでよい）
+- 良い生画像を1枚撮り、必要なだけさまざまに切り出す
 
-### 4. Interactive states
+### 4. インタラクティブ状態
 
 ```python
 element = page.locator("selector").first
@@ -76,7 +75,7 @@ await page.wait_for_timeout(1000)  # let tooltip appear
 await page.screenshot(path="screenshot-hover.png", full_page=True)
 ```
 
-For "selected" state without hover effect, move the mouse away after clicking:
+ホバー効果のない「選択済み」状態を撮るには、クリック後にマウスを移動します。
 
 ```python
 await element.click()
@@ -85,32 +84,32 @@ await page.wait_for_timeout(500)
 await page.screenshot(path="screenshot-selected.png", full_page=True)
 ```
 
-### 5. Section-specific captures
+### 5. セクション別の撮影
 
-Crop different sections from a single full-page screenshot:
+1枚のページ全体スクリーンショットから、異なるセクションを切り抜きます。
 
 ```python
 img.crop((0, 200, 920, 900)).save("screenshot-header.png")
 img.crop((0, 900, 920, 1600)).save("screenshot-main.png")
 ```
 
-## Guidelines
+## ガイドライン
 
-1. **Always capture before state BEFORE making any changes** — if you forget, you have to revert code to get a before shot
-2. **Before/after pairs must use the same viewport width and crop** — otherwise the comparison is useless
-3. **To get a "before" after you already changed code**: use `git checkout HEAD~1 -- <files>` to revert, screenshot, then `git checkout HEAD -- <files>` to restore
-4. **For interactive states**: capture before AND after for each state — don't assume the "normal" before covers all cases
-5. **Use `device_scale_factor=1`** in Playwright to force 1x pixels so screenshots match what users see at 100% zoom
-6. **Charts need extra wait time** — Plotly, D3, etc. render asynchronously; 4s minimum after networkidle
-7. **Narrow viewport reveals rendering bugs** — some border/alignment issues only appear at specific widths
+1. **必ず変更前の状態を変更前に撮影する**——忘れると、変更前の撮影のためにコードを戻す必要がある
+2. **変更前後の組は同じビューポート幅と切り抜きを使う**——そうしなければ比較できない
+3. **すでにコードを変更した後で「変更前」を撮る場合**：`git checkout HEAD~1 -- <files>`で戻して撮影し、`git checkout HEAD -- <files>`で復元する
+4. **インタラクティブ状態では**各状態について変更前と変更後を撮る——通常状態の変更前で全ケースを代表できると考えない
+5. **Playwrightでは`device_scale_factor=1`を使う**ことで1倍のピクセルに固定し、100%ズームでの見え方に合わせる
+6. **チャートには追加の待機時間が必要**——PlotlyやD3などは非同期に描画されるため、networkidle後に最低4秒待つ
+7. **狭いビューポートで描画バグが見つかる**——境界線や配置の問題は特定の幅でのみ現れることがある
 
-## Non-Web App Screenshots
+## Web以外のアプリのスクリーンショット
 
-For desktop apps (VS, WPF, WinForms, console apps, terminals) where Playwright can't reach.
+Playwrightで操作できないデスクトップアプリ（VS、WPF、WinForms、コンソールアプリ、ターミナル）向けです。
 
-### mss + ctypes (recommended for desktop windows)
+### mss + ctypes（デスクトップウィンドウ向け推奨）
 
-Find a window by title via Win32 API, capture its region with `mss`. Tested at ~33ms per capture.
+Win32 APIでタイトルからウィンドウを検索し、`mss`で領域をキャプチャします。1回約33msで動作確認済みです。
 
 ```python
 import ctypes
@@ -157,12 +156,12 @@ def capture_window(title_contains, output_path):
 capture_window('Visual Studio Code', 'vscode-capture.png')
 ```
 
-**Prerequisites:** `pip install mss pillow`
-**Limitation:** Window must be visible (not behind other windows or minimized).
+**前提条件：** `pip install mss pillow`
+**制限：**ウィンドウが表示されている必要があります（他のウィンドウの背後や最小化状態では不可）。
 
-### Electron apps (VS Code, etc.)
+### Electronアプリ（VS Codeなど）
 
-**Node.js Playwright only** — Python Playwright has no `electron` API. Captures via CDP (Chrome DevTools Protocol), not from the screen — works even while minimized.
+**Node.js版Playwrightのみ** — Python版Playwrightには`electron` APIがありません。画面ではなくCDP（Chrome DevTools Protocol）経由でキャプチャするため、最小化中でも動作します。
 
 ```javascript
 const { _electron: electron } = require('playwright');
@@ -182,21 +181,21 @@ await window.screenshot({ path: 'capture.png' }); // works while minimized!
 await app.close();
 ```
 
-**Critical**: `--user-data-dir=<temp>` is required or VS Code hands off to the existing instance and the launched process exits immediately.
+**重要**：`--user-data-dir=<temp>`が必要です。指定しないとVS Codeが既存インスタンスへ処理を委譲し、起動したプロセスが直ちに終了します。
 
-### Decision tree
+### 選択基準
 
-| Scenario | Tool | Notes |
+| 状況 | ツール | 備考 |
 |---|---|---|
-| Web app (localhost) | Playwright | Proven, full DOM access |
-| Electron app (VS Code) | Playwright Electron (Node.js) | Works minimized via CDP |
-| Desktop app, visible window | mss + ctypes (find by title) | ~33ms per capture |
-| Desktop app, behind windows | Windows Graphics Capture API | Complex setup, Win10 1903+ |
-| Quick full-screen | mss | ~68ms |
+| Webアプリ（localhost） | Playwright | 実績があり、DOM全体にアクセス可能 |
+| Electronアプリ（VS Code） | Playwright Electron（Node.js） | CDP経由で最小化中も動作 |
+| デスクトップアプリ、表示中のウィンドウ | mss + ctypes（タイトルで検索） | 1回約33ms |
+| デスクトップアプリ、他のウィンドウの背後 | Windows Graphics Capture API | 複雑なセットアップ、Win10 1903以降 |
+| すばやい全画面撮影 | mss | 約68ms |
 
-## Limitations
+## 制限事項
 
-- Web capture requires a locally running app or accessible URL
-- Desktop capture (mss) requires the window to be visible and unobstructed
-- Electron capture requires Node.js Playwright (not Python)
-- Some SPAs with heavy client-side rendering may need custom wait logic beyond networkidle
+- Web撮影にはローカルで実行中のアプリまたはアクセス可能なURLが必要
+- デスクトップ撮影（mss）には表示され、遮られていないウィンドウが必要
+- Electron撮影にはNode.js版Playwrightが必要（Python版では不可）
+- クライアント側の描画が重いSPAでは、networkidle以外の待機処理が必要になることがある

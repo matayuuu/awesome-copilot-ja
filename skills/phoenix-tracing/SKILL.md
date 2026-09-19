@@ -1,6 +1,6 @@
 ---
 name: phoenix-tracing
-description: OpenInference semantic conventions and instrumentation for Phoenix AI observability. Use when implementing LLM tracing, creating custom spans, or deploying to production.
+description: 'phoenix-tracing に関する作業を支援する Skill です。対象のファイルや設定を確認し、必要な手順、検証方法、注意点を案内します。対象技術の調査、実装、運用、トラブルシューティングに使用します。'
 license: Apache-2.0
 compatibility: Requires Phoenix server. Python skills need arize-phoenix-otel; TypeScript skills need @arizeai/phoenix-otel.
 metadata:
@@ -118,7 +118,7 @@ references/*-typescript.md      # TypeScript implementations
 3. Reference span-{type} files as needed for specific operations
 4. See fundamentals-* files for attribute specifications
 
-## References
+## 参考資料
 
 **Phoenix Documentation:**
 

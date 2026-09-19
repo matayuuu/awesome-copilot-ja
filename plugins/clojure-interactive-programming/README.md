@@ -1,15 +1,15 @@
-# Clojure Interactive Programming Plugin
+# Clojure Interactive Programming プラグイン
 
-Tools for REPL-first Clojure workflows featuring Clojure instructions, the interactive programming chat mode and supporting guidance.
+Clojure instructions、interactive programming chat mode、補助ガイダンスを備えた、REPL を中心とする Clojure ワークフロー向けツールです。
 
-## Installation
+## インストール
 
 ```bash
 # Using Copilot CLI
 copilot plugin install clojure-interactive-programming@awesome-copilot
 ```
 
-## What's Included
+## 含まれるもの
 
 ### Commands (Slash Commands)
 

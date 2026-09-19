@@ -1,29 +1,29 @@
 ---
 name: microsoft-docs
-description: 'Query official Microsoft documentation to find concepts, tutorials, and code examples across Azure, .NET, Agent Framework, Aspire, VS Code, GitHub, and more. Uses Microsoft Learn MCP as the default, with Context7 and Aspire MCP for content that lives outside learn.microsoft.com.'
+description: 'Microsoft Learn などの公式ドキュメントから、Azure、.NET、Agent Framework、Aspire、VS Code、GitHub などの概念、チュートリアル、コード例を検索する。Microsoft Learn MCP を既定として使用し、learn.microsoft.com に存在しないコンテンツについては Context7 と Aspire MCP を併用する。'
 ---
 
 # Microsoft Docs
 
-Research skill for the Microsoft technology ecosystem. Covers learn.microsoft.com and documentation that lives outside it (VS Code, GitHub, Aspire, Agent Framework repos).
+Microsoft テクノロジー エコシステム向けの調査スキル。learn.microsoft.com と、それ以外に存在するドキュメント（VS Code、GitHub、Aspire、Agent Framework リポジトリ）を対象とする。
 
 ---
 
-## Default: Microsoft Learn MCP
+## 既定: Microsoft Learn MCP
 
-Use these tools for **everything on learn.microsoft.com** — Azure, .NET, M365, Power Platform, Agent Framework, Semantic Kernel, Windows, and more. This is the primary tool for the vast majority of Microsoft documentation queries.
+learn.microsoft.com 上のあらゆるコンテンツに対しては、次のツールを使用する — Azure、.NET、M365、Power Platform、Agent Framework、Semantic Kernel、Windows など。これは Microsoft ドキュメントの大半で主なツールとなる。
 
-| Tool | Purpose |
+| ツール | 目的 |
 |------|---------|
-| `microsoft_docs_search` | Search learn.microsoft.com — concepts, guides, tutorials, configuration |
-| `microsoft_code_sample_search` | Find working code snippets from Learn docs. Pass `language` (`python`, `csharp`, etc.) for best results |
-| `microsoft_docs_fetch` | Get full page content from a specific URL (when search excerpts aren't enough) |
+| `microsoft_docs_search` | learn.microsoft.com を検索 — 概念、ガイド、チュートリアル、設定 |
+| `microsoft_code_sample_search` | Learn ドキュメントから動作するコードスニペットを検索する。最良の結果を得るには `language`（`python`、`csharp` など）を指定する |
+| `microsoft_docs_fetch` | 特定の URL からページ全体の内容を取得する（検索結果の抜粋で十分でない場合） |
 
-Use `microsoft_docs_fetch` after search when you need complete tutorials, all config options, or when search excerpts are truncated.
+`microsoft_docs_fetch` は、完全なチュートリアルやすべての設定オプションが必要な場合、または検索結果の抜粋が途中で切れている場合に、検索後に使用する。
 
-### CLI Alternative
+### CLI の代替手段
 
-If the Learn MCP server is not available, use the `mslearn` CLI from your terminal or shell (for example, Bash, PowerShell, or cmd) instead:
+Learn MCP サーバーが利用できない場合は、代わりにターミナルやシェル（たとえば Bash、PowerShell、cmd）から `mslearn` CLI を使用する:
 
 ```bash
 # Run directly (no install needed)
@@ -34,85 +34,85 @@ npm install -g @microsoft/learn-cli
 mslearn search "BlobClient UploadAsync Azure.Storage.Blobs"
 ```
 
-| MCP Tool | CLI Command |
+| MCP ツール | CLI コマンド |
 |----------|-------------|
 | `microsoft_docs_search(query: "...")` | `mslearn search "..."` |
 | `microsoft_code_sample_search(query: "...", language: "...")` | `mslearn code-search "..." --language ...` |
 | `microsoft_docs_fetch(url: "...")` | `mslearn fetch "..."` |
 
-Pass `--json` to `search` or `code-search` to get raw JSON output for further processing.
+さらに処理するために、`search` または `code-search` に `--json` を渡して生の JSON 出力を取得する。
 
 ---
 
-## Exceptions: When to Use Other Tools
+## 例外: 他のツールを使う場合
 
-The following categories live **outside** learn.microsoft.com. Use the specified tool instead.
+次のカテゴリは learn.microsoft.com の外にある。指定されたツールを代わりに使う。
 
-### .NET Aspire — Use Aspire MCP Server (preferred) or Context7
+### .NET Aspire — Aspire MCP Server（推奨）または Context7 を使用
 
-Aspire docs live on **aspire.dev**, not Learn. The best tool depends on your Aspire CLI version:
+Aspire のドキュメントは Learn ではなく **aspire.dev** にある。最適なツールは Aspire CLI のバージョンによって異なる:
 
-**CLI 13.2+** (recommended) — The Aspire MCP server includes built-in docs search tools:
+**CLI 13.2+**（推奨） — Aspire MCP サーバーには組み込みのドキュメント検索ツールが含まれている:
 
-| MCP Tool | Description |
+| MCP ツール | 説明 |
 |----------|-------------|
-| `list_docs` | Lists all available documentation from aspire.dev |
-| `search_docs` | Weighted lexical search across aspire.dev content |
-| `get_doc` | Retrieves a specific document by slug |
+| `list_docs` | aspire.dev から利用可能なドキュメントを一覧表示する |
+| `search_docs` | aspire.dev コンテンツ全体を対象とした重み付き語彙検索 |
+| `get_doc` | slug で特定のドキュメントを取得する |
 
-These ship in Aspire CLI 13.2 ([PR #14028](https://github.com/dotnet/aspire/pull/14028)). To update: `aspire update --self --channel daily`. Ref: https://davidpine.dev/posts/aspire-docs-mcp-tools/
+これらは Aspire CLI 13.2 で導入された ([PR #14028](https://github.com/dotnet/aspire/pull/14028))。更新するには: `aspire update --self --channel daily`。参照: https://davidpine.dev/posts/aspire-docs-mcp-tools/
 
-**CLI 13.1** — The MCP server provides integration lookup (`list_integrations`, `get_integration_docs`) but **not** docs search. Fall back to Context7:
+**CLI 13.1** — MCP サーバーは統合の参照（`list_integrations`、`get_integration_docs`）を提供するが、ドキュメント検索は提供しない。Context7 にフォールバックする:
 
-| Library ID | Use for |
+| Library ID | 用途 |
 |---|---|
-| `/microsoft/aspire.dev` | Primary — guides, integrations, CLI reference, deployment |
-| `/dotnet/aspire` | Runtime source — API internals, implementation details |
-| `/communitytoolkit/aspire` | Community integrations — Go, Java, Node.js, Ollama |
+| `/microsoft/aspire.dev` | 主要 — ガイド、統合、CLI リファレンス、デプロイ |
+| `/dotnet/aspire` | ランタイム ソース — API の内部実装、実装の詳細 |
+| `/communitytoolkit/aspire` | コミュニティ統合 — Go、Java、Node.js、Ollama |
 
-### VS Code — Use Context7
+### VS Code — Context7 を使用
 
-VS Code docs live on **code.visualstudio.com**, not Learn.
+VS Code のドキュメントは **code.visualstudio.com** にあり、Learn ではない。
 
-| Library ID | Use for |
+| Library ID | 用途 |
 |---|---|
-| `/websites/code_visualstudio` | User docs — settings, features, debugging, remote dev |
-| `/websites/code_visualstudio_api` | Extension API — webviews, TreeViews, commands, contribution points |
+| `/websites/code_visualstudio` | ユーザー向けドキュメント — 設定、機能、デバッグ、リモート開発 |
+| `/websites/code_visualstudio_api` | 拡張機能 API — WebView、TreeView、コマンド、貢献ポイント |
 
-### GitHub — Use Context7
+### GitHub — Context7 を使用
 
-GitHub docs live on **docs.github.com** and **cli.github.com**.
+GitHub のドキュメントは **docs.github.com** と **cli.github.com** にある。
 
-| Library ID | Use for |
+| Library ID | 用途 |
 |---|---|
-| `/websites/github_en` | Actions, API, repos, security, admin, Copilot |
-| `/websites/cli_github` | GitHub CLI (`gh`) commands and flags |
+| `/websites/github_en` | Actions、API、リポジトリ、セキュリティ、管理、Copilot |
+| `/websites/cli_github` | GitHub CLI (`gh`) のコマンドとフラグ |
 
-### Agent Framework — Use Learn MCP + Context7
+### Agent Framework — Learn MCP + Context7 を使用
 
-Agent Framework tutorials are on learn.microsoft.com (use `microsoft_docs_search`), but the **GitHub repo** has API-level detail that is often ahead of published docs — particularly DevUI REST API reference, CLI options, and .NET integration.
+Agent Framework のチュートリアルは learn.microsoft.com にある（`microsoft_docs_search` を使用）、一方で **GitHub リポジトリ** には公開済みドキュメントよりも先行する API レベルの詳細が多く含まれている — 特に DevUI REST API リファレンス、CLI オプション、.NET 統合が該当する。
 
-| Library ID | Use for |
+| Library ID | 用途 |
 |---|---|
-| `/websites/learn_microsoft_en-us_agent-framework` | Tutorials — DevUI guides, tracing, workflow orchestration |
-| `/microsoft/agent-framework` | API detail — DevUI REST endpoints, CLI flags, auth, .NET `AddDevUI`/`MapDevUI` |
+| `/websites/learn_microsoft_en-us_agent-framework` | チュートリアル — DevUI ガイド、トレース、ワークフロー オーケストレーション |
+| `/microsoft/agent-framework` | API 詳細 — DevUI REST エンドポイント、CLI フラグ、認証、.NET `AddDevUI`/`MapDevUI` |
 
-**DevUI tip:** Query the Learn website source for how-to guides, then the repo source for API-level specifics (endpoint schemas, proxy config, auth tokens).
+**DevUI のヒント:** ハウツー ガイドには Learn の Web サイト ソースを使い、API レベルの詳細（エンドポイント スキーマ、プロキシ設定、認証トークン）にはリポジトリソースを使う。
 
 ---
 
-## Context7 Setup
+## Context7 の設定
 
-For any Context7 query, resolve the library ID first (one-time per session):
+Context7 のクエリを実行する際は、まずライブラリ ID を解決する（セッションごとに一度だけ）:
 
-1. Call `mcp_context7_resolve-library-id` with the technology name
-2. Call `mcp_context7_query-docs` with the returned library ID and a specific query
+1. 技術名を指定して `mcp_context7_resolve-library-id` を呼び出す
+2. 返された library ID と具体的なクエリを使って `mcp_context7_query-docs` を呼び出す
 
 ---
 
-## Writing Effective Queries
+## 効果的なクエリの書き方
 
-Be specific — include version, intent, and language:
+具体的にする — バージョン、意図、言語を含める:
 
 ```
 # ❌ Too broad
@@ -128,7 +128,7 @@ Be specific — include version, intent, and language:
 "Agent Framework workflow conditional edges branching handoff"
 ```
 
-Include context:
-- **Version** when relevant (`.NET 8`, `Aspire 13`, `VS Code 1.96`)
-- **Task intent** (`quickstart`, `tutorial`, `overview`, `limits`, `API reference`)
-- **Language** for polyglot docs (`Python`, `TypeScript`, `C#`)
+コンテキストを含める:
+- **バージョン** が必要な場合（`.NET 8`、`Aspire 13`、`VS Code 1.96`）
+- **タスクの意図**（`quickstart`、`tutorial`、`overview`、`limits`、`API reference`）
+- 多言語ドキュメントの場合は **言語**（`Python`、`TypeScript`、`C#`）

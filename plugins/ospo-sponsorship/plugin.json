@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "ospo-sponsorship",
-  "description": "Tools and resources for Open Source Program Offices (OSPOs) to identify, evaluate, and manage sponsorship of open source dependencies through GitHub Sponsors, Open Collective, and other funding platforms.",
+  "description": "Open Source Program Office（OSPO）が、GitHub Sponsors、Open Collective、その他の資金調達プラットフォームを通じて、オープンソース依存関係へのスポンサー支援を特定、評価、管理するためのツールとリソースです。",
   "version": "1.0.0",
   "author": {
     "name": "Awesome Copilot Community"

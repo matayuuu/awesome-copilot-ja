@@ -1,6 +1,6 @@
 ---
 name: reviewing-oracle-to-postgres-migration
-description: 'Identifies Oracle-to-PostgreSQL migration risks by cross-referencing code against known behavioral differences (empty strings, refcursors, type coercion, sorting/collations, UNION ALL planner risks, materialized-view refresh requirements, timestamps, concurrent transactions, etc.). Use when planning a database migration, reviewing migration artifacts, or validating that integration tests cover Oracle/PostgreSQL differences.'
+description: 'reviewing-oracle-to-postgres-migration に関する作業を支援する Skill です。対象のファイルや設定を確認し、必要な手順、検証方法、注意点を案内します。対象技術の調査、実装、運用、トラブルシューティングに使用します。'
 ---
 
 # Oracle-to-PostgreSQL Database Migration
@@ -12,7 +12,7 @@ Surfaces migration risks and validates migration work against known Oracle/Postg
 1. **Planning** — Before starting migration work on a procedure, trigger, query, or refcursor client. Identify which reference insights apply so risks are addressed up front.
 2. **Validating** — After migration work is done, confirm every applicable insight was addressed and integration tests cover the new PostgreSQL semantics.
 
-## Workflow
+## ワークフロー
 
 Determine the task type:
 

@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "power-platform-architect",
-  "description": "Solution Architect for the Microsoft Power Platform, turning business requirements into functioning Power Platform solution architectures.",
+  "description": "Microsoft Power Platformのソリューションアーキテクト。ビジネス要件を実用的なPower Platformソリューションアーキテクチャへ変換します。",
   "version": "1.0.0",
   "keywords": [
     "power-platform",

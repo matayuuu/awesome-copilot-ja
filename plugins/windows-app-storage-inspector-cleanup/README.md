@@ -1,8 +1,8 @@
 # Windows App Storage Inspector & Cleanup Plugin
 
-Inspect Windows application storage, understand local disk usage, and safely move approved cleanup items to the Recycle Bin.
+Windowsアプリケーションのストレージを調査し、ローカルディスクの使用状況を把握して、承認済みのクリーンアップ対象を安全にごみ箱へ移動します。
 
-## Installation
+## インストール
 
 ```bash
 copilot plugin install windows-app-storage-inspector-cleanup@awesome-copilot

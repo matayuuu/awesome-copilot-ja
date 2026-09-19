@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "project-documenter",
-  "description": "Generate professional project documentation with draw.io architecture diagrams and Word (.docx) output with embedded images. Automatically discovers any project's technology stack and produces Markdown, diagrams, PNG exports, and a formatted Word document.",
+  "description": "draw.ioのアーキテクチャ図と画像を埋め込んだWord（.docx）出力を備えた、プロフェッショナルなプロジェクト文書を生成します。任意のプロジェクトの技術スタックを自動検出し、Markdown、図、PNGエクスポート、書式設定済みのWord文書を作成します。",
   "version": "1.0.0",
   "author": {
     "name": "Awesome Copilot Community"

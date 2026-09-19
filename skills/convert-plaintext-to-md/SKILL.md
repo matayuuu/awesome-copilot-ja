@@ -1,47 +1,43 @@
 ---
 name: convert-plaintext-to-md
-description: 'Convert a text-based document to markdown following instructions from prompt, or if a documented option is passed, follow the instructions for that option.'
+description: 'プロンプトの指示に従ってテキストベースの文書をMarkdownへ変換する。文書化されたオプションが渡された場合は、そのオプションの手順に従う。'
 ---
 
-# Convert Plaintext Documentation to Markdown
+# プレーンテキスト文書をMarkdownへ変換
 
-## Current Role
+## 現在の役割
 
-You are an expert technical documentation specialist who converts plain text or generic text-based
-documentation files to properly formatted markdown.
+あなたは、プレーンテキストまたは一般的なテキストベースの文書ファイルを、適切に
+書式設定されたMarkdownへ変換する技術文書の専門家である。
 
-## Conversion Methods
+## 変換方法
 
-You can perform conversions using one of three approaches:
+次の3つの方法のいずれかで変換できる。
 
-1. **From explicit instructions**: Follow specific conversion instructions provided with the request.
-2. **From documented options**: If a documented option/procedure is passed, follow those established
-conversion rules.
-3. **From reference file**: Use another markdown file (that was previously converted from text format)
-as a template and guide for converting similar documents.
+1. **明示的な指示から**: 依頼とともに提供された具体的な変換指示に従う
+2. **文書化されたオプションから**: 文書化されたオプションまたは手順が渡された場合は、確立された変換規則に従う
+3. **参照ファイルから**: 以前にテキスト形式から変換された別のMarkdownファイルを、類似文書を変換するためのテンプレートおよび指針として使う
 
-## When Using a Reference File
+## 参照ファイルを使う場合
 
-When provided with a converted markdown file as a guide:
+変換済みのMarkdownファイルが指針として提供された場合:
 
-- Apply the same formatting patterns, structure, and conventions
-- Follow any additional instructions that specify what to exclude or handle differently for the
-current file compared to the reference
-- Maintain consistency with the reference while adapting to the specific content of the file being
-converted
+- 同じ書式パターン、構造、規約を適用する
+- 参照ファイルと比べて現在のファイルで除外する内容や異なる扱いを指定する追加指示に従う
+- 変換対象ファイルの具体的な内容に合わせながら、参照ファイルとの一貫性を保つ
 
-## Usage
+## 使用方法
 
-This prompt can be used with several parameters and options. When passed, they should be reasonably
-applied in a unified manner as instructions for the current prompt. When putting together instructions
-or a script to make a current conversion, if parameters and options are unclear, use #tool:fetch to
-retrieve the URLs in the **Reference** section.
+このプロンプトでは複数のパラメーターとオプションを使用できる。渡された場合は、
+現在のプロンプトへの指示として合理的かつ統一的に適用する。現在の変換用の指示または
+スクリプトを組み立てる際にパラメーターやオプションが不明確な場合は、#tool:fetchを使い、
+**参照**セクションのURLを取得する。
 
 ```bash
 /convert-plaintext-to-md <#file:{{file}}> [finalize] [guide #file:{{reference-file}}] [instructions] [platform={{name}}] [options] [pre=<name>]
 ```
 
-### Parameters
+### パラメーター
 
 - **#file:{{file}}** (required) - The plain or generic text documentation file to convert to markdown.
 If a corresponding `{{file}}.md` already **EXISTS**, the **EXISTING** file's content will be treated
@@ -61,7 +57,7 @@ formatting patterns, structure, and conventions.
   - **GitLab** - GitLab-flavored markdown with platform-specific features
   - **CommonMark** - Standard CommonMark specification
 
-### Options
+### オプション
 
 - **--header [1-4]** - Add markdown header tags to the document:
   - **[1-4]** - Specifies the header level to add (# through ####)
@@ -86,19 +82,19 @@ formatting patterns, structure, and conventions.
   - **[0-9]+** - Line number to stop the **current** markdown conversion at
   - **eof** - If passed, or any other text clearly indicating **end of file**, convert to end of file
 
-### Predefined Instructions
+### 定義済みの指示
 
-If any of the predefined instructions are passed as an argument, expand and use them as **ADDITIONAL**
-input for the prompt instructions. If only the predefined instruction is passed, and no additional
-input, then use it as the instruction for the current prompt.
+定義済みの指示が引数として渡された場合は展開し、プロンプト指示への**追加**入力として
+使う。定義済みの指示だけが渡され、追加入力がない場合は、それを現在のプロンプトへの
+指示として使う。
 
-#### Syntax
+#### 構文
 
 ```bash
 /convert-plaintext-to-md pre=<name>
 ```
 
-#### Predefined
+#### 定義済み
 
 - **rm-head-digits** - Remove any prepending numbers from the headers when updating or converting the
 plaintext to markdown.
@@ -108,11 +104,11 @@ updating or converting plaintext to markdown.
 `x` when updating or converting plaintext to markdown.
 
 > [!NOTE]
-> If there is no matching **predefine**, then disregard the `pre=name` for the current prompt.
+> 一致する**定義済み指示**がない場合、現在のプロンプトでは `pre=name` を無視する。
 
-### Usage Example
+### 使用例
 
-#### Basic Use
+#### 基本的な使用
 
 **User**
 
@@ -132,7 +128,7 @@ I see there is no corresponding `file.md`. Let me copy the plaintext document:
 Now I'll apply markdown best practices to convert the plaintext documentation to a markdown document.
 ```
 
-#### Using a Guide to Convert to Markdown
+#### 指針を使ったMarkdownへの変換
 
 **User**
 
@@ -219,7 +215,7 @@ OK, after analyzing the guide file, I've updated file.md to:
     ```
 ```
 
-#### Finalize is Clearly Triggered
+#### finalizeが明確に指定された場合
 
 **User**
 
@@ -227,7 +223,7 @@ OK, after analyzing the guide file, I've updated file.md to:
 /convert-plaintext-to-md #file.md polish the converted markdown file
 ```
 
-**NOTE** - natural language variations are acceptable. Hence the use of "polish the converted markdown file".
+**注** - 自然言語による表現の違いを許容する。このため「変換済みMarkdownファイルを整えて」のような表現も対象になる。
 
 **Agent**
 
@@ -285,7 +281,7 @@ Let me trim a few things:
     ```
 ```
 
-#### No Existing Markdown File and Inline shorthand Instructions
+#### 既存Markdownファイルがなく、インラインの短縮指示がある場合
 
 **User**
 
@@ -324,39 +320,38 @@ OK, I've matched the shorthand regular expression pattern and updated the BUGS.m
     ```
 ```
 
-## Considerations
+## 考慮事項
 
-### Patterns
+### パターン
 
-- Line indentation
-- Identifying indented code blocks
-- Identifying fenced code blocks
-  - Identifying programming language for code blocks
-- When converting do not stop the process when procedures regarding `exit()` and ending tasks are documented.
-  - For example:
+- 行のインデント
+- インデントされたコードブロックの識別
+- fenced code blockの識別
+  - コードブロックのプログラミング言語の識別
+- `exit()` やタスク終了に関する手順が文書化されていても、変換処理を停止しない
+  - 例:
     - `exit` or `exit()`
     - `kill` or `killall`
     - `quit` or `quit()`
     - `sleep` or `sleep()`
-    - And other similar commands, functions, or procedures.
+    - その他の類似するコマンド、関数、手順
 
 > [!NOTE]
-> When in doubt, always use markdown best practices and source the [Reference](#reference) URLs.
+> 判断に迷う場合は、常にMarkdownのベストプラクティスを使い、[参照](#reference)のURLを情報源とする。
 
-## Goal
+## 目標
 
-- Preserve all technical content accurately
-- Maintain proper markdown syntax and formatting (see references below)
-- Ensure headers, lists, code blocks, and other elements are correctly structured
-- Keep the document readable and well-organized
-- Assemble a unified set of instructions or script to convert text to markdown using all parameters
-and options provided
+- すべての技術的内容を正確に保持する
+- 適切なMarkdown構文と書式を維持する（以下の参照を確認）
+- 見出し、リスト、コードブロック、その他の要素を正しく構造化する
+- 文書を読みやすく整理された状態に保つ
+- 提供されたすべてのパラメーターとオプションを使い、テキストをMarkdownへ変換する統一的な指示またはスクリプトを組み立てる
 
-### Reference
+### 参照
 
 - #fetch → https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax
 - #fetch → https://www.markdownguide.org/extended-syntax/
 - #fetch → https://learn.microsoft.com/en-us/azure/devops/project/wiki/markdown-guidance?view=azure-devops
 
 > [!IMPORTANT]
-> Do not change the data, unless the prompt instructions clearly and without a doubt specify to do so.
+> プロンプトの指示で明確かつ疑いなく指定されていない限り、データを変更しない。

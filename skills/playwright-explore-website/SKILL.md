@@ -1,6 +1,6 @@
 ---
 name: playwright-explore-website
-description: 'Website exploration for testing using Playwright MCP'
+description: 'playwright-explore-website に関する作業を支援する Skill です。対象のファイルや設定を確認し、必要な手順、検証方法、注意点を案内します。対象技術の調査、実装、運用、トラブルシューティングに使用します。'
 ---
 
 # Website Exploration for Testing

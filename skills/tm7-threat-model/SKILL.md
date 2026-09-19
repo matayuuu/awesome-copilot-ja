@@ -1,82 +1,70 @@
 ---
 name: tm7-threat-model
-description: 'Creates valid Microsoft Threat Modeling Tool (.tm7) files compatible with the Microsoft Threat Modeling Tool v7.3+. Use this skill whenever asked to create, generate, or modify a .tm7 threat model file, or when performing STRIDE threat modeling that should output a .tm7 file that opens cleanly in the Microsoft Threat Modeling Tool.'
+description: 'Microsoft Threat Modeling Tool v7.3以降と互換性のある有効なMicrosoft Threat Modeling Tool（.tm7）ファイルを作成します。.tm7脅威モデルファイルの作成・生成・変更を依頼されたとき、またはMicrosoft Threat Modeling Toolで問題なく開ける.tm7ファイルを出力するSTRIDE脅威モデリングを行うときに使用します。'
 ---
+# Microsoft Threat Modeling Tool（.tm7）ジェネレーター
 
-# Microsoft Threat Modeling Tool (.tm7) Generator
+Microsoft Threat Modeling Tool（v7.3以降）向けに**有効な`.tm7`ファイル**を生成します。`.tm7`
+ファイルは一般的なXMLではなく、正確な名前空間と要素構造を持つ**WCF `DataContractSerializer`**文書です。構造が間違っていると、ツールは次のエラーを表示してファイルを開きません。
 
-You generate **valid `.tm7` files** for the Microsoft Threat Modeling Tool (v7.3+). A `.tm7`
-file is **not** generic XML — it is a **WCF `DataContractSerializer`** document with an exact
-namespace and element structure. If the structure is wrong, the tool refuses to open the file
-with:
+> 「ファイルは実際の脅威モデルではないか、脅威モデルが破損している可能性があります。」
 
-> "File is not an actual threat model or the threat model may be corrupted."
+役割は、説明されたシステム（コンポーネント、データストア、外部アクター、データフロー、信頼境界）を、図とSTRIDE脅威に変換し、以下で説明する正確な`.tm7`形式でシリアライズすることです。
 
-Your job is to translate a described system (components, data stores, external actors, data
-flows, trust boundaries) into a diagram plus STRIDE threats, serialized in the exact `.tm7`
-format described below.
+## ワークフロー
 
-## Workflow
+`.tm7`ファイルの生成を依頼されたら、次の手順に従います。
 
-When asked to produce a `.tm7` file:
+1. **システムをモデル化する。**次の要素を特定します。
+   - **プロセス**（Webアプリ、サービス、関数）→ `StencilEllipse`, `GE.P`
+   - **データストア**（データベース、キャッシュ、キュー、BLOB）→ `StencilParallelLines`, `GE.DS`
+   - **外部関係者**（ユーザー、ブラウザー、サードパーティーシステム）→ `StencilRectangle`, `GE.EI`
+   - **信頼境界** → `BorderBoundary`, `GE.TB`
+   - 上記を接続する**データフロー** → `Connector`, `GE.DF`
+2. 各ステンシルと各フローに**一意の小文字UUID**（例：`148ade68-5c80-40f3-8e1f-4e2cabdb5991`）を割り当てます。`users-browser`のような人間が読めるIDは使いません。
+3. ステンシルが重ならないように座標（`Left`／`Top`／`Width`／`Height`）を配置します。
+4. 各インタラクションに対して**STRIDE脅威**を生成し、`<ThreatInstances>`に配置します。
+5. このガイドの構造を使い、`assets/example-minimal.tm7`を手本にしてシリアライズします。
+6. ファイルを返す前に「よくある間違い」チェックリストで検証します。
+7. XML宣言や整形出力のインデントなしでファイルを書き出します（シリアライザーが出力するのは連続した1本のXMLストリームです）。
 
-1. **Model the system.** Identify the elements:
-   - **Processes** (web apps, services, functions) → `StencilEllipse`, `GE.P`
-   - **Data stores** (databases, caches, queues, blobs) → `StencilParallelLines`, `GE.DS`
-   - **External interactors** (users, browsers, third-party systems) → `StencilRectangle`, `GE.EI`
-   - **Trust boundaries** → `BorderBoundary`, `GE.TB`
-   - **Data flows** connecting the above → `Connector`, `GE.DF`
-2. **Assign a unique lowercase UUID** (e.g. `148ade68-5c80-40f3-8e1f-4e2cabdb5991`) to every
-   stencil and every flow. Never use human-readable ids like `users-browser`.
-3. **Lay out coordinates** (`Left`/`Top`/`Width`/`Height`) so stencils don't overlap.
-4. **Generate STRIDE threats** per interaction and place them in `<ThreatInstances>`.
-5. **Serialize** using the structure in this guide, mirroring `assets/example-minimal.tm7`.
-6. **Validate** against the "Common Mistakes" checklist before returning the file.
-7. **Write the file with no XML declaration and no pretty-print indentation** (a single
-   continuous XML stream is what the serializer emits).
+必ず最初に[`assets/example-minimal.tm7`](./assets/example-minimal.tm7)を開いて適応します。シリアライズの骨格はそのまま再利用し、変更するのはステンシルの型、名前、座標、データフロー、脅威だけにします。
 
-Always open [`assets/example-minimal.tm7`](./assets/example-minimal.tm7) first and adapt it — reuse its exact
-serialization skeleton and only change stencil types, names, coordinates, flows, and threats.
+## 重要：シリアライズ形式
 
-## CRITICAL: Serialization format
+TM7ファイルは標準XMLではなく、**WCF `DataContractSerializer` XML**を使います。
 
-TM7 files use **WCF `DataContractSerializer` XML**, not standard XML.
-
-The file MUST start with this exact root element — **no `<?xml?>` declaration**:
+ファイルはこの正確なルート要素で始めなければなりません。**`<?xml?>`宣言は不要です**。
 
 ```xml
 <ThreatModel xmlns="http://schemas.datacontract.org/2004/07/ThreatModeling.Model" xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
 ```
 
-**NEVER use:**
-- `<?xml version="1.0" encoding="utf-8"?>` — causes deserialization failure.
-- `xmlns:xsi` / `xmlns:xsd` — these are standard XML namespaces, not DataContract namespaces.
-- Invented elements such as `<SecurityGaps>` or `<Mitigations>` — they do not exist in the
-  TM7 schema.
+**決して使わないもの：**
+- `<?xml version="1.0" encoding="utf-8"?>` — デシリアライズに失敗します。
+- `xmlns:xsi` / `xmlns:xsd` — これらは標準XML名前空間であり、DataContract名前空間ではありません。
+- `<SecurityGaps>`や`<Mitigations>`のような架空の要素 — TM7スキーマには存在しません。
 
-> **Note:** `<MetaInformation>` (with children like `<Owner>`, `<Contributors>`,
-> `<Reviewer>`, `<Assumptions>`, `<ExternalDependencies>`, `<HighLevelSystemDescription>`,
-> `<ThreatModelName>`), `<Notes>`, and `<KnowledgeBase>` **are** part of the real schema and
-> are emitted by the tool — keep them (see the structure below and `assets/example-minimal.tm7`).
-> Just don't invent elements that the tool never produces.
+> **注：** `<MetaInformation>`（`<Owner>`、`<Contributors>`などの子要素を持つもの）、
+> `<Reviewer>`、`<Assumptions>`、`<ExternalDependencies>`、`<HighLevelSystemDescription>`、
+> `<ThreatModelName>`、`<Notes>`、`<KnowledgeBase>`は実際のスキーマの一部であり、
+> ツールが出力します。保持してください（下記の構造と`assets/example-minimal.tm7`を参照）。
+> ツールが生成しない要素を作り出さないでください。
 
-## Required namespace prefixes
+## 必須の名前空間プレフィックス
 
-| Prefix | URI | Used for |
+| プレフィックス | URI | 用途 |
 |--------|-----|----------|
-| (default) | `http://schemas.datacontract.org/2004/07/ThreatModeling.Model` | Root `ThreatModel` |
-| `xmlns:i` | `http://www.w3.org/2001/XMLSchema-instance` | Type attributes |
-| `xmlns:z` | `http://schemas.microsoft.com/2003/10/Serialization/` | Reference ids (`z:Id`) |
-| `xmlns:a` | `http://schemas.microsoft.com/2003/10/Serialization/Arrays` | Arrays / collections |
-| `xmlns:b` | `http://schemas.datacontract.org/2004/07/ThreatModeling.KnowledgeBase` | Stencil properties |
-| `xmlns:c` | `http://www.w3.org/2001/XMLSchema` | Primitive type values |
+| (既定) | `http://schemas.datacontract.org/2004/07/ThreatModeling.Model` | ルート`ThreatModel` |
+| `xmlns:i` | `http://www.w3.org/2001/XMLSchema-instance` | 型属性 |
+| `xmlns:z` | `http://schemas.microsoft.com/2003/10/Serialization/` | 参照ID（`z:Id`） |
+| `xmlns:a` | `http://schemas.microsoft.com/2003/10/Serialization/Arrays` | 配列／コレクション |
+| `xmlns:b` | `http://schemas.datacontract.org/2004/07/ThreatModeling.KnowledgeBase` | ステンシルのプロパティ |
+| `xmlns:c` | `http://www.w3.org/2001/XMLSchema` | プリミティブ型の値 |
 
-## File structure (correct order)
+## ファイル構造（正しい順序）
 
-A full tool export contains, in this order: `DrawingSurfaceList`, `MetaInformation`, `Notes`,
-`ThreatInstances`, `ThreatMetaData` (often empty/self-closing), then the large generic
-`KnowledgeBase` as a **top-level sibling** (not nested inside `ThreatMetaData`), and finally
-`Profile`.
+ツールの完全なエクスポートには、`DrawingSurfaceList`、`MetaInformation`、`Notes`、`ThreatInstances`、`ThreatMetaData`（空または自己終了が多い）、大きな汎用`KnowledgeBase`（`ThreatMetaData`の内部ではなく**トップレベルの兄弟要素**）、最後に`Profile`がこの順序で含まれます。
 
 ```xml
 <ThreatModel xmlns="..." xmlns:i="...">
@@ -112,15 +100,12 @@ A full tool export contains, in this order: `DrawingSurfaceList`, `MetaInformati
 </ThreatModel>
 ```
 
-> The `<KnowledgeBase>` (the generic SDL stencil/threat catalog) is large but **required** —
-> the tool uses it to resolve every stencil `TypeId`. It is a **top-level sibling** placed after
-> `ThreatMetaData` and before `Profile`, **not** nested inside `ThreatMetaData`. Reuse it verbatim
-> from `assets/example-minimal.tm7`; only add stencils whose `TypeId` already appears in that
-> KnowledgeBase.
+> `<KnowledgeBase>`（汎用SDLステンシル／脅威カタログ）は大きいものですが**必須**です。
+> ツールはこれを使って各ステンシルの`TypeId`を解決します。`ThreatMetaData`の後、`Profile`の前に置く**トップレベルの兄弟要素**であり、`ThreatMetaData`の内部には置きません。`assets/example-minimal.tm7`からそのまま再利用し、KnowledgeBaseにすでに存在する`TypeId`のステンシルだけを追加します。
 
-## Stencil elements
+## ステンシル要素
 
-Each stencil in `<Borders>` is wrapped in `<a:KeyValueOfguidanyType>`:
+`<Borders>`内の各ステンシルは`<a:KeyValueOfguidanyType>`でラップします。
 
 ```xml
 <a:KeyValueOfguidanyType>
@@ -152,31 +137,31 @@ Each stencil in `<Borders>` is wrapped in `<a:KeyValueOfguidanyType>`:
 </a:KeyValueOfguidanyType>
 ```
 
-### Stencil shape types
+### ステンシルの形状タイプ
 
-| Shape | `i:type` | `GenericTypeId` | Description |
+| 形状 | `i:type` | `GenericTypeId` | 説明 |
 |-------|----------|-----------------|-------------|
-| Process (circle) | `StencilEllipse` | `GE.P` | Processes, web apps, services |
-| Data store (parallel lines) | `StencilParallelLines` | `GE.DS` | Databases, storage, caches |
-| External interactor (rectangle) | `StencilRectangle` | `GE.EI` | Users, external systems |
-| Trust boundary | `BorderBoundary` | `GE.TB` | Trust boundaries |
+| プロセス（円） | `StencilEllipse` | `GE.P` | プロセス、Webアプリ、サービス |
+| データストア（平行線） | `StencilParallelLines` | `GE.DS` | データベース、ストレージ、キャッシュ |
+| 外部関係者（長方形） | `StencilRectangle` | `GE.EI` | ユーザー、外部システム |
+| 信頼境界（境界） | `BorderBoundary` | `GE.TB` | 信頼境界 |
 
-### Common `TypeId` values (SDL TM knowledge base)
+### 一般的な`TypeId`値（SDL TMナレッジベース）
 
-| `TypeId` | Component |
+| `TypeId` | コンポーネント |
 |----------|-----------|
-| `SE.P.TMCore.WebApp` | Web Application |
-| `SE.P.TMCore.AzureAppServiceWebApp` | Azure App Service Web App |
+| `SE.P.TMCore.WebApp` | Webアプリケーション |
+| `SE.P.TMCore.AzureAppServiceWebApp` | Azure App Service Webアプリ |
 | `SE.P.TMCore.AzureEventHub` | Azure Event Hub |
 | `SE.P.TMCore.DynamicsCRM` | Dynamics CRM |
-| `SE.DS.TMCore.SQL` | SQL Database |
-| `SE.DS.TMCore.AzureSQLDB` | Azure SQL Database |
-| `SE.EI.TMCore.Browser` | Browser |
-| `SE.EI.TMCore.Mobile` | Mobile Client |
+| `SE.DS.TMCore.SQL` | SQLデータベース |
+| `SE.DS.TMCore.AzureSQLDB` | Azure SQLデータベース |
+| `SE.EI.TMCore.Browser` | ブラウザー |
+| `SE.EI.TMCore.Mobile` | モバイルクライアント |
 
-## Data flow lines
+## データフロー線
 
-Lines in `<Lines>` also use `<a:KeyValueOfguidanyType>`, with `i:type="Connector"`:
+`<Lines>`内の線も`i:type="Connector"`を持つ`<a:KeyValueOfguidanyType>`を使います。
 
 ```xml
 <a:KeyValueOfguidanyType>
@@ -198,23 +183,20 @@ Lines in `<Lines>` also use `<a:KeyValueOfguidanyType>`, with `i:type="Connector
 </a:KeyValueOfguidanyType>
 ```
 
-## Property attribute types
+## プロパティ属性の型
 
-Properties use typed `<a:anyType>` elements:
+Propertiesには型付きの`<a:anyType>`要素を使います。
 
-| `i:type` | Purpose | Value |
+| `i:type` | 用途 | 値 |
 |----------|---------|-------|
-| `b:HeaderDisplayAttribute` | Section header | `i:nil="true"` |
-| `b:StringDisplayAttribute` | Text value (Name, Reason) | `i:type="c:string"` |
-| `b:BooleanDisplayAttribute` | Boolean (Out Of Scope) | `i:type="c:boolean"` |
-| `b:ListDisplayAttribute` | Dropdown list | Has `<b:SelectedIndex>` |
+| `b:HeaderDisplayAttribute` | セクション見出し | `i:nil="true"` |
+| `b:StringDisplayAttribute` | テキスト値（Name、Reason） | `i:type="c:string"` |
+| `b:BooleanDisplayAttribute` | 真偽値（Out Of Scope） | `i:type="c:boolean"` |
+| `b:ListDisplayAttribute` | ドロップダウンリスト | `<b:SelectedIndex>`を持つ |
 
-## Threat instances
+## 脅威インスタンス
 
-Threats go in `<ThreatInstances>` using `<a:KeyValueOfstringThreatpc_P0_PhOB>` (note the exact
-`PhOB` suffix). Unlike stencils, the threat `<a:Value>` fields are **`b:`-prefixed** (the
-`ThreatModeling.KnowledgeBase` namespace), and the `<a:Key>` is the literal concatenation
-`TH<id> + <SourceGuid> + <FlowGuid> + <TargetGuid>`:
+脅威は`<a:KeyValueOfstringThreatpc_P0_PhOB>`（末尾が正確に`PhOB`であることに注意）を使って`<ThreatInstances>`に配置します。ステンシルとは異なり、脅威の`<a:Value>`フィールドには**`b:`プレフィックス**（`ThreatModeling.KnowledgeBase`名前空間）を付けます。また、`<a:Key>`は`TH<id> + <SourceGuid> + <FlowGuid> + <TargetGuid>`を文字どおり連結したものです。
 
 ```xml
 <ThreatInstances xmlns:a="...Arrays">
@@ -268,45 +250,22 @@ Threats go in `<ThreatInstances>` using `<a:KeyValueOfstringThreatpc_P0_PhOB>` (
 </ThreatInstances>
 ```
 
-**Every GUID must resolve:** `SourceGuid` and `TargetGuid` must equal `<a:Key>` values of real
-stencils in `<Borders>`, and `FlowGuid` must equal the `<a:Key>` of a real connector in
-`<Lines>`. Dangling references produce a model that opens with missing diagram elements.
+**すべてのGUIDが解決できなければなりません。**`SourceGuid`と`TargetGuid`は`<Borders>`内の実在するstencilの`<a:Key>`値と一致し、`FlowGuid`は`<Lines>`内の実在するconnectorの`<a:Key>`と一致する必要があります。宙ぶらりんの参照があると、図の要素が欠落した状態でモデルが開きます。
 
-Use the standard STRIDE categories for `UserThreatCategory`: **S**poofing, **T**ampering,
-**R**epudiation, **I**nformation Disclosure, **D**enial of Service, **E**levation of Privilege.
+`UserThreatCategory`には標準STRIDEカテゴリを使います：**S**（なりすまし）、**T**（改ざん）、**R**（否認）、**I**（情報漏えい）、**D**（サービス拒否）、**E**（権限昇格）。
 
-## Common mistakes that break TM7 files
+## TM7ファイルを壊すよくある間違い
 
-1. **Adding an `<?xml version="1.0"?>` declaration** — `DataContractSerializer` does not emit one.
-2. **Using `xmlns:xsi` / `xmlns:xsd`** instead of DataContract namespaces.
-3. **Using simple element names** like `<Border>`, `<Line>`, `<Stencil>` — you must use the
-   DataContract wrapper types such as `<a:KeyValueOfguidanyType>`.
-4. **Inventing elements the tool never emits** like `<SecurityGaps>` or `<Mitigations>` — these
-   are not in the schema. (`<MetaInformation>`, `<Notes>`, and `<KnowledgeBase>` **are** valid
-   and must be preserved.)
-5. **Using human-readable GUIDs** like `users-browser` instead of real UUIDs
-   (e.g. `148ade68-5c80-40f3-8e1f-4e2cabdb5991`).
-6. **Dangling references** — a `Line`, threat `SourceGuid`/`TargetGuid`, or threat `FlowGuid`
-   that points to a stencil/flow GUID that isn't actually defined in `<Borders>`/`<Lines>`.
-   Every reference must resolve to an included element.
-7. **Missing or duplicated `z:Id` reference attributes** — every serialized object needs a
-   `z:Id`, and each `z:Id` (e.g. `i1`, `i2`, `i10`) must be **unique** across the whole file.
-   When you duplicate a template block to add an element, always renumber its `z:Id` (and any
-   nested ones) to values not used elsewhere; reusing an id creates duplicate DataContract
-   object ids and makes deserialization fail.
-8. **Missing the `xmlns` on child elements** — each `GenericTypeId`, `Guid`, `Properties`,
-   `TypeId`, etc. must carry its own
-   `xmlns="http://schemas.datacontract.org/2004/07/ThreatModeling.Model.Abstracts"`.
-9. **Pretty-printing with indentation** — the correct output is a single continuous XML stream
-   with no added newlines or indentation inside the content.
+1. **`<?xml version="1.0"?>`宣言を追加する**——`DataContractSerializer`はこれを出力しない。
+2. DataContract名前空間の代わりに**`xmlns:xsi`／`xmlns:xsd`を使う**。
+3. **`<Border>`、`<Line>`、`<Stencil>`のような単純な要素名を使う**——`<a:KeyValueOfguidanyType>`のようなDataContractラッパー型を使う必要がある。
+4. **`<SecurityGaps>`や`<Mitigations>`のようにツールが生成しない要素を作る**——これらはスキーマに存在しない。（`<MetaInformation>`、`<Notes>`、`<KnowledgeBase>`は有効なので保持する。）
+5. 実際のUUID（例：`148ade68-5c80-40f3-8e1f-4e2cabdb5991`）の代わりに`users-browser`のような**人間が読めるGUIDを使う**。
+6. **宙ぶらりんの参照**——`<Borders>`／`<Lines>`に実際には定義されていないステンシル／データフローGUIDを指すLine、脅威の`SourceGuid`／`TargetGuid`、または脅威の`FlowGuid`。すべての参照は含まれる要素に解決できなければならない。
+7. **`z:Id`参照属性の欠落または重複**——シリアライズされる各オブジェクトには`z:Id`が必要で、各`z:Id`（例：`i1`、`i2`、`i10`）はファイル全体で**一意**でなければならない。要素追加のためテンプレートブロックを複製するときは、必ず`z:Id`（およびネストしたもの）を未使用の値に振り直す。同じidを再利用するとDataContract object idが重複し、デシリアライズに失敗する。
+8. **子要素の`xmlns`が欠落する**——各`GenericTypeId`、`Guid`、`Properties`、`TypeId`などには、それぞれ`xmlns="http://schemas.datacontract.org/2004/07/ThreatModeling.Model.Abstracts"`が必要。
+9. **インデント付き整形出力**——正しい出力は、本文内に追加の改行やインデントがない連続したXMLストリームである。
 
-## Reference asset
+## 参照アセット
 
-Always use [`assets/example-minimal.tm7`](./assets/example-minimal.tm7) in this skill's
-directory as the structural reference. It is a fully synthetic, sanitized export (no personal or
-project data) that opens cleanly in the tool: two stencils connected by one data flow, with one
-STRIDE threat whose every reference resolves. Adapt the stencil types, names, properties,
-coordinates, data flows, and threats to the user's architecture, but **never** change the
-serialization format or namespace structure, and only use stencil `TypeId` values that already
-appear in its bundled `KnowledgeBase`. After generating, mentally diff your output's skeleton
-against the example to confirm every namespace, wrapper element, and GUID reference matches.
+このスキルのディレクトリにある[`assets/example-minimal.tm7`](./assets/example-minimal.tm7)を、常に構造上の参照として使います。これは個人情報やプロジェクトデータを含まない完全に合成・無害化されたエクスポートで、1本のデータフローで接続された2つのステンシルと、すべての参照が解決する1つのSTRIDE脅威を含み、ツールで問題なく開きます。ステンシルの型、名前、プロパティ、座標、データフロー、脅威をユーザーのアーキテクチャに合わせて適応しますが、**シリアライズ形式や名前空間構造は決して変更せず**、同梱の`KnowledgeBase`にすでに存在するステンシルの`TypeId`だけを使います。生成後、名前空間、ラッパー要素、GUID参照がすべて一致することを確認するため、出力の骨格を例と照合します。

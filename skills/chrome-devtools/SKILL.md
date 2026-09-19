@@ -1,67 +1,67 @@
 ---
 name: chrome-devtools
-description: 'Expert-level browser automation, debugging, and performance analysis using Chrome DevTools MCP. Use for interacting with web pages, capturing screenshots, analyzing network traffic, and profiling performance.'
+description: 'Chrome DevTools MCPを使用した高度なブラウザー自動化、デバッグ、パフォーマンス分析。Webページの操作、スクリーンショットの取得、ネットワークトラフィックの分析、パフォーマンスのプロファイリングに使用する。'
 license: MIT
 ---
 
-# Chrome DevTools Agent
+# Chrome DevTools Agentの使い方
 
-## Overview
+## 概要
 
-A specialized skill for controlling and inspecting a live Chrome browser. This skill leverages the `chrome-devtools` MCP server to perform a wide range of browser-related tasks, from simple navigation to complex performance profiling.
+実行中のChromeブラウザーを制御、検査するための専門Skillです。`chrome-devtools` MCP serverを活用し、単純なページ移動から複雑なパフォーマンスプロファイリングまで、幅広いブラウザー関連タスクを実行します。
 
-## When to Use
+## 使用する場面
 
-Use this skill when:
+次の場合にこのSkillを使用します:
 
-- **Browser Automation**: Navigating pages, clicking elements, filling forms, and handling dialogs.
-- **Visual Inspection**: Taking screenshots or text snapshots of web pages.
-- **Debugging**: Inspecting console messages, evaluating JavaScript in the page context, and analyzing network requests.
-- **Performance Analysis**: Recording and analyzing performance traces to identify bottlenecks and Core Web Vital issues.
-- **Emulation**: Resizing the viewport or emulating network/CPU conditions.
+- **ブラウザー自動化**: ページ移動、要素のクリック、フォーム入力、ダイアログの処理。
+- **視覚的な検査**: Webページのスクリーンショットまたはテキストスナップショットの取得。
+- **デバッグ**: コンソールメッセージの検査、ページコンテキストでのJavaScript評価、ネットワークリクエストの分析。
+- **パフォーマンス分析**: パフォーマンストレースを記録、分析し、ボトルネックやCore Web Vitalsの問題を特定。
+- **エミュレーション**: ビューポートのサイズ変更、ネットワーク／CPU条件のエミュレーション。
 
-## Tool Categories
+## Toolのカテゴリ
 
-### 1. Navigation & Page Management
+### 1. ナビゲーションとページ管理
 
-- `new_page`: Open a new tab/page.
-- `navigate_page`: Go to a specific URL, reload, or navigate history.
-- `select_page`: Switch context between open pages.
-- `list_pages`: See all open pages and their IDs.
-- `close_page`: Close a specific page.
-- `wait_for`: Wait for specific text to appear on the page.
+- `new_page`: 新しいタブ／ページを開く。
+- `navigate_page`: 指定したURLへ移動する、再読み込みする、または履歴を移動する。
+- `select_page`: 開いているページ間でコンテキストを切り替える。
+- `list_pages`: 開いているすべてのページとそのIDを確認する。
+- `close_page`: 指定したページを閉じる。
+- `wait_for`: 指定したテキストがページに表示されるまで待機する。
 
-### 2. Input & Interaction
+### 2. 入力と操作
 
-- `click`: Click on an element (use `uid` from snapshot).
-- `fill` / `fill_form`: Type text into inputs or fill multiple fields at once.
-- `hover`: Move the mouse over an element.
-- `press_key`: Send keyboard shortcuts or special keys (e.g., "Enter", "Control+C").
-- `drag`: Drag and drop elements.
-- `handle_dialog`: Accept or dismiss browser alerts/prompts.
-- `upload_file`: Upload a file through a file input.
+- `click`: 要素をクリックする（スナップショットの`uid`を使用）。
+- `fill` / `fill_form`: 入力欄にテキストを入力する、または複数のフィールドへ一括入力する。
+- `hover`: 要素の上へマウスを移動する。
+- `press_key`: キーボードショートカットや特殊キー（例: "Enter"、"Control+C"）を送信する。
+- `drag`: 要素をドラッグ＆ドロップする。
+- `handle_dialog`: ブラウザーのアラート／プロンプトを承認または閉じる。
+- `upload_file`: ファイル入力を通じてファイルをアップロードする。
 
-### 3. Debugging & Inspection
+### 3. デバッグと検査
 
-- `take_snapshot`: Get a text-based accessibility tree (best for identifying elements).
-- `take_screenshot`: Capture a visual representation of the page or a specific element.
-- `list_console_messages` / `get_console_message`: Inspect the page's console output.
-- `evaluate_script`: Run custom JavaScript in the page context.
-- `list_network_requests` / `get_network_request`: Analyze network traffic and request details.
+- `take_snapshot`: テキストベースのアクセシビリティツリーを取得する（要素の特定に最適）。
+- `take_screenshot`: ページまたは指定した要素の表示を画像として取得する。
+- `list_console_messages` / `get_console_message`: ページのコンソール出力を検査する。
+- `evaluate_script`: ページコンテキストでカスタムJavaScriptを実行する。
+- `list_network_requests` / `get_network_request`: ネットワークトラフィックとリクエストの詳細を分析する。
 
-### 4. Emulation & Performance
+### 4. エミュレーションとパフォーマンス
 
-- `resize_page`: Change the viewport dimensions.
-- `emulate`: Throttling CPU/Network or emulating geolocation.
-- `performance_start_trace`: Start recording a performance profile.
-- `performance_stop_trace`: Stop recording and save the trace.
-- `performance_analyze_insight`: Get detailed analysis from recorded performance data.
+- `resize_page`: ビューポートの寸法を変更する。
+- `emulate`: CPU／ネットワークをスロットリングする、または位置情報をエミュレートする。
+- `performance_start_trace`: パフォーマンスプロファイルの記録を開始する。
+- `performance_stop_trace`: 記録を停止してトレースを保存する。
+- `performance_analyze_insight`: 記録したパフォーマンスデータから詳細な分析を取得する。
 
-## Workflow Patterns
+## ワークフローパターン
 
-### Pattern A: Identifying Elements (Snapshot-First)
+### パターンA: 要素の特定（スナップショット優先）
 
-Always prefer `take_snapshot` over `take_screenshot` for finding elements. The snapshot provides `uid` values which are required by interaction tools.
+要素を見つけるときは、常に`take_screenshot`より`take_snapshot`を優先します。スナップショットでは、操作Toolに必要な`uid`値を取得できます。
 
 ```markdown
 1. `take_snapshot` to get the current page structure.
@@ -69,9 +69,9 @@ Always prefer `take_snapshot` over `take_screenshot` for finding elements. The s
 3. Use `click(uid=...)` or `fill(uid=..., value=...)`.
 ```
 
-### Pattern B: Troubleshooting Errors
+### パターンB: エラーのトラブルシューティング
 
-When a page is failing, check both console logs and network requests.
+ページで問題が発生している場合は、コンソールログとネットワークリクエストの両方を確認します。
 
 ```markdown
 1. `list_console_messages` to check for JavaScript errors.
@@ -79,9 +79,9 @@ When a page is failing, check both console logs and network requests.
 3. `evaluate_script` to check the value of specific DOM elements or global variables.
 ```
 
-### Pattern C: Performance Profiling
+### パターンC: パフォーマンスプロファイリング
 
-Identify why a page is slow.
+ページが遅い理由を特定します。
 
 ```markdown
 1. `performance_start_trace(reload=true, autoStop=true)`
@@ -89,9 +89,9 @@ Identify why a page is slow.
 3. `performance_analyze_insight` to find LCP issues or layout shifts.
 ```
 
-## Best Practices
+## ベストプラクティス
 
-- **Context Awareness**: Always run `list_pages` and `select_page` if you are unsure which tab is currently active.
-- **Snapshots**: Take a new snapshot after any major navigation or DOM change, as `uid` values may change.
-- **Timeouts**: Use reasonable timeouts for `wait_for` to avoid hanging on slow-loading elements.
-- **Screenshots**: Use `take_screenshot` sparingly for visual verification, but rely on `take_snapshot` for logic.
+- **コンテキストの把握**: 現在アクティブなタブが不明な場合は、必ず`list_pages`と`select_page`を実行する。
+- **スナップショット**: `uid`値が変わる可能性があるため、大きなページ移動やDOM変更の後には新しいスナップショットを取得する。
+- **タイムアウト**: 読み込みが遅い要素で停止し続けないよう、`wait_for`には適切なタイムアウトを使用する。
+- **スクリーンショット**: `take_screenshot`は視覚的な確認に限定して使用し、ロジックには`take_snapshot`を利用する。

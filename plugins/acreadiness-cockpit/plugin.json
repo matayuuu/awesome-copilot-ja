@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "acreadiness-cockpit",
-  "description": "Drive Microsoft AgentRC from Copilot chat: assess AI readiness, generate Copilot instructions (flat or nested with applyTo globs for monorepos), and manage policies. Produces a self-contained static HTML dashboard at reports/index.html.",
+  "description": "Copilot チャットから Microsoft AgentRC を操作し、AI 成熟度を評価し、Copilot instructions（モノレポ向けの flat または applyTo glob 付き nested）を生成し、ポリシーを管理します。reports/index.html に自己完結型の静的 HTML ダッシュボードを生成します。",
   "version": "1.0.0",
   "keywords": [
     "agentrc",

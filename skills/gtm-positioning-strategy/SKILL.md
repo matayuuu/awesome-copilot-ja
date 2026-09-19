@@ -1,19 +1,19 @@
 ---
 name: gtm-positioning-strategy
-description: Find and own a defensible market position. Use when messaging sounds like competitors, conversion is weak despite awareness, repositioning a product, or testing positioning claims. Includes Crawl-Walk-Run rollout methodology and the word change that improved enterprise deal progression.
+description: 防御可能な市場ポジションを見つけて確立する。メッセージが競合と似ている、認知があるのにコンバージョンが弱い、製品を再ポジショニングする、またはポジショニングの主張を検証するときに使う。Crawl-Walk-Run展開手法と、エンタープライズ案件の進展を改善した言葉の変更を含む。
 license: MIT
 metadata:
   author: Smit Patel (https://linkedin.com/in/smitkpatel)
   source: https://github.com/beingsmit/technical-product-gtm
 ---
 
-# Positioning Strategy
+# ポジショニング戦略
 
 Find and own a defensible market position. Turn generic messaging into clear differentiation — or at least test whether your differentiation actually resonates before committing to it.
 
-## When to Use
+## 使う場面
 
-**Triggers:**
+**トリガー:**
 - "Our messaging sounds exactly like competitors"
 - "Brand awareness is strong but conversion is weak"
 - "Sales team can't explain why we're different"
@@ -21,7 +21,7 @@ Find and own a defensible market position. Turn generic messaging into clear dif
 - "Should we reposition before we rebrand?"
 - "How do we test positioning claims?"
 
-**Context:**
+**コンテキスト:**
 - Competitive markets with similar offerings
 - Messaging that isn't converting
 - New product launches
@@ -30,9 +30,9 @@ Find and own a defensible market position. Turn generic messaging into clear dif
 
 ---
 
-## Core Frameworks
+## 中核フレームワーク
 
-### 1. One Word Can Change Everything (The "Autonomous" Problem)
+### 1. 1語ですべてが変わる（「Autonomous」の問題）
 
 **The Pattern:**
 
@@ -103,7 +103,7 @@ Changing positioning based on internal consensus, not customer feedback. Your te
 
 ---
 
-### 2. Test Before You Commit (Crawl-Walk-Run Positioning Rollout)
+### 2. コミットする前に検証する（Crawl-Walk-Run型ポジショニング展開）
 
 **The Pattern:**
 
@@ -176,7 +176,7 @@ Full commitment. This is the rebrand.
 
 ---
 
-### 3. Positioning Clarity Diagnosis
+### 3. ポジショニングの明確さを診断する
 
 **The Pattern:**
 
@@ -225,7 +225,7 @@ Must be:
 
 ---
 
-### 4. Market Positioning Architecture (Three Layers)
+### 4. 市場ポジショニング・アーキテクチャ（3層）
 
 **Layer 1: Market Context**
 - What problem is the market experiencing?
@@ -258,7 +258,7 @@ Write all three layers before testing. Test Layer 2 (positioning statement) firs
 
 ---
 
-### 5. Headline and Sub-headline Testing
+### 5. ヘッドラインとサブヘッドラインの検証
 
 **Principle:** Clear positioning requires testable structure: headline (what are you?) + sub-headline (for whom? why?).
 
@@ -300,7 +300,7 @@ Pick winner based on data, not opinion.
 
 ---
 
-### 6. Positioning Defensibility Assessment
+### 6. ポジショニングの防御可能性評価
 
 **Principle:** A positioning is only valuable if competitors can't easily copy it.
 
@@ -333,7 +333,7 @@ Positioning on features competitors can easily match. This creates positioning t
 
 ---
 
-## Decision Trees
+## 判断ツリー
 
 ### Should We Reposition?
 
@@ -373,7 +373,7 @@ Did new positioning outperform incumbent by 20%+?
 
 ---
 
-## Common Mistakes
+## よくある失敗
 
 **1. Claiming to be "better" at what everyone does**
    - Unbelievable. Find different angle.
@@ -398,7 +398,7 @@ Did new positioning outperform incumbent by 20%+?
 
 ---
 
-## Quick Reference
+## クイックリファレンス
 
 **Crawl-Walk-Run Testing:**
 - Crawl (1-2 weeks): A/B test messaging, measure reply rates
@@ -427,7 +427,7 @@ Did new positioning outperform incumbent by 20%+?
 
 ---
 
-## Related Skills
+## 関連Skill
 
 - **ai-gtm**: AI-specific positioning (copilot vs agent vs teammate)
 - **technical-product-pricing**: Price as a positioning signal

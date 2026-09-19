@@ -1,22 +1,22 @@
 ---
 name: microsoft-code-reference
-description: Look up Microsoft API references, find working code samples, and verify SDK code is correct. Use when working with Azure SDKs, .NET libraries, or Microsoft APIs—to find the right method, check parameters, get working examples, or troubleshoot errors. Catches hallucinated methods, wrong signatures, and deprecated patterns by querying official docs.
-compatibility: Works best with Microsoft Learn MCP Server (https://learn.microsoft.com/api/mcp). Can also use the mslearn CLI as a fallback.
+description: Microsoft API リファレンスを検索し、動作するコード サンプルを見つけ、SDK コードが正しいことを検証します。Azure SDK、.NET ライブラリ、または Microsoft API を扱うときに、適切なメソッドの検索、パラメーターの確認、動作する例の取得、エラーのトラブルシューティングに使用します。公式ドキュメントを照会して、存在しないメソッド、誤ったシグネチャ、非推奨のパターンを検出します。
+compatibility: Microsoft Learn MCP Server (https://learn.microsoft.com/api/mcp) で最適に動作します。フォールバックとして mslearn CLI も使用できます。
 ---
 
-# Microsoft Code Reference
+# Microsoft コード リファレンス
 
-## Tools
+## ツール
 
-| Need | Tool | Example |
+| 必要なもの | ツール | 例 |
 |------|------|---------|
-| API method/class lookup | `microsoft_docs_search` | `"BlobClient UploadAsync Azure.Storage.Blobs"` |
-| Working code sample | `microsoft_code_sample_search` | `query: "upload blob managed identity", language: "python"` |
-| Full API reference | `microsoft_docs_fetch` | Fetch URL from `microsoft_docs_search` (for overloads, full signatures) |
+| API メソッド/クラスの検索 | `microsoft_docs_search` | `"BlobClient UploadAsync Azure.Storage.Blobs"` |
+| 動作するコード サンプル | `microsoft_code_sample_search` | `query: "upload blob managed identity", language: "python"` |
+| 完全な API リファレンス | `microsoft_docs_fetch` | `microsoft_docs_search` から URL を取得します（オーバーロード、完全なシグネチャ向け） |
 
-## Finding Code Samples
+## コード サンプルを探す
 
-Use `microsoft_code_sample_search` to get official, working examples:
+公式の動作する例を取得するには、`microsoft_code_sample_search` を使用します。
 
 ```
 microsoft_code_sample_search(query: "upload file to blob storage", language: "csharp")
@@ -24,76 +24,76 @@ microsoft_code_sample_search(query: "authenticate with managed identity", langua
 microsoft_code_sample_search(query: "send message service bus", language: "javascript")
 ```
 
-**When to use:**
-- Before writing code—find a working pattern to follow
-- After errors—compare your code against a known-good sample
-- Unsure of initialization/setup—samples show complete context
+**使用する場面:**
+- コードを書く前 — 手本にする動作するパターンを探します
+- エラー発生後 — 自分のコードを既知の正常なサンプルと比較します
+- 初期化/セットアップに自信がない場合 — サンプルが完全なコンテキストを示します
 
-## API Lookups
+## API の検索
 
 ```
-# Verify method exists (include namespace for precision)
+# メソッドが存在することを検証します（正確性のため名前空間を含めます）
 "BlobClient UploadAsync Azure.Storage.Blobs"
 "GraphServiceClient Users Microsoft.Graph"
 
-# Find class/interface
+# クラス/インターフェイスを探します
 "DefaultAzureCredential class Azure.Identity"
 
-# Find correct package
+# 正しいパッケージを探します
 "Azure Blob Storage NuGet package"
 "azure-storage-blob pip package"
 ```
 
-Fetch full page when method has multiple overloads or you need complete parameter details.
+メソッドに複数のオーバーロードがある場合や、完全なパラメーター詳細が必要な場合は、完全なページを取得します。
 
-## Error Troubleshooting
+## エラーのトラブルシューティング
 
-Use `microsoft_code_sample_search` to find working code samples and compare with your implementation. For specific errors, use `microsoft_docs_search` and `microsoft_docs_fetch`:
+`microsoft_code_sample_search` を使用して動作するコード サンプルを探し、実装と比較します。特定のエラーには、`microsoft_docs_search` と `microsoft_docs_fetch` を使用します。
 
-| Error Type | Query |
+| エラーの種類 | クエリ |
 |------------|-------|
-| Method not found | `"[ClassName] methods [Namespace]"` |
-| Type not found | `"[TypeName] NuGet package namespace"` |
-| Wrong signature | `"[ClassName] [MethodName] overloads"` → fetch full page |
-| Deprecated warning | `"[OldType] migration v12"` |
-| Auth failure | `"DefaultAzureCredential troubleshooting"` |
+| メソッドが見つからない | `"[ClassName] methods [Namespace]"` |
+| 型が見つからない | `"[TypeName] NuGet package namespace"` |
+| シグネチャが誤っている | `"[ClassName] [MethodName] overloads"` → 完全なページを取得 |
+| 非推奨の警告 | `"[OldType] migration v12"` |
+| 認証の失敗 | `"DefaultAzureCredential troubleshooting"` |
 | 403 Forbidden | `"[ServiceName] RBAC permissions"` |
 
-## When to Verify
+## 検証する場面
 
-Always verify when:
-- Method name seems "too convenient" (`UploadFile` vs actual `Upload`)
-- Mixing SDK versions (v11 `CloudBlobClient` vs v12 `BlobServiceClient`)
-- Package name doesn't follow conventions (`Azure.*` for .NET, `azure-*` for Python)
-- Using an API for the first time
+次の場合は必ず検証します。
+- メソッド名が「都合よすぎる」ように思える場合（`UploadFile` と実際の `Upload`）
+- SDK バージョンを混在させる場合（v11 の `CloudBlobClient` と v12 の `BlobServiceClient`）
+- パッケージ名が規則に従っていない場合（.NET では `Azure.*`、Python では `azure-*`）
+- API を初めて使用する場合
 
-## Validation Workflow
+## 検証ワークフロー
 
-Before generating code using Microsoft SDKs, verify it's correct:
+Microsoft SDK を使用するコードを生成する前に、それが正しいことを検証します。
 
-1. **Confirm method or package exists** — `microsoft_docs_search(query: "[ClassName] [MethodName] [Namespace]")`
-2. **Fetch full details** (for overloads/complex params) — `microsoft_docs_fetch(url: "...")`
-3. **Find working sample** — `microsoft_code_sample_search(query: "[task]", language: "[lang]")`
+1. **メソッドまたはパッケージが存在することを確認** — `microsoft_docs_search(query: "[ClassName] [MethodName] [Namespace]")`
+2. **完全な詳細を取得**（オーバーロード/複雑なパラメーター向け） — `microsoft_docs_fetch(url: "...")`
+3. **動作するサンプルを検索** — `microsoft_code_sample_search(query: "[task]", language: "[lang]")`
 
-For simple lookups, step 1 alone may suffice. For complex API usage, complete all three steps.
+単純な検索では、手順 1 だけで十分な場合があります。複雑な API 使用では、3 つの手順をすべて完了してください。
 
-## CLI Alternative
+## CLI の代替手段
 
-If the Learn MCP server is not available, use the `mslearn` CLI from a terminal or shell (for example, Bash, PowerShell, or cmd) instead:
+Learn MCP サーバーを利用できない場合は、代わりにターミナルまたはシェル（たとえば Bash、PowerShell、cmd）から `mslearn` CLI を使用します。
 
 ```sh
-# Run directly (no install needed)
+# 直接実行します（インストールは不要です）
 npx @microsoft/learn-cli search "BlobClient UploadAsync Azure.Storage.Blobs"
 
-# Or install globally, then run
+# またはグローバルにインストールしてから実行します
 npm install -g @microsoft/learn-cli
 mslearn search "BlobClient UploadAsync Azure.Storage.Blobs"
 ```
 
-| MCP Tool | CLI Command |
+| MCP ツール | CLI コマンド |
 |----------|-------------|
 | `microsoft_docs_search(query: "...")` | `mslearn search "..."` |
 | `microsoft_code_sample_search(query: "...", language: "...")` | `mslearn code-search "..." --language ...` |
 | `microsoft_docs_fetch(url: "...")` | `mslearn fetch "..."` |
 
-Pass `--json` to `search` or `code-search` to get raw JSON output for further processing.
+追加処理用の生の JSON 出力を取得するには、`search` または `code-search` に `--json` を渡します。

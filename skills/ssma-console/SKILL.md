@@ -1,8 +1,7 @@
 ---
 name: ssma-console
-description: "Use when: SSMA console operations — create project, generate assessment report, convert schema, migrate data, Oracle to SQL Server migration, schema conversion, data migration"
+description: 'SSMA consoleの操作に使います。プロジェクト作成、評価レポート生成、スキーマ変換、データ移行、OracleからSQL Serverへの移行、スキーマ変換、データ移行を扱います。'
 ---
-
 # SSMA Console — Oracle to SQL Server Migration
 
 Generate XML configs and invoke `SSMAforOracleConsole.exe` directly — no external scripts or wrappers.

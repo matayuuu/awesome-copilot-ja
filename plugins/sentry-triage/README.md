@@ -1,9 +1,8 @@
 # Sentry Triage Plugin
 
-Scan live Sentry issues in a Copilot canvas, group them by urgency, and hand
-issues off for tracking or a fix PR.
+Copilotキャンバスで稼働中のSentry課題をスキャンし、緊急度でグループ化して、追跡または修正PRの作業へ引き渡します。
 
-## Installation
+## インストール
 
 ```bash
 copilot plugin install sentry-triage@awesome-copilot

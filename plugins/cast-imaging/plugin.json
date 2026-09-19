@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "cast-imaging",
-  "description": "A comprehensive collection of specialized agents for software analysis, impact assessment, structural quality advisories, and architectural review using CAST Imaging.",
+  "description": "CAST Imaging を使用したソフトウェア分析、影響評価、構造品質の助言、アーキテクチャレビュー向けの専門 agents をまとめた包括的なコレクションです。",
   "version": "1.0.0",
   "author": {
     "name": "Awesome Copilot Community"

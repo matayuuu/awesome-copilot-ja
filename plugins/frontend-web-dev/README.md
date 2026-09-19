@@ -1,8 +1,8 @@
-# Frontend Web Development Plugin
+# Frontend Web Development プラグイン
 
-Essential prompts, instructions, and chat modes for modern frontend web development including React, Angular, Vue, TypeScript, and CSS frameworks.
+React、Angular、Vue、TypeScript、CSS frameworks を含む最新のフロントエンド Web 開発向けの基本的な prompts、instructions、chat modes です。
 
-## Installation
+## インストール
 
 ```bash
 # Using Copilot CLI

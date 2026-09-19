@@ -1,75 +1,75 @@
 ---
 name: ef-core
-description: 'Get best practices for Entity Framework Core'
+description: 'Entity Framework Core のベストプラクティスを確認します。'
 ---
 
-# Entity Framework Core Best Practices
+# Entity Framework Core のベストプラクティス
 
-Your goal is to help me follow best practices when working with Entity Framework Core.
+あなたの目標は、Entity Framework Core を扱う際にベストプラクティスに従えるよう私を支援することです。
 
-## Data Context Design
+## データコンテキスト設計
 
-- Keep DbContext classes focused and cohesive
-- Use constructor injection for configuration options
-- Override OnModelCreating for fluent API configuration
-- Separate entity configurations using IEntityTypeConfiguration
-- Consider using DbContextFactory pattern for console apps or tests
+- DbContext クラスは焦点を絞り、凝集度を高く保つ
+- 構成オプションにはコンストラクターインジェクションを使用する
+- fluent API 構成には OnModelCreating をオーバーライドする
+- IEntityTypeConfiguration を使用してエンティティ構成を分離する
+- コンソールアプリやテストでは DbContextFactory パターンの使用を検討する
 
-## Entity Design
+## エンティティ設計
 
-- Use meaningful primary keys (consider natural vs surrogate keys)
-- Implement proper relationships (one-to-one, one-to-many, many-to-many)
-- Use data annotations or fluent API for constraints and validations
-- Implement appropriate navigational properties
-- Consider using owned entity types for value objects
+- 意味のある主キーを使用する（自然キーとサロゲートキーを検討する）
+- 適切なリレーションシップ（一対一、一対多、多対多）を実装する
+- 制約と検証にはデータアノテーションまたは fluent API を使用する
+- 適切なナビゲーションプロパティを実装する
+- 値オブジェクトには owned entity types の使用を検討する
 
-## Performance
+## パフォーマンス
 
-- Use AsNoTracking() for read-only queries
-- Implement pagination for large result sets with Skip() and Take()
-- Use Include() to eager load related entities when needed
-- Consider projection (Select) to retrieve only required fields
-- Use compiled queries for frequently executed queries
-- Avoid N+1 query problems by properly including related data
+- 読み取り専用クエリには AsNoTracking() を使用する
+- 大きな結果セットには Skip() と Take() を使用してページネーションを実装する
+- 必要に応じて Include() を使用し、関連エンティティを eager load する
+- 必要なフィールドだけを取得するために projection（Select）を検討する
+- 頻繁に実行されるクエリには compiled queries を使用する
+- 関連データを適切に含めることで N+1 クエリ問題を避ける
 
-## Migrations
+## マイグレーション
 
-- Create small, focused migrations
-- Name migrations descriptively
-- Verify migration SQL scripts before applying to production
-- Consider using migration bundles for deployment
-- Add data seeding through migrations when appropriate
+- 小さく焦点を絞ったマイグレーションを作成する
+- マイグレーションには説明的な名前を付ける
+- 本番環境に適用する前にマイグレーション SQL スクリプトを検証する
+- デプロイには migration bundles の使用を検討する
+- 適切な場合はマイグレーションを通じてデータシードを追加する
 
-## Querying
+## クエリ
 
-- Use IQueryable judiciously and understand when queries execute
-- Prefer strongly-typed LINQ queries over raw SQL
-- Use appropriate query operators (Where, OrderBy, GroupBy)
-- Consider database functions for complex operations
-- Implement specifications pattern for reusable queries
+- IQueryable を慎重に使用し、クエリがいつ実行されるかを理解する
+- raw SQL よりも強く型付けされた LINQ クエリを優先する
+- 適切なクエリ演算子（Where、OrderBy、GroupBy）を使用する
+- 複雑な操作にはデータベース関数を検討する
+- 再利用可能なクエリには specifications パターンを実装する
 
-## Change Tracking & Saving
+## 変更追跡と保存
 
-- Use appropriate change tracking strategies
-- Batch your SaveChanges() calls
-- Implement concurrency control for multi-user scenarios
-- Consider using transactions for multiple operations
-- Use appropriate DbContext lifetimes (scoped for web apps)
+- 適切な変更追跡戦略を使用する
+- SaveChanges() 呼び出しをバッチ化する
+- 複数ユーザーのシナリオには同時実行制御を実装する
+- 複数の操作にはトランザクションの使用を検討する
+- 適切な DbContext のライフタイムを使用する（Web アプリでは scoped）
 
-## Security
+## セキュリティ
 
-- Avoid SQL injection by using parameterized queries
-- Implement appropriate data access permissions
-- Be careful with raw SQL queries
-- Consider data encryption for sensitive information
-- Use migrations to manage database user permissions
+- パラメーター化クエリを使用して SQL インジェクションを避ける
+- 適切なデータアクセス権限を実装する
+- raw SQL クエリには注意する
+- 機密情報にはデータ暗号化を検討する
+- データベースユーザー権限の管理にはマイグレーションを使用する
 
-## Testing
+## テスト
 
-- Use in-memory database provider for unit tests
-- Create separate testing contexts with SQLite for integration tests
-- Mock DbContext and DbSet for pure unit tests
-- Test migrations in isolated environments
-- Consider snapshot testing for model changes
+- ユニットテストには in-memory database provider を使用する
+- 統合テストには SQLite を使用した個別のテスト用コンテキストを作成する
+- 純粋なユニットテストでは DbContext と DbSet をモックする
+- 分離された環境でマイグレーションをテストする
+- モデル変更にはスナップショットテストを検討する
 
-When reviewing my EF Core code, identify issues and suggest improvements that follow these best practices.
+私の EF Core コードをレビューする際は、これらのベストプラクティスに従って問題を特定し、改善案を提案してください。

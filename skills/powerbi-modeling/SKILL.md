@@ -1,6 +1,6 @@
 ---
 name: powerbi-modeling
-description: 'Power BI semantic modeling assistant for building optimized data models. Use when working with Power BI semantic models, creating measures, designing star schemas, configuring relationships, implementing RLS, or optimizing model performance. Triggers on queries about DAX calculations, table relationships, dimension/fact table design, naming conventions, model documentation, cardinality, cross-filter direction, calculation groups, and data model best practices. Always connects to the active model first using power-bi-modeling MCP tools to understand the data structure before providing guidance.'
+description: 'powerbi-modeling に関する作業を支援する Skill です。対象のファイルや設定を確認し、必要な手順、検証方法、注意点を案内します。対象技術の調査、実装、運用、トラブルシューティングに使用します。'
 ---
 
 # Power BI Semantic Modeling
@@ -23,7 +23,7 @@ Use this skill when users ask about:
 
 **Trigger phrases:** "create a measure", "add relationship", "star schema", "optimize model", "DAX formula", "RLS", "naming convention", "model documentation", "cardinality", "cross-filter"
 
-## Prerequisites
+## 前提条件
 
 ### Required Tools
 - **Power BI Modeling MCP Server**: Required for connecting to and modifying semantic models
@@ -35,7 +35,7 @@ Use this skill when users ask about:
   - Enables: microsoft_docs_search, microsoft_docs_fetch
   - Use for complex scenarios, new features, and official documentation
 
-## Workflow
+## ワークフロー
 
 ### 1. Connect and Analyze First
 

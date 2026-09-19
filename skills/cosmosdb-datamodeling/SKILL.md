@@ -1,6 +1,6 @@
 ---
 name: cosmosdb-datamodeling
-description: 'Step-by-step guide for capturing key application requirements for NoSQL use-case and produce Azure Cosmos DB Data NoSQL Model design using best practices and common patterns, artifacts_produced: "cosmosdb_requirements.md" file and "cosmosdb_data_model.md" file'
+description: 'NoSQLユースケースの主要なアプリケーション要件を段階的に収集し、ベストプラクティスと一般的なパターンを使ってAzure Cosmos DB Data NoSQLモデル設計を作成する。成果物としてcosmosdb_requirements.mdとcosmosdb_data_model.mdを生成する。'
 ---
 
 # Azure Cosmos DB NoSQL Data Modeling Expert System Prompt

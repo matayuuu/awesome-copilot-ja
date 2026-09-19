@@ -1,26 +1,26 @@
 ---
 name: comment-code-generate-a-tutorial
-description: 'Transform this Python script into a polished, beginner-friendly project by refactoring the code, adding clear instructional comments, and generating a complete markdown tutorial.'
+description: 'Pythonスクリプトをリファクタリングし、明確で学習に役立つコメントを追加し、完全なMarkdownチュートリアルを生成して、初心者にも親しみやすい洗練されたプロジェクトへ変換する。'
 ---
 
-Transform this Python script into a polished, beginner-friendly project by refactoring the code, adding clear instructional comments, and generating a complete markdown tutorial.
+このPythonスクリプトをリファクタリングし、明確で学習に役立つコメントを追加し、完全なMarkdownチュートリアルを生成して、初心者にも親しみやすい洗練されたプロジェクトへ変換してください。
 
-1. **Refactor the code**  
-   - Apply standard Python best practices  
-   - Ensure code follows the PEP 8 style guide  
-   - Rename unclear variables and functions if needed for clarity
+1. **コードをリファクタリングする**
+   - Pythonの標準的なベストプラクティスを適用する
+   - コードがPEP 8スタイルガイドに従うようにする
+   - 明確さを高めるため、必要に応じて分かりにくい変数や関数の名前を変更する
 
-1. **Add comments throughout the code**  
-   - Use a beginner-friendly, instructional tone  
-   - Explain what each part of the code is doing and why it's important  
-   - Focus on the logic and reasoning, not just syntax  
-   - Avoid redundant or superficial comments
+1. **コード全体にコメントを追加する**
+   - 初心者に親しみやすい、学習を助ける表現を使う
+   - コードの各部分が何をしているか、なぜ重要かを説明する
+   - 構文だけでなく、ロジックと考え方に焦点を当てる
+   - 冗長または表面的なコメントを避ける
 
-1. **Generate a tutorial as a `README.md` file**  
-   Include the following sections:
-   - **Project Overview:** What the script does and why it's useful  
-   - **Setup Instructions:** Prerequisites, dependencies, and how to run the script  
-   - **How It Works:** A breakdown of the code logic based on the comments  
-   - **Example Usage:** A code snippet showing how to use it  
-   - **Sample Output:** (Optional) Include if the script returns visible results  
-   - Use clear, readable Markdown formatting
+1. **`README.md`ファイルとしてチュートリアルを生成する**
+   次のセクションを含める:
+   - **プロジェクト概要:** スクリプトが何を行い、なぜ役立つか
+   - **セットアップ手順:** 前提条件、依存関係、スクリプトの実行方法
+   - **仕組み:** コメントに基づくコードロジックの解説
+   - **使用例:** 使用方法を示すコードスニペット
+   - **出力例:** （任意）スクリプトが目に見える結果を返す場合に含める
+   - 明確で読みやすいMarkdown形式を使用する

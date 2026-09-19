@@ -1,9 +1,8 @@
 # Signals Dashboard Plugin
 
-Real-time Workshop dashboard with agent signals, honesty calibration, cost-aware
-desk profiles (`repo` / `connected`), and fail-closed Local Delegation.
+エージェントシグナル、正直さのキャリブレーション、コストを考慮したデスクプロファイル（`repo` / `connected`）、フェイルクローズ型のLocal Delegationを備えたリアルタイムWorkshopダッシュボードです。
 
-## Installation
+## インストール
 
 ```bash
 copilot plugin install signals-dashboard@awesome-copilot
@@ -19,7 +18,7 @@ copilot plugin install signals-dashboard@awesome-copilot
 
 ## Source
 
-Canonical implementation: [jennyf19/the-workshop](https://github.com/jennyf19/the-workshop).  
+Canonical implementation: [jennyf19/the-workshop](https://github.com/jennyf19/the-workshop).
 Local worker runtime: [jennyf19/sealed-delegation](https://github.com/jennyf19/sealed-delegation).
 
 This plugin is part of [Awesome Copilot](https://github.com/github/awesome-copilot).

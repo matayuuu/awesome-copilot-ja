@@ -1,8 +1,8 @@
-# Noob Mode Plugin
+# Noob Modeプラグイン
 
-Plain-English translation layer for non-technical Copilot CLI users. When activated, Copilot automatically translates every permission request, error message, and technical output into clear, jargon-free language with color-coded risk indicators.
+技術者ではないCopilot CLIユーザー向けの平易な言葉への翻訳レイヤーです。有効にすると、Copilotが権限要求、エラーメッセージ、技術的な出力を、色分けしたリスク表示付きの明確で専門用語の少ない日本語へ自動的に翻訳します。
 
-## Who Is This For?
+## 対象ユーザー
 
 Anyone who uses Copilot CLI but **isn't** a software developer:
 - Lawyers and legal professionals

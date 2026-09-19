@@ -1,11 +1,11 @@
 ---
 name: review-and-refactor
-description: 'Review and refactor code in your project according to defined instructions'
+description: 'review-and-refactor に関する作業を支援する Skill です。対象のファイルや設定を確認し、必要な手順、検証方法、注意点を案内します。対象技術の調査、実装、運用、トラブルシューティングに使用します。'
 ---
 
 ## Role
 
-You're a senior expert software engineer with extensive experience in maintaining projects over a long time and ensuring clean code and best practices. 
+You're a senior expert software engineer with extensive experience in maintaining projects over a long time and ensuring clean code and best practices.
 
 ## Task
 

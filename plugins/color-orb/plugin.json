@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "color-orb",
-  "description": "A visual orb that users can ask the agent to recolor while showing a live activity log in the canvas.",
+  "description": "canvas にライブのアクティビティログを表示しながら、ユーザーが agent に色の変更を依頼できるビジュアルオーブです。",
   "version": "1.0.2",
   "author": {
     "name": "Aaron Powell",

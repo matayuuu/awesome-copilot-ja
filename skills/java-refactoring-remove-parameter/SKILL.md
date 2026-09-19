@@ -1,17 +1,17 @@
 ---
 name: java-refactoring-remove-parameter
-description: 'Refactoring using Remove Parameter in Java Language'
+description: 'Java言語でRemove Parameterを使ってリファクタリングする。'
 ---
 
-# Refactoring Java Methods with Remove Parameter
+# Remove ParameterによるJavaメソッドのリファクタリング
 
-## Role
+## 役割
 
-You are an expert in refactoring Java methods.
+Javaメソッドのリファクタリングに精通した専門家として振る舞う。
 
-Below are **2 examples** (with titles code before and code after refactoring) that represents **Remove Parameter**.
+以下に**Remove Parameter**を表す**2つの例**（リファクタリング前後のコード）を示す。
 
-## Code Before Refactoring 1:
+## リファクタリング前のコード1:
 ```java
 public Backend selectBackendForGroupCommit(long tableId, ConnectContext context, boolean isCloud)
         throws LoadException, DdlException {
@@ -30,7 +30,7 @@ public Backend selectBackendForGroupCommit(long tableId, ConnectContext context,
 }
 ```
 
-## Code After Refactoring 1:
+## リファクタリング後のコード1:
 ```java
 public Backend selectBackendForGroupCommit(long tableId, ConnectContext context)
         throws LoadException, DdlException {
@@ -49,7 +49,7 @@ public Backend selectBackendForGroupCommit(long tableId, ConnectContext context)
 }
 ```
 
-## Code Before Refactoring 2:
+## リファクタリング前のコード2:
 ```java
 NodeImpl( long id, long firstRel, long firstProp )
 {
@@ -57,7 +57,7 @@ NodeImpl( long id, long firstRel, long firstProp )
 }
 ```
 
-## Code After Refactoring 2:
+## リファクタリング後のコード2:
 ```java
 NodeImpl( long id)
 {
@@ -65,20 +65,20 @@ NodeImpl( long id)
 }
 ```
 
-## Task
+## タスク
 
-Apply **Remove Parameter** to improve readability, testability, maintainability, reusability, modularity, cohesion, low coupling, and consistency.
+可読性、テスト容易性、保守性、再利用性、モジュール性、凝集度、低結合性、一貫性を高めるために**Remove Parameter**を適用する。
 
-Always return a complete and compilable method (Java 17).
+常に完全でコンパイル可能なメソッド（Java 17）を返す。
 
-Perform intermediate steps internally:
-- First, analyze each method and identify parameters that are unused or redundant (i.e., values that can be obtained from class fields, constants, or other method calls).
-- For each qualifying method, remove the unnecessary parameters from its definition and from all its internal calls.
-- Ensure that the method continues to function correctly after parameter removal.
-- Output only the refactored code inside a single ```java``` block.
-- Do not remove any functionality from the original method.
-- Include a one-line comment above each modified method indicating which parameter was removed and why.
+内部で次の中間手順を実行する。
+- まず各メソッドを分析し、未使用または冗長なパラメーター（クラスフィールド、定数、他のメソッド呼び出しから取得できる値）を特定する。
+- 条件に該当する各メソッドについて、定義と内部のすべての呼び出しから不要なパラメーターを削除する。
+- パラメーター削除後もメソッドが正しく動作することを確認する。
+- リファクタリング後のコードだけを、単一の ```java``` ブロック内に出力する。
+- 元のメソッドの機能を削除しない。
+- 各変更メソッドの上に、削除したパラメーターとその理由を示す1行コメントを付ける。
 
-## Code to be Refactored:
+## リファクタリング対象のコード:
 
-Now, assess all methods with unused parameters and refactor them using **Remove Parameter**
+未使用パラメーターを持つすべてのメソッドを評価し、**Remove Parameter**を使ってリファクタリングする。

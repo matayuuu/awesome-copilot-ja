@@ -1,8 +1,8 @@
 # Project Planning & Management Plugin
 
-Tools and guidance for software project planning, feature breakdown, epic management, implementation planning, and task organization for development teams.
+開発チーム向けのソフトウェアプロジェクト計画、機能分解、エピック管理、実装計画、タスク整理のためのツールとガイダンスです。
 
-## Installation
+## インストール
 
 ```bash
 # Using Copilot CLI

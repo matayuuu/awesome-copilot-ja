@@ -1,17 +1,17 @@
-# AWS Cloud Development Plugin
+# AWS Cloud Development プラグイン
 
-Comprehensive AWS cloud development tools including Infrastructure as Code, serverless functions, architecture patterns, and cost optimization for building scalable cloud applications.
+スケーラブルなクラウドアプリケーションを構築するための、Infrastructure as Code、サーバーレス関数、アーキテクチャパターン、コスト最適化を含む包括的な AWS クラウド開発ツールです。
 
-## Installation
+## インストール
 
 ```bash
 # Using Copilot CLI
 copilot plugin install aws-cloud-development@awesome-copilot
 ```
 
-## What's Included
+## 含まれるもの
 
-### Commands (Slash Commands)
+### コマンド（スラッシュコマンド）
 
 | Command | Description |
 |---------|-------------|
@@ -29,10 +29,10 @@ copilot plugin install aws-cloud-development@awesome-copilot
 | `terraform-aws-planning` | Act as implementation planner for your AWS Terraform Infrastructure as Code task. |
 | `terraform-aws-implement` | Act as an AWS Terraform Infrastructure as Code coding specialist that creates and reviews Terraform for AWS resources. |
 
-## Source
+## ソース
 
-This plugin is part of [Awesome Copilot](https://github.com/github/awesome-copilot), a community-driven collection of GitHub Copilot extensions.
+このプラグインは、コミュニティ主導の GitHub Copilot 拡張機能コレクションである [Awesome Copilot](https://github.com/github/awesome-copilot) の一部です。
 
-## License
+## ライセンス
 
 MIT

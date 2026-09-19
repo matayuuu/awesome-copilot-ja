@@ -1,8 +1,8 @@
 # Oracle-to-PostgreSQL Migration Expert Plugin
 
-Expert agent for Oracle-to-PostgreSQL application migrations in .NET solutions. Performs code edits, runs commands, and guides users through a structured, gated migration workflow.
+.NETソリューションのOracleからPostgreSQLへのアプリケーション移行を支援する専門エージェントです。コードを編集し、コマンドを実行し、段階的なゲート付き移行ワークフローを案内します。
 
-## Installation
+## インストール
 
 ```bash
 # Using Copilot CLI

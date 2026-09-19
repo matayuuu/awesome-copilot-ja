@@ -1,112 +1,111 @@
 ---
 name: scoutqa-test
-description: 'This skill should be used when the user asks to "test this website", "run exploratory testing", "check for accessibility issues", "verify the login flow works", "find bugs on this page", or requests automated QA testing. Triggers on web application testing scenarios including smoke tests, accessibility audits, e-commerce flows, and user flow validation using ScoutQA CLI. Use this skill proactively after implementing web application features to verify they work correctly.'
+description: '「このwebsiteをtestして」「exploratory testingを実行して」「accessibility issueを確認して」「login flowが動くことを検証して」「このpageのbugを見つけて」などの依頼やautomated QA testingの要求で使用します。ScoutQA CLIを使うsmoke test、accessibility audit、e-commerce flow、user flow validationなどのweb application testing scenarioで起動します。web application featureの実装後に正しく動作することをproactively検証する場合にも使用します。'
 ---
+# ScoutQAテストSkill
 
-# ScoutQA Testing Skill
+`scoutqa` CLI を使って web application の AI-powered exploratory testing を実行します。
 
-Perform AI-powered exploratory testing on web applications using the `scoutqa` CLI.
+**ScoutQA を intelligent testing partner として扱います**。自律的に探索し、issue を発見し、feature を検証できます。複数の ScoutQA execution に並列で委譲し、時間を節約しながら coverage を最大化します。
 
-**Think of ScoutQA as an intelligent testing partner** that can autonomously explore, discover issues, and verify features. Delegate testing to multiple parallel ScoutQA executions to maximize coverage while saving time.
+## この Skill を使う場面
 
-## When to Use This Skill
+次の2つの場面でこの Skill を使います。
 
-Use this skill in two scenarios:
+1. **ユーザーがテストを依頼した場合** - ユーザーがwebsiteのtestまたはfunctionalityの検証を明示的に求めたとき
+2. **先行検証** - web featureの実装後、正しく動作することを確認するため自動的にtestを実行するとき
 
-1. **User requests testing** - When the user explicitly asks to test a website or verify functionality
-2. **Proactive verification** - After implementing web features, automatically run tests to verify the implementation works correctly
+**Proactive usage の例:**
 
-**Example proactive usage:**
+- login formの実装後 → authentication flowをtest
+- form validationの追加後 → validation ruleとerror handlingを検証
+- checkout flowの構築後 → end-to-end purchase processをtest
+- bugの修正後 → fixが動作し、他のfeatureを壊していないことを検証
 
-- After implementing a login form → Test the authentication flow
-- After adding form validation → Verify validation rules and error handling
-- After building a checkout flow → Test the end-to-end purchase process
-- After fixing a bug → Verify the fix works and didn't break other features
+**推奨方法**: web featureの実装を終えたら、他のtaskを続けながら動作を検証できるよう、ScoutQA testをbackgroundで先行して開始します。
 
-**Best practice**: When you finish implementing a web feature, proactively start a ScoutQA test in the background to verify it works while you continue with other tasks.
+## Testの実行
 
-## Running Tests
+### テストの作業手順
 
-### Testing Workflow
+このchecklistをコピーして進捗を記録します。
 
-Copy this checklist and track your progress:
+テストの進捗:
 
-Testing Progress:
+- [ ] 明確な期待結果を含む具体的なtest promptを書く
+- [ ] scoutqa commandをbackgroundで実行する
+- [ ] execution IDとbrowser URLをuserに知らせる
+- [ ] resultを抽出して分析する
 
-- [ ] Write specific test prompt with clear expectations
-- [ ] Run scoutqa command in background
-- [ ] Inform user of execution ID and browser URL
-- [ ] Extract and analyze results
+**Step 1: 具体的なtest promptを書く**
 
-**Step 1: Write specific test prompt**
+ガイドラインは以下の「効果的なPromptの書き方」を参照します。
 
-See "Writing Effective Prompts" section below for guidelines.
+**Step 2: scoutqa commandを実行する**
 
-**Step 2: Run scoutqa command**
+**重要**: execution detail を取得するには Bash tool の timeout parameter（5000ms = 5秒）を使います。
 
-**IMPORTANT**: Use the Bash tool's timeout parameter (5000ms = 5 seconds) to capture execution details:
+Bash toolを呼ぶときはparameterとして`timeout: 5000`を設定します。
 
-When calling the Bash tool, set `timeout: 5000` as a parameter:
-
-- This is the Bash tool's built-in timeout parameter in Claude Code (NOT the Unix `timeout` command)
-- After 5 seconds, the Bash tool returns control with a task ID and the process continues running in the background
-- This is different from Unix `timeout` which kills the process - here the process keeps running
-- The first 5 seconds capture the execution ID and browser URL from ScoutQA's output
-- The test continues running remotely on ScoutQA's infrastructure with the background task
+- これはClaude CodeのBash tool組み込みtimeout parameter（Unixの`timeout` commandではない）
+- 5秒後、Bash toolはtask IDを返し、processはbackgroundで継続する
+- processをkillするUnix `timeout`とは異なり、ここではprocessが継続する
+- 最初の5秒でScoutQAのoutputからexecution IDとbrowser URLを取得する
+- testはbackground taskとしてScoutQA infrastructure上でremote実行を継続する
 
 ```bash
 scoutqa --url "https://example.com" --prompt "Your test instructions"
 ```
 
-In the first few seconds, the command will output:
+最初の数秒でcommandは次を出力します。
 
 - **Execution ID** (e.g., `019b831d-xxx`)
 - **Browser URL** (e.g., `https://app.scoutqa.ai/t/019b831d-xxx`)
-- Initial tool calls showing test progress
+- testの進捗を示す初期tool call
 
-After the 5-second timeout, the Bash tool returns a task ID and the command continues running in the background. You can work on other tasks while the test runs. The timeout is only to capture the initial output (execution ID and browser URL) - the test keeps running both locally as a background task and remotely on ScoutQA's infrastructure.
+5秒のtimeout後、Bash toolはtask IDを返し、commandはbackgroundで継続します。test実行中も他のtaskを進められます。timeoutはinitial output（execution IDとbrowser URL）を取得するためだけのもので、testはlocalのbackground taskとScoutQA infrastructure上のremoteの両方で継続します。
 
-**Step 3: Inform user of execution ID and browser URL**
+**Step 3: execution IDとbrowser URLをユーザーに知らせる**
 
-After the Bash tool returns with the task ID (having captured the execution details in the first 5 seconds), inform the user of:
+Bash toolがtask IDを返したら（最初の5秒でexecution detailを取得済み）、userに次を知らせます。
 
-- The ScoutQA execution ID and browser URL so they can monitor progress in their browser
-- The background task ID if they want to check local command output later
+- browserで進捗を監視できるScoutQA execution IDとbrowser URL
+- 後でlocal command outputを確認する場合のbackground task ID
 
-The test continues running in the background while you continue other work.
+他の作業を続けている間も、testはbackgroundで実行されます。
 
-**Step 4: Extract and analyze results**
+**Step 4: resultを抽出して分析する**
 
-See "Presenting Results" section below for the complete format.
+完全なformatは以下の「Resultの提示」を参照します。
 
-### Command Options
+### commandのオプション
 
-- `--url` (required): Website URL to test (supports `localhost` / `127.0.0.1`)
-- `--prompt` (required): Natural language testing instructions
-- `--project-id` (optional): Associate with a project for tracking
-- `-v, --verbose` (optional): Show all tool calls including internal ones
+- `--url`（必須）: testするwebsite URL（`localhost` / `127.0.0.1`対応）
+- `--prompt`（必須）: 自然言語のtesting instruction
+- `--project-id`（任意）: 追跡用にprojectへ関連付ける
+- `-v, --verbose`（任意）: internalを含むすべてのtool callを表示
 
-### Local Testing Support
+### ローカルテストのサポート
 
-ScoutQA supports testing `localhost` and `127.0.0.1` URLs autonomously — no manual setup required.
+ScoutQAは`localhost`と`127.0.0.1` URLの自律的なtestに対応し、manual setupは不要です。
 
 ```bash
 # Seamlessly test a locally running app when you're developing your app
 scoutqa --url "http://localhost:3000" --prompt "Test the registration form"
 ```
 
-### When to Use Each Command
+### commandの使い分け
 
-**Starting a new test?** → Use `scoutqa --url --prompt`
-**Verifying a known issue?** → Use `scoutqa issue-verify --issue-id <id>`
-**Finding issue IDs from an execution?** → Use `scoutqa list-issues --execution-id <id>`
-**Agent needs more context?** → Use `scoutqa send-message` (see "Following Up on Stuck Executions")
+**新しいtestを開始?** → `scoutqa --url --prompt`を使用
+**既知のissueを検証?** → `scoutqa issue-verify --issue-id <id>`を使用
+**executionからissue IDを取得?** → `scoutqa list-issues --execution-id <id>`を使用
+**agentに追加contextが必要?** → `scoutqa send-message`を使用（「停止したExecutionへのFollow-up」を参照）
 
-## Writing Effective Prompts
+## 効果的なPromptの書き方
 
-Focus on **what to explore and verify**, not prescriptive steps. ScoutQA autonomously determines how to test.
+手順を指定するのではなく、**何を探索・検証するか**に集中します。test 方法は ScoutQA が自律的に決定します。
 
-**Example: User registration flow**
+**例: user registration flow**
 
 ```bash
 scoutqa --url "https://example.com" --prompt "
@@ -115,7 +114,7 @@ verify error handling, and check accessibility compliance.
 "
 ```
 
-**Example: E-commerce checkout**
+**例: e-commerce checkout**
 
 ```bash
 scoutqa --url "https://shop.example.com" --prompt "
@@ -124,9 +123,9 @@ payment options, and mobile responsiveness.
 "
 ```
 
-**Example: Running parallel tests for comprehensive coverage**
+**例: comprehensive coverageのためのparallel test**
 
-Launch multiple tests in parallel by making multiple Bash tool calls in a single message, each with the Bash tool's `timeout` parameter set to `5000` (milliseconds):
+各Bash toolの`timeout` parameterを`5000`（milliseconds）に設定し、1つのmessageで複数のBash tool callを行って複数testをparallelで起動します。
 
 ```bash
 # Test 1: Authentication & security
@@ -148,21 +147,21 @@ screen reader support, color contrast.
 "
 ```
 
-**Implementation**: Send a single message with three Bash tool calls. For each Bash tool invocation, set the `timeout` parameter to `5000` milliseconds. After 5 seconds, each Bash call returns with a task ID while the processes continue running in the background. This captures the execution ID and browser URL from each test in the initial output, then all three continue running in parallel (both as background tasks locally and remotely on ScoutQA's infrastructure).
+**実装**: 3つのBash tool callを含むmessageを1つ送ります。各Bash tool invocationの`timeout` parameterを`5000` millisecondsに設定します。5秒後、各Bash callはtask IDを返し、processはbackgroundで継続します。各testのinitial outputからexecution IDとbrowser URLを取得し、その後も3つすべてがlocal backgroundとScoutQA infrastructure上のremoteでparallelに継続します。
 
-**Key guidelines:**
+**主なガイドライン:**
 
-- Describe **what to test**, not **how to test** (ScoutQA figures out the steps)
-- Focus on goals, edge cases, and concerns
-- Run multiple parallel executions for different test areas
-- Trust ScoutQA to autonomously explore and discover issues
-- Always set the Bash tool's `timeout` parameter to `5000` milliseconds when calling scoutqa commands (this returns control after 5 seconds while the process continues in the background)
-- For parallel tests, make multiple Bash tool calls in a single message
-- Remember: Bash tool timeout ≠ Unix timeout command (Bash timeout continues the process in background, Unix timeout kills it)
+- **何をtestするか**を記述し、**どうtestするか**は記述しない（stepはScoutQAが決める）
+- goal、edge case、concernに集中する
+- 異なるtest areaに対して複数のparallel executionを実行する
+- ScoutQAが自律的に探索しissueを発見することを信頼する
+- scoutqa commandを呼ぶときはBash toolの`timeout` parameterを常に`5000` millisecondsに設定する（5秒後にcontrolを返し、processはbackgroundで継続）
+- parallel testでは1つのmessageで複数のBash tool callを行う
+- Bash tool timeoutはUnix timeout commandと異なる（Bash timeoutはbackgroundで継続し、Unix timeoutはprocessをkillする）
 
-### Common Test Scenarios
+### 一般的なテストシナリオ
 
-**Post-deployment smoke test:**
+**デプロイ後のsmoke test:**
 
 ```bash
 scoutqa --url "$URL" --prompt "
@@ -171,7 +170,7 @@ Check homepage, navigation, login/logout, and key user flows.
 "
 ```
 
-**Accessibility audit:**
+**accessibility audit（アクセシビリティ監査）:**
 
 ```bash
 scoutqa --url "$URL" --prompt "
@@ -180,7 +179,7 @@ screen reader support, color contrast, and semantic HTML.
 "
 ```
 
-**E-commerce testing:**
+**e-commerce testing（e-commerceテスト）:**
 
 ```bash
 scoutqa --url "$URL" --prompt "
@@ -189,7 +188,7 @@ cart operations, checkout flow, and pricing calculations.
 "
 ```
 
-**SaaS application:**
+**SaaS application（SaaSアプリケーション）:**
 
 ```bash
 scoutqa --url "$URL" --prompt "
@@ -198,7 +197,7 @@ permissions, and data integrity.
 "
 ```
 
-**Form validation:**
+**form validation（form検証）:**
 
 ```bash
 scoutqa --url "$URL" --prompt "
@@ -207,7 +206,7 @@ format validation, and successful submission.
 "
 ```
 
-**Mobile responsiveness:**
+**mobile responsiveness（モバイル対応）:**
 
 ```bash
 scoutqa --url "$URL" --prompt "
@@ -216,7 +215,7 @@ touch interactions, and viewport behavior.
 "
 ```
 
-**Verification of a known issue:**
+**既知issueの検証:**
 
 ```bash
 # First, find issue IDs from a previous execution
@@ -226,14 +225,14 @@ scoutqa list-issues --execution-id <executionId>
 scoutqa issue-verify --issue-id <issueId>
 ```
 
-The `issue-verify` command will:
+`issue-verify` commandは次を行います。
 
-1. Create a verification execution for the issue
-2. Show the execution ID and browser URL
-3. Stream the agent's verification progress in real-time
-4. Display a completion summary with a link to results
+1. issue用のverification executionを作成
+2. execution IDとbrowser URLを表示
+3. agentのverification progressをreal-timeでstream
+4. resultへのlink付きcompletion summaryを表示
 
-**Feature verification (after implementation):**
+**featureの検証（実装後）:**
 
 ```bash
 scoutqa --url "$URL" --prompt "
@@ -242,9 +241,9 @@ edge cases, error handling, and integration with existing features.
 "
 ```
 
-**Example: Proactive testing after coding a feature**
+**例: feature coding後のproactive testing**
 
-After implementing a user registration form, automatically verify it works:
+user registration formの実装後に、動作を自動検証します。
 
 ```bash
 scoutqa --url "http://localhost:3000/register" --prompt "
@@ -256,21 +255,21 @@ Test the newly implemented registration form. Verify:
 "
 ```
 
-This catches issues immediately while the implementation is fresh in context.
+これにより、implementationのcontextが新しいうちにissueを直ちに検出できます。
 
-## Listing Issues
+## Issueの一覧表示
 
-Use `scoutqa list-issues` to browse issues found in a previous execution. This is useful for finding issue IDs to use with `issue-verify`.
+以前のexecutionで見つかったissueを確認するには`scoutqa list-issues`を使います。`issue-verify`で使うissue IDの取得に役立ちます。
 
 ```bash
 scoutqa list-issues --execution-id <executionId>
 ```
 
-**Options:**
+**オプション:**
 
-- `--execution-id` (required): Execution ID (from the `/t/<executionId>` URL or CLI output)
+- `--execution-id`（必須）: Execution ID（`/t/<executionId>` URLまたはCLI outputから取得）
 
-**Example output:**
+**出力例:**
 
 ```
 Showing 3 issues:
@@ -288,11 +287,11 @@ Showing 3 issues:
    Severity: medium | Category: accessibility | Status: resolved
 ```
 
-## Presenting Results
+## resultの提示
 
-### Immediate Presentation (After Starting Test)
+### 即時提示（Test 開始後）
 
-Right after running the scoutqa command, present the execution details to the user:
+scoutqa commandを実行した直後に、executionの詳細をユーザーへ提示します。
 
 ```markdown
 **ScoutQA Test Started**
@@ -303,9 +302,9 @@ View Live: https://app.scoutqa.ai/t/019b831d-xxx
 The test is running remotely. You can view real-time progress in your browser at the link above while I continue with other tasks.
 ```
 
-### Final Results (After Completion)
+### 最終結果（完了後）
 
-When the execution completes, use this format to present findings:
+executionが完了したら、次の形式でfindingを提示します。
 
 ```markdown
 **ScoutQA Test Results**
@@ -332,14 +331,14 @@ Execution ID: `ex_abc123`
 **Summary:** Found 3 issues across accessibility, usability, and functional categories. See full interactive report with screenshots at the URL above.
 ```
 
-Always include:
+必ず次を含めます。
 
 - **Execution ID** (e.g., `ex_abc123`) for reference
-- **Issues found** with severity, category (accessibility, usability, functional), impact, and location
+- **見つかったissue**にseverity、category（accessibility、usability、functional）、impact、locationを含める
 
-## Following Up on Stuck Executions
+## 停滞したexecutionへのfollow-up
 
-If the remote agent gets stuck or needs clarification, use `send-message` to continue:
+remote agentが停止したり説明を必要としたりした場合は、`send-message`で続行する。
 
 ```bash
 # Example: Agent is stuck at login, user provides credentials
@@ -353,23 +352,23 @@ Focus on the checkout flow next, skip the wishlist feature
 "
 ```
 
-## Checking Test Results
+## test resultの確認
 
-ScoutQA tests run remotely on ScoutQA's infrastructure. After starting a test with a short timeout to capture the execution ID:
+ScoutQA testはScoutQAのinfrastructure上でremote実行されます。短いtimeoutでtestを開始してexecution IDを取得した後:
 
-1. The test continues running remotely (not locally in background)
-2. You can continue other work immediately
-3. To check results later, visit the browser URL provided when the test started
-4. Alternatively, use `scoutqa get-execution --execution-id <id>` to fetch results via CLI
+1. testはremoteで実行を継続します（localのbackgroundではありません）。
+2. すぐに他の作業を続けられます。
+3. 後でresultを確認するには、test開始時に示されたbrowser URLを開きます。
+4. 代わりに`scoutqa get-execution --execution-id <id>`を使ってCLIからresultを取得できます。
 
-**Best practice**: Start tests by setting the Bash tool's `timeout` parameter to `5000` milliseconds. After 5 seconds, the Bash tool returns control with a task ID and the execution details (execution ID and browser URL) while the test continues running in the background. You can then continue other work and check results on ScoutQA's website or via CLI when needed.
+**推奨方法**: Bash toolの`timeout` parameterを`5000` millisecondsに設定してtestを開始します。5秒後、testがbackgroundで継続する間にBash toolがtask IDとexecutionの詳細を返します。その後、他の作業を続け、必要に応じてScoutQAのwebsiteまたはCLIでresultを確認できます。
 
-## Troubleshooting
+## トラブルシューティング
 
-| Issue                          | Solution                                                    |
+| Issue                          | 解決策                                                    |
 | ------------------------------ | ----------------------------------------------------------- |
-| `command not found: scoutqa`   | Install CLI: `npm i -g @scoutqa/cli@latest`                 |
-| Auth expired / unauthorized    | Run `scoutqa auth login`                                    |
-| Test hangs or needs input      | Use `scoutqa send-message --execution-id`                   |
-| Check test results             | Visit browser URL or `scoutqa get-execution --execution-id` |
-| Need issue ID for verification | Run `scoutqa list-issues --execution-id <id>`               |
+| `command not found: scoutqa`   | CLIをインストールする: `npm i -g @scoutqa/cli@latest` |
+| auth expired / unauthorized    | `scoutqa auth login`を実行する |
+| testが停止または入力を要求する | `scoutqa send-message --execution-id`を使う |
+| test resultを確認する          | browser URLまたは`scoutqa get-execution --execution-id`を開く |
+| 検証用のissue IDが必要         | `scoutqa list-issues --execution-id <id>`を実行する |

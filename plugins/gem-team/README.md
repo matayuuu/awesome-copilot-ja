@@ -1,11 +1,11 @@
 # Gem Team
 
-**Turn AI coding into an engineering process.**
+**AI コーディングをエンジニアリングプロセスに変えます。**
 
-> Agent definitions that enforce good software engineering: optimizing cost, time, and quality.
+> コスト、時間、品質を最適化し、優れたソフトウェアエンジニアリングを徹底する agent 定義です。
 
 <p align="center">
-  <a href="https://mubaidr.github.io/gem-team/"><b>Visit Homepage</b></a>
+  <a href="https://mubaidr.github.io/gem-team/"><b>ホームページを見る</b></a>
 </p>
 
 <br/>

@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "feedback-themes",
-  "description": "Explore grouped customer feedback signals by impact and drill into a theme to guide product next steps.",
+  "description": "顧客フィードバックのシグナルを影響度ごとにまとめて確認し、テーマを掘り下げて製品の次の施策を導きます。",
   "version": "1.0.2",
   "author": {
     "name": "Aaron Powell",

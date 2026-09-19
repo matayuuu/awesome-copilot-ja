@@ -1,106 +1,104 @@
 ---
 name: fabric-lakehouse
-description: 'Use this skill to get context about Fabric Lakehouse and its features for software systems and AI-powered functions. It offers descriptions of Lakehouse data components, organization with schemas and shortcuts, access control, and code examples. This skill supports users in designing, building, and optimizing Lakehouse solutions using best practices.'
+description: 'ソフトウェアシステムや AI 機能で利用する Fabric Lakehouse とその機能のコンテキストを取得します。Lakehouse のデータコンポーネント、スキーマとショートカットによる整理、アクセス制御、コード例を説明します。ベストプラクティスに基づく Lakehouse ソリューションの設計、構築、最適化を支援します。'
 metadata:
   author: tedvilutis
   version: "1.0"
 ---
 
-# When to Use This Skill
+# このスキルを使うとき
 
-Use this skill when you need to:
-- Generate a document or explanation that includes definition and context about Fabric Lakehouse and its capabilities.
-- Design, build, and optimize Lakehouse solutions using best practices.
-- Understand the core concepts and components of a Lakehouse in Microsoft Fabric.
-- Learn how to manage tabular and non-tabular data within a Lakehouse.
+次のような場合にこのスキルを使用します。
+- Fabric Lakehouse とその機能の定義と背景を含むドキュメントや説明を作成する必要がある場合
+- ベスト プラクティスに基づいて Lakehouse ソリューションを設計、構築、最適化する場合
+- Microsoft Fabric における Lakehouse の中核となる概念とコンポーネントを理解する場合
+- Lakehouse 内で表形式データと非表形式データを管理する方法を学ぶ場合
 
 # Fabric Lakehouse
 
-## Core Concepts
+## 基本概念
 
-### What is a Lakehouse?
+### Lakehouse とは?
 
-Lakehouse in Microsoft Fabric is an item that gives users a place to store their tabular data (like tables) and non-tabular data (like files). It combines the flexibility of a data lake with the management capabilities of a data warehouse. It provides:
+Microsoft Fabric の Lakehouse は、ユーザーが表形式データ（テーブルなど）と非表形式データ（ファイルなど）を格納できるアイテムです。これは、データ レイクの柔軟性とデータ ウェアハウスの管理機能を組み合わせたものです。次の機能を提供します。
 
-- **Unified storage** in OneLake for structured and unstructured data
-- **Delta Lake format** for ACID transactions, versioning, and time travel
-- **SQL analytics endpoint** for T-SQL queries
-- **Semantic model** for Power BI integration
-- Support for other table formats like CSV, Parquet
-- Support for any file formats
-- Tools for table optimization and data management
+- OneLake における構造化データと非構造化データの統合ストレージ
+- ACID トランザクション、バージョン管理、タイム トラベルのための Delta Lake 形式
+- T-SQL クエリ用の SQL analytics endpoint
+- Power BI 連携用の Semantic model
+- CSV、Parquet などの他のテーブル形式のサポート
+- 任意のファイル形式のサポート
+- テーブル最適化とデータ管理のためのツール
 
-### Key Components
+### 主なコンポーネント
 
-- **Delta Tables**: Managed tables with ACID compliance and schema enforcement
-- **Files**: Unstructured/semi-structured data in the Files section
-- **SQL Endpoint**: Auto-generated read-only SQL interface for querying
-- **Shortcuts**: Virtual links to external/internal data without copying
-- **Fabric Materialized Views**: Pre-computed tables for fast query performance
+- **Delta Tables**: ACID 準拠とスキーマ強制を備えた管理対象テーブル
+- **Files**: Files セクション内の非構造化/半構造化データ
+- **SQL Endpoint**: クエリ用に自動生成される読み取り専用 SQL インターフェイス
+- **Shortcuts**: コピーなしで外部/内部データへの仮想リンクを作成
+- **Fabric Materialized Views**: 高速なクエリ パフォーマンスのための事前計算テーブル
 
-### Tabular data in a Lakehouse
+### Lakehouse 内の表形式データ
 
-Tabular data in a form of tables are stored under "Tables" folder. Main format for tables in Lakehouse is Delta. Lakehouse can store tabular data in other formats like CSV or Parquet, these formats are only available for Spark querying.
-Tables can be internal, when data is stored under "Tables" folder, or external, when only reference to a table is stored under "Tables" folder but the data itself is stored in a referenced location. Tables are referenced through Shortcuts, which can be internal (pointing to another location in Fabric) or external (pointing to data stored outside of Fabric).
+「Tables」フォルダー配下に格納される、テーブルの形をした表形式データがあります。Lakehouse でテーブルの主な形式は Delta です。Lakehouse は CSV や Parquet などの他の形式も格納できますが、これらの形式は Spark クエリでのみ利用可能です。
+テーブルは内部テーブルと外部テーブルに分けられます。内部テーブルは「Tables」フォルダー配下にデータが保存されるものです。一方、外部テーブルは「Tables」フォルダー配下にテーブルへの参照だけが保存され、実データ自体は参照先の場所に格納されるものです。テーブルの参照は Shortcuts を通じて行われ、Shortcuts は内部（Fabric 内の別の場所を指す）または外部（Fabric の外にあるデータを指す）にできます。
 
-### Schemas for tables in a Lakehouse
+### Lakehouse 内のテーブルのスキーマ
 
-When creating a lakehouse, users can choose to enable schemas. Schemas are used to organize Lakehouse tables. Schemas are implemented as folders under the "Tables" folder and store tables inside of those folders. The default schema is "dbo" and it can't be deleted or renamed. All other schemas are optional and can be created, renamed, or deleted. Users can reference a schema located in another lakehouse using a Schema Shortcut, thereby referencing all tables in the destination schema with a single shortcut.
+Lakehouse を作成するときに、ユーザーはスキーマを有効にするかどうかを選択できます。スキーマは Lakehouse のテーブルを整理するために使用されます。スキーマは「Tables」フォルダー配下のフォルダーとして実装され、そのフォルダー内にテーブルを格納します。既定のスキーマは "dbo" であり、削除または名前変更はできません。その他のスキーマは任意であり、作成、名前変更、削除が可能です。ユーザーは Schema Shortcut を使用して、別の Lakehouse にあるスキーマを参照でき、そのスキーマ内のすべてのテーブルを 1 つのショートカットで参照できます。
 
-### Files in a Lakehouse
+### Lakehouse 内のファイル
 
-Files are stored under "Files" folder. Users can create folders and subfolders to organize their files. Any file format can be stored in Lakehouse.
+ファイルは「Files」フォルダーに格納されます。ユーザーはフォルダーやサブフォルダーを作成して、ファイルを整理できます。Lakehouse には任意のファイル形式を保存できます。
 
 ### Fabric Materialized Views
 
-Set of pre-computed tables that are automatically updated based on a schedule. They provide fast query performance for complex aggregations and joins. Materialized views are defined using PySpark or Spark SQL and stored in an associated Notebook.
+スケジュールに基づいて自動的に更新される、事前計算されたテーブルのセットです。複雑な集計や結合に対して高速なクエリ パフォーマンスを提供します。Materialized view は PySpark または Spark SQL を使用して定義され、関連付けられた Notebook に保存されます。
 
 ### Spark Views
 
-Logical tables defined by a SQL query. They do not store data but provide a virtual layer for querying. Views are defined using Spark SQL and stored in Lakehouse next to Tables.
+SQL クエリによって定義される論理テーブルです。データ自体は保存せず、クエリのための仮想レイヤーとして機能します。View は Spark SQL を使用して定義され、Tables の隣にある Lakehouse に保存されます。
 
-## Security
+## セキュリティ
 
-### Item access or control plane security
+### アイテム アクセスまたは制御プレーンのセキュリティ
 
-Users can have workspace roles (Admin, Member, Contributor, Viewer) that provide different levels of access to Lakehouse and its contents. Users can also get access permission using sharing capabilities of Lakehouse.
+ユーザーはワークスペース ロール（Admin、Member、Contributor、Viewer）を持ち、それぞれ Lakehouse とそのコンテンツに対するアクセス レベルが異なります。また、Lakehouse の共有機能を使用してアクセス許可を付与することもできます。
 
-### Data access or OneLake Security
+### データ アクセスまたは OneLake のセキュリティ
 
-For data access use OneLake security model, which is based on Microsoft Entra ID (formerly Azure Active Directory) and role-based access control (RBAC). Lakehouse data is stored in OneLake, so access to data is controlled through OneLake permissions. In addition to object-level permissions, Lakehouse also supports column-level and row-level security for tables, allowing fine-grained control over who can see specific columns or rows in a table.
-
+データ アクセスには OneLake セキュリティ モデルを使用します。このモデルは Microsoft Entra ID（旧 Azure Active Directory）とロール ベース アクセス制御（RBAC）に基づいています。Lakehouse のデータは OneLake に保存されるため、データへのアクセスは OneLake の権限を通じて制御されます。オブジェクト レベルの権限に加えて、Lakehouse はテーブルの列レベルおよび行レベルのセキュリティもサポートしており、特定の列や行を閲覧できるユーザーを細かく制御できます。
 
 ## Lakehouse Shortcuts
 
-Shortcuts create virtual links to data without copying:
+Shortcuts は、データをコピーせずに仮想リンクを作成します。
 
-### Types of Shortcuts
+### Shortcut の種類
 
-- **Internal**: Link to other Fabric Lakehouses/tables, cross-workspace data sharing 
-- **ADLS Gen2**: Link to ADLS Gen2 containers in Azure
-- **Amazon S3**: AWS S3 buckets, cross-cloud data access
-- **Dataverse**: Microsoft Dataverse, business application data
-- **Google Cloud Storage**: GCS buckets, cross-cloud data access
+- **Internal**: 別の Fabric Lakehouse / テーブルへのリンク、ワークスペース間のデータ共有
+- **ADLS Gen2**: Azure の ADLS Gen2 コンテナーへのリンク
+- **Amazon S3**: AWS S3 バケットへのリンク、クラウド間データ アクセス
+- **Dataverse**: Microsoft Dataverse、ビジネス アプリケーション データ
+- **Google Cloud Storage**: GCS バケットへのリンク、クラウド間データ アクセス
 
-## Performance Optimization
+## パフォーマンス最適化
 
-### V-Order Optimization
+### V-Order 最適化
 
-For faster data read with semantic model enable V-Order optimization on Delta tables. This presorts data in a way that improves query performance for common access patterns.
+セマンティック モデルを有効にした状態で Delta テーブルに V-Order 最適化を適用すると、データの読み取りを高速化できます。これはデータを事前に並べ替えて、一般的なアクセス パターンでのクエリ パフォーマンスを向上させる手法です。
 
-### Table Optimization
+### テーブル最適化
 
-Tables can also be optimized using the OPTIMIZE command, which compacts small files into larger ones and can also apply Z-ordering to improve query performance on specific columns. Regular optimization helps maintain performance as data is ingested and updated over time. The Vacuum command can be used to clean up old files and free up storage space, especially after updates and deletes.
+テーブルは OPTIMIZE コマンドを使用して最適化できます。これは小さなファイルを大きなファイルに圧縮し、特定の列に対して Z-ordering を適用してクエリ パフォーマンスを改善できます。通常の最適化により、データの取り込みや更新が行われるたびにパフォーマンスを維持できます。Vacuum コマンドを使用すると、更新や削除の後に古いファイルをクリーンアップして保存領域を解放できます。
 
-## Lineage
+## 系譜 (Lineage)
 
-The Lakehouse item supports lineage, which allows users to track the origin and transformations of data. Lineage information is automatically captured for tables and files in Lakehouse, showing how data flows from source to destination. This helps with debugging, auditing, and understanding data dependencies.
+Lakehouse アイテムは系譜 (lineage) をサポートしており、ユーザーはデータの起点と変換の過程を追跡できます。系譜情報は Lakehouse 内のテーブルやファイルに対して自動的に取得され、データがどのソースからどの宛先へ流れるかを示します。これにより、デバッグ、監査、データ依存関係の理解が容易になります。
 
-## PySpark Code Examples
+## PySpark コード例
 
-See [PySpark code](references/pyspark.md) for details.
+詳細については [PySpark コード](references/pyspark.md) を参照してください。
 
-## Getting data into Lakehouse
+## Lakehouse へのデータ取り込み
 
-See [Get data](references/getdata.md) for details.
-
+詳細については [データの取得](references/getdata.md) を参照してください。

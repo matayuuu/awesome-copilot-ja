@@ -1,6 +1,6 @@
 ---
 name: namecheap
-description: 'Manage DNS records for domains registered with Namecheap via their API. List domains, view/add/update/remove DNS host entries (A, AAAA, CNAME, MX, TXT, etc.), and guide users through API setup including public IP detection and credential configuration. Use when the user mentions Namecheap, DNS records, domain management, or wants to add/change/remove A records, CNAME records, MX records, or TXT records for their domains.'
+description: 'namecheap に関する作業を支援する Skill です。対象のファイルや設定を確認し、必要な手順、検証方法、注意点を案内します。対象技術の調査、実装、運用、トラブルシューティングに使用します。'
 ---
 
 # Namecheap DNS Management
@@ -9,7 +9,7 @@ description: 'Manage DNS records for domains registered with Namecheap via their
 USE FOR: "add DNS record", "update A record", "manage Namecheap domains", "set CNAME", "add MX record", "add TXT record", "list my domains", "show DNS records", "namecheap setup", "configure namecheap API", "what is my public IP"
 DO NOT USE FOR: domain registration/purchase, SSL certificate management, hosting configuration, non-Namecheap DNS providers
 
-## Workflow
+## ワークフロー
 
 ### First-time Setup
 
@@ -100,7 +100,7 @@ python3 namecheap.py domains.ns.update --domain example.com --nameserver ns1.exa
 ]
 ```
 
-## Behavior
+## 動作
 
 - **Always check credentials first.** Before any API operation, verify `~/.namecheap-api` exists and is readable. If not, run the setup flow.
 - **Show current records before modifying.** Before adding or removing records, always fetch and display the current DNS records so the user can confirm the change.
@@ -124,6 +124,6 @@ This file must have `600` permissions (owner read/write only). Alternatively, th
 
 A, AAAA, CNAME, MX, MXE, TXT, URL, URL301, FRAME
 
-## References
+## 参考資料
 
 See `references/namecheap-api.md` for full API documentation including request/response formats.

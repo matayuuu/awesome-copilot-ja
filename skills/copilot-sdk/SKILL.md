@@ -1,25 +1,25 @@
 ---
 name: copilot-sdk
-description: Build agentic applications with GitHub Copilot SDK. Use when embedding AI agents in apps, creating custom tools, implementing streaming responses, managing sessions, connecting to MCP servers, or creating custom agents. Triggers on Copilot SDK, GitHub SDK, agentic app, embed Copilot, programmable agent, MCP server, custom agent.
+description: 'GitHub Copilot SDKでエージェント型アプリケーションを構築する。アプリへのAIエージェント組み込み、カスタムツール作成、ストリーミング応答の実装、セッション管理、MCP serverへの接続、カスタムエージェント作成に使用する。Copilot SDK、GitHub SDK、エージェント型アプリ、Copilot組み込み、プログラマブルエージェント、MCP server、カスタムエージェントに関する依頼で起動する。'
 ---
 
 # GitHub Copilot SDK
 
-Embed Copilot's agentic workflows in any application using Python, TypeScript, Go, or .NET.
+Python、TypeScript、Go、.NETを使って、Copilotのエージェント型Workflowを任意のアプリケーションへ組み込む。
 
-## Overview
+## 概要
 
-The GitHub Copilot SDK exposes the same engine behind Copilot CLI: a production-tested agent runtime you can invoke programmatically. No need to build your own orchestration - you define agent behavior, Copilot handles planning, tool invocation, file edits, and more.
+GitHub Copilot SDKは、Copilot CLIの基盤と同じエンジンを、プログラムから呼び出せる本番検証済みのエージェントランタイムとして公開する。独自のオーケストレーションを構築する必要はない。エージェントの動作を定義すれば、計画、ツール呼び出し、ファイル編集などをCopilotが処理する。
 
-## Prerequisites
+## 前提条件
 
-1. **GitHub Copilot access** and an authenticated environment
-2. **Language runtime**: Node.js ^20.19.0 or >=22.12.0, Python 3.11+, Go 1.24+, or a .NET Standard 2.0-compatible implementation
-3. **Go**: GitHub Copilot CLI installed and authenticated ([Installation guide](https://docs.github.com/en/copilot/how-tos/set-up/install-copilot-cli))
+1. **GitHub Copilotへのアクセス**と認証済み環境
+2. **言語ランタイム**: Node.js ^20.19.0または>=22.12.0、Python 3.11以降、Go 1.24以降、または.NET Standard 2.0互換実装
+3. **Go**: GitHub Copilot CLIがインストール済みかつ認証済みであること（[インストールガイド](https://docs.github.com/en/copilot/how-tos/set-up/install-copilot-cli)）
 
-The TypeScript, Python, and .NET packages use a bundled Copilot runtime by default, so they do not need a separate CLI installation.
+TypeScript、Python、.NETのpackageは既定で同梱のCopilot runtimeを使うため、CLIを別途インストールする必要はない。
 
-## Installation
+## インストール
 
 ### Node.js/TypeScript
 ```bash
@@ -51,7 +51,7 @@ dotnet new console -n CopilotDemo && cd CopilotDemo
 dotnet add package GitHub.Copilot.SDK
 ```
 
-## Quick Start
+## クイックスタート
 
 ### TypeScript
 ```typescript
@@ -70,7 +70,7 @@ await client.stop();
 process.exit(0);
 ```
 
-Run: `npx tsx index.ts`
+実行: `npx tsx index.ts`
 
 ### Python
 ```python
@@ -140,11 +140,11 @@ var response = await session.SendAndWaitAsync(new MessageOptions { Prompt = "Wha
 Console.WriteLine(response?.Data.Content);
 ```
 
-Run: `dotnet run`
+実行: `dotnet run`
 
-## Streaming Responses
+## ストリーミング応答
 
-Enable real-time output for better UX:
+より良いUXのため、リアルタイム出力を有効にする。
 
 ### TypeScript
 ```typescript
@@ -239,12 +239,12 @@ session.On(ev =>
 await session.SendAndWaitAsync(new MessageOptions { Prompt = "Tell me a short joke" });
 ```
 
-## Custom Tools
+## カスタムツール
 
-Define tools that Copilot can invoke during reasoning. When you define a tool, you tell Copilot:
-1. **What the tool does** (description)
-2. **What parameters it needs** (schema)
-3. **What code to run** (handler)
+Copilotが推論中に呼び出せるツールを定義する。ツールを定義するときは、Copilotへ次を伝える。
+1. **ツールが何をするか**（description）
+2. **必要なパラメーター**（schema）
+3. **実行するコード**（handler）
 
 ### TypeScript (JSON Schema)
 ```typescript
@@ -395,19 +395,19 @@ await using var session = await client.CreateSessionAsync(new SessionConfig
 });
 ```
 
-## How Tools Work
+## ツールの仕組み
 
-When Copilot decides to call your tool:
-1. Copilot sends a tool call request with the parameters
-2. The SDK runs your handler function
-3. The result is sent back to Copilot
-4. Copilot incorporates the result into its response
+Copilotがツールの呼び出しを決定すると、次の処理が行われる。
+1. Copilotがパラメーターを含むツール呼び出し要求を送る
+2. SDKがhandler関数を実行する
+3. 結果がCopilotへ返される
+4. Copilotが結果を応答へ組み込む
 
-Copilot decides when to call your tool based on the user's question and your tool's description.
+Copilotはユーザーの質問とツールのdescriptionに基づいて、ツールを呼び出すタイミングを判断する。
 
-## Interactive CLI Assistant
+## 対話型CLIアシスタント
 
-Build a complete interactive assistant:
+完全な対話型アシスタントを構築する。
 
 ### TypeScript
 ```typescript
@@ -525,9 +525,9 @@ async def main():
 asyncio.run(main())
 ```
 
-## MCP Server Integration
+## MCP Serverとの統合
 
-Connect to MCP (Model Context Protocol) servers for pre-built tools. Connect to GitHub's MCP server for repository, issue, and PR access:
+構築済みツールを利用するため、MCP（Model Context Protocol）serverへ接続する。リポジトリ、Issue、PRへアクセスするにはGitHubのMCP serverへ接続する。
 
 ### TypeScript
 ```typescript
@@ -589,9 +589,9 @@ await using var session = await client.CreateSessionAsync(new SessionConfig
 });
 ```
 
-## Custom Agents
+## カスタムエージェント
 
-Define specialized AI personas for specific tasks:
+特定タスク向けに専門化したAIペルソナを定義する。
 
 ### TypeScript
 ```typescript
@@ -622,9 +622,9 @@ async with await client.create_session(
     ...
 ```
 
-## System Message
+## システムメッセージ
 
-Customize the AI's behavior and personality:
+AIの動作と個性をカスタマイズする。
 
 ### TypeScript
 ```typescript
@@ -649,16 +649,16 @@ async with await client.create_session(
     ...
 ```
 
-## External CLI Server
+## 外部CLI Server
 
-Run the CLI in server mode separately and connect the SDK to it. Useful for debugging, resource sharing, or custom environments.
+CLIをserver modeで別途実行し、SDKから接続する。デバッグ、リソース共有、カスタム環境で役立つ。
 
-### Start CLI in Server Mode
+### CLIをServer Modeで起動
 ```bash
 copilot --server --port 4321
 ```
 
-### Connect SDK to External Server
+### SDKを外部Serverへ接続
 
 #### TypeScript
 ```typescript
@@ -716,54 +716,54 @@ await using var session = await client.CreateSessionAsync(new SessionConfig
 });
 ```
 
-**Note:** When configured to use an external server, the SDK manages only its connection and does not manage the external process.
+**注:** 外部serverを使うよう構成した場合、SDKが管理するのは接続だけであり、外部プロセスは管理しない。
 
-## Event Types
+## Eventの種類
 
-| Event | Description |
+| Event | 説明 |
 |-------|-------------|
-| `user.message` | User input added |
-| `assistant.message` | Complete model response |
-| `assistant.message_delta` | Streaming response chunk |
-| `assistant.reasoning` | Model reasoning (model-dependent) |
-| `assistant.reasoning_delta` | Streaming reasoning chunk |
-| `tool.execution_start` | Tool invocation started |
-| `tool.execution_complete` | Tool execution finished |
-| `session.idle` | No active processing |
-| `session.error` | Error occurred |
+| `user.message` | ユーザー入力が追加された |
+| `assistant.message` | 完全なモデル応答 |
+| `assistant.message_delta` | ストリーミング応答の断片 |
+| `assistant.reasoning` | モデルの推論（モデル依存） |
+| `assistant.reasoning_delta` | ストリーミング推論の断片 |
+| `tool.execution_start` | ツール呼び出しを開始した |
+| `tool.execution_complete` | ツール実行が完了した |
+| `session.idle` | 実行中の処理がない |
+| `session.error` | エラーが発生した |
 
-## Client Configuration
+## Clientの構成
 
-| Option | Description | Default |
+| Option | 説明 | 既定値 |
 |--------|-------------|---------|
-| `cliPath` | Path to Copilot CLI executable | System PATH |
-| `cliUrl` | Connect to existing server (e.g., "localhost:4321") | None |
-| `port` | Server communication port | Random |
-| `useStdio` | Use stdio transport instead of TCP | true |
-| `logLevel` | Logging verbosity | "info" |
-| `autoStart` | Launch server automatically | true |
-| `autoRestart` | Restart on crashes | true |
-| `cwd` | Working directory for CLI process | Inherited |
+| `cliPath` | Copilot CLI実行可能ファイルのパス | システムのPATH |
+| `cliUrl` | 既存serverへ接続（例: `"localhost:4321"`） | なし |
+| `port` | server通信ポート | ランダム |
+| `useStdio` | TCPではなくstdio transportを使う | true |
+| `logLevel` | ログの詳細度 | `"info"` |
+| `autoStart` | serverを自動起動する | true |
+| `autoRestart` | クラッシュ時に再起動する | true |
+| `cwd` | CLIプロセスの作業ディレクトリ | 継承 |
 
-## Session Configuration
+## Sessionの構成
 
-| Option | Description |
+| Option | 説明 |
 |--------|-------------|
-| `model` | LLM to use ("gpt-4.1", "claude-sonnet-4.5", etc.) |
-| `sessionId` | Custom session identifier |
-| `tools` | Custom tool definitions |
-| `mcpServers` | MCP server connections |
-| `customAgents` | Custom agent personas |
-| `systemMessage` | Override default system prompt |
-| `streaming` | Enable incremental response chunks |
-| `availableTools` | Whitelist of permitted tools |
-| `excludedTools` | Blacklist of disabled tools |
+| `model` | 使用するLLM（`"gpt-4.1"`、`"claude-sonnet-4.5"` など） |
+| `sessionId` | カスタムsession識別子 |
+| `tools` | カスタムツール定義 |
+| `mcpServers` | MCP server接続 |
+| `customAgents` | カスタムエージェントのペルソナ |
+| `systemMessage` | 既定のsystem promptを上書き |
+| `streaming` | 応答の断片的な配信を有効化 |
+| `availableTools` | 許可するツールのallowlist |
+| `excludedTools` | 無効化するツールのdenylist |
 
-## Session Persistence
+## Sessionの永続化
 
-Save and resume conversations across restarts:
+再起動をまたいで会話を保存し、再開する。
 
-### Create with Custom ID
+### カスタムIDで作成
 ```typescript
 const session = await client.createSession({
     onPermissionRequest: approveAll,
@@ -772,19 +772,19 @@ const session = await client.createSession({
 });
 ```
 
-### Resume Session
+### Sessionを再開
 ```typescript
 const session = await client.resumeSession("user-123-conversation", { onPermissionRequest: approveAll });
 await session.send({ prompt: "What did we discuss earlier?" });
 ```
 
-### List and Delete Sessions
+### Sessionの一覧表示と削除
 ```typescript
 const sessions = await client.listSessions();
 await client.deleteSession("old-session-id");
 ```
 
-## Error Handling
+## エラー処理
 
 ```typescript
 try {
@@ -810,7 +810,7 @@ try {
 }
 ```
 
-## Graceful Shutdown
+## 正常な終了
 
 ```typescript
 process.on("SIGINT", async () => {
@@ -820,9 +820,9 @@ process.on("SIGINT", async () => {
 });
 ```
 
-## Common Patterns
+## 一般的なパターン
 
-### Multi-turn Conversation
+### 複数ターンの会話
 ```typescript
 const session = await client.createSession({
     onPermissionRequest: approveAll,
@@ -834,7 +834,7 @@ await session.sendAndWait({ prompt: "What's my name?" });
 // Response: "Your name is Alice"
 ```
 
-### File Attachments
+### ファイル添付
 ```typescript
 await session.send({
     prompt: "Analyze this file",
@@ -846,7 +846,7 @@ await session.send({
 });
 ```
 
-### Abort Long Operations
+### 長時間処理の中止
 ```typescript
 const timeoutId = setTimeout(() => {
     session.abort();
@@ -859,25 +859,25 @@ session.on((event) => {
 });
 ```
 
-## Available Models
+## 利用可能なモデル
 
-Query available models at runtime:
+実行時に利用可能なモデルを照会する。
 
 ```typescript
 const models = await client.getModels();
 // Returns: ["gpt-4.1", "gpt-4o", "claude-sonnet-4.5", ...]
 ```
 
-## Best Practices
+## ベストプラクティス
 
-1. **Always clean up**: Use language-native context managers or disposal, or explicitly disconnect sessions and stop clients
-2. **Set timeouts**: Use `sendAndWait` with timeout for long operations
-3. **Handle events**: Subscribe to error events for robust error handling
-4. **Use streaming**: Enable streaming for better UX on long responses
-5. **Persist sessions**: Use custom session IDs for multi-turn conversations
-6. **Define clear tools**: Write descriptive tool names and descriptions
+1. **必ずクリーンアップする**: 言語固有のcontext managerまたはdisposeを使うか、sessionを明示的に切断してclientを停止する
+2. **タイムアウトを設定する**: 長時間処理ではタイムアウト付きの `sendAndWait` を使う
+3. **Eventを処理する**: 堅牢なエラー処理のためerror eventを購読する
+4. **ストリーミングを使う**: 長い応答のUXを改善するためstreamingを有効にする
+5. **Sessionを永続化する**: 複数ターンの会話ではカスタムsession IDを使う
+6. **明確なツールを定義する**: 説明的なツール名とdescriptionを書く
 
-## Architecture
+## アーキテクチャ
 
 ```
 Your Application
@@ -889,17 +889,17 @@ Your Application
   GitHub (models, auth)
 ```
 
-The SDK manages the CLI process lifecycle automatically. All communication happens via JSON-RPC over stdio or TCP.
+SDKはCLIプロセスのライフサイクルを自動管理する。すべての通信はstdioまたはTCP上のJSON-RPCで行われる。
 
-## Resources
+## リソース
 
 - **GitHub Repository**: https://github.com/github/copilot-sdk
-- **Getting Started Tutorial**: https://github.com/github/copilot-sdk/blob/main/docs/tutorials/first-app.md
+- **入門チュートリアル**: https://github.com/github/copilot-sdk/blob/main/docs/tutorials/first-app.md
 - **GitHub MCP Server**: https://github.com/github/github-mcp-server
-- **MCP Servers Directory**: https://github.com/modelcontextprotocol/servers
+- **MCP Serversディレクトリ**: https://github.com/modelcontextprotocol/servers
 - **Cookbook**: https://github.com/github/copilot-sdk/tree/main/cookbook
-- **Samples**: https://github.com/github/copilot-sdk/tree/main/samples
+- **サンプル**: https://github.com/github/copilot-sdk/tree/main/samples
 
-## Status
+## ステータス
 
-This SDK is in **Technical Preview** and may have breaking changes. Not recommended for production use yet.
+このSDKは**Technical Preview**であり、破壊的変更が発生する可能性がある。現時点では本番利用を推奨しない。

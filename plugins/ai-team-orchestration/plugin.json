@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "ai-team-orchestration",
-  "description": "Run a lightweight, role-separated AI development team with flexible tools, developer-selected models, proportionate planning, and optional QA.",
+  "description": "柔軟なツール、開発者が選択したモデル、作業規模に応じた計画、任意の QA を備えた、軽量で役割分担された AI 開発チームを運用します。",
   "version": "2.0.0",
   "keywords": [
     "ai-team",

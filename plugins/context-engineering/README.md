@@ -1,15 +1,15 @@
-# Context Engineering Plugin
+# Context Engineering プラグイン
 
-Tools and techniques for maximizing GitHub Copilot effectiveness through better context management. Includes guidelines for structuring code, an agent for planning multi-file changes, and prompts for context-aware development.
+よりよいコンテキスト管理によって GitHub Copilot の効果を最大化するツールと手法です。コード構成のガイドライン、複数ファイル変更を計画する agent、コンテキストを意識した開発向けプロンプトを含みます。
 
-## Installation
+## インストール
 
 ```bash
 # Using Copilot CLI
 copilot plugin install context-engineering@awesome-copilot
 ```
 
-## What's Included
+## 含まれるもの
 
 ### Commands (Slash Commands)
 

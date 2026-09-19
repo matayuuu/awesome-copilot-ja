@@ -1,10 +1,10 @@
-# ContextMatic Plugin
+# ContextMatic プラグイン
 
-Coding agents hallucinate APIs. APIMatic Context gives them curated, versioned API and SDK docs.
+コーディング agents は API を幻覚することがあります。APIMatic Context は厳選されたバージョン管理済みの API と SDK のドキュメントを提供します。
 
-When a developer asks their agent to "integrate the payments API," it normally guesses, pulling from outdated training data or generic patterns that don't match the actual SDK. ContextMatic solves this by giving the agent authoritative, version-aware, SDK-native context at the exact moment it's needed.
+開発者が agent に「payments API を統合して」と頼むと、通常は実際の SDK に合わない古い学習データや一般的なパターンをもとに推測します。ContextMatic は必要な瞬間に、信頼できてバージョンを認識した SDK ネイティブのコンテキストを agent に与えて解決します。
 
-## What It Includes
+## 含まれるもの
 
 ### MCP Server
 

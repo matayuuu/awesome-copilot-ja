@@ -5,40 +5,40 @@ description: 'Three-layer verification pipeline for AI output. Extracts verifiab
 
 # Doublecheck
 
-Run a three-layer verification pipeline on AI-generated output. The goal is not to tell the user what is true -- it is to extract every verifiable claim, find sources the user can check independently, and flag anything that looks like a hallucination pattern.
+AIが生成した出力に対して、3層の確認パイプラインを実行します。目的は、ユーザーに「何が真実か」を伝えることではなく、検証可能な主張をすべて抽出し、ユーザーが独自に確認できる情報源を見つけ、幻覚パターンに見えるものを見逃さないことです。
 
-## Activation
+## 起動
 
-Doublecheck operates in two modes: **active mode** (persistent) and **one-shot mode** (on demand).
+Doublecheck は 2 つのモードで動作します。**アクティブモード**（常時有効）と **ワンショットモード**（必要時のみ）です。
 
-### Active Mode
+### アクティブモード
 
-When the user invokes this skill without providing specific text to verify, activate persistent doublecheck mode. Respond with:
+ユーザーが確認対象の具体的な文章を指定せずにこのスキルを呼び出した場合、永続的なダブルチェックモードを有効にします。次のように応答してください。
 
-> **Doublecheck is now active.** I'll verify factual claims in my responses before presenting them. You'll see an inline verification summary after each substantive response. Say "full report" on any response to get the complete three-layer verification with detailed sourcing. Turn it off anytime by saying "turn off doublecheck."
+> **Doublecheck は有効になりました。** 応答を提示する前に事実確認の主張を検証します。実質的な応答の後には、必ずインライン検証要約が表示されます。任意の応答で「完全レポート」と言えば、詳細な3層検証の完全レポートを取得できます。いつでも「ダブルチェックをオフにする」と言って無効化できます。
 
-Then follow ALL of the rules below for the remainder of the conversation:
+その後、会話の残りの間は以下のルールをすべて守ります。
 
-**Rule: Classify every response before sending it.**
+**ルール: 送信前にすべての応答を分類する。**
 
-Before producing any substantive response, determine whether it contains verifiable claims. Classify the response:
+実質的な応答を生成する前に、そこに検証可能な主張が含まれているかを判断し、分類します。
 
-| Response type | Contains verifiable claims? | Action |
-|--------------|---------------------------|--------|
-| Factual analysis, legal guidance, regulatory interpretation, compliance guidance, or content with case citations or statutory references | Yes -- high density | Run full verification report (see high-stakes content rule below) |
-| Summary of a document, research, or data | Yes -- moderate density | Run inline verification on key claims |
-| Code generation, creative writing, brainstorming | Rarely | Skip verification; note that doublecheck mode doesn't apply to this type of content |
-| Casual conversation, clarifying questions, status updates | No | Skip verification silently |
+| 応答の種類 | 検証可能な主張を含むか | 実行内容 |
+|--------------|---------------------------|----------|
+| 事実分析、法的助言、規制解釈、コンプライアンス助言、または判例引用や法令参照を含む内容 | はい -- 高密度 | 完全な検証レポートを実行（下の高リスクコンテンツ規則を参照） |
+| 文書、調査、データの要約 | はい -- 中密度 | 主要な主張に対してインライン検証を実行 |
+| コード生成、創作執筆、ブレインストーミング | ほとんどない | 検証を省略し、ダブルチェックモードがこの種のコンテンツには適用されないことを記載する |
+| カジュアルな会話、確認質問、状況報告 | いいえ | 検証を黙って省略する |
 
-**Rule: Inline verification for active mode.**
+**ルール: アクティブモードでのインライン検証。**
 
-When active mode applies, do NOT generate a separate full verification report for every response. Instead, embed verification directly into your response using this pattern:
+アクティブモードが適用される場合、すべての応答に対して別個の完全な検証レポートを作成しないでください。代わりに、検証を応答に直接埋め込み、次のパターンを使います。
 
-1. Generate your response normally.
-2. After the response, add a `Verification` section.
-3. In that section, list each verifiable claim with its confidence rating and a source link where available.
+1. 通常どおり応答を生成する。
+2. 応答の後に `Verification` セクションを追加する。
+3. そのセクションで、各検証可能な主張を、確信度と利用可能な場合は出典リンク付きで列挙する。
 
-Format:
+形式:
 
 ```
 ---
@@ -50,228 +50,228 @@ Format:
 - [FABRICATION RISK] "Claim text" -- could not find this citation; verify before relying on it
 ```
 
-For active mode, prioritize speed. Run web searches for citations, specific statistics, and any claim you have low confidence about. You do not need to search for claims that are common knowledge or that you have high confidence about -- just rate them PLAUSIBLE and move on.
+アクティブモードでは速度を優先します。引用、特定の統計値、確信度が低い主張については、必要に応じてWeb検索を実行してください。一般常識であるか、確信度が高い主張については検索する必要はありません。そこは「PLAUSIBLE」と評価して進めてよいです。
 
-If any claim rates DISPUTED or FABRICATION RISK, call it out prominently before the verification section so the user sees it immediately. When auto-escalation applies (see below), place this callout at the top of the full report, before the summary table:
+もし主張のいずれかが DISPUTED または FABRICATION RISK と評価された場合、その主張を検証セクションの直前に目立つ形で示し、ユーザーがすぐに確認できるようにしてください。自動エスカレーションが適用される場合（以下参照）、これは完全レポートの冒頭、要約表の前に配置します。
 
 ```
 **Heads up:** I'm not confident about [specific claim]. I couldn't find a supporting source. You should verify this independently before relying on it.
 ```
 
-**Rule: Auto-escalate to full report for high-risk findings.**
+**ルール: 高リスクの発見時に自動的に完全レポートへエスカレーションする。**
 
-If your inline verification identifies ANY claim rated DISPUTED or FABRICATION RISK, do not produce inline verification. Instead, place the "Heads up" callout at the top of your response and then produce the full three-layer verification report using the template in `assets/verification-report-template.md`. The user should not have to ask for the detailed report when something is clearly wrong.
+インライン検証で DISPUTED または FABRICATION RISK と評価された主張が 1 つでも見つかった場合、インライン検証を出力せず、応答の先頭に「注意」コールアウトを置いたうえで、`assets/verification-report-template.md` で定義する3層検証レポートを作成してください。明らかに問題があるときに、ユーザーが詳細なレポートを要求しなくても済むようにします。
 
-**Rule: Full report for high-stakes content.**
+**ルール: 高リスクコンテンツの完全レポート。**
 
-If the response contains legal analysis, regulatory interpretation, compliance guidance, case citations, or statutory references, always produce the full verification report using the template in `assets/verification-report-template.md`. Do not use inline verification for these content types -- the stakes are too high for the abbreviated format.
+応答に法的分析、規制解釈、コンプライアンス助言、判例引用、または法令参照が含まれる場合は、常に`assets/verification-report-template.md` で定義する完全な検証レポートを作成してください。インライン検証は使わないでください。リスクが高すぎて、簡略形式では不十分だからです。
 
-**Rule: Discoverability footer for inline verification.**
+**ルール: インライン検証の発見性フッター。**
 
-When producing inline verification (not a full report), always append this line at the end of the verification section:
+インライン検証（完全レポートではない場合）を出力するときは、検証セクションの最後に必ず次の行を追加してください。
 
 ```
 _Say "full report" for detailed three-layer verification with sources._
 ```
 
-**Rule: Offer full verification on request.**
+**ルール: リクエストに応じて完全検証を提供する。**
 
-If the user says "full report," "run full verification," "verify that," "doublecheck that," or similar, run the complete three-layer pipeline (described below) and produce the full report using the template in `assets/verification-report-template.md`.
+ユーザーが「完全レポート」「完全検証を実行」「これを検証」「これをダブルチェック」などと言った場合は、完全な3層パイプラインを実行し、`assets/verification-report-template.md` のテンプレートを使って完全レポートを作成してください。
 
-### One-Shot Mode
+### ワンショットモード
 
-When the user invokes this skill and provides specific text to verify (or references previous output), run the complete three-layer pipeline and produce a full verification report using the template in `assets/verification-report-template.md`.
+ユーザーがこのスキルを呼び出し、検証対象の具体的な文章を指定した場合（または以前の出力を参照した場合）は、完全な3層パイプラインを実行し、`assets/verification-report-template.md` のテンプレートを使って完全な検証レポートを作成してください。
 
-### Deactivation
+### 無効化
 
-When the user says "turn off doublecheck," "stop doublecheck," or similar, respond with:
+ユーザーが「ダブルチェックをオフにする」「ダブルチェックを停止する」などと言った場合は、次のように応答してください。
 
-> **Doublecheck is now off.** I'll respond normally without inline verification. You can reactivate it anytime.
-
----
-
-## Layer 1: Self-Audit
-
-Re-read the target text with a critical lens. Your job in this layer is extraction and internal analysis -- no web searches yet.
-
-### Step 1: Extract Claims
-
-Go through the target text sentence by sentence and pull out every statement that asserts something verifiable. Categorize each claim:
-
-| Category | What to look for | Examples |
-|----------|-----------------|---------|
-| **Factual** | Assertions about how things are or were | "Python was created in 1991", "The GPL requires derivative works to be open-sourced" |
-| **Statistical** | Numbers, percentages, quantities | "95% of enterprises use cloud services", "The contract has a 30-day termination clause" |
-| **Citation** | References to specific documents, cases, laws, papers, or standards | "Under Section 230 of the CDA...", "In *Mayo v. Prometheus* (2012)..." |
-| **Entity** | Claims about specific people, organizations, products, or places | "OpenAI was founded by Sam Altman and Elon Musk", "GDPR applies to EU residents" |
-| **Causal** | Claims that X caused Y or X leads to Y | "This vulnerability allows remote code execution", "The regulation was passed in response to the 2008 financial crisis" |
-| **Temporal** | Dates, timelines, sequences of events | "The deadline is March 15", "Version 2.0 was released before the security patch" |
-
-Assign each claim a temporary ID (C1, C2, C3...) for tracking through subsequent layers.
-
-### Step 2: Check Internal Consistency
-
-Review the extracted claims against each other:
-- Does the text contradict itself anywhere? (e.g., states two different dates for the same event)
-- Are there claims that are logically incompatible?
-- Does the text make assumptions in one section that it contradicts in another?
-
-Flag any internal contradictions immediately -- these don't need external verification to identify as problems.
-
-### Step 3: Initial Confidence Assessment
-
-For each claim, make an initial assessment based only on your own knowledge:
-- Do you recall this being accurate?
-- Is this the kind of claim where models frequently hallucinate? (Specific citations, precise statistics, and exact dates are high-risk categories.)
-- Is the claim specific enough to verify, or is it vague enough to be unfalsifiable?
-
-Record your initial confidence but do NOT report it as a finding yet. This is input for Layer 2, not output.
+> **Doublecheck はオフになりました。** これ以降はインライン検証なしで通常どおり応答します。必要ならいつでも再有効化できます。
 
 ---
 
-## Layer 2: Source Verification
+## レイヤー 1: 自己監査
 
-For each extracted claim, search for external evidence. The purpose of this layer is to find URLs the user can visit to verify claims independently.
+対象テキストを厳しく読み直します。このレイヤーでは、外部検索を行わずに、主張の抽出と内部分析を行います。
 
-### Search Strategy
+### ステップ 1: 主張の抽出
 
-For each claim:
+対象テキストを文ごとに確認し、検証可能なことを主張している文をすべて抽出します。各主張を分類します。
 
-1. **Formulate a search query** that would surface the primary source. For citations, search for the exact title or case name. For statistics, search for the specific number and topic. For factual claims, search for the key entities and relationships.
+| カテゴリ | 調べる内容 | 例 |
+|----------|------------|-----|
+| **事実** | 物事がどうであるか、またはどうであったかを述べる主張 | 「Python は 1991 年に作成された」、「GPL では派生作品をオープンソースにする必要がある」 |
+| **統計** | 数字、割合、数量 | 「企業の 95% がクラウドサービスを利用している」、「契約には 30 日の終了条項がある」 |
+| **引用** | 特定の文書、判例、法律、論文、または標準規格への言及 | 「CDA の第 230 条に基づく…」「*Mayo v. Prometheus*（2012）において…」 |
+| **主体** | 特定の人物、組織、製品、場所に関する主張 | 「OpenAI は Sam Altman と Elon Musk によって設立された」「GDPR は EU 居住者に適用される」 |
+| **因果関係** | X が Y を引き起こした、または X が Y に繋がるという主張 | 「この脆弱性によりリモートコード実行が可能になる」「この規制は 2008 年金融危機を受けて成立した」 |
+| **時系列** | 日付、時系列、出来事の順序 | 「締め切りは 3 月 15 日だ」「バージョン 2.0 はセキュリティパッチより前にリリースされた」 |
 
-2. **Run the search** using `web_search`. If the first search doesn't return relevant results, reformulate and try once more with different terms.
+各主張に一時的な ID（C1、C2、C3…）を割り当て、以降のレイヤーで追跡できるようにします。
 
-3. **Evaluate what you find:**
-   - Did you find a primary or authoritative source that directly addresses the claim?
-   - Did you find contradicting information from a credible source?
-   - Did you find nothing relevant? (This is itself a signal -- real things usually have a web footprint.)
+### ステップ 2: 内部整合性の確認
 
-4. **Record the result** with the source URL. Always provide the URL even if you also summarize what the source says.
+抽出した主張を相互に照合します。
+- 文章のどこかで矛盾していないか（例: 同じ出来事について異なる日付を述べている）
+- 論理的に両立しない主張がないか
+- あるセクションで前提としている内容が、別のセクションで矛盾していないか
 
-### What Counts as a Source
+内部の矛盾は、外部検証がなくてもすぐに問題として特定できます。見つけた場合はすぐにフラグを立ててください。
 
-Prefer primary and authoritative sources:
-- Official documentation, specifications, and standards
-- Court records, legislative texts, regulatory filings
-- Peer-reviewed publications
-- Official organizational websites and press releases
-- Established reference works (encyclopedias, legal databases)
+### ステップ 3: 初期の確信度評価
 
-Note when a source is secondary (news article, blog post, wiki page) vs. primary. The user can weigh accordingly.
+各主張に対して、外部情報を見ずに自分の知識だけで初期評価を行います。
+- それが正しいと覚えているか
+- この種の主張はモデルがよく誤るか（特に明示的な引用、正確な統計値、正確な日付は高リスク）
+- 主張が十分に具体的で検証可能か、それとも曖昧で反証不能なほど抽象的か
 
-### Handling Citations Specifically
-
-Citations are the highest-risk category for hallucinations. For any claim that cites a specific case, statute, paper, standard, or document:
-
-1. Search for the exact citation (case name, title, section number).
-2. If you find it, confirm the cited content actually says what the target text claims it says.
-3. If you cannot find it at all, flag it as FABRICATION RISK. Models frequently generate plausible-sounding citations for things that don't exist.
-
----
-
-## Layer 3: Adversarial Review
-
-Switch your posture entirely. In Layers 1 and 2, you were trying to understand and verify the output. In this layer, **assume the output contains errors** and actively try to find them.
-
-### Hallucination Pattern Checklist
-
-Check for these common patterns:
-
-1. **Fabricated citations** -- The text cites a specific case, paper, or statute that you could not find in Layer 2. This is the most dangerous hallucination pattern because it looks authoritative.
-
-2. **Precise numbers without sources** -- The text states a specific statistic (e.g., "78% of companies...") without indicating where the number comes from. Models often generate plausible-sounding statistics that are entirely made up.
-
-3. **Confident specificity on uncertain topics** -- The text states something very specific about a topic where specifics are genuinely unknown or disputed. Watch for exact dates, precise dollar amounts, and definitive attributions in areas where experts disagree.
-
-4. **Plausible-but-wrong associations** -- The text associates a concept, ruling, or event with the wrong entity. For example, attributing a ruling to the wrong court, assigning a quote to the wrong person, or describing a law's provision incorrectly while getting the law's name right.
-
-5. **Temporal confusion** -- The text describes something as current that may be outdated, or describes a sequence of events in the wrong order.
-
-6. **Overgeneralization** -- The text states something as universally true when it applies only in specific jurisdictions, contexts, or time periods. Common in legal and regulatory content.
-
-7. **Missing qualifiers** -- The text presents a nuanced topic as settled or straightforward when significant exceptions, limitations, or counterarguments exist.
-
-### Adversarial Questions
-
-For each major claim that passed Layers 1 and 2, ask:
-- What would make this claim wrong?
-- Is there a common misconception in this area that the model might have picked up?
-- If I were a subject matter expert, would I object to how this is stated?
-- Is this claim from before or after my training data cutoff, and might it be outdated?
-
-### Red Flags to Escalate
-
-If you find any of these, flag them prominently in the report:
-- A specific citation that cannot be found anywhere
-- A statistic with no identifiable source
-- A legal or regulatory claim that contradicts what authoritative sources say
-- A claim that has been stated with high confidence but is actually disputed or uncertain
+初期の確信度を記録しますが、まだ発見として報告しないでください。これはレイヤー 2 の入力であり、出力ではありません。
 
 ---
 
-## Producing the Verification Report
+## レイヤー 2: 出典検証
 
-After completing all three layers, produce the report using the template in `assets/verification-report-template.md`.
+各抽出主張について、外部証拠を探します。このレイヤーの目的は、ユーザーが自分で確認できるURLを見つけることです。
 
-### Confidence Ratings
+### 検索戦略
 
-Assign each claim a final rating:
+各主張について次を実行します。
 
-| Rating | Meaning | What the user should do |
-|--------|---------|------------------------|
-| **VERIFIED** | Supporting source found and linked | Spot-check the source link if the claim is critical to your work |
-| **PLAUSIBLE** | Consistent with general knowledge, no specific source found | Treat as reasonable but unconfirmed; verify independently if relying on it for decisions |
-| **UNVERIFIED** | Could not find supporting or contradicting evidence | Do not rely on this claim without independent verification |
-| **DISPUTED** | Found contradicting evidence from a credible source | Review the contradicting source; this claim may be wrong |
-| **FABRICATION RISK** | Matches hallucination patterns (e.g., unfindable citation, unsourced precise statistic) | Assume this is wrong until you can confirm it from a primary source |
+1. **主要な出典を示す検索クエリを作る。** 引用については、正確な判例名や文書名で検索します。統計については、具体的な数値とテーマで検索します。事実については、主要な主体と関係性を含めて検索します。
 
-### Report Principles
+2. **`web_search` を使って検索する。** 最初の検索で関連する結果が得られない場合は、異なる表現を使って再検索し、1 回だけ別の言い方で試します。
 
-- Provide links, not verdicts. The user decides what's true, not you.
-- When you found contradicting information, present both sides with sources. Don't pick a winner.
-- If a claim is unfalsifiable (too vague or subjective to verify), say so. "Unfalsifiable" is useful information.
-- Be explicit about what you could not check. "I could not verify this" is different from "this is wrong."
-- Group findings by severity. Lead with the items that need the most attention.
+3. **見つけたものを評価する。**
+   - 主張に直接対応する一次情報または権威ある情報源を見つけられたか
+   - 信頼できる情報源から矛盾する情報を見つけたか
+   - 何も関連する結果が見つからなかったか（これは重要なシグナルです。実在するものは通常、Web上に痕跡を残します）
 
-### Limitations Disclosure
+4. **結果を URL とともに記録する。** 内容を要約することもできますが、URL は必ず提供してください。
 
-Always include this at the end of the report:
+### 出典として認められるもの
 
-> **Limitations of this verification:**
-> - This tool accelerates human verification; it does not replace it.
-> - Web search results may not include the most recent information or paywalled sources.
-> - The adversarial review uses the same underlying model that may have produced the original output. It catches many issues but cannot catch all of them.
-> - A claim rated VERIFIED means a supporting source was found, not that the claim is definitely correct. Sources can be wrong too.
-> - Claims rated PLAUSIBLE may still be wrong. The absence of contradicting evidence is not proof of accuracy.
+一次情報と権威ある情報源を優先します。
+- 公式ドキュメント、仕様、標準
+- 裁判記録、立法文書、規制提出書類
+- 査読付き出版物
+- 公式組織のWebサイトとプレスリリース
+- 確立された参考資料（百科事典、法務データベース）
+
+情報源が二次情報（ニュース記事、ブログ記事、Wiki ページ）である場合は、その旨を明示してください。ユーザーはその重みを判断できます。
+
+### 引用の扱い
+
+引用は最も誤りが起こりやすいカテゴリです。特定の判例、法令、論文、標準、または文書を引用している主張については:
+
+1. その正確な引用（判例名、条項番号、題名）を検索します。
+2. 見つかった場合、その引用の本文が対象テキストが主張している内容を実際に述べているか確認します。
+3. まったく見つからない場合は、FABRICATION RISK としてフラグを立てます。モデルは存在しないような、もっともらしい引用を生成しやすいからです。
 
 ---
 
-## Domain-Specific Guidance
+## レイヤー 3: 逆攻撃的レビュー
 
-### Legal Content
+姿勢を完全に切り替えます。レイヤー 1 と 2 では出力を理解し、検証しようとしていましたが、このレイヤーでは、**出力に誤りが含まれている前提で**、積極的に誤りを探します。
 
-Legal content carries elevated hallucination risk because:
-- Case names, citations, and holdings are frequently fabricated by models
-- Jurisdictional nuances are often flattened or omitted
-- Statutory language may be paraphrased in ways that change the legal meaning
-- "Majority rule" and "minority rule" distinctions are often lost
+### 幻覚パターンのチェックリスト
 
-For legal content, give extra scrutiny to: case citations, statutory references, regulatory interpretations, and jurisdictional claims. Search legal databases when possible.
+次の一般的なパターンを確認します。
 
-### Medical and Scientific Content
+1. **捏造された引用** -- レイヤー 2 で見つけられなかった特定の判例、論文、法令を本文が引用している。これは権威づけに見えるため、最も危険な幻覚パターンです。
 
-- Check that cited studies actually exist and that the results are accurately described
-- Watch for outdated guidelines being presented as current
-- Flag dosages, treatment protocols, or diagnostic criteria -- these change and errors can be dangerous
+2. **根拠のない正確な数値** -- 本文が特定の統計値（例: 「企業の 78% ...」）を述べているが、その数値の出所が示されていない。モデルはもっともらしい数値を作り出しやすいです。
 
-### Financial and Regulatory Content
+3. **不確実なトピックに対する断定的な具体性** -- 本文が、実際には未解決または論争中のテーマについて非常に具体的に述べている。正確な日付、具体的な金額、専門家が意見の分かれる分野での明確な帰属に注意してください。
 
-- Verify specific dollar amounts, dates, and thresholds
-- Check that regulatory requirements are attributed to the correct jurisdiction and are current
-- Watch for tax law claims that may be outdated after recent legislative changes
+4. **もっともらしいが誤った関連付け** -- 本文が概念、判決、出来事を誤った主体に関連付けている。たとえば、違う裁判所の判決を当てはめている、引用を別の人物に帰属させている、法の名称は正しくても規定の説明が誤っている、などです。
 
-### Technical and Security Content
+5. **時間的な混乱** -- 何かを現在の状態であるかのように書いているが、実際には時代遅れである、または出来事の順序が逆になっている。
 
-- Verify CVE numbers, vulnerability descriptions, and affected versions
-- Check that API specifications and configuration instructions match current documentation
-- Watch for version-specific information that may be outdated
+6. **過度な一般化** -- 特定の管轄、文脈、時間帯に限る内容を、普遍的に当てはまるかのように述べている。法的・規制的なコンテンツでよく見られます。
+
+7. **限定条件の欠落** -- 微妙な話題を、重大な例外、制限、反論があるのに、確定済みかのように単純化して扱っている。
+
+### 逆説的な質問
+
+レイヤー 1 と 2 を通過した主要な主張ごとに、次の質問をします。
+- どんな条件でこの主張は間違いになるのか
+- この分野には一般的な誤解があり、モデルがそれを拾ってしまう可能性があるか
+- 専門家として見たら、どの表現に異議を唱えるだろうか
+- この主張は学習データのカットオフ前後のもので、時代遅れになっている可能性があるか
+
+### エスカレーションすべき赤信号
+
+以下に該当する場合は、レポートで明確にフラグを立ててください。
+- 見つけられない特定の引用
+- 特定の出典が確認できない統計値
+- 権威ある情報源と矛盾する法的または規制的な主張
+- 高い確信度で述べられているが、実際には論争中または不確実な主張
+
+---
+
+## 検証レポートの作成
+
+3 層すべてを完了した後、`assets/verification-report-template.md` のテンプレートを使ってレポートを作成します。
+
+### 確信度評価
+
+各主張に最終的な評価を割り当てます。
+
+| 評価 | 意味 | ユーザーに期待される対応 |
+|------|------|--------------------------|
+| **VERIFIED** | 支持する出典が見つかり、リンクされている | 主張が作業にとって重要な場合は、出典リンクを軽く確認する |
+| **PLAUSIBLE** | 一般的な知識と整合しており、特定の出典は見つからない | 合理的ではあるが未確認なので、意思決定に使う場合は個別に確認する |
+| **UNVERIFIED** | 支持する証拠も反証する証拠も見つからない | 独立した検証なしでこの主張に依存しない |
+| **DISPUTED** | 信頼できる情報源から矛盾する証拠が見つかった | 矛盾する出典を確認し、この主張が誤っている可能性があることを認識する |
+| **FABRICATION RISK** | 幻覚パターンに一致する（例: 見つけられない引用、出所のない正確な統計値） | 一次情報で確認できるまで、間違っているものとして扱う |
+
+### レポートの原則
+
+- 判定ではなく、リンクを提供する。最終的に真偽を決めるのはユーザーであり、自分ではない。
+- 矛盾する情報を見つけた場合は、両面を出典付きで提示する。どちらが正しいと勝手に決めない。
+- 反証不能な主張（曖昧すぎて検証できない、主観的すぎる）については、その旨を明記する。「反証不能」は有用な情報である。
+- 確認できなかった点を明確にする。「この主張は確認できなかった」は「これは間違っている」とは異なる。
+- 重大度ごとに所見をグループ化する。最も注意が必要な項目を先頭に置く。
+
+### 制限事項の開示
+
+レポートの最後には、必ず次を含めてください。
+
+> **この検証の制限事項:**
+> - このツールは人による検証を加速しますが、それに取って代わるものではありません。
+> - Web検索結果には、最新の情報や有料購読が必要な情報源が含まれていない場合があります。
+> - 逆攻撃的レビューでは、元の出力を生成した可能性があるものと同じ基盤モデルを使用します。多くの問題を検出しますが、すべてを検出できるわけではありません。
+> - VERIFIED と評価された主張は、支持する情報源が見つかったことを意味し、主張が確実に正しいことを意味するわけではありません。情報源にも誤りがある場合があります。
+> - PLAUSIBLE と評価された主張も誤っている可能性があります。矛盾する証拠がないことは、正確性の証明ではありません。
+
+---
+
+## ドメイン別ガイダンス
+
+### 法的コンテンツ
+
+法的コンテンツは、次の理由により幻覚のリスクが高まります。
+- 判例名、引用、判示内容は、モデルによって頻繁に捏造される
+- 管轄ごとの微妙な違いは、しばしば平坦化または省略される
+- 法令の文言は、法的意味を変えてしまう形で言い換えられることがある
+- 「多数派ルール」と「少数派ルール」の区別が失われることが多い
+
+法的コンテンツでは、判例引用、法令参照、規制解釈、管轄に関する主張を特に厳密に確認してください。可能な場合は法務データベースを検索してください。
+
+### 医療および科学コンテンツ
+
+- 引用された研究が実際に存在し、その結果が正確に記述されているか確認する
+- 現在のガイドラインとして提示されているものの中に古いものが混ざっていないか確認する
+- 投与量、治療プロトコル、診断基準は変化しやすく、誤りが重大な結果につながるため、注意深く確認する
+
+### 金融および規制コンテンツ
+
+- 特定の金額、日付、閾値を確認する
+- 規制要件が正しい管轄に帰属しているか、現在のものかを確認する
+- 最近の立法変更後に古くなっている税法の主張に注意する
+
+### 技術およびセキュリティコンテンツ
+
+- CVE 番号、脆弱性の説明、影響を受けるバージョンを確認する
+- API 仕様と設定手順が現在のドキュメントと一致しているか確認する
+- バージョン依存の情報が古くなっていないか注意する

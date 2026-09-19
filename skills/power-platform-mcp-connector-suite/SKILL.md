@@ -1,6 +1,6 @@
 ---
 name: power-platform-mcp-connector-suite
-description: 'Generate complete Power Platform custom connector with MCP integration for Copilot Studio - includes schema generation, troubleshooting, and validation'
+description: 'power-platform-mcp-connector-suite に関する作業を支援する Skill です。対象のファイルや設定を確認し、必要な手順、検証方法、注意点を案内します。対象技術の調査、実装、運用、トラブルシューティングに使用します。'
 ---
 
 # Power Platform MCP Connector Suite

@@ -1,8 +1,8 @@
 # Repo Actions Hub Plugin
 
-Browse repository GitHub Actions workflows, inspect recent runs, and trigger manual workflow_dispatch runs from a Copilot canvas.
+リポジトリのGitHub Actionsワークフローを閲覧し、最近の実行を調査して、Copilotキャンバスから手動でworkflow_dispatchを実行します。
 
-## Installation
+## インストール
 
 ``bash
 copilot plugin install repo-actions-hub@awesome-copilot

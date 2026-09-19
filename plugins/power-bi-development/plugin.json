@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "power-bi-development",
-  "description": "Comprehensive Power BI development resources including data modeling, DAX optimization, performance tuning, visualization design, security best practices, and DevOps/ALM guidance for building enterprise-grade Power BI solutions.",
+  "description": "エンタープライズ対応のPower BIソリューションを構築するための総合リソース。データモデリング、DAX最適化、パフォーマンスチューニング、可視化設計、セキュリティのベストプラクティス、DevOps/ALMのガイダンスを含みます。",
   "version": "1.0.0",
   "author": {
     "name": "Awesome Copilot Community"

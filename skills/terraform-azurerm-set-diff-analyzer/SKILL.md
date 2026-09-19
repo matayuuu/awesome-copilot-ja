@@ -1,48 +1,47 @@
 ---
 name: terraform-azurerm-set-diff-analyzer
-description: Analyze Terraform plan JSON output for AzureRM Provider to distinguish between false-positive diffs (order-only changes in Set-type attributes) and actual resource changes. Use when reviewing terraform plan output for Azure resources like Application Gateway, Load Balancer, Firewall, Front Door, NSG, and other resources with Set-type attributes that cause spurious diffs due to internal ordering changes.
+description: 'AzureRM ProviderのTerraform plan JSON出力を分析し、誤検出された差分（Set型属性の順序だけの変更）と実際のリソース変更を区別します。Application Gateway、Load Balancer、Firewall、Front Door、NSGなど、内部順序の変更による不要な差分が発生するSet型属性を持つAzureリソースのterraform plan出力をレビューするときに使います。'
 license: MIT
 ---
+# Terraform AzureRM Set差分アナライザー
 
-# Terraform AzureRM Set Diff Analyzer
+AzureRM ProviderのSet型属性が原因でTerraform planに現れる「誤検出された差分」を特定し、実際の変更と区別するSkillです。
 
-A skill to identify "false-positive diffs" in Terraform plans caused by AzureRM Provider's Set-type attributes and distinguish them from actual changes.
+## 使う場面
 
-## When to Use
+- 1つの要素を追加または削除しただけなのに、`terraform plan` に多数の変更が表示される
+- Application Gateway、Load Balancer、NSGなどで「すべての要素が変更された」と表示される
+- CI/CDで誤検出された差分を自動的に除外したい
 
-- `terraform plan` shows many changes, but you only added/removed a single element
-- Application Gateway, Load Balancer, NSG, etc. show "all elements changed"
-- You want to automatically filter false-positive diffs in CI/CD
+## 背景
 
-## Background
+TerraformのSet型はキーではなく位置で比較するため、要素を追加または削除すると、すべての要素が「変更された」と表示されます。これはTerraform全般の問題ですが、Application Gateway、Load Balancer、NSGのようにSet型属性を多用するAzureRMリソースで特に目立ちます。
 
-Terraform's Set type compares by position rather than by key, so when adding or removing elements, all elements appear as "changed". This is a general Terraform issue, but it's particularly noticeable with AzureRM resources that heavily use Set-type attributes like Application Gateway, Load Balancer, and NSG.
+これらの「誤検出された差分」は実際のリソースには影響しませんが、terraform planの出力レビューを難しくします。
 
-These "false-positive diffs" don't actually affect the resources, but they make reviewing terraform plan output difficult.
-
-## Prerequisites
+## 前提条件
 
 - Python 3.8+
 
-If Python is unavailable, install via your package manager (e.g., `apt install python3`, `brew install python3`) or from [python.org](https://www.python.org/downloads/).
+Pythonが利用できない場合は、パッケージマネージャー（例: `apt install python3`、`brew install python3`）または[python.org](https://www.python.org/downloads/)からインストールします。
 
-## Basic Usage
+## 基本的な使い方
 
 ```bash
-# 1. Generate plan JSON output
+# 1. plan JSON出力を生成
 terraform plan -out=plan.tfplan
 terraform show -json plan.tfplan > plan.json
 
-# 2. Analyze
+# 2. 分析
 python scripts/analyze_plan.py plan.json
 ```
 
-## Troubleshooting
+## トラブルシューティング
 
-- **`python: command not found`**: Use `python3` instead, or install Python
-- **`ModuleNotFoundError`**: Script uses only standard library; ensure Python 3.8+
+- **`python: command not found`**: 代わりに `python3` を使うか、Pythonをインストールする
+- **`ModuleNotFoundError`**: スクリプトは標準ライブラリだけを使うため、Python 3.8以降であることを確認する
 
-## Detailed Documentation
+## 詳細ドキュメント
 
-- [scripts/README.md](scripts/README.md) - All options, output formats, exit codes, CI/CD examples
-- [references/azurerm_set_attributes.md](references/azurerm_set_attributes.md) - Supported resources and attributes
+- [scripts/README.md](scripts/README.md) - すべてのオプション、出力形式、終了コード、CI/CDの例
+- [references/azurerm_set_attributes.md](references/azurerm_set_attributes.md) - 対応するリソースと属性

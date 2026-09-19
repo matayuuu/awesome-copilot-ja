@@ -1,8 +1,8 @@
 # Software Engineering Team Plugin
 
-7 specialized agents covering the full software development lifecycle from UX design and architecture to security and DevOps.
+UX設計とアーキテクチャからセキュリティ、DevOpsまで、ソフトウェア開発ライフサイクル全体を担当する7つの専門エージェントです。
 
-## Installation
+## インストール
 
 ```bash
 # Using Copilot CLI

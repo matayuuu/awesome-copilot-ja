@@ -1,100 +1,100 @@
 ---
 name: email-drafter
-description: 'Draft and review professional emails that match your personal writing style. Analyzes your sent emails for tone, greeting, structure, and sign-off patterns via WorkIQ, then generates context-aware drafts for any recipient. USE FOR: draft email, write email, compose email, reply email, follow-up email, analyze email tone, email style.'
+description: '個人の文体に合うプロフェッショナルなメールを作成・レビューします。WorkIQ で送信済みメールのトーン、挨拶、構成、結びのパターンを分析し、任意の受信者向けに文脈に応じた下書きを生成します。USE FOR: メールの下書き、メール作成、返信メール、フォローアップメール、メールトーンの分析、メール文体。'
 ---
 
-# Email Drafter
+# メール下書き作成
 
-Draft professional emails that match your established writing style and tone. Uses WorkIQ to analyze your sent emails and prior correspondence with recipients, then produces context-aware drafts you can review and refine.
+確立された文体とトーンに合わせて、プロフェッショナルなメールを下書きします。WorkIQ を使用して送信済みメールおよび受信者との過去のやり取りを分析し、確認・推敲できる文脈に応じた下書きを作成します。
 
-## When to Use
+## 使用する場面
 
-- "Draft an email to [person] about [topic]"
-- "Write a follow-up email to [customer] regarding [project]"
-- "Reply to [person]'s email about [subject]"
-- "Compose a proposal email for [initiative]"
-- "Analyze my email tone with [recipient]"
+- 「[person] 宛てに [topic] についてのメールを下書きして」
+- 「[project] に関して [customer] に送るフォローアップメールを書いて」
+- 「[subject] についての [person] のメールに返信して」
+- 「[initiative] 向けの提案メールを作成して」
+- 「[recipient] とのメールにおける自分のトーンを分析して」
 
-## Workflow
+## ワークフロー
 
-### Step 1 — Gather Context
+### ステップ 1 — コンテキストを収集する
 
-Before drafting, collect:
+下書きを作成する前に、以下を収集します。
 
-1. **Recipient(s)** — who is the email for?
-2. **Purpose** — what is the email about? (proposal, follow-up, technical guidance, introduction, status update, etc.)
-3. **Key points** — what needs to be communicated?
-4. **Relationship context** — use WorkIQ to check prior email history with the recipient if available
+1. **受信者** — メールの宛先は誰ですか？
+2. **目的** — メールの内容は何ですか？（提案、フォローアップ、技術的なガイダンス、紹介、状況更新など）
+3. **要点** — 何を伝える必要がありますか？
+4. **関係性のコンテキスト** — 利用可能な場合は、WorkIQ を使用して受信者との過去のメール履歴を確認します
 
-If the user provides all of these upfront, proceed directly. Otherwise, ask clarifying questions (max 3).
+ユーザーがこれらすべてを事前に提供している場合は、直接進めます。それ以外の場合は、明確化のための質問をします（最大 3 件）。
 
-### Step 2 — Analyze Tone
+### ステップ 2 — トーンを分析する
 
-When drafting for a recipient, use WorkIQ to understand the user's established communication patterns:
+受信者向けに下書きを作成する際は、WorkIQ を使用してユーザーの確立されたコミュニケーションパターンを把握します。
 
-1. Pull 3–5 recent sent emails from the user to the same recipient or similar recipients
-2. Identify patterns:
-   - **Greeting style** — formal ("Dear"), standard ("Hello"), casual ("Hi"), or direct (no greeting)
-   - **Structure** — short paragraphs vs. bullet lists vs. numbered steps
-   - **Sign-off** — what closing and name format the user typically uses
-   - **Formality level** — professional, friendly-professional, casual
-   - **Language** — which language the user writes in with this recipient
-3. Apply those patterns to the draft
+1. ユーザーから同じ受信者、または類似した受信者へ送信された最近のメールを 3～5 件取得します
+2. 以下のパターンを特定します。
+   - **挨拶のスタイル** — フォーマル（"Dear"）、標準（"Hello"）、カジュアル（"Hi"）、または直接的（挨拶なし）
+   - **構成** — 短い段落、箇条書き、または番号付き手順
+   - **結び** — ユーザーが通常使用する締めの言葉と名前の形式
+   - **フォーマル度** — プロフェッショナル、親しみやすくプロフェッショナル、カジュアル
+   - **言語** — この受信者に対してユーザーが使用する言語
+3. それらのパターンを下書きに適用します
 
-If WorkIQ is unavailable or no prior emails exist, use sensible professional defaults and note that the tone was inferred.
+WorkIQ が利用できない場合、または過去のメールが存在しない場合は、妥当なプロフェッショナルの既定値を使用し、トーンは推定したものであることを示します。
 
-### Step 3 — Draft the Email
+### ステップ 3 — メールの下書きを作成する
 
-Apply the discovered (or default) style rules:
+特定した（または既定の）スタイルルールを適用します。
 
-**Greeting:**
-- Match whatever greeting style was found in Step 2
-- Default: "Hello [FirstName]," for external, "Hi [FirstName]," for internal
-- For multiple recipients: "Hello [Name1], [Name2],"
+**挨拶:**
+- ステップ 2 で見つかった挨拶のスタイルに合わせます
+- 既定値: 外部向けは "Hello [FirstName],"、内部向けは "Hi [FirstName],"
+- 複数の受信者向け: "Hello [Name1], [Name2],"
 
-**Tone:**
-- Direct and concise — no filler language
-- Friendly but professional
-- Get to the point quickly
-- Offer help proactively where appropriate ("Happy to discuss further", "Let me know if you need anything")
+**トーン:**
+- 直接的かつ簡潔にし、冗長な表現は使用しません
+- 親しみやすく、かつプロフェッショナルにします
+- 要点にすばやく入ります
+- 適切な場合は積極的に支援を申し出ます（"Happy to discuss further"、"Let me know if you need anything"）
 
-**Structure:**
-- Short emails (1–2 points): simple paragraphs, no bullets needed
-- Longer emails (proposals, multi-point updates): use bullet points or numbered lists
-- Include context from prior conversations when relevant ("Following our recent conversation about...")
+**構成:**
+- 短いメール（1～2 点）: シンプルな段落を使用し、箇条書きは不要です
+- 長いメール（提案、複数項目の更新）: 箇条書きまたは番号付きリストを使用します
+- 関連する場合は、以前の会話からのコンテキストを含めます（"Following our recent conversation about..."）
 
-**Sign-off:**
-- Match the user's established sign-off pattern from Step 2
-- Default: "Best regards," followed by the user's first name on the next line
+**結び:**
+- ステップ 2 で特定したユーザーの確立済みの結び方のパターンに合わせます
+- 既定値: "Best regards," の次の行にユーザーの名を記載します
 
-**Language:**
-- Default to English unless the user specifies otherwise
-- Match the recipient's language if prior correspondence was in another language
+**言語:**
+- ユーザーが別途指定しない限り、既定では英語を使用します
+- 過去のやり取りが別の言語で行われていた場合は、受信者の言語に合わせます
 
-### Step 4 — Output
+### ステップ 4 — 出力
 
-1. Present the draft for review with a brief note on the tone/style applied
-2. Apply edits as the user requests — iterate until satisfied
-3. Save the final draft to `outputs/<year>/<month>/` with a descriptive filename (e.g., `2026-03-26-email-acme-followup.md`)
+1. 適用したトーンとスタイルに関する短い説明とともに、レビュー用の下書きを提示します
+2. ユーザーの依頼に応じて編集を適用し、満足するまで繰り返します
+3. 最終的な下書きを、説明的なファイル名（例: `2026-03-26-email-acme-followup.md`）で `outputs/<year>/<month>/` に保存します
 
-## Important Rules
+## 重要なルール
 
-- **Never send emails** — only draft them as files for the user to review and send manually
-- Always check WorkIQ for prior context with the recipient when available
-- If the user says "draft email" or "write email", activate this skill automatically
-- Save drafts using the `outputs/<year>/<month>/` folder convention
-- Respect privacy: do not include sensitive information from unrelated email threads
+- **メールは絶対に送信しない** — ユーザーが確認して手動で送信できるよう、ファイルとして下書きするだけにします
+- 利用可能な場合は、必ず WorkIQ で受信者との過去のコンテキストを確認します
+- ユーザーが「draft email」または「write email」と言った場合は、このスキルを自動的に有効化します
+- `outputs/<year>/<month>/` フォルダー規則を使用して下書きを保存します
+- プライバシーを尊重します。無関係なメールスレッドの機密情報を含めません
 
-## Example Prompts
+## プロンプト例
 
-- "Draft an email to Sarah about the project timeline"
-- "Write a follow-up to the customer about their migration questions"
-- "Compose a proposal email for the new training initiative"
-- "Reply to John's email — agree with his approach but suggest we add monitoring"
-- "Analyze my email tone with the Acme team"
+- 「プロジェクトのタイムラインについて Sarah 宛てにメールを下書きして」
+- 「移行に関する質問について、顧客へのフォローアップを書いて」
+- 「新しいトレーニング施策向けの提案メールを作成して」
+- 「John のメールに返信して — 彼のアプローチには同意するが、監視を追加することを提案して」
+- 「Acme チームとのメールにおける自分のトーンを分析して」
 
-## Requirements
+## 要件
 
-- **WorkIQ MCP tool** is recommended for tone analysis and recipient context (Microsoft 365 / Outlook)
-- Without WorkIQ, the skill still works but uses professional defaults instead of personalized tone matching
-- Output is saved as markdown files in the workspace
+- **WorkIQ MCP tool** は、トーン分析と受信者コンテキスト（Microsoft 365 / Outlook）のために推奨されます
+- WorkIQ がなくてもスキルは機能しますが、パーソナライズされたトーンの一致ではなく、プロフェッショナルな既定値を使用します
+- 出力はワークスペース内に Markdown ファイルとして保存されます

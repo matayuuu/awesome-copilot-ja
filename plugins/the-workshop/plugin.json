@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "the-workshop",
-  "description": "Stop being the switchboard between your AI agents — direct a team. The Workshop puts long-running AI agents (desks) in the same room, on the same work, each with its own memory and history, sharing one workspace so you direct the work instead of relaying it.",
+  "description": "AIエージェント間の取り次ぎ役をやめて、チームを直接指揮しましょう。Workshopは長時間稼働するAIエージェント（デスク）を同じ作業、同じ部屋に集め、それぞれのメモリと履歴を持たせたまま1つのワークスペースを共有します。作業を伝言するのではなく、直接指揮できます。",
   "version": "0.1.0",
   "author": {
     "name": "jennyf19"

@@ -1,35 +1,26 @@
 ---
 name: github-release
 description: >
-  Guides IA through releasing a new version of a GitHub library end-to-end.
-  Handles SemVer versioning and Keep a Changelog formatting automatically.
+  GitHubライブラリの新しいバージョンを、分析からリリースPRの作成までエンドツーエンドで公開する手順を案内する。
+  SemVerのバージョニングとKeep a Changelog形式を自動的に扱う。
 compatibility: "requires: gh CLI and git"
 ---
 
 # GitHub Release Skill
 
-This skill automates the full release workflow for a single-package GitHub repository,
-from analysis through changelog authoring and PR creation. It relies exclusively on
-`gh` (GitHub CLI) and `git` no other tools needed.
+このSkillは、単一パッケージのGitHubリポジトリについて、分析、変更履歴の作成、PR作成までを含む完全なリリースワークフローを自動化する。`gh`（GitHub CLI）と`git`だけに依存し、ほかのツールは必要としない。
 
-Steps 1 - 4 are **read-only reconnaissance** nothing is written to the repo until
-Step 5, once the version number is confirmed.
+手順1〜4は読み取り専用の調査であり、バージョン番号が確定する手順5まではリポジトリに何も書き込まない。
 
-## When to Use This Skill
+## このSkillを使用する場面
 
-Use this skill whenever the user wants to cut a new release, publish a new version,
-bump a version, create a release branch, generate a changelog, or open a release PR
-on a GitHub repository. Trigger even if the user says something casual like "let's
-ship a new version" or "time to release".
+新しいリリースを作成する、バージョンを公開する、バージョンを上げる、リリースブランチを作成する、変更履歴を生成する、またはGitHubリポジトリでリリースPRを開く場合は、必ずこのSkillを使用する。「新しいバージョンを出そう」「そろそろリリースしよう」のような気軽な依頼でも対象とする。
 
 ---
 
-## Prerequisites
+## 前提条件
 
-Examples below include both Bash and PowerShell variants; Windows users should prefer
-the PowerShell blocks.
-
-Before starting, verify the environment:
+まず環境を確認する。
 
 ```bash
 gh auth status                        # must be authenticated
@@ -37,46 +28,37 @@ gh repo view --json nameWithOwner     # must be inside a GitHub repo
 git status                            # working tree should be clean
 ```
 
-If any check fails, stop and tell the user what to fix before continuing.
+いずれかの確認に失敗した場合は停止し、ユーザーに修正方法を伝える。
 
-Then ask the user one question:
+次に、ユーザーへ次の質問を1つする。
 
-> *"Which directory contains your library's public-facing source code?
-> (e.g. `src/`, `lib/`, `pkg/` - used to focus the diff on what consumers
-> actually see. Press Enter to scan the whole repo.)"*
+> *「ライブラリの公開向けソースコードはどのディレクトリにありますか？
+> （例：`src/`、`lib/`、`pkg/` — 実際に利用者が目にする部分へ差分を絞るために使います。Enterだけならリポジトリ全体を調査します）」*
 
-Store the answer as `PUBLIC_PATH`. If empty, `PUBLIC_PATH` is `.` (repo root).
-Exclude these paths from all diffs regardless: `tests/`, `test/`, `spec/`,
-`__tests__/`, `docs/`, `*.lock`, `*-lock.json`, `*.sum`, generated files
-(files with a "do not edit" header comment), and build artefacts.
+回答を`PUBLIC_PATH`に保存する。空の場合は`PUBLIC_PATH`を`.`（リポジトリルート）とする。どの差分からも、次のパスを必ず除外する：`tests/`、`test/`、`spec/`、`__tests__/`、`docs/`、`*.lock`、`*-lock.json`、`*.sum`、生成ファイル（「do not edit」ヘッダーコメントがあるファイル）、ビルド成果物。
 
 ---
 
-## The 9-Step Release Workflow
+## 9段階のリリースワークフロー
 
-Work through every step in order. Show the user what command you're about to run and
-its output. Pause and ask for confirmation only when explicitly noted.
+各手順を順番どおりに実行する。実行するコマンドとその出力をユーザーへ示す。明示的に記載した場合を除き、確認のために停止して質問しない。
 
 ---
 
-### Step 1 - Ensure main is up to date
+### 手順1 - mainを最新にする
 
 ```bash
 git checkout main
 git pull origin main
 ```
 
-Stay on `main` for now. The release branch is created in Step 5, after the version
-is confirmed.
+ここでは`main`に留まる。リリースブランチは、バージョン確定後の手順5で作成する。
 
 ---
 
-### Step 2 - Grab the latest version tag
+### 手順2 - 最新のバージョンタグを取得する
 
-> **Why not `gh release list`?** GitHub Releases are an optional layer on top of Git
-> tags. Many repos tag releases with `git tag` without ever creating a GitHub Release,
-> so `gh release list` can return empty even when version tags exist. Reading tags
-> directly from git is the reliable source of truth.
+> **なぜ`gh release list`ではないのか？** GitHub ReleasesはGitタグの上に追加できる任意のレイヤーである。多くのリポジトリはGitHub Releaseを作成せずにリリースへタグを付けるため、GitHub Releaseがあっても`gh release list`が空になることがある。タグをGitから直接読むのが信頼できる情報源である。
 
 ```bash
 # Fetch all tags from remote to ensure local view is current
@@ -107,22 +89,17 @@ if ($prevTag) {
 Write-Output "Latest tag: $prevTag"
 ```
 
-Then verify the tag exists on the remote (not just locally):
+次に、タグがリモートに存在することを確認する。
 
 ```bash
 git ls-remote --tags origin | grep "refs/tags/$PREV_TAG$"
 ```
 
-If the remote check returns nothing, warn the user that the tag appears to be local-only
-and hasn't been pushed - they may want to push it before continuing.
+リモート確認の出力が空の場合、タグはローカルにしか存在せず、まだpushされていない可能性があるとユーザーへ警告する。続行前にタグをpushしたいかもしれない。
 
-- `PREV_TAG` is the tag name exactly as found (e.g. `v1.4.2`). Strip any leading `v`
-  when doing arithmetic; preserve it when naming things.
-- If **no tags exist at all**, treat `PREV_TAG` as `(none)`, set `PREV_SHA` to the
-  first commit, and default the new version to `1.0.0` (skip Step 4 versioning logic;
-  go straight to Step 5).
-- If the tag does not point to a real commit (orphaned tag), fall back to
-  `git rev-list --max-parents=0 HEAD` and warn the user.
+- `PREV_TAG`は見つかったタグ名をそのまま使う（例：`v1.4.2`）。計算時だけ先頭の`v`を外し、命名時は保持する。
+- **タグがまったくない場合**は`PREV_TAG`を`(none)`とし、`PREV_SHA`を最初のコミットに設定し、新しいバージョンを`1.0.0`とする（手順4のバージョン判定を飛ばし、手順5へ進む）。
+- タグが実際のコミットを指していない（孤立タグ）場合は、`git rev-list --max-parents=0 HEAD`へフォールバックし、ユーザーへ警告する。
 
 ```bash
 PREV_SHA=$(git rev-list -n 1 "$PREV_TAG" 2>/dev/null || git rev-list --max-parents=0 HEAD)
@@ -130,12 +107,11 @@ PREV_SHA=$(git rev-list -n 1 "$PREV_TAG" 2>/dev/null || git rev-list --max-paren
 
 ---
 
-### Step 3 - Analyse what changed since the last release
+### 手順3 - 前回リリース以降の変更を分析する
 
-This step uses **two complementary signals**. The code diff is the primary source of
-truth; commit messages provide supporting context about intent.
+この手順では、相補的な2つのシグナルを使う。コード差分を主な情報源とし、コミットメッセージは意図を補足する。
 
-#### 3a - Code diff (primary signal)
+#### 3a - コード差分（主なシグナル）
 
 ```bash
 # Focused diff on the public source path, excluding noise
@@ -153,93 +129,76 @@ git diff "$($prevSha)..HEAD" -- $publicPath `
   ':(exclude)*.lock' ':(exclude)*-lock.json' ':(exclude)*.sum'
 ```
 
-Read the full diff output. For each changed file, identify:
+差分の出力をすべて読む。変更された各ファイルについて、次を特定する。
 
-1. **Removed symbols** - functions, classes, methods, constants, exported names that
-   existed before and are now gone. ? Strong signal for MAJOR.
-2. **Changed signatures** - functions that exist in both versions but with different
-   parameters, return types, or thrown errors. ? Strong signal for MAJOR.
-3. **New exported symbols** - public functions, classes, constants that didn't exist
-   before. ? Signal for MINOR.
-4. **Internal-only changes** - modifications that don't touch any public interface
-   (private helpers, unexported functions, algorithm internals). ? PATCH.
-5. **Bug fixes** - corrections to logic that was provably wrong (e.g. off-by-one,
-   null check, wrong condition), without changing the public API. ? PATCH.
+1. **削除されたシンボル** - 以前存在していたが現在はなくなった関数、クラス、メソッド、定数、export名。MAJORの強い根拠。
+2. **変更されたシグネチャ** - 両バージョンに存在するが、パラメーター、戻り値、またはスローされるエラーが異なる関数。MAJORの強い根拠。
+3. **新しいexportシンボル** - 以前は存在しなかったpublic関数、クラス、定数。MINORの根拠。
+4. **内部だけの変更** - publicインターフェースに触れない変更（privateヘルパー、exportされていない関数、アルゴリズム内部）。PATCH。
+5. **バグ修正** - public APIを変更せず、誤ったロジック（例：off-by-one、nullチェック、誤った条件）を明確に修正したもの。PATCH。
 
-If the diff is very large (thousands of lines), first run the stat summary to
-prioritise which files to read in full:
+差分が非常に大きい（数千行）場合は、まず統計概要を実行して、読むファイルの優先順位を付ける。
 
 ```bash
 git diff "$PREV_SHA"..HEAD --stat -- "$PUBLIC_PATH"
 ```
 
-Focus your detailed reading on files with the most changes and files whose names
-suggest they define public interfaces (e.g. `index.*`, `api.*`, `exports.*`,
-`public.*`, `mod.*`, `__init__.*`).
+変更の多いファイルと、publicインターフェースを定義していそうな名前（`index.*`、`api.*`、`exports.*`、`public.*`、`mod.*`、`__init__.*`）のファイルを中心に詳細を読む。
 
-#### 3b - Commit log (secondary signal)
+#### 3b - コミットログ（補助シグナル）
 
 ```bash
 git log "$PREV_SHA"..HEAD --oneline --no-merges
 ```
 
-Use this to:
-- Understand the **intent** behind code changes that aren't self-explanatory from
-  the diff alone (e.g. a one-line security fix labelled as such).
-- Catch changes that may be in paths outside `PUBLIC_PATH` but are still user-visible
-  (e.g. a CLI flag change in a `cmd/` directory).
-- Fill in context for changelog entries where the code alone doesn't tell the whole
-  story.
+次の目的で使用する。
+- コード差分だけでは明らかでない変更意図を理解する（例：1行のセキュリティ修正）。
+- `PUBLIC_PATH`外の、利用者から見える変更を見つける（例：`cmd/`のCLIフラグ変更）。
+- コードだけでは分からない変更履歴の項目の文脈を補う。
 
-See `references/commit-classification.md` for mapping message patterns to change types.
+コミットメッセージを変更種別へ対応付ける方法は`references/commit-classification.md`を読む。
 
-#### 3c - Reconcile the two signals
+#### 3c - 2つのシグナルを突き合わせる
 
-When signals agree ? use that classification with confidence.
+シグナルが一致する場合は、その分類を確信を持って採用する。
 
-When signals conflict ? **prefer the code diff**. Examples:
-- Commit says `fix: typo` but the diff shows a removed public method ? treat as MAJOR.
-- Commit says `feat: new API` but the diff only touches private internals ? treat as PATCH.
-- Commit says `chore: refactor` but the diff adds new exported symbols ? treat as MINOR.
+シグナルが矛盾する場合は、**コード差分を優先する**。例：
+- コミットが「fix: typo」と書かれていても、差分でpublicメソッドが削除されていればMAJORとする。
+- コミットが「feat: new API」と書かれていても、差分がprivate内部だけならPATCHとする。
+- コミットが「chore: refactor」と書かれていても、差分で新しいexportシンボルが追加されていればMINORとする。
 
-Document any conflicts you notice - flag them to the user during the changelog review
-in Step 6.
+気づいた矛盾は記録し、手順6の変更履歴レビューでユーザーへ示す。
 
 ---
 
-### Step 4 - Determine the next SemVer version
+### 手順4 - 次のSemVerバージョンを決定する
 
-Apply these rules to your analysis from Step 3 (full rules in `references/semver-rules.md`):
+手順3の分析に次の規則を適用する（完全な規則と境界事例は`references/semver-rules.md`）。
 
-| Condition | Bump |
+| 条件 | 更新 |
 |---|---|
-| Any breaking change to public API (removal, signature change, behaviour change) | MAJOR |
-| New exported symbol or feature, no breaking changes | MINOR |
-| Bug fix, perf improvement, security fix, docs, chore only | PATCH |
+| public APIの破壊的変更（削除、シグネチャ変更、動作変更）がある | MAJOR |
+| 破壊的変更を伴わない新しいexportシンボルまたは機能 | MINOR |
+| バグ修正、パフォーマンス改善、セキュリティ修正、ドキュメント、choreのみ | PATCH |
 
-When a release contains a mix, the **highest precedence wins**:
-`MAJOR > MINOR > PATCH`.
+混在する場合は、最も高い優先度を採用する：`MAJOR > MINOR > PATCH`。
 
-Compute `NEXT_VERSION`:
-- Split `PREV_TAG` into `MAJOR.MINOR.PATCH` integers.
-- Apply the appropriate bump.
-- Format as `vMAJOR.MINOR.PATCH`.
+`NEXT_VERSION`を計算する。
+- `PREV_TAG`を`MAJOR.MINOR.PATCH`の整数に分割する。
+- 適切な更新を適用する。
+- `vMAJOR.MINOR.PATCH`形式にする。
 
-**Present the proposed version to the user** with a brief rationale that cites
-specific code findings, not just commit messages. Example:
+**提案するバージョンをユーザーへ示す。**コミットメッセージだけでなく、具体的なコード上の発見を根拠として簡潔に説明する。例：
 
-> *"I'm proposing v2.1.0. The diff shows two new exported functions (`NewClient` and
-> `WithTimeout`) in `src/client.go`, and no existing public symbols were removed or
-> changed. Commit messages corroborate this as feature additions."*
+> *「v2.1.0を提案します。差分では`src/client.go`に`NewClient`と`WithTimeout`という2つの新しいexport関数が追加され、既存のpublicシンボルの削除や変更はありません。コミットメッセージも機能追加であることを裏付けています。」*
 
-Ask: *"Does this version look right, or would you like to adjust it?"*
-Wait for confirmation before proceeding.
+「このバージョンでよいですか、それとも調整しますか？」と尋ねる。続行前に確認を待つ。
 
 ---
 
-### Step 5 - Create the release branch
+### 手順5 - リリースブランチを作成する
 
-Now that the version is confirmed, create the branch with the correct name from the start:
+バージョンが確認されたら、最初から正しい名前でブランチを作成する。
 
 ```bash
 git checkout -b release/vX.Y.Z
@@ -248,12 +207,11 @@ git push -u origin release/vX.Y.Z
 
 ---
 
-### Step 6 - Update CHANGELOG.md
+### 手順6 - CHANGELOG.mdを更新する
 
-Read the existing `CHANGELOG.md` (or create it if absent). Follow the
-[Keep a Changelog](https://keepachangelog.com/en/1.1.0/) format strictly.
+既存の`CHANGELOG.md`を読む（なければ作成する）。[Keep a Changelog](https://keepachangelog.com/en/1.1.0/)形式に厳密に従う。
 
-**Structure to insert** at the top (just below the `# Changelog` header):
+**先頭（`# Changelog`ヘッダーの直下）へ挿入する構造：**
 
 ```markdown
 ## [X.Y.Z] - YYYY-MM-DD
@@ -277,36 +235,33 @@ Read the existing `CHANGELOG.md` (or create it if absent). Follow the
 - ...
 ```
 
-Rules:
-- Use today's date in `YYYY-MM-DD` format.
-- Omit sections that have no entries - don't leave empty headings.
-- Write entries in **plain English from a user's perspective**, derived primarily
-  from what the code diff shows, supplemented by commit message context.
-  Good: *"Added `WithTimeout` option to HTTP client constructor."*
-  Bad: *"feat: add timeout cfg param"*
-- Map findings to sections:
-  - New exported symbol ? Added
-  - Breaking removal ? Removed
-  - Breaking change to existing API ? Changed (flag it as breaking)
-  - Bug/logic fix, perf ? Fixed
-  - Security fix ? Security
-  - Internal refactor, docs, chore, test ? omit unless user-visible
-- If a commit message revealed intent that the code diff alone wouldn't convey
-  (e.g. a security fix disguised as a one-line change), include that context in
-  the changelog entry.
-- Also update the diff link at the bottom of the file:
+規則：
+- 今日の日付を`YYYY-MM-DD`形式で使う。
+- 項目がないセクションは省略する — 空の見出しを残さない。
+- エントリは、コミットメッセージの文脈で補足しながら、主にコード差分から利用者の視点で平易な英語を書く。
+  良い例：*「HTTPクライアントのコンストラクターに`WithTimeout`オプションを追加した。」*
+  悪い例：*「feat: add timeout cfg param」*
+- 発見事項をセクションへ対応付ける：
+  - 新しいexportシンボル → Added
+  - 破壊的な削除 → Removed
+  - 既存APIへの破壊的変更 → Changed（破壊的変更であることを明記）
+  - バグ／ロジック修正、パフォーマンス → Fixed
+  - セキュリティ修正 → Security
+  - 内部リファクタリング、ドキュメント、chore、テスト → 利用者に見える変更でない限り省略
+- コード差分だけでは分からなかった意図をコミットメッセージが示した場合（例：1行の変更がセキュリティ修正だった場合）は、その文脈を変更履歴へ含める。
+- ファイル末尾の差分リンクも更新する。
   ```markdown
   [X.Y.Z]: https://github.com/OWNER/REPO/compare/vPREV...vNEXT
   ```
 
-**Show the user the proposed changelog section before writing it to disk.**
-If any signal conflicts were found in Step 3c, flag them here so the user can verify.
-Ask: *"Does this changelog look accurate? Any entries to add, remove, or reword?"*
-Incorporate feedback, then write to disk.
+ディスクへ書き込む前に、提案する変更履歴セクションをユーザーへ示す。
+手順3cでシグナルの矛盾があった場合は、ここで示してユーザーに確認してもらう。
+「この変更履歴は正確ですか？追加、削除、言い換えたい項目はありますか？」と尋ねる。
+意見を反映してからディスクへ書き込む。
 
 ---
 
-### Step 7 - Commit and push
+### 手順7 - コミットしてpushする
 
 ```bash
 git add CHANGELOG.md
@@ -314,15 +269,14 @@ git commit -m "chore: release vX.Y.Z"
 git push origin release/vX.Y.Z
 ```
 
-Confirm the push succeeded before moving on.
+次へ進む前に、pushが成功したことを確認する。
 
 ---
 
-### Step 8 - Open a Pull Request
+### 手順8 - Pull Requestを開く
 
-**?? IMPORTANT:** Always use `--body-file` to pass PR body text, never `--body` with inline text.
-Inline escape sequences like `\n` are not interpreted as newlines by PowerShell and will appear
-as literal text in the PR. Using a file ensures proper markdown formatting.
+**重要：** PR本文を渡す際は必ず`--body-file`を使い、インラインの`--body`は使わない。
+PowerShellではインラインのエスケープシーケンス（`\n`）が改行として解釈されず、PRに文字どおり表示される。ファイルを使えばMarkdownの実際の改行を保持できる。
 
 ```bash
 gh pr create \
@@ -378,64 +332,59 @@ $prBody | Out-File -FilePath release_pr_body.md -Encoding utf8 -NoNewline
 gh pr create --base main --head release/vX.Y.Z --title "Release vX.Y.Z" --body-file release_pr_body.md
 ````
 
-Paste the changelog section into the PR body's "What's included" block (or leave placeholder for manual review).
-
+PR本文の「What's included」ブロックへ変更履歴セクションを貼り付ける（または手動レビュー用のプレースホルダーを残す）。
 
 ---
 
-### Step 9 - Hand off to the user
+### 手順9 - ユーザーへ引き継ぐ
 
-Tell the user:
+ユーザーへ次の内容を伝える。
 
-> **Release PR is open! ??**
+> **リリースPRが開きました！**
 >
-> New version: **vX.Y.Z**
+> 新しいバージョン：**vX.Y.Z**
 >
-> Once the PR is reviewed and merged, you'll need to **create the tag yourself** on
-> the merge commit:
+> PRをレビューしてマージした後、マージコミットに対して**ユーザー自身でタグを作成する**必要がある。
 >
 > ```bash
 > git tag vX.Y.Z <merge-commit-sha>
 > git push origin vX.Y.Z
 > ```
 >
-> Then go to GitHub Releases and publish the release from that tag. You can copy the
-> changelog section directly into the release notes.
+> その後GitHub Releasesへ移動し、そのタグからリリースを公開する。変更履歴セクションをリリースノートへ直接コピーできる。
 
 ---
 
-## Error handling
+## エラー処理
 
-| Situation | What to do |
+| 状況 | 対応 |
 |---|---|
-| `gh auth status` fails | Stop; tell user to run `gh auth login` |
-| Not inside a git repo | Stop; tell user to `cd` into their repo |
-| Working tree is dirty | Warn; ask if they want to stash or abort |
-| No commits since last tag | Tell user there's nothing to release |
-| Tag exists but points to no commit | Use first commit as diff base; warn user |
-| Latest tag exists locally but not on remote | Warn user; ask if they want to push the tag first or continue anyway |
-| Diff is empty for `PUBLIC_PATH` but commits exist | Warn; all changes may be internal; ask if they still want to proceed |
-| `git push` fails (e.g. protected branch rules) | Report the error verbatim; suggest they check branch protection settings |
+| `gh auth status`が失敗 | 停止し、ユーザーに`gh auth login`の実行を伝える |
+| Gitリポジトリ内にいない | 停止し、リポジトリへ`cd`するよう伝える |
+| ワークツリーが汚れている | 警告し、stashするか中止するか尋ねる |
+| 前回タグ以降にコミットがない | リリースするものがないと伝える |
+| タグは存在するがコミットを指していない | 最初のコミットを差分の基点にし、警告する |
+| 最新タグがローカルにしかない | ユーザーへ警告し、タグを先にpushするか、そのまま続行するか尋ねる |
+| `PUBLIC_PATH`の差分は空だがコミットはある | すべての変更が内部的な可能性を警告し、続行するか尋ねる |
+| `git push`が失敗（保護ブランチルールなど） | エラーをそのまま報告し、ブランチ保護設定の確認を提案する |
 
 ---
 
-## Troubleshooting in PowerShell
+## PowerShellでのトラブルシューティング
 
-- If a command that works locally prints gh usage or treats a subcommand as separate token, ensure you're
-  invoking the gh.exe on PATH (Get-Command gh) and avoid passing unexpanded nested substitutions; use the PowerShell
-  patterns above.
-- Recommend tests: gh --version; git fetch --tags; run the PowerShell snippet to set $prevTag and run git diff --name-only $prevSha..HEAD -- src/
+- 動作するコマンドが`gh`の使用方法を表示したり、サブコマンドを別トークンとして扱ったりする場合は、PATH上のgh.exeを呼び出していることを確認し、ネストした置換を渡さない。上記のPowerShellパターンを使う。
+- 推奨確認：`gh --version`；`git fetch --tags`；PowerShellスニペットで`$prevTag`を設定し、`git diff --name-only $prevSha..HEAD -- src/`を実行する。
 
 ---
 
-## Limitations
+## 制限事項
 
-- Requires the `gh` CLI to be installed and authenticated.
-- Requires git tags to determine current version.
+- `gh` CLIがインストールされ、認証済みである必要がある。
+- 現在のバージョンを決めるためにGitタグが必要である。
 
 ---
 
-## Reference files
+## 参照ファイル
 
-- `references/semver-rules.md` - Extended SemVer decision rules and edge cases
-- `references/commit-classification.md` - Heuristics for classifying commit messages into change types
+- `references/semver-rules.md` - 拡張されたSemVer判定規則と境界事例
+- `references/commit-classification.md` - コミットメッセージを変更種別へ分類するヒューリスティック

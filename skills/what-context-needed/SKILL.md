@@ -1,39 +1,39 @@
 ---
 name: what-context-needed
-description: 'Ask Copilot what files it needs to see before answering a question'
+description: '質問に答える前に、確認が必要なファイルをCopilotへ整理させるためのSkill。'
 ---
 
-# What Context Do You Need?
+# 必要なコンテキスト
 
-Before answering my question, tell me what files you need to see.
+私の質問に答える前に、確認する必要があるファイルを教えてください。
 
-## My Question
+## 私の質問
 
 {{question}}
 
-## Instructions
+## 指示
 
-1. Based on my question, list the files you would need to examine
-2. Explain why each file is relevant
-3. Note any files you've already seen in this conversation
-4. Identify what you're uncertain about
+1. 私の質問に基づき、調査が必要なファイルを一覧にする
+2. 各ファイルが関係する理由を説明する
+3. この会話ですでに確認したファイルを記載する
+4. 何が不確かなのかを明らかにする
 
 ## Output Format
 
 ```markdown
-## Files I Need
+## 必要なファイル
 
-### Must See (required for accurate answer)
-- `path/to/file.ts` — [why needed]
+### 必ず確認するファイル（正確な回答に必須）
+- `path/to/file.ts` — [必要な理由]
 
-### Should See (helpful for complete answer)
-- `path/to/file.ts` — [why helpful]
+### できれば確認するファイル（回答の完全性に役立つ）
+- `path/to/file.ts` — [役立つ理由]
 
-### Already Have
-- `path/to/file.ts` — [from earlier in conversation]
+### 確認済み
+- `path/to/file.ts` — [会話の前半で確認済み]
 
-### Uncertainties
-- [What I'm not sure about without seeing the code]
+### 不確かな点
+- [コードを見ないと分からないこと]
 ```
 
-After I provide these files, I'll ask my question again.
+これらのファイルを提示したら、もう一度質問します。

@@ -1,16 +1,6 @@
 ---
 name: pinecone-rag
-description: >
-  Build production RAG pipelines and persistent agent memory using Pinecone as
-  the vector database backend. ALWAYS USE THIS SKILL when the user mentions
-  Pinecone, wants to index documents for semantic search, build a
-  retrieval-augmented generation system, store agent memory across sessions,
-  implement hybrid search, or connect an LLM to a searchable knowledge base —
-  even if they don't say "Pinecone" explicitly. Also use when the user asks
-  about vector databases for RAG, namespace isolation for multi-tenant agents,
-  embedding pipelines, or scaling a knowledge base beyond what local storage
-  can handle. DO NOT use for local-only vector stores (Chroma, FAISS, pgvector)
-  or pure keyword search with no semantic component.
+description: 'pinecone-rag に関する作業を支援する Skill です。対象のファイルや設定を確認し、必要な手順、検証方法、注意点を案内します。対象技術の調査、実装、運用、トラブルシューティングに使用します。'
 license: Apache-2.0
 compatibility: "pinecone>=6.0.0, Python 3.10+"
 ---

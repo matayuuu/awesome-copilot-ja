@@ -1,48 +1,48 @@
 ---
 name: image-annotations
-description: 'Annotate screenshots, diagrams, and images with callout rectangles, arrows, labels, and color-coded highlights using PIL. Includes rules for animated GIF annotations with timing and pacing.'
+description: 'PILを使ってスクリーンショット、図、画像にコールアウト矩形、矢印、ラベル、色分けしたハイライトを付ける。アニメーションGIFの注釈に関するタイミングとテンポのルールも含む。'
 ---
 
-# Image Annotations
+# 画像注釈
 
-Add visual callouts to any image — screenshots, diagrams, architecture docs, demo frames — using PIL/Pillow. Highlights what changed or what to look at, so reviewers don't have to guess.
+PIL/Pillowを使って、スクリーンショット、図、アーキテクチャ文書、デモフレームなど任意の画像に視覚的なコールアウトを追加する。変更点や注目箇所を示し、レビュアーが推測しなくて済むようにする。
 
-## When to Use This Skill
+## このSkillを使う場面
 
-Use this skill when you need to:
+次の作業が必要なときに使用する。
 
-- Highlight a specific area in a screenshot for a PR description
-- Annotate before/after images to show what changed
-- Add labels and callouts to diagrams or architecture images
-- Create annotated frames for animated GIF demos
+- PRの説明用にスクリーンショットの特定領域をハイライトする
+- 変更点を示すため、変更前後の画像に注釈を付ける
+- 図やアーキテクチャ画像にラベルとコールアウトを追加する
+- アニメーションGIFデモ用の注釈付きフレームを作成する
 
-## Prerequisites
+## 前提条件
 
 ```bash
 pip install Pillow -q
 ```
 
-## Color Rules
+## 色のルール
 
-- **Red (`#E63946`)** — only for "bad" / "removed" things (e.g., circling a bug being fixed)
-- **Yellowish-orange (`#FF9F1C`)** — for neutral highlights ("look here", "new feature", etc.)
-- Never use red just because it's eye-catching — red = bad/removed
+- **赤（`#E63946`）** — 「悪い」/「削除された」ものだけに使う（例: 修正対象のバグを囲む）
+- **黄みのオレンジ（`#FF9F1C`）** — 中立的なハイライト（「ここを見る」「新機能」など）に使う
+- 目立つからという理由だけで赤を使わない。赤は悪い/削除を表す
 
-## Font
+## フォント
 
-- Use **Ink Free** (`C:/Windows/Fonts/Inkfree.ttf`) for a handwritten look on Windows
-- On Linux/macOS, fall back to `ImageFont.load_default()`
-- Size **36** for annotations on ~1400px-wide images
-- `stroke_width=1` with `stroke_fill=<same color as fill>` — gives body without being too thick
-- Do NOT use white stroke — looks like a bad glow effect
+- Windowsで手書き風にするには **Ink Free**（`C:/Windows/Fonts/Inkfree.ttf`）を使う
+- Linux/macOSでは `ImageFont.load_default()` にフォールバックする
+- 幅約1400pxの画像の注釈にはサイズ **36** を使う
+- `stroke_fill=<same color as fill>` の `stroke_width=1` は、太すぎず文字の本体を作る
+- 白いストロークは使わない。不自然な発光効果に見える
 
-## Shapes
+## 図形
 
-- Prefer **rounded rectangles** over circles/ellipses — less pixelation at edges
+- 円/楕円より**角丸長方形**を優先する。エッジのピクセル化が少ない
 - `draw.rounded_rectangle([x1, y1, x2, y2], radius=14, outline=color, width=5)`
-- **Padding 18px** around the target content
+- 対象コンテンツの周囲に**18pxのパディング**を置く
 
-## Reference Snippet
+## 参照スニペット
 
 ```python
 from PIL import Image, ImageDraw, ImageFont
@@ -74,11 +74,11 @@ draw.text(
 img.save('annotated.png')
 ```
 
-## Algorithmic Annotation — `annotate.py`
+## アルゴリズムによる注釈 — `annotate.py`
 
-For images with multiple elements to annotate, use the `annotate.py` module below. Save it next to your script and import from it. It handles automatic label placement without overlapping.
+複数の要素に注釈を付ける画像には、以下の `annotate.py` モジュールを使う。スクリプトの隣に保存してインポートする。ラベルが重ならないよう自動配置する。
 
-### Quick start
+### クイックスタート
 
 ```python
 from annotate import annotate_image
@@ -94,14 +94,14 @@ result = annotate_image(
 result.save('annotated.png')
 ```
 
-- `elem`: `(x1, y1, x2, y2)` tight bounding box — must be exact pixel coordinates
-- `label`: text label (supports `\n` for multi-line)
-- `draw_box`: if `True`, draws a rounded rectangle around the element. If `False` (default), draws a V-arrowhead pointing at the element
-- `debug`: shows targeting rectangles and candidate heatmap for placement validation
+- `elem`: `(x1, y1, x2, y2)` の密着した境界ボックス。正確なピクセル座標でなければならない
+- `label`: テキストラベル（複数行には `\n` を使える）
+- `draw_box`: `True` なら要素を角丸長方形で囲む。`False`（既定）なら要素を指すV字矢印を描く
+- `debug`: 配置検証用の対象矩形と候補ヒートマップを表示する
 
-### Coordinate grid helper
+### 座標グリッドヘルパー
 
-**Always use `grid_image()` before annotating an unfamiliar image.** Scaled-down previews display images smaller than actual pixel dimensions — the error compounds as you move away from (0,0).
+**見慣れない画像に注釈を付ける前に必ず `grid_image()` を使う。** 縮小プレビューは実際のピクセル寸法より小さく表示されるため、(0,0)から離れるほど誤差が累積する。
 
 ```python
 from annotate import grid_image
@@ -110,7 +110,7 @@ grid = grid_image('screenshot.png', step=100)
 grid.save('grid.png')
 ```
 
-Then verify with small crops:
+次に小さなクロップで確認する。
 
 ```python
 from PIL import Image
@@ -119,33 +119,35 @@ crop = img.crop((x1 - 20, y1 - 20, x2 + 20, y2 + 20))
 crop.save('verify.png')
 ```
 
-### Algorithm overview
+### アルゴリズムの概要
 
-1. **Ring search**: candidates between MIN_ARROW (25px) and MAX_ARROW (120px) from element edge
-2. **Contrast scoring**: prefers placements where label text is readable — `abs(avg_brightness - 147) - std * 0.3 - dist * 0.02`
-3. **Joint resolution**: candidates computed independently, placed greedily (best score first)
-4. **Hard blocks**: labels cannot overlap any other annotation's element or breathing box
-5. **Proximity penalty**: labels within 40px of other placed boxes get a score penalty
-6. **Arrow crossing penalty**: -50 for arrows crossing already-placed arrows
+1. **リング探索**: 要素の端からMIN_ARROW（25px）～MAX_ARROW（120px）の候補を探索する
+2. **コントラストスコアリング**: ラベル文字が読みやすい配置を優先する — `abs(avg_brightness - 147) - std * 0.3 - dist * 0.02`
+3. **同時解決**: 候補を独立に計算し、貪欲に配置する（高スコアから）
+4. **ハードブロック**: ラベルは他の注釈の要素または余白ボックスと重なれない
+5. **近接ペナルティ**: 他に配置済みのボックスから40px以内のラベルにスコアペナルティを付ける
+6. **矢印交差ペナルティ**: 配置済みの矢印と交差する矢印には-50
 
-### Debug mode colors
+### デバッグモードの色
 
 | Color | Meaning |
 |-------|---------|
-| Cyan | Target element box (elem + padding) |
-| Gray | Exclusion zone (MIN_ARROW buffer) |
-| Red→Green | Candidate heatmap (red=bad, green=good) |
-| Magenta | Chosen label position |
-| Orange | Final rendered annotation |
+| 色 | 意味 |
+|-------|---------|
+| シアン | 対象要素のボックス（elem + パディング） |
+| グレー | 除外領域（MIN_ARROWのバッファ） |
+| 赤→緑 | 候補ヒートマップ（赤=不適、緑=適） |
+| マゼンタ | 選択したラベル位置 |
+| オレンジ | 最終的に描画された注釈 |
 
-### Arrow styles
+### 矢印のスタイル
 
-- **`draw_box=True`**: rounded rectangle + straight line to label, no arrowhead
-- **`draw_box=False`**: V-shaped arrowhead with rounded line caps
+- **`draw_box=True`**: 角丸長方形 + ラベルまでの直線。矢印先端なし
+- **`draw_box=False`**: 線端を丸めたV字の矢印先端
 
-### `annotate.py` — full module
+### `annotate.py` — 完全なモジュール
 
-Save this as `annotate.py` and import from it:
+これを `annotate.py` として保存し、インポートする。
 
 ```python
 """
@@ -515,9 +517,9 @@ def grid_image(image_path, step=100):
     return img
 ```
 
-## Image Diffing
+## 画像差分
 
-Find what changed between two screenshots programmatically. Use as a safety net for subtle changes — when the difference is obvious, annotate directly instead.
+2つのスクリーンショット間で何が変わったかをプログラムで検出する。微妙な変更を見落とさないための安全策として使い、差分が明らかな場合は直接注釈を付ける。
 
 ```python
 from annotate import diff_images
@@ -541,29 +543,29 @@ annotations = [
 ]
 ```
 
-**Debug heatmap colors:** Blue = small difference, Yellow = medium, Red = large, Cyan boxes = cluster bounding boxes.
+**デバッグヒートマップの色:** 青 = 小さな差分、黄 = 中程度、赤 = 大きな差分、シアンのボックス = クラスターの境界ボックス。
 
-**When to use:** subtle opacity changes, dashed lines, minor color shifts, anti-aliasing differences.
-**When NOT to use:** any change you can see by eye — annotate directly for better labels.
+**使用する場面:** 微妙な不透明度の変化、破線、わずかな色の変化、アンチエイリアスの差。
+**使用しない場面:** 目で確認できる変更。よりよいラベルを付けるため、直接注釈を付ける。
 
-## Animated GIF Annotations
+## アニメーションGIFの注釈
 
-Different from static images — animations have timing, transitions, and competing visual motion.
+静止画とは異なり、アニメーションにはタイミング、遷移、互いに競合する視覚的な動きがある。
 
-### Element highlighting
+### 要素のハイライト
 
-1. **Rects for big areas, arrows for small elements** — 500x300px area = rect, 200x25px element = arrow
-2. **Labels go RIGHT NEXT to what they describe** — short arrow (30-80px), label adjacent. Viewer's eye shouldn't travel more than ~100px
-3. **Arrow must not cross its own label** — pick the edge closest to the target
-4. **No bottom bar / subtitle approach** — eyes jump between content and bar. Contextual placement only
-5. **Hero message gets a bigger font** — main takeaway 64pt+, detail annotations 38pt
+1. **大きな領域には矩形、小さな要素には矢印** — 500x300pxの領域 = 矩形、200x25pxの要素 = 矢印
+2. **ラベルは説明対象のすぐ隣に置く** — 短い矢印（30-80px）と隣接するラベルを使う。視線の移動は約100px以内にする
+3. **矢印は自身のラベルを横切らない** — 対象に最も近い辺を選ぶ
+4. **下部バー/字幕方式は使わない** — 視線がコンテンツとバーの間を往復する。文脈に応じて配置する
+5. **主役のメッセージは大きなフォントにする** — 主な要点は64pt以上、詳細な注釈は38pt
 
-### Timing and pacing
+### タイミングとテンポ
 
-6. **Fade: 2-frame pop-in at 10fps** — 50% → 100% opacity (0.2s total). Easing curves look bad at low FPS
-7. **Type → pause → annotate** — during fast action, show NO annotation. Pause, then add it
-8. **Variable frame duration** — fast during action (100ms), slow during pauses (600-800ms), long hold for hero (500ms)
-9. **Higher FPS for smooth motion** — 10fps minimum for typing/interaction
+6. **フェード: 10fpsで2フレームのポップイン** — 不透明度を50% → 100%にする（合計0.2秒）。低FPSではイージング曲線が不自然になる
+7. **入力 → 一時停止 → 注釈** — 動きが速い間は注釈を表示しない。一時停止してから追加する
+8. **フレーム長を変える** — 動作中は速く（100ms）、一時停止中は遅く（600-800ms）、主役の表示は長く保持する（500ms）
+9. **滑らかな動きには高いFPS** — 入力/操作には最低10fps
 
 ### Pop-in fade implementation
 
@@ -582,20 +584,20 @@ for frame_idx in range(total_frames):
     # - rect outline: outline=(*color, int(255 * alpha))
 ```
 
-## Guidelines
+## ガイドライン
 
-1. **All elements same thickness** — rect `width`, line `width`, and visual text weight should feel consistent (~5px)
-2. Place labels **close to the rect** — short leader line (25-35px)
-3. Labels can overlap content — the stroke gives enough contrast
-4. **Show locally first** — verify before uploading to a PR
-5. **Take screenshots at native 1x, control display size in HTML** — use `<img width="300">` in markdown, never resize with PIL (creates artifacts)
-6. **Always check `Image.open(path).size` first** — HiDPI screenshots are larger than they appear (150% scaling = 1.5x CSS pixel dimensions)
-7. **Short labels work better** — wide labels have fewer valid placements. Use 1-3 words when possible
-8. **Verify with debug=True** — always check the first annotation of a new image with debug mode
+1. **すべての要素で太さを揃える** — 矩形の `width`、線の `width`、視覚的な文字の太さを一貫させる（約5px）
+2. ラベルを**矩形の近く**に置く — 短い引き出し線（25-35px）を使う
+3. ラベルはコンテンツに重なってもよい — ストロークで十分なコントラストが得られる
+4. **まずローカルで表示する** — PRにアップロードする前に確認する
+5. **スクリーンショットはネイティブの1xで取得し、HTMLで表示サイズを制御する** — Markdownでは `<img width="300">` を使い、PILでリサイズしない（アーティファクトが生じる）
+6. **最初に必ず `Image.open(path).size` を確認する** — HiDPIスクリーンショットは見た目より大きい（150%スケーリング = CSSピクセル寸法の1.5倍）
+7. **短いラベルの方がよい** — 幅広のラベルは有効な配置が少ない。可能なら1～3語にする
+8. **`debug=True` で確認する** — 新しい画像の最初の注釈は必ずデバッグモードで確認する
 
-## Limitations
+## 制限事項
 
-- Ink Free font is Windows-only; other platforms need a fallback font
-- PIL text rendering is basic — no rich text, no markdown
-- Animated GIF annotations require frame-by-frame processing which can be slow for long recordings
-- Algorithmic placement works best with 2-6 annotations; more than that may produce crowded results
+- Ink FreeフォントはWindows専用。他のプラットフォームではフォールバックフォントが必要
+- PILのテキスト描画は基本的なもの。リッチテキストやMarkdownには対応しない
+- アニメーションGIFの注釈はフレーム単位の処理が必要で、長時間の録画では遅くなることがある
+- アルゴリズムによる配置は2～6個の注釈で最も適切に動作し、それ以上では混雑した結果になる可能性がある

@@ -1,25 +1,26 @@
 ---
 name: mvvm-toolkit
-description: 'CommunityToolkit.Mvvm (the MVVM Toolkit) core: source generators ([ObservableProperty], [RelayCommand], [NotifyPropertyChangedFor], [NotifyCanExecuteChangedFor], [NotifyDataErrorInfo]), base classes (ObservableObject / ObservableValidator / ObservableRecipient), commands (RelayCommand / AsyncRelayCommand), and validation. Companion skills: mvvm-toolkit-messenger for pub/sub, mvvm-toolkit-di for Microsoft.Extensions.DependencyInjection wiring. Works across WPF, WinUI 3, MAUI, Uno, and Avalonia.'
+description: 'CommunityToolkit.Mvvm（MVVM Toolkit）のコア機能: ソース ジェネレーター（[ObservableProperty]、[RelayCommand]、[NotifyPropertyChangedFor]、[NotifyCanExecuteChangedFor]、[NotifyDataErrorInfo]）、基底クラス（ObservableObject / ObservableValidator / ObservableRecipient）、コマンド（RelayCommand / AsyncRelayCommand）、検証。関連スキル: pub/sub 用の mvvm-toolkit-messenger、Microsoft.Extensions.DependencyInjection の構成用の mvvm-toolkit-di。WPF、WinUI 3、MAUI、Uno、Avalonia で使用できます。'
 ---
 
-# CommunityToolkit.Mvvm (core)
+# CommunityToolkit.Mvvm（コア）
 
-Use this skill when authoring or reviewing ViewModels, properties,
-commands, or validation in apps that use `CommunityToolkit.Mvvm` 8.x.
+`CommunityToolkit.Mvvm` 8.x を使用するアプリで、ViewModel、プロパティ、
+コマンド、検証を作成またはレビューするときに、このスキルを使用してください。
 
-> **Companion skills.** Load **`mvvm-toolkit-messenger`** for `IMessenger`
-> pub/sub patterns. Load **`mvvm-toolkit-di`** for
-> `Microsoft.Extensions.DependencyInjection` integration.
+> **関連スキル。** `IMessenger` の pub/sub パターンには
+> **`mvvm-toolkit-messenger`** を読み込んでください。
+> `Microsoft.Extensions.DependencyInjection` の統合には
+> **`mvvm-toolkit-di`** を読み込んでください。
 
-> **Quick recap.** `[ObservableProperty]` on private fields in `partial`
-> classes; `[RelayCommand]` on instance methods; inherit from
-> `ObservableObject` (or `ObservableValidator` for input forms,
-> `ObservableRecipient` when using `IMessenger`).
+> **要約。** `partial` クラスの private フィールドには `[ObservableProperty]` を、
+> インスタンス メソッドには `[RelayCommand]` を付与します。
+> `ObservableObject` を継承し（入力フォームでは `ObservableValidator`、
+> `IMessenger` を使用する場合は `ObservableRecipient`）、実装してください。
 
 ---
 
-## Package & setup
+## パッケージとセットアップ
 
 ```xml
 <ItemGroup>
@@ -27,52 +28,50 @@ commands, or validation in apps that use `CommunityToolkit.Mvvm` 8.x.
 </ItemGroup>
 ```
 
-Targets: `netstandard2.0`, `netstandard2.1`, `net6.0`+. Works on .NET, .NET
-Framework, Mono. Source generators ship in the same NuGet — no extra
-analyzer reference required.
+対象フレームワーク: `netstandard2.0`、`netstandard2.1`、`net6.0` 以降。.NET、.NET
+Framework、Mono で動作します。ソース ジェネレーターは同じ NuGet に含まれるため、
+追加のアナライザー参照は不要です。
 
-Namespaces:
+名前空間:
 
 ```csharp
 using CommunityToolkit.Mvvm.ComponentModel;   // ObservableObject, [ObservableProperty]
 using CommunityToolkit.Mvvm.Input;             // [RelayCommand], RelayCommand, AsyncRelayCommand
 ```
 
-> **Universal rule.** Every type that uses `[ObservableProperty]` or
-> `[RelayCommand]` — and every enclosing type, if nested — must be
-> declared `partial`. Without it, the generators emit
-> `MVVMTK0008` / `MVVMTK0042`.
+> **共通ルール。** `[ObservableProperty]` または `[RelayCommand]` を使用するすべての型と、
+> 入れ子の場合はすべての包含型を `partial` として宣言する必要があります。これがないと、
+> ジェネレーターは `MVVMTK0008` / `MVVMTK0042` を出力します。
 
 ---
 
-## Source generators cheat sheet
+## ソース ジェネレーター早見表
 
-| Attribute | Applied to | Generates |
+| 属性 | 適用先 | 生成されるもの |
 |-----------|-----------|-----------|
-| `[ObservableProperty]` | private field | Public `INotifyPropertyChanged` property + `OnXxxChanging`/`OnXxxChanged` partial-method hooks |
-| `[NotifyPropertyChangedFor(nameof(Other))]` | observable field | Also raises `PropertyChanged` for the listed property |
-| `[NotifyCanExecuteChangedFor(nameof(MyCommand))]` | observable field | Calls `MyCommand.NotifyCanExecuteChanged()` on change |
-| `[NotifyDataErrorInfo]` | observable field on `ObservableValidator` | Calls `ValidateProperty(value)` from the setter |
-| `[NotifyPropertyChangedRecipients]` | observable field on `ObservableRecipient` | `Broadcast(old, new)` after the change |
-| `[RelayCommand]` | instance method | Lazy `RelayCommand` / `AsyncRelayCommand` exposed as `IRelayCommand` / `IAsyncRelayCommand` |
-| `[RelayCommand(CanExecute = nameof(CanX))]` | instance method | Wires `CanExecute` to a method or property |
-| `[RelayCommand(IncludeCancelCommand = true)]` | async method with `CancellationToken` | Also generates `XxxCancelCommand` |
-| `[RelayCommand(AllowConcurrentExecutions = true)]` | async method | Allows queued/parallel invocations (default disables while running) |
-| `[RelayCommand(FlowExceptionsToTaskScheduler = true)]` | async method | Surfaces exceptions via `ExecutionTask` instead of awaiting and rethrowing |
-| `[property: SomeAttr]` | observable field or `[RelayCommand]` method | Forwards `SomeAttr` onto the generated property (e.g., `[JsonIgnore]`) |
+| `[ObservableProperty]` | private フィールド | public `INotifyPropertyChanged` プロパティと `OnXxxChanging` / `OnXxxChanged` 部分メソッド フック |
+| `[NotifyPropertyChangedFor(nameof(Other))]` | 監視可能なフィールド | 指定したプロパティに対しても `PropertyChanged` を発生させる |
+| `[NotifyCanExecuteChangedFor(nameof(MyCommand))]` | 監視可能なフィールド | 変更時に `MyCommand.NotifyCanExecuteChanged()` を呼び出す |
+| `[NotifyDataErrorInfo]` | `ObservableValidator` 上の監視可能なフィールド | setter から `ValidateProperty(value)` を呼び出す |
+| `[NotifyPropertyChangedRecipients]` | `ObservableRecipient` 上の監視可能なフィールド | 変更後に `Broadcast(old, new)` を呼び出す |
+| `[RelayCommand]` | インスタンス メソッド | `IRelayCommand` / `IAsyncRelayCommand` として公開される遅延生成の `RelayCommand` / `AsyncRelayCommand` |
+| `[RelayCommand(CanExecute = nameof(CanX))]` | インスタンス メソッド | `CanExecute` をメソッドまたはプロパティへ接続する |
+| `[RelayCommand(IncludeCancelCommand = true)]` | `CancellationToken` を持つ async メソッド | `XxxCancelCommand` も生成する |
+| `[RelayCommand(AllowConcurrentExecutions = true)]` | async メソッド | キューイングまたは並列実行を許可する（既定では実行中は無効） |
+| `[RelayCommand(FlowExceptionsToTaskScheduler = true)]` | async メソッド | await して再スローする代わりに、`ExecutionTask` を介して例外を公開する |
+| `[property: SomeAttr]` | 監視可能なフィールドまたは `[RelayCommand]` メソッド | `SomeAttr` を生成されたプロパティへ転送する（例: `[JsonIgnore]`） |
 
-**Naming.** Field `name` / `_name` / `m_name` → `Name`. Method `LoadAsync` →
-`LoadCommand` (the `Async` suffix is stripped; a leading `On` is also
-stripped).
+**命名。** フィールド `name` / `_name` / `m_name` → `Name`。メソッド `LoadAsync` →
+`LoadCommand`（`Async` サフィックスと、先頭にある `On` は取り除かれます）。
 
-See [`references/source-generators.md`](references/source-generators.md) for
-the full attribute reference with generated-code samples.
+生成コードのサンプルを含む完全な属性リファレンスについては、
+[`references/source-generators.md`](references/source-generators.md) を参照してください。
 
 ---
 
-## ViewModel patterns
+## ViewModel パターン
 
-### Simple observable property
+### 単純な監視可能プロパティ
 
 ```csharp
 public partial class ContactViewModel : ObservableObject
@@ -82,7 +81,7 @@ public partial class ContactViewModel : ObservableObject
 }
 ```
 
-### Hooks: `OnXxxChanging` / `OnXxxChanged`
+### フック: `OnXxxChanging` / `OnXxxChanged`
 
 ```csharp
 [ObservableProperty]
@@ -92,11 +91,11 @@ partial void OnNameChanged(string? value) =>
     Logger.LogInformation("Name changed to {Name}", value);
 ```
 
-Both single-arg `(value)` and two-arg `(oldValue, newValue)` overloads
-are available. Implement only the ones you need; unimplemented hooks are
-elided by the compiler (zero runtime cost).
+単一引数 `(value)` と 2 引数 `(oldValue, newValue)` の両方のオーバーロードを利用できます。
+必要なものだけを実装してください。未実装のフックはコンパイラーによって除去されるため、
+実行時コストはゼロです。
 
-### Dependent properties + dependent commands
+### 依存プロパティと依存コマンド
 
 ```csharp
 [ObservableProperty]
@@ -112,7 +111,7 @@ private string? lastName;
 public string FullName => $"{FirstName} {LastName}".Trim();
 ```
 
-### Wrapping a non-observable model
+### 監視可能ではないモデルをラップする
 
 ```csharp
 public sealed class ObservableUser(User user) : ObservableObject
@@ -125,11 +124,11 @@ public sealed class ObservableUser(User user) : ObservableObject
 }
 ```
 
-Pass a static lambda (no captured state) to keep the call allocation-free.
+キャプチャした状態を持たない static ラムダを渡すと、呼び出し時の割り当てを回避できます。
 
 ---
 
-## Commands
+## コマンド
 
 ```csharp
 [RelayCommand]
@@ -155,30 +154,31 @@ private Task SaveAsync() => repo.SaveAsync(Name!);
 private bool CanSave() => !string.IsNullOrWhiteSpace(Name);
 ```
 
-Reach for manual `RelayCommand` / `AsyncRelayCommand` constructors only
-when you must own the command's lifetime explicitly or compose it from
-non-trivial sources. The attribute style covers ~95% of cases.
+コマンドのライフタイムを明示的に管理する必要がある場合や、単純でないソースから
+コマンドを構成する場合にのみ、手動で `RelayCommand` / `AsyncRelayCommand`
+コンストラクターを使用してください。属性形式で約 95% のケースをカバーできます。
 
-See [`references/relaycommand-cookbook.md`](references/relaycommand-cookbook.md)
-for sync / async / cancellable / concurrency / error-surfacing recipes.
+同期 / 非同期 / キャンセル可能 / 同時実行 / 例外の公開に関するレシピは、
+[`references/relaycommand-cookbook.md`](references/relaycommand-cookbook.md)
+を参照してください。
 
 ---
 
-## Base class selection
+## 基底クラスの選択
 
-| Base class | Use when |
+| 基底クラス | 使用する場面 |
 |------------|---------|
-| `ObservableObject` | Default. `INotifyPropertyChanged` + `INotifyPropertyChanging` + `SetProperty` overloads + `SetPropertyAndNotifyOnCompletion` for `Task` properties |
-| `ObservableValidator` | The VM needs `INotifyDataErrorInfo` (forms, settings input) |
-| `ObservableRecipient` | The VM sends or receives `IMessenger` messages — see the **`mvvm-toolkit-messenger`** skill |
+| `ObservableObject` | 既定。`INotifyPropertyChanged` + `INotifyPropertyChanging` + `SetProperty` のオーバーロード + `Task` プロパティ用の `SetPropertyAndNotifyOnCompletion` |
+| `ObservableValidator` | VM に `INotifyDataErrorInfo` が必要な場合（フォーム、設定入力） |
+| `ObservableRecipient` | VM が `IMessenger` メッセージを送受信する場合。**`mvvm-toolkit-messenger`** スキルを参照 |
 
-C# is single-inheritance: `ObservableValidator` and `ObservableRecipient`
-both extend `ObservableObject`, so combining them requires composition
-(e.g., inject `IMessenger` into an `ObservableValidator`).
+C# は単一継承です。`ObservableValidator` と `ObservableRecipient` はどちらも
+`ObservableObject` を継承するため、両方を組み合わせるには合成が必要です
+（例: `ObservableValidator` に `IMessenger` を注入する）。
 
 ---
 
-## Validation
+## 検証
 
 ```csharp
 using System.ComponentModel.DataAnnotations;
@@ -205,40 +205,39 @@ public sealed partial class RegistrationViewModel : ObservableValidator
 }
 ```
 
-Other entry points: `TrySetProperty`, `ValidateProperty(value, name)`,
-`ClearAllErrors()`, `GetErrors(propertyName)`. Custom rules support
-`[CustomValidation]` methods and custom `ValidationAttribute` subclasses.
+その他のエントリ ポイントは `TrySetProperty`、`ValidateProperty(value, name)`、
+`ClearAllErrors()`、`GetErrors(propertyName)` です。カスタム ルールでは、
+`[CustomValidation]` メソッドとカスタム `ValidationAttribute` サブクラスを利用できます。
 
-See [`references/validation.md`](references/validation.md) for the full
-validator surface area.
-
----
-
-## Top pitfalls
-
-1. **Forgetting `partial`.** Class (and every enclosing type) must be
-   `partial`. Compile error `MVVMTK0008` / `MVVMTK0042`.
-2. **PascalCase field name.** `[ObservableProperty] private string Name;`
-   collides with the generated property. Use `name`, `_name`, or `m_name`.
-3. **`async void` on `[RelayCommand]`.** The generator only wraps
-   `Task`-returning methods as `IAsyncRelayCommand`. `async void` becomes
-   a sync `RelayCommand` and exceptions are unobserved. Always return
-   `Task`.
-4. **Forgetting `[NotifyCanExecuteChangedFor]`.** The Save button stays
-   disabled even though `CanSave()` would now return `true`.
-5. **Mutating the same reference held by an `[ObservableProperty]`
-   field.** `EqualityComparer<T>.Default` returns `true`, no notification
-   fires. Replace the instance instead of mutating it.
-
-For the full diagnostic table (`MVVMTK0xxx`) and more pitfalls, see
-[`references/troubleshooting.md`](references/troubleshooting.md).
+バリデーターの完全な API 一覧については、
+[`references/validation.md`](references/validation.md) を参照してください。
 
 ---
 
-## End-to-end mini walkthrough
+## 主な落とし穴
 
-A two-pane Notes app demonstrating generators + commands +
-`[NotifyCanExecuteChangedFor]`:
+1. **`partial` を忘れる。** クラス（およびすべての包含型）は `partial` である必要があります。
+   コンパイル エラーは `MVVMTK0008` / `MVVMTK0042` です。
+2. **PascalCase のフィールド名。** `[ObservableProperty] private string Name;` は
+   生成されるプロパティと競合します。`name`、`_name`、または `m_name` を使用してください。
+3. **`[RelayCommand]` での `async void`。** ジェネレーターが `IAsyncRelayCommand` として
+   ラップするのは `Task` を返すメソッドだけです。`async void` は同期 `RelayCommand` となり、
+   例外が監視されません。常に `Task` を返してください。
+4. **`[NotifyCanExecuteChangedFor]` を忘れる。** `CanSave()` が `true` を返すようになっても、
+   Save ボタンは無効のままです。
+5. **`[ObservableProperty]` フィールドが保持している同じ参照を変更する。**
+   `EqualityComparer<T>.Default` が `true` を返すため、通知は発生しません。
+   インスタンスを変更する代わりに置き換えてください。
+
+完全な診断表（`MVVMTK0xxx`）と追加の落とし穴については、
+[`references/troubleshooting.md`](references/troubleshooting.md) を参照してください。
+
+---
+
+## エンドツーエンドのミニ チュートリアル
+
+ジェネレーター、コマンド、`[NotifyCanExecuteChangedFor]` を示す
+2 ペインの Notes アプリです。
 
 ```csharp
 public sealed partial class NoteViewModel(INotesService notes,
@@ -269,26 +268,27 @@ public sealed partial class NoteViewModel(INotesService notes,
 }
 ```
 
-For the full sample (DI wiring, View code-behind, XAML, unit tests), see
-[`references/end-to-end-walkthrough.md`](references/end-to-end-walkthrough.md).
+完全なサンプル（DI 構成、View のコードビハインド、XAML、単体テスト）については、
+[`references/end-to-end-walkthrough.md`](references/end-to-end-walkthrough.md)
+を参照してください。
 
 ---
 
-## References & companion skills
+## 参照資料と関連スキル
 
-| Topic | Where |
+| トピック | 場所 |
 |-------|-------|
-| Source generator attribute reference | [`references/source-generators.md`](references/source-generators.md) |
-| RelayCommand recipes | [`references/relaycommand-cookbook.md`](references/relaycommand-cookbook.md) |
-| Validation deep dive | [`references/validation.md`](references/validation.md) |
-| Full Notes-app walkthrough | [`references/end-to-end-walkthrough.md`](references/end-to-end-walkthrough.md) |
-| `MVVMTK0xxx` diagnostics & pitfalls | [`references/troubleshooting.md`](references/troubleshooting.md) |
-| **Messenger pub/sub** | Companion skill: **`mvvm-toolkit-messenger`** |
-| **`Microsoft.Extensions.DependencyInjection` wiring** | Companion skill: **`mvvm-toolkit-di`** |
+| ソース ジェネレーター属性リファレンス | [`references/source-generators.md`](references/source-generators.md) |
+| RelayCommand レシピ | [`references/relaycommand-cookbook.md`](references/relaycommand-cookbook.md) |
+| 検証の詳細 | [`references/validation.md`](references/validation.md) |
+| 完全な Notes アプリのチュートリアル | [`references/end-to-end-walkthrough.md`](references/end-to-end-walkthrough.md) |
+| `MVVMTK0xxx` の診断と落とし穴 | [`references/troubleshooting.md`](references/troubleshooting.md) |
+| **Messenger pub/sub** | 関連スキル: **`mvvm-toolkit-messenger`** |
+| **`Microsoft.Extensions.DependencyInjection` の構成** | 関連スキル: **`mvvm-toolkit-di`** |
 
-External sources:
+外部資料:
 
-- Toolkit overview: <https://learn.microsoft.com/en-us/dotnet/communitytoolkit/mvvm/>
-- WinUI MVVM Toolkit tutorial: <https://learn.microsoft.com/en-us/windows/apps/tutorials/winui-mvvm-toolkit/intro>
-- Source: <https://github.com/CommunityToolkit/dotnet>
-- Samples: <https://github.com/CommunityToolkit/MVVM-Samples>
+- Toolkit の概要: <https://learn.microsoft.com/en-us/dotnet/communitytoolkit/mvvm/>
+- WinUI MVVM Toolkit チュートリアル: <https://learn.microsoft.com/en-us/windows/apps/tutorials/winui-mvvm-toolkit/intro>
+- ソース: <https://github.com/CommunityToolkit/dotnet>
+- サンプル: <https://github.com/CommunityToolkit/MVVM-Samples>

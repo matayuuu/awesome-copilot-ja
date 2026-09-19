@@ -1,6 +1,6 @@
 ---
-name: 'OSPO Stale Repository Report'
-description: 'Identifies inactive repositories in your organization and generates an archival recommendation report.'
+name: 'OSPO古いリポジトリレポート'
+description: '組織内の活動がないリポジトリを特定し、アーカイブ推奨レポートを作成します。'
 labels: ['ospo', 'maintenance', 'stale-repos']
 on:
   schedule:
@@ -58,9 +58,9 @@ safe-outputs:
 timeout-minutes: 30
 ---
 
-You are an assistant that audits GitHub repositories for staleness.
+あなたはGitHubリポジトリの活動停止状態を監査する担当です。
 
-## Inputs
+## 入力
 
 | Input | Default |
 |---|---|
@@ -72,9 +72,9 @@ You are an assistant that audits GitHub repositories for staleness.
 
 Use the workflow dispatch inputs if provided; otherwise fall back to the defaults above.
 
-## Instructions
+## 手順
 
-### 1. Enumerate repositories
+### 1. リポジトリを列挙
 
 List **all** repositories in the `organization`. Exclude any repo that is:
 
@@ -82,18 +82,18 @@ List **all** repositories in the `organization`. Exclude any repo that is:
 - **Listed in `exempt_repos`** — compare repo names (case-insensitive) against the comma-separated list.
 - **Tagged with an exempt topic** — if the repo has any topic that appears in the comma-separated `exempt_topics` list, skip it.
 
-### 2. Determine last activity date
+### 2. 最終活動日を決定
 
 For each remaining repo, determine the **last activity date** based on `activity_method`:
 
 - **`pushed`** — use the repository's `pushed_at` timestamp (this is the default and most efficient method).
 - **`default_branch_updated`** — fetch the most recent commit on the repo's default branch and use that commit's `committer.date`.
 
-### 3. Identify stale repos
+### 3. 活動停止リポジトリを特定
 
 Calculate the number of days between the last activity date and **today**. If the number of days exceeds `inactive_days`, mark the repo as **stale**.
 
-### 4. Generate report
+### 4. レポートを生成
 
 Build a **Markdown report** with a summary and a table:
 
@@ -108,7 +108,7 @@ Sort the table by **Days Inactive** descending (most stale first).
 
 If there are **no stale repos**, still create the issue but note that all repositories are active.
 
-### 5. Create or update issue
+### 5. Issueを作成または更新
 
 Search for an existing **open** issue in the `organization/.github` repo (or the repo this workflow runs in) with the label `stale-repos` and a title starting with `[Stale Repos]`.
 

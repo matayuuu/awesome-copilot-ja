@@ -1,8 +1,7 @@
 ---
 name: system-commandline-cli
-description: "Use this skill when adding, modifying, or reviewing CLI commands in a .NET project built with System.CommandLine. Triggers include: creating a new CLI command, adding options or arguments, wiring command handlers, registering subcommands, building command groups, or any architecture decision about CLI command structure. Also use when the user mentions 'System.CommandLine', 'CommandBase', 'SetAction', 'ParseResult', 'RootCommand', 'subcommand', or asks to add a verb to the CLI. Do NOT use for general C# coding, web APIs, UI work, or non-CLI projects."
+description: 'System.CommandLineで構築された.NETプロジェクトのCLIコマンドを追加、変更、レビューするときに使います。新しいCLIコマンドの作成、オプションや引数の追加、コマンドハンドラーの接続、サブコマンドの登録、コマンドグループの構築、CLIコマンド構造の設計判断を扱います。ユーザーがSystem.CommandLine、CommandBase、SetAction、ParseResult、RootCommand、subcommandに言及した場合や、CLIへverbを追加する依頼にも使います。一般的なC#コーディング、Web API、UI、CLI以外のプロジェクトには使いません。'
 ---
-
 # System.CommandLine CLI Developer Skill
 
 You are working on a .NET CLI application built with **System.CommandLine v2.x.x**, targeting **.NET 8 or later** or any **.NET Standard 2.0** implementation, including **.NET Framework 4.6.1 or later** and **.NET Core 2.0 or later**.

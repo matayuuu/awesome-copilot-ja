@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "uizze",
-  "description": "Build product-specific interfaces with a focused UIZZE workflow, optional real-screen evidence, and a practical finish check.",
+  "description": "UIZZEに集中したワークフロー、任意の実画面エビデンス、実用的な完了確認を使って、製品固有のインターフェイスを構築します。",
   "version": "1.2.13",
   "author": {
     "name": "UIZZE",

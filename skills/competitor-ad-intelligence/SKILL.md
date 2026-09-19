@@ -1,49 +1,49 @@
 ---
 name: competitor-ad-intelligence
-description: 'Use this skill when the user asks to analyze, tear down, or reverse-engineer a competitor''s paid ads. Trigger for prompts like "what ads is [competitor] running", "tear down their ad strategy", "competitor ad analysis", "find ad angles we haven''t tried", or "reverse-engineer their paid funnel". Do not trigger for organic/SEO competitor research or website positioning analysis.'
+description: '競合他社の有料広告の分析、分解、リバースエンジニアリングを依頼されたときに使用する。「[競合]はどんな広告を出しているか」「広告戦略を分解して」「競合広告分析」「まだ試していない広告の切り口を探して」「有料ファネルをリバースエンジニアリングして」などの依頼で起動する。オーガニック／SEOの競合調査やWebサイトのポジショニング分析では使用しない。'
 license: MIT
-compatibility: 'Cross-platform. Uses web search and public ad libraries (Meta Ad Library, Google Ads Transparency Center) only — no API keys or credentials required.'
+compatibility: 'クロスプラットフォーム対応。Web検索と公開広告ライブラリ（Meta Ad Library、Google Ads Transparency Center）のみを使用し、APIキーや認証情報は不要。'
 metadata:
   version: "1.0"
   author: GooseWorks
   source: https://github.com/gooseworks-ai/goose-skills
 ---
 
-# Competitor Ad Intelligence
+# 競合広告インテリジェンス
 
-Scrape competitor ads from Meta and Google, analyze creative patterns, reverse-engineer landing page funnels, and produce a full strategic teardown — hooks, formats, positioning bets, vulnerabilities, and counter-plays.
+MetaとGoogleから競合広告を収集し、クリエイティブのパターンを分析し、ランディングページのファネルをリバースエンジニアリングして、フック、形式、ポジショニング上の狙い、弱点、対抗策を含む完全な戦略分析を作成します。
 
-**Core principle:** A competitor's ad portfolio is a window into their growth strategy. Long-running ads reveal what converts. New ads reveal what they're testing. Landing pages reveal their positioning bets. The best ad creative teams start with evidence from what's already working, then differentiate.
+**中核原則:** 競合他社の広告ポートフォリオは、その成長戦略を映す窓です。長期間掲載されている広告は成果が出ているものを、新しい広告はテスト中のものを示します。ランディングページからはポジショニング上の狙いが分かります。優れた広告クリエイティブチームは、すでに機能しているものの証拠から出発し、そのうえで差別化します。
 
-## When to Use
+## 使用する場面
 
-- "What ads are my competitors running?"
-- "Tear down [competitor]'s ad strategy"
-- "Find new creative angles for our paid campaigns"
-- "Reverse-engineer [competitor]'s paid funnel"
-- "What hooks are working in [our space]?"
-- "Audit the ad landscape before we launch"
-- "Find weaknesses in [competitor]'s ad strategy"
-- "What format — video, image, carousel — is dominant in our category?"
+- 「競合他社はどんな広告を出していますか？」
+- 「[競合]の広告戦略を分解してください」
+- 「有料キャンペーン向けの新しいクリエイティブの切り口を探してください」
+- 「[競合]の有料ファネルをリバースエンジニアリングしてください」
+- 「[市場]ではどんなフックが機能していますか？」
+- 「ローンチ前に広告市場を監査してください」
+- 「[競合]の広告戦略の弱点を探してください」
+- 「私たちのカテゴリでは動画、画像、カルーセルのどの形式が主流ですか？」
 
-## Phase 0: Intake
+## フェーズ0: ヒアリング
 
-Gather from the user:
+ユーザーから次を収集します:
 
-1. **Competitor names + domains** (e.g., `apollo.io`, `clay.run`)
-2. **Your product/domain** — for comparison framing
-3. **Channels:** Meta only, Google only, or both? (default: both)
-4. **Depth level:**
-   - **Standard:** Ad scrape + creative analysis + landing page analysis
-   - **Deep:** Standard + historical comparison + funnel reconstruction + counter-plays
-5. **Product category** — helps frame analysis
-6. **Known competitor landing pages?** — any URLs already spotted in their ads
+1. **競合名とドメイン**（例: `apollo.io`、`clay.run`）
+2. **自社製品／ドメイン** — 比較の枠組みに使用
+3. **チャネル:** Metaのみ、Googleのみ、または両方（既定: 両方）
+4. **分析の深さ:**
+   - **標準:** 広告収集 + クリエイティブ分析 + ランディングページ分析
+   - **詳細:** 標準 + 過去との比較 + ファネル再構築 + 対抗策
+5. **製品カテゴリ** — 分析の枠組みに使用
+6. **既知の競合ランディングページ** — 広告ですでに見つけたURL
 
-## Phase 1: Scrape Meta Ads
+## フェーズ1: Meta広告を収集する
 
-For each competitor domain, scrape ads from Meta Ad Library.
+競合ドメインごとに、Meta Ad Libraryから広告を収集します。
 
-Use `web_search` to find competitor ads in the Meta Ad Library (publicly accessible, no API key needed):
+`web_search`を使用してMeta Ad Library内の競合広告を検索します（一般公開されており、APIキーは不要）:
 
 ```
 web_search: site:facebook.com/ads/library "[competitor_name]"
@@ -51,26 +51,26 @@ web_search: "[competitor_name]" Meta Ad Library active ads
 web_search: "[competitor_name]" facebook ads examples
 ```
 
-You can also visit the Meta Ad Library directly: `https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=US&q=<competitor_name>`
+Meta Ad Libraryへ直接アクセスすることもできます: `https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=US&q=<competitor_name>`
 
-Use `fetch_webpage` on the Ad Library URL to extract ad details if your agent supports it.
+Agentが対応している場合は、Ad LibraryのURLに`fetch_webpage`を使用して広告の詳細を抽出します。
 
-> **Note:** Apify actors for Meta Ad Library scraping exist but are unreliable as of April 2026 due to Meta's anti-scraping measures. Use `web_search` as the primary method.
+> **注記:** Meta Ad Libraryを収集するApify actorは存在しますが、Metaのスクレイピング対策により、2026年4月時点では信頼性が低くなっています。主要な方法として`web_search`を使用してください。
 
-**Collect per ad:**
-- Ad copy (headline + primary text)
-- Visual type (image / video / carousel)
-- CTA button text
-- Landing page URL
-- Active duration (first seen, still running or stopped)
-- Platforms (Facebook, Instagram, Audience Network)
-- Ad variations (A/B tests — same landing page, different creative)
+**広告ごとに収集する項目:**
+- 広告コピー（見出し + メインテキスト）
+- ビジュアルの種類（画像／動画／カルーセル）
+- CTAボタンのテキスト
+- ランディングページURL
+- 掲載期間（初回確認日、掲載中または停止）
+- プラットフォーム（Facebook、Instagram、Audience Network）
+- 広告バリエーション（A/Bテスト — 同じランディングページで異なるクリエイティブ）
 
-## Phase 2: Scrape Google Ads
+## フェーズ2: Google広告を収集する
 
-For each competitor domain, scrape ads from Google Ads Transparency Center.
+競合ドメインごとに、Google Ads Transparency Centerから広告を収集します。
 
-Use `web_search` to find competitor ads in Google Ads Transparency Center (publicly accessible):
+`web_search`を使用してGoogle Ads Transparency Center内の競合広告を検索します（一般公開）:
 
 ```
 web_search: site:adstransparency.google.com "[competitor_name]"
@@ -78,141 +78,141 @@ web_search: "[competitor_name]" Google Ads transparency
 web_search: "[competitor_name]" google search ads examples
 ```
 
-You can also visit directly: `https://adstransparency.google.com/?search_text=<competitor_name>`
+直接アクセスすることもできます: `https://adstransparency.google.com/?search_text=<competitor_name>`
 
-Use `fetch_webpage` on the Transparency Center URL to extract ad details if your agent supports it.
+Agentが対応している場合は、Transparency CenterのURLに`fetch_webpage`を使用して広告の詳細を抽出します。
 
-**Collect per ad:**
-- Headline variants (up to 3)
-- Description lines
-- Ad type (Search / Display / YouTube / Shopping)
-- Landing page URL
-- Geographic targeting (if visible)
+**広告ごとに収集する項目:**
+- 見出しのバリエーション（最大3件）
+- 説明文
+- 広告の種類（検索／ディスプレイ／YouTube／ショッピング）
+- ランディングページURL
+- 地域ターゲティング（表示される場合）
 
-## Phase 3: Analyze Creative Patterns
+## フェーズ3: クリエイティブパターンを分析する
 
-After collecting all ads, perform structured analysis.
+すべての広告を収集した後、構造化された分析を行います。
 
-### Hook Pattern Clustering
+### フックパターンのクラスタリング
 
-Group all ad headlines/openers by hook type:
+すべての広告見出し／冒頭文をフックの種類ごとに分類します:
 
-| Hook Type | Pattern | Example |
+| フックの種類 | パターン | 例 |
 |-----------|---------|---------|
-| **Fear/Loss** | Risk of missing out or falling behind | "Your competitors are already using AI SDRs" |
-| **Outcome** | Direct result promise | "10x your pipeline in 30 days" |
-| **Question** | Challenges current assumption | "Still doing outbound manually?" |
-| **Social proof** | Names customers or numbers | "Join 500+ B2B teams using [product]" |
-| **Contrarian** | Challenges conventional wisdom | "Cold email isn't dead. Your copy is." |
-| **Empathy** | Validates their pain | "We know SDR ramp time is brutal" |
-| **Product-led** | Feature as hook | "[Feature] is live — see what's new" |
+| **恐怖／損失** | 機会損失や遅れへの不安 | 「競合他社はすでにAI SDRを使っています」 |
+| **成果** | 直接的な成果を約束 | 「30日でパイプラインを10倍に」 |
+| **質問** | 現在の前提に疑問を投げかける | 「まだアウトバウンドを手作業で行っていますか？」 |
+| **社会的証明** | 顧客名や数値を示す | 「[製品]を利用する500以上のB2Bチームに加わりましょう」 |
+| **逆張り** | 常識に異議を唱える | 「コールドメールは終わっていません。問題はコピーです。」 |
+| **共感** | 相手の苦痛を認める | 「SDRの立ち上がりが大変なのは分かっています」 |
+| **製品主導** | 機能をフックにする | 「[機能]を公開しました — 新機能をご覧ください」 |
 
-Count how many ads per competitor use each hook type. This reveals their primary messaging strategy.
+競合ごとに各フックを使用する広告数を数えます。これにより、主要なメッセージ戦略が明らかになります。
 
-### Format Distribution
+### 形式の分布
 
-| Format | Meta | Google |
+| 形式 | Meta | Google |
 |--------|------|--------|
-| Static image | [N] | N/A |
-| Video | [N] | [N] |
-| Carousel | [N] | N/A |
-| Search text | N/A | [N] |
-| Display banner | N/A | [N] |
+| 静止画像 | [N] | N/A |
+| 動画 | [N] | [N] |
+| カルーセル | [N] | N/A |
+| 検索テキスト | N/A | [N] |
+| ディスプレイバナー | N/A | [N] |
 
-### CTA Taxonomy
+### CTAの分類
 
-List all unique CTAs found. Common patterns:
-- **Urgency:** "Start free", "Try now", "Get started today"
-- **Low-friction:** "See how it works", "Watch demo", "Learn more"
-- **Outcome:** "Book a demo", "Get your free audit", "Calculate your ROI"
+見つかった一意のCTAをすべて列挙します。一般的なパターン:
+- **緊急性:** 「無料で始める」「今すぐ試す」「今日から始める」
+- **低いハードル:** 「仕組みを見る」「デモを見る」「詳しく見る」
+- **成果:** 「デモを予約」「無料監査を受ける」「ROIを計算する」
 
-## Phase 4: Landing Page & Funnel Analysis
+## フェーズ4: ランディングページとファネルの分析
 
-For each unique landing page URL found in ads, fetch and analyze:
+広告で見つかった一意のランディングページURLごとに、取得して分析します:
 
 ```
 fetch_webpage: [landing_page_url]
 ```
 
-Or use `curl` if `fetch_webpage` is unavailable.
+`fetch_webpage`を利用できない場合は`curl`を使用します。
 
-**Extract per landing page:**
-- **Hero headline** — Does it match the ad promise?
-- **Subheadline** — Value prop expansion
-- **Primary CTA** — What action are they driving? (Demo / Free trial / Sign up / Download)
-- **Social proof** — Logos, testimonials, case study metrics
-- **Pricing visibility** — Is pricing shown or hidden?
-- **Form fields** — How much info do they ask for?
-- **Page type** — General homepage / dedicated LP / feature page / use-case page
-- **Message match score** — How well does the LP deliver on the ad's promise? (1-10)
+**ランディングページごとに抽出する項目:**
+- **Hero見出し** — 広告の約束と一致しているか？
+- **Subheadline** — Value propositionの展開
+- **主要CTA** — どの行動を促しているか？（デモ／無料トライアル／登録／ダウンロード）
+- **社会的証明** — ロゴ、顧客の声、事例の指標
+- **価格の表示** — 価格を表示しているか、隠しているか？
+- **フォームフィールド** — どれだけの情報を求めているか？
+- **ページの種類** — 一般的なホームページ／専用LP／機能ページ／ユースケースページ
+- **メッセージ一致スコア** — LPが広告の約束をどの程度実現しているか？（1～10）
 
-### Campaign Clustering
+### キャンペーンのクラスタリング
 
-Group all ads into logical campaigns by:
-- **Landing page destination** — Ads pointing to the same URL = same campaign
-- **Messaging theme** — Similar copy angles = same strategic bet
-- **Audience signal** — Different copy for different personas
+すべての広告を次の基準で論理的なキャンペーンへ分類します:
+- **ランディングページの遷移先** — 同じURLを指す広告 = 同じキャンペーン
+- **メッセージのテーマ** — 似たコピーの切り口 = 同じ戦略上の狙い
+- **オーディエンスのシグナル** — ペルソナごとに異なるコピー
 
-### Per-Campaign Funnel Analysis
+### キャンペーンごとのファネル分析
 
-For each campaign cluster:
+各キャンペーンクラスターについて:
 
-| Dimension | Analysis |
+| 観点 | 分析 |
 |-----------|----------|
-| **Strategic intent** | What is this campaign trying to achieve? (Awareness / Lead gen / Free trial / Competitive displacement) |
-| **Target persona** | Who is this ad speaking to? (Role, pain, stage) |
-| **Positioning bet** | What market position are they claiming? |
-| **Hook strategy** | Fear / Outcome / Social proof / Contrarian / Product-led |
-| **Conversion path** | Ad → LP → CTA → [Demo call / Free trial / Content download] |
-| **Longevity signal** | How long has this been running? (Longer = likely working) |
-| **A/B tests detected** | Multiple creatives to same LP = active testing |
+| **戦略的意図** | このキャンペーンは何を達成しようとしているか？（認知／リード獲得／無料トライアル／競合からの乗り換え） |
+| **対象ペルソナ** | この広告は誰に語りかけているか？（役割、課題、段階） |
+| **ポジショニング上の狙い** | どの市場ポジションを主張しているか？ |
+| **フック戦略** | 恐怖／成果／社会的証明／逆張り／製品主導 |
+| **コンバージョン経路** | 広告 → LP → CTA → [デモ通話／無料トライアル／コンテンツダウンロード] |
+| **継続期間のシグナル** | どのくらい掲載されているか？（長いほど成果が出ている可能性が高い） |
+| **検出したA/Bテスト** | 同じLPへ複数のクリエイティブ = テスト実施中 |
 
-### Budget Allocation Inference
+### 予算配分の推定
 
-Based on ad volume and platform distribution, estimate where they're concentrating spend:
+広告量とプラットフォーム分布に基づき、支出を集中している場所を推定します:
 
-| Platform | Ad Count | % of Total | Estimated Focus |
+| プラットフォーム | 広告数 | 全体に占める割合 | 推定される注力領域 |
 |----------|----------|-----------|-----------------|
-| Meta (Facebook) | [N] | [X%] | [Awareness / Retargeting] |
-| Meta (Instagram) | [N] | [X%] | [Visual / younger audience] |
-| Google Search | [N] | [X%] | [Bottom-funnel capture] |
-| Google Display | [N] | [X%] | [Awareness / retargeting] |
-| YouTube | [N] | [X%] | [Education / awareness] |
+| Meta（Facebook） | [N] | [X%] | [認知／リターゲティング] |
+| Meta（Instagram） | [N] | [X%] | [ビジュアル／若年層] |
+| Google Search | [N] | [X%] | [ファネル下部の獲得] |
+| Google Display | [N] | [X%] | [認知／リターゲティング] |
+| YouTube | [N] | [X%] | [教育／認知] |
 
-## Phase 5: Strategic Analysis
+## フェーズ5: 戦略分析
 
-### Creative Gap Analysis
+### クリエイティブのギャップ分析
 
-Identify across all competitors:
+すべての競合を横断して次を特定します:
 
-1. **Angles nobody is running** — Hook types absent from competitor ads = white space
-2. **Overcrowded angles** — If everyone leads with "save time", avoid it or be more specific
-3. **Format opportunities** — If no one is running video in your space, it may stand out
-4. **Underutilized proof** — Are competitors avoiding specific proof points you could own?
-5. **CTA patterns to test** — What CTAs do the longest-running ads use?
+1. **誰も使っていない切り口** — 競合広告にないフックの種類 = 空白領域
+2. **混雑した切り口** — 全社が「時間を節約」で始めるなら、避けるか、より具体的にする
+3. **形式の機会** — 市場で誰も動画を使っていなければ、目立つ可能性がある
+4. **十分に使われていない証拠** — 競合が避けており、自社が所有できる具体的な証拠はあるか？
+5. **テストするCTAパターン** — 最も長く掲載されている広告はどのCTAを使用しているか？
 
-### Vulnerability Analysis
+### 弱点分析
 
-Identify weaknesses in each competitor's ad strategy:
+各競合の広告戦略の弱点を特定します:
 
-| Vulnerability Type | Description |
+| 弱点の種類 | 説明 |
 |-------------------|-------------|
-| **Message-LP mismatch** | Ad promises one thing, LP delivers another |
-| **Single-persona dependency** | All ads target the same persona — missing segments |
-| **Platform concentration** | Heavy on one platform, absent from others |
-| **No social proof** | Ads or LPs lack credibility markers |
-| **Weak CTA** | Asking for too much too soon (demo before value) |
-| **Generic positioning** | Claims anyone could make — not differentiated |
-| **Stale creative** | Same ads running unchanged for months — fatigue risk |
+| **メッセージとLPの不一致** | 広告が約束したものとLPが提供するものが異なる |
+| **単一ペルソナへの依存** | すべての広告が同じペルソナを対象とし、未対応のセグメントがある |
+| **プラットフォームの集中** | 1つのプラットフォームに偏り、他では掲載していない |
+| **社会的証明の不足** | 広告またはLPに信頼性を示す要素がない |
+| **弱いCTA** | 価値を示す前にデモを求めるなど、早すぎる段階で多くを求めている |
+| **一般的なポジショニング** | 誰でも言える主張で、差別化されていない |
+| **古くなったクリエイティブ** | 同じ広告を数か月変更せず掲載し、疲弊のリスクがある |
 
-### Historical Comparison (Deep Mode)
+### 過去との比較（詳細モード）
 
-If Web Archive data exists for their landing pages:
-- Has their positioning changed in the last 6-12 months?
-- What campaigns did they retire? (Possible losers)
-- What campaigns have they scaled up? (Possible winners)
+ランディングページのWeb Archiveデータがある場合:
+- 過去6～12か月でポジショニングが変化したか？
+- どのキャンペーンを終了したか？（成果が出なかった可能性）
+- どのキャンペーンを拡大したか？（成果が出た可能性）
 
-## Phase 6: Output
+## フェーズ6: 出力
 
 ```markdown
 # Competitor Ad Intelligence Report — [DATE]
@@ -346,32 +346,32 @@ If Web Archive data exists for their landing pages:
 ### Counter-Play 2: ...
 ```
 
-## Cost
+## コスト
 
-| Component | Cost |
+| 項目 | コスト |
 |-----------|------|
-| Ad library research (web_search) | Free |
-| Landing page fetching | Free |
-| Web Archive lookup (deep mode) | Free |
-| Analysis | Free (LLM reasoning) |
-| **Total** | **Free** |
+| 広告ライブラリ調査（web_search） | 無料 |
+| ランディングページの取得 | 無料 |
+| Web Archive検索（詳細モード） | 無料 |
+| 分析 | 無料（LLMによる推論） |
+| **合計** | **無料** |
 
-## Environment Variables
+## 環境変数
 
-- No API keys required. This skill uses publicly accessible ad libraries and web search.
+- APIキーは不要です。このSkillは一般公開されている広告ライブラリとWeb検索を使用します。
 
-## Tools Used
+## 使用するTool
 
-- **`web_search`** — query Meta Ad Library and Google Ads Transparency Center
-- **`fetch_webpage`** or **`curl`** — fetch and analyze landing pages
+- **`web_search`** — Meta Ad LibraryとGoogle Ads Transparency Centerを検索する
+- **`fetch_webpage`**または**`curl`** — ランディングページを取得、分析する
 
-## Trigger Phrases
+## トリガーフレーズ
 
-- "What ads are [competitor] running?"
-- "Tear down [competitor]'s ad strategy"
-- "Audit the ad landscape for [product category]"
-- "Run ad intelligence for [competitors]"
-- "Find new paid ad angles we haven't tried"
-- "Reverse-engineer [competitor]'s paid funnel"
-- "Find weaknesses in [competitor]'s ad strategy"
-- "Deep competitive ad analysis on [competitor]"
+- 「[競合]はどんな広告を出していますか？」
+- 「[競合]の広告戦略を分解してください」
+- 「[製品カテゴリ]の広告市場を監査してください」
+- 「[競合]の広告インテリジェンスを実行してください」
+- 「まだ試していない有料広告の新しい切り口を探してください」
+- 「[競合]の有料ファネルをリバースエンジニアリングしてください」
+- 「[競合]の広告戦略の弱点を探してください」
+- 「[競合]について詳細な競合広告分析をしてください」

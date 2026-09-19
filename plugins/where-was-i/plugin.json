@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "where-was-i",
-  "description": "Reconstruct your dev context (branch, commits, uncommitted work, PR clues) and trigger a resume prompt to continue quickly.",
+  "description": "開発コンテキスト（ブランチ、コミット、未コミットの作業、PRの手がかり）を再構成し、すぐに再開できるプロンプトを起動します。",
   "version": "1.1.0",
   "author": {
     "name": "Aaron Powell",

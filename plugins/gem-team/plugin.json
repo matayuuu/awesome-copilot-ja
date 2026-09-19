@@ -5,7 +5,7 @@
     "name": "mubaidr",
     "url": "https://github.com/mubaidr"
   },
-  "description": "Self-Learning Multi-agent orchestration framework for spec-driven development and automated verification. With smarter tool calling and leaner context.",
+  "description": "仕様駆動開発と自動検証のための自己学習型マルチエージェント・オーケストレーションフレームワークです。より賢いツール呼び出しと、より軽量なコンテキストを提供します。",
   "extensions": {
     "com.github.awesome-copilot": {
       "agents": [

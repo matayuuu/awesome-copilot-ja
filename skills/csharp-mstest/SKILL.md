@@ -1,26 +1,26 @@
 ---
 name: csharp-mstest
-description: 'Get best practices for MSTest 3.x/4.x unit testing, including modern assertion APIs and data-driven tests'
+description: '最新のアサーション API とデータ駆動テストを含む MSTest 3.x/4.x 単体テストのベストプラクティスを提供する'
 ---
 
-# MSTest Best Practices (MSTest 3.x/4.x)
+# MSTest のベストプラクティス（MSTest 3.x/4.x）
 
-Your goal is to help me write effective unit tests with modern MSTest, using current APIs and best practices.
+最新の API とベストプラクティスを使い、現代的な MSTest で効果的な単体テストを作成できるよう支援してください。
 
-## Project Setup
+## プロジェクトのセットアップ
 
-- Use a separate test project with naming convention `[ProjectName].Tests`
-- Reference MSTest 3.x+ NuGet packages (includes analyzers)
-- Consider using MSTest.Sdk for simplified project setup
-- Run tests with `dotnet test`
+- `[ProjectName].Tests` という命名規則の独立したテストプロジェクトを使う
+- MSTest 3.x 以降の NuGet パッケージ（アナライザーを含む）を参照する
+- プロジェクトのセットアップを簡略化するために MSTest.Sdk の使用を検討する
+- `dotnet test` でテストを実行する
 
-## Test Class Structure
+## テストクラスの構造
 
-- Use `[TestClass]` attribute for test classes
-- **Seal test classes by default** for performance and design clarity
-- Use `[TestMethod]` for test methods (prefer over `[DataTestMethod]`)
-- Follow Arrange-Act-Assert (AAA) pattern
-- Name tests using pattern `MethodName_Scenario_ExpectedBehavior`
+- テストクラスには `[TestClass]` 属性を使う
+- パフォーマンスと設計の明確さのため、**テストクラスは既定で sealed にする**
+- テストメソッドには `[TestMethod]` を使う（`[DataTestMethod]` より優先）
+- Arrange-Act-Assert（AAA）パターンに従う
+- `MethodName_Scenario_ExpectedBehavior` パターンでテストに名前を付ける
 
 ```csharp
 [TestClass]
@@ -41,11 +41,11 @@ public sealed class CalculatorTests
 }
 ```
 
-## Test Lifecycle
+## テストのライフサイクル
 
-- **Prefer constructors over `[TestInitialize]`** - enables `readonly` fields and follows standard C# patterns
-- Use `[TestCleanup]` for cleanup that must run even if test fails
-- Combine constructor with async `[TestInitialize]` when async setup is needed
+- **`[TestInitialize]` よりコンストラクターを優先する**。`readonly` フィールドを使え、標準的な C# パターンに従える
+- テストが失敗しても実行する必要がある後処理には `[TestCleanup]` を使う
+- 非同期セットアップが必要な場合は、コンストラクターと非同期 `[TestInitialize]` を組み合わせる
 
 ```csharp
 [TestClass]
@@ -70,27 +70,27 @@ public sealed class ServiceTests
 }
 ```
 
-### Execution Order
+### 実行順序
 
-1. **Assembly Initialization** - `[AssemblyInitialize]` (once per test assembly)
-2. **Class Initialization** - `[ClassInitialize]` (once per test class)
-3. **Test Initialization** (for every test method):
-   1. Constructor
-   2. Set `TestContext` property
+1. **アセンブリの初期化** - `[AssemblyInitialize]`（テストアセンブリごとに 1 回）
+2. **クラスの初期化** - `[ClassInitialize]`（テストクラスごとに 1 回）
+3. **テストの初期化**（各テストメソッド）:
+   1. コンストラクター
+   2. `TestContext` プロパティの設定
    3. `[TestInitialize]`
-4. **Test Execution** - test method runs
-5. **Test Cleanup** (for every test method):
+4. **テストの実行** - テストメソッドを実行
+5. **テストの後処理**（各テストメソッド）:
    1. `[TestCleanup]`
-   2. `DisposeAsync` (if implemented)
-   3. `Dispose` (if implemented)
-6. **Class Cleanup** - `[ClassCleanup]` (once per test class)
-7. **Assembly Cleanup** - `[AssemblyCleanup]` (once per test assembly)
+   2. `DisposeAsync`（実装されている場合）
+   3. `Dispose`（実装されている場合）
+6. **クラスの後処理** - `[ClassCleanup]`（テストクラスごとに 1 回）
+7. **アセンブリの後処理** - `[AssemblyCleanup]`（テストアセンブリごとに 1 回）
 
-## Modern Assertion APIs
+## 最新のアサーション API
 
-MSTest provides three assertion classes: `Assert`, `StringAssert`, and `CollectionAssert`.
+MSTest は `Assert`、`StringAssert`、`CollectionAssert` の 3 つのアサーションクラスを提供します。
 
-### Assert Class - Core Assertions
+### Assert クラス - コアアサーション
 
 ```csharp
 // Equality
@@ -112,7 +112,7 @@ Assert.Fail("Test failed due to...");
 Assert.Inconclusive("Test cannot be completed because...");
 ```
 
-### Exception Testing (Prefer over `[ExpectedException]`)
+### 例外テスト（`[ExpectedException]` より優先）
 
 ```csharp
 // Assert.Throws - matches TException or derived types
@@ -127,7 +127,7 @@ var ex = await Assert.ThrowsAsync<HttpRequestException>(async () => await client
 var ex = await Assert.ThrowsExactlyAsync<InvalidOperationException>(async () => await Method());
 ```
 
-### Collection Assertions (Assert class)
+### コレクションのアサーション（Assert クラス）
 
 ```csharp
 Assert.Contains(expectedItem, collection);
@@ -138,7 +138,7 @@ Assert.IsEmpty(collection);
 Assert.IsNotEmpty(collection);
 ```
 
-### String Assertions (Assert class)
+### 文字列のアサーション（Assert クラス）
 
 ```csharp
 Assert.Contains("expected", actualString);
@@ -150,7 +150,7 @@ Assert.MatchesRegex(@"\d{3}-\d{4}", phoneNumber);
 Assert.DoesNotMatchRegex(@"\d+", textOnly);
 ```
 
-### Comparison Assertions
+### 比較アサーション
 
 ```csharp
 Assert.IsGreaterThan(lowerBound, actual);
@@ -162,7 +162,7 @@ Assert.IsPositive(number);
 Assert.IsNegative(number);
 ```
 
-### Type Assertions
+### 型アサーション
 
 ```csharp
 // MSTest 3.x - uses out parameter
@@ -176,15 +176,15 @@ typed.DoSomething();
 Assert.IsNotInstanceOfType<WrongType>(obj);
 ```
 
-### Assert.That (MSTest 4.0+)
+### Assert.That（MSTest 4.0 以降）
 
 ```csharp
 Assert.That(result.Count > 0);  // Auto-captures expression in failure message
 ```
 
-### StringAssert Class
+### StringAssert クラス
 
-> **Note:** Prefer `Assert` class equivalents when available (e.g., `Assert.Contains("expected", actual)` over `StringAssert.Contains(actual, "expected")`).
+> **注:** 同等の `Assert` クラス API が利用できる場合は、そちらを優先します（例: `StringAssert.Contains(actual, "expected")` より `Assert.Contains("expected", actual)`）。
 
 ```csharp
 StringAssert.Contains(actualString, "expected");
@@ -194,9 +194,9 @@ StringAssert.Matches(actualString, new Regex(@"\d{3}-\d{4}"));
 StringAssert.DoesNotMatch(actualString, new Regex(@"\d+"));
 ```
 
-### CollectionAssert Class
+### CollectionAssert クラス
 
-> **Note:** Prefer `Assert` class equivalents when available (e.g., `Assert.Contains`).
+> **注:** 同等の `Assert` クラス API が利用できる場合は、そちらを優先します（例: `Assert.Contains`）。
 
 ```csharp
 // Containment
@@ -221,7 +221,7 @@ CollectionAssert.AllItemsAreNotNull(collection);
 CollectionAssert.AllItemsAreUnique(collection);
 ```
 
-## Data-Driven Tests
+## データ駆動テスト
 
 ### DataRow
 
@@ -238,14 +238,14 @@ public void Add_ReturnsSum(int a, int b, int expected)
 
 ### DynamicData
 
-The data source can return any of the following types:
+データソースは次のいずれかの型を返せます。
 
-- `IEnumerable<(T1, T2, ...)>` (ValueTuple) - **preferred**, provides type safety (MSTest 3.7+)
-- `IEnumerable<Tuple<T1, T2, ...>>` - provides type safety
-- `IEnumerable<TestDataRow>` - provides type safety plus control over test metadata (display name, categories)
-- `IEnumerable<object[]>` - **least preferred**, no type safety
+- `IEnumerable<(T1, T2, ...)>`（ValueTuple）- **推奨**。型安全性を提供する（MSTest 3.7 以降）
+- `IEnumerable<Tuple<T1, T2, ...>>` - 型安全性を提供する
+- `IEnumerable<TestDataRow>` - 型安全性に加え、表示名やカテゴリーなどのテストメタデータを制御できる
+- `IEnumerable<object[]>` - **最も非推奨**。型安全性がない
 
-> **Note:** When creating new test data methods, prefer `ValueTuple` or `TestDataRow` over `IEnumerable<object[]>`. The `object[]` approach provides no compile-time type checking and can lead to runtime errors from type mismatches.
+> **注:** 新しいテストデータメソッドを作成するときは、`IEnumerable<object[]>` より `ValueTuple` または `TestDataRow` を優先します。`object[]` 方式にはコンパイル時の型チェックがなく、型の不一致による実行時エラーにつながる可能性があります。
 
 ```csharp
 [TestMethod]
@@ -280,10 +280,10 @@ public static IEnumerable<object[]> LegacyTestData =>
 
 ## TestContext
 
-The `TestContext` class provides test run information, cancellation support, and output methods.
-See [TestContext documentation](https://learn.microsoft.com/dotnet/core/testing/unit-testing-mstest-writing-tests-testcontext) for complete reference.
+`TestContext` クラスは、テスト実行情報、キャンセルのサポート、出力メソッドを提供します。
+完全なリファレンスについては、[TestContext のドキュメント](https://learn.microsoft.com/dotnet/core/testing/unit-testing-mstest-writing-tests-testcontext)を参照してください。
 
-### Accessing TestContext
+### TestContext へのアクセス
 
 ```csharp
 // Property (MSTest suppresses CS8618 - don't use nullable or = null!)
@@ -313,9 +313,9 @@ public static void ClassCleanup(TestContext context) { }
 public static void AssemblyCleanup(TestContext context) { }
 ```
 
-### Cancellation Token
+### キャンセルトークン
 
-Always use `TestContext.CancellationToken` for cooperative cancellation with `[Timeout]`:
+`[Timeout]` と協調キャンセルを行う場合は、常に `TestContext.CancellationToken` を使います。
 
 ```csharp
 [TestMethod]
@@ -326,7 +326,7 @@ public async Task LongRunningTest()
 }
 ```
 
-### Test Run Properties
+### テスト実行プロパティ
 
 ```csharp
 TestContext.TestName              // Current test method name
@@ -337,7 +337,7 @@ TestContext.TestException         // Exception if test failed (3.7+, in TestClea
 TestContext.DeploymentDirectory   // Directory with deployment items
 ```
 
-### Output and Result Files
+### 出力と結果ファイル
 
 ```csharp
 // Write to test output (useful for debugging)
@@ -350,9 +350,9 @@ TestContext.AddResultFile(screenshotPath);
 TestContext.Properties["SharedKey"] = computedValue;
 ```
 
-## Advanced Features
+## 高度な機能
 
-### Retry for Flaky Tests (MSTest 3.9+)
+### 不安定なテストの再試行（MSTest 3.9 以降）
 
 ```csharp
 [TestMethod]
@@ -360,9 +360,9 @@ TestContext.Properties["SharedKey"] = computedValue;
 public void FlakyTest() { }
 ```
 
-### Conditional Execution (MSTest 3.10+)
+### 条件付き実行（MSTest 3.10 以降）
 
-Skip or run tests based on OS or CI environment:
+OS または CI 環境に応じてテストをスキップまたは実行します。
 
 ```csharp
 // OS-specific tests
@@ -388,7 +388,7 @@ public void CIOnlyTest() { }
 public void LocalOnlyTest() { }
 ```
 
-### Parallelization
+### 並列化
 
 ```csharp
 // Assembly level
@@ -400,9 +400,9 @@ public void LocalOnlyTest() { }
 public sealed class SequentialTests { }
 ```
 
-### Work Item Traceability (MSTest 3.8+)
+### 作業項目のトレーサビリティ（MSTest 3.8 以降）
 
-Link tests to work items for traceability in test reports:
+テストレポートで追跡できるよう、テストを作業項目にリンクします。
 
 ```csharp
 // Azure DevOps work items
@@ -422,12 +422,12 @@ public void Feature_CoversMultipleRequirements() { }
 public void BugFix_Issue42_IsResolved() { }
 ```
 
-Work item associations appear in test results and can be used for:
-- Tracing test coverage to requirements
-- Linking bug fixes to regression tests
-- Generating traceability reports in CI/CD pipelines
+作業項目との関連付けはテスト結果に表示され、次の用途に使えます。
+- テストカバレッジと要件の対応を追跡する
+- バグ修正を回帰テストにリンクする
+- CI/CD パイプラインでトレーサビリティレポートを生成する
 
-## Common Mistakes to Avoid
+## 避けるべきよくある誤り
 
 ```csharp
 // ❌ Wrong argument order
@@ -463,16 +463,16 @@ public TestContext TestContext { get; set; } = null!;
 public TestContext TestContext { get; set; }
 ```
 
-## Test Organization
+## テストの整理
 
-- Group tests by feature or component
-- Use `[TestCategory("Category")]` for filtering
-- Use `[TestProperty("Name", "Value")]` for custom metadata (e.g., `[TestProperty("Bug", "12345")]`)
-- Use `[Priority(1)]` for critical tests
-- Enable relevant MSTest analyzers (MSTEST0020 for constructor preference)
+- 機能またはコンポーネントごとにテストをグループ化する
+- フィルターには `[TestCategory("Category")]` を使う
+- カスタムメタデータには `[TestProperty("Name", "Value")]` を使う（例: `[TestProperty("Bug", "12345")]`）
+- 重要なテストには `[Priority(1)]` を使う
+- 関連する MSTest アナライザーを有効にする（コンストラクター優先には MSTEST0020）
 
-## Mocking and Isolation
+## モックと分離
 
-- Use Moq or NSubstitute for mocking dependencies
-- Use interfaces to facilitate mocking
-- Mock dependencies to isolate units under test
+- 依存関係のモック化には Moq または NSubstitute を使う
+- モック化しやすくするためにインターフェイスを使う
+- 依存関係をモック化してテスト対象の単位を分離する

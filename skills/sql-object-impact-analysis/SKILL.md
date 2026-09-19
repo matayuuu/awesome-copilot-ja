@@ -1,8 +1,7 @@
 ---
 name: sql-object-impact-analysis
-description: "Before modifying a table, column, stored procedure, view, or trigger in a legacy codebase, trace every place that references it — across other SQL objects (procs, views, triggers) AND application code (C#, Angular/TypeScript, JS, or any language in the repo) — and produce a structured blast-radius report so you know what breaks before you change it. Use when the user asks 'what uses this column/table/procedure', 'is it safe to change X', 'what depends on this', 'impact of renaming/dropping X', or before any schema/proc modification in an unfamiliar or legacy codebase. Not for privacy/PII exposure analysis (see data-breach-blast-radius) or query performance tuning (see sql-optimization)."
+description: 'レガシーコードベースでテーブル、列、ストアドプロシージャ、ビュー、トリガーを変更する前に、他のSQLオブジェクト（procs、views、triggers）とアプリケーションコード（C#、Angular/TypeScript、JSなど）を横断して参照箇所を追跡し、変更による影響範囲を構造化レポートにまとめます。「この列/テーブル/プロシージャを使う箇所」「Xを変更して安全か」「何が依存しているか」「Xの名前変更や削除の影響」を尋ねられたときや、不慣れなコードベースでスキーマ/procを変更する前に使います。プライバシー/PII露出分析やクエリ性能チューニングには使いません。'
 ---
-
 # SQL Object Impact Analysis
 
 You are performing a **pre-change dependency trace** for a database object (table, column, stored procedure, view, function, or trigger) inside a legacy or unfamiliar codebase. The goal is a single, trustworthy answer to: *"If I change this, what else is affected?"*

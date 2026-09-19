@@ -1,19 +1,19 @@
 ---
 name: gtm-partnership-architecture
-description: Build and scale partner ecosystems that drive revenue and platform adoption. Use when building partner programs from scratch, tiering partnerships, managing co-marketing, making build-vs-partner decisions, or structuring crawl-walk-run partner deployment.
+description: 収益とプラットフォーム導入を生むパートナー・エコシステムを構築・拡大する。パートナープログラムの新規構築、パートナーの階層化、共同マーケティング、内製か提携かの判断、またはcrawl-walk-run型の展開を設計するときに使う。
 license: MIT
 metadata:
   author: Smit Patel (https://linkedin.com/in/smitkpatel)
   source: https://github.com/beingsmit/technical-product-gtm
 ---
 
-# Partnership Architecture
+# パートナーシップ・アーキテクチャ
 
-Build and scale partner ecosystems that drive revenue and platform adoption. These aren't theory — they're patterns from building partner programs that drove 8-figure ARR and observing partnerships with real economic commitment.
+収益とプラットフォーム導入を生むパートナー・エコシステムを構築・拡大する。これは理論ではなく、8桁ARRを生んだパートナープログラムの構築と、実際の経済的コミットメントを伴う提携から得たパターンである。
 
-## When to Use
+## 使う場面
 
-**Triggers:**
+**トリガー:**
 - "How do I structure a partner program?"
 - "Should we build this or partner for it?"
 - "Partner-led vs direct sales motion"
@@ -22,7 +22,7 @@ Build and scale partner ecosystems that drive revenue and platform adoption. The
 - "Co-marketing with partners"
 - "When does a partnership actually matter?"
 
-**Context:**
+**コンテキスト:**
 - Building partnership program from scratch (0→1)
 - Scaling existing program (1→100)
 - Evaluating build vs partner decisions
@@ -31,9 +31,9 @@ Build and scale partner ecosystems that drive revenue and platform adoption. The
 
 ---
 
-## Core Frameworks
+## 中核フレームワーク
 
-### 1. Real Partnerships Require Skin in the Game
+### 1. 本物の提携には当事者としてのコミットメントが必要
 
 **The Pattern:**
 
@@ -91,7 +91,7 @@ Treating "partnerships" as marketing announcements. Integration launches, joint 
 
 ---
 
-### 2. Ecosystem Control = Discovery, Not Gatekeeping
+### 2. エコシステムの管理 = ゲートキーピングではなく発見性
 
 **The Developer Marketplace Decision:**
 
@@ -140,7 +140,7 @@ Defaulting to curated because "we need quality control." This works when you hav
 
 ---
 
-### 3. Partnership Tactics > Partnership Theater
+### 3. パートナーシップの戦術 > パートナーシップの演出
 
 **The Certification Wedge:**
 
@@ -201,7 +201,7 @@ Pitching partnerships based on your benefit, not theirs. "We want access to your
 
 ---
 
-### 4. Partner Tiering: Three-Tier Model
+### 4. パートナー階層化: 3階層モデル
 
 Structure partner programs into clear tiers based on commitment and capability:
 
@@ -237,7 +237,7 @@ Treating all partners equally. Tier 1 partners want self-serve, Tier 3 want whit
 
 ---
 
-### 5. Crawl-Walk-Run Partnership Deployment
+### 5. Crawl-Walk-Run型パートナー展開
 
 De-risk partnerships with phased validation before full commitment.
 
@@ -289,7 +289,7 @@ Most partnerships fail in Crawl phase. That's good — you learn fast with minim
 
 ---
 
-### 6. Partnership Value Exchange Clarity
+### 6. パートナーシップの価値交換を明確にする
 
 If you can't articulate what each party gets, the partnership will fail.
 
@@ -330,7 +330,7 @@ Verbal agreements without documentation. When things get hard (and they will), y
 
 ---
 
-### 7. Co-Marketing Execution Checklist
+### 7. 共同マーケティング実行チェックリスト
 
 **Pre-Launch (4-6 weeks before):**
 - [ ] Joint value prop finalized (reviewed by both marketing teams)
@@ -361,7 +361,7 @@ Treating launch as finish line. Real work starts after launch — adoption, supp
 
 ---
 
-## Decision Trees
+## 判断ツリー
 
 ### Should We Build or Partner?
 
@@ -405,7 +405,7 @@ Did Crawl phase meet success criteria?
 
 ---
 
-## Common Mistakes
+## よくある失敗
 
 1. **Treating partnerships as sales channel, not platform expansion**
    - Partnerships should expand what your product can do, not just who buys it
@@ -430,7 +430,7 @@ Did Crawl phase meet success criteria?
 
 ---
 
-## Quick Reference
+## クイックリファレンス
 
 **Before starting any partnership:**
 - [ ] Three-sided value prop articulated
@@ -459,7 +459,7 @@ Did Crawl phase meet success criteria?
 
 ---
 
-## Related Skills
+## 関連Skill
 
 - **developer-ecosystem**: Developer-specific ecosystem programs
 - **enterprise-account-planning**: Managing enterprise deals with partners

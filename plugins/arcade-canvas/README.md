@@ -1,17 +1,17 @@
-# Arcade Canvas Plugin
+# Arcade Canvas プラグイン
 
-Play five retro Phaser mini-games in a Copilot canvas while agents work.
+エージェントが作業している間、Copilot canvas で 5 つのレトロな Phaser ミニゲームを遊べます。
 
-## Installation
+## インストール
 
 ``bash
 copilot plugin install arcade-canvas@awesome-copilot
 ``
 
-## Source
+## ソース
 
-This plugin is part of [Awesome Copilot](https://github.com/github/awesome-copilot).
+このプラグインは [Awesome Copilot](https://github.com/github/awesome-copilot) の一部です。
 
-## License
+## ライセンス
 
 MIT

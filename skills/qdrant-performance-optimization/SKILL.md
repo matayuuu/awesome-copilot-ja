@@ -1,6 +1,6 @@
 ---
 name: qdrant-performance-optimization
-description: "Different techniques to optimize the performance of Qdrant, including indexing strategies, query optimization, and hardware considerations. Use when you want to improve the speed and efficiency of your Qdrant deployment."
+description: 'qdrant-performance-optimization に関する作業を支援する Skill です。対象のファイルや設定を確認し、必要な手順、検証方法、注意点を案内します。対象技術の調査、実装、運用、トラブルシューティングに使用します。'
 allowed-tools:
   - Read
   - Grep
@@ -15,7 +15,7 @@ There are different aspects of Qdrant performance, this document serves as a nav
 
 ## Search Speed Optimization
 
-There are two different criteria for search speed: latency and throughput. 
+There are two different criteria for search speed: latency and throughput.
 Latency is the time it takes to get a response for a single query, while throughput is the number of queries that can be processed in a given time frame.
 Depending on your use case, you may want to optimize for one or both of these metrics.
 

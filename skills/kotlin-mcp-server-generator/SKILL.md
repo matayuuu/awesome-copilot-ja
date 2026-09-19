@@ -1,23 +1,23 @@
 ---
 name: kotlin-mcp-server-generator
-description: 'Generate a complete Kotlin MCP server project with proper structure, dependencies, and implementation using the official io.modelcontextprotocol:kotlin-sdk library.'
+description: '公式のio.modelcontextprotocol:kotlin-sdkライブラリを使い、適切な構成、依存関係、実装を備えた完全なKotlin MCPサーバープロジェクトを生成する。'
 ---
 
-# Kotlin MCP Server Project Generator
+# Kotlin MCPサーバープロジェクトジェネレーター
 
-Generate a complete, production-ready Model Context Protocol (MCP) server project in Kotlin.
+完全で本番利用可能なModel Context Protocol（MCP）サーバープロジェクトをKotlinで生成する。
 
-## Project Requirements
+## プロジェクト要件
 
-You will create a Kotlin MCP server with:
+次の要素を備えたKotlin MCPサーバーを作成する。
 
-1. **Project Structure**: Gradle-based Kotlin project layout
-2. **Dependencies**: Official MCP SDK, Ktor, and kotlinx libraries
-3. **Server Setup**: Configured MCP server with transports
-4. **Tools**: At least 2-3 useful tools with typed inputs/outputs
-5. **Error Handling**: Proper exception handling and validation
-6. **Documentation**: README with setup and usage instructions
-7. **Testing**: Basic test structure with coroutines
+1. **プロジェクト構成**: GradleベースのKotlinプロジェクトレイアウト
+2. **依存関係**: 公式MCP SDK、Ktor、kotlinxライブラリ
+3. **サーバーセットアップ**: トランスポートを設定したMCPサーバー
+4. **ツール**: 型付きの入力/出力を持つ、少なくとも2〜3個の有用なツール
+5. **エラー処理**: 適切な例外処理とバリデーション
+6. **ドキュメント**: セットアップと使用方法を説明するREADME
+7. **テスト**: コルーチンを使った基本的なテスト構成
 
 ## Template Structure
 
@@ -44,7 +44,7 @@ myserver/
 └── README.md
 ```
 
-## build.gradle.kts Template
+## build.gradle.ktsのテンプレート
 
 ```kotlin
 plugins {
@@ -95,13 +95,13 @@ kotlin {
 }
 ```
 
-## settings.gradle.kts Template
+## settings.gradle.ktsのテンプレート
 
 ```kotlin
 rootProject.name = "{{PROJECT_NAME}}"
 ```
 
-## Main.kt Template
+## Main.ktのテンプレート
 
 ```kotlin
 package com.example.myserver
@@ -126,7 +126,7 @@ fun main() = runBlocking {
 }
 ```
 
-## Server.kt Template
+## Server.ktのテンプレート
 
 ```kotlin
 package com.example.myserver
@@ -164,7 +164,7 @@ fun createServer(config: Config): Server {
 }
 ```
 
-## Config.kt Template
+## Config.ktのテンプレート
 
 ```kotlin
 package com.example.myserver.config
@@ -187,7 +187,7 @@ fun loadConfig(): Config {
 }
 ```
 
-## Tool1.kt Template
+## Tool1.ktのテンプレート
 
 ```kotlin
 package com.example.myserver.tools
@@ -244,7 +244,7 @@ private fun performTool1Logic(param1: String, param2: Int): String {
 }
 ```
 
-## tools/ToolRegistry.kt Template
+## tools/ToolRegistry.ktのテンプレート
 
 ```kotlin
 package com.example.myserver.tools
@@ -258,7 +258,7 @@ fun Server.registerTools() {
 }
 ```
 
-## ServerTest.kt Template
+## ServerTest.ktのテンプレート
 
 ```kotlin
 package com.example.myserver
@@ -296,7 +296,7 @@ class ServerTest {
 }
 ```
 
-## README.md Template
+## README.mdのテンプレート
 
 ```markdown
 # {{PROJECT_NAME}}
@@ -385,43 +385,43 @@ See `build.gradle.kts` for platform configuration.
 MIT
 ```
 
-## Generation Instructions
+## 生成手順
 
-When generating a Kotlin MCP server:
+Kotlin MCPサーバーを生成するときは、次の手順に従う。
 
-1. **Gradle Setup**: Create proper `build.gradle.kts` with all dependencies
-2. **Package Structure**: Follow Kotlin package conventions
-3. **Type Safety**: Use data classes and kotlinx.serialization
-4. **Coroutines**: All operations should be suspending functions
-5. **Error Handling**: Use Kotlin exceptions and validation
-6. **JSON Schemas**: Use `buildJsonObject` for tool schemas
-7. **Testing**: Include coroutine test utilities
-8. **Logging**: Use kotlin-logging for structured logging
-9. **Configuration**: Use data classes and environment variables
-10. **Documentation**: KDoc comments for public APIs
+1. **Gradleのセットアップ**: すべての依存関係を含む適切な`build.gradle.kts`を作成する
+2. **パッケージ構成**: Kotlinのパッケージ規約に従う
+3. **型安全性**: data classとkotlinx.serializationを使う
+4. **コルーチン**: すべての操作をサスペンド関数にする
+5. **エラー処理**: Kotlinの例外とバリデーションを使う
+6. **JSONスキーマ**: ツールスキーマには`buildJsonObject`を使う
+7. **テスト**: コルーチン用テストユーティリティを含める
+8. **ロギング**: 構造化ロギングにはkotlin-loggingを使う
+9. **構成**: データクラスと環境変数を使う
+10. **ドキュメント**: 公開APIにはKDocコメントを付ける
 
-## Best Practices
+## ベストプラクティス
 
-- Use suspending functions for all async operations
-- Leverage Kotlin's null safety and type system
-- Use data classes for structured data
-- Apply kotlinx.serialization for JSON handling
-- Use sealed classes for result types
-- Implement proper error handling with Result/Either patterns
-- Write tests using kotlinx-coroutines-test
-- Use dependency injection for testability
-- Follow Kotlin coding conventions
-- Use meaningful names and KDoc comments
+- すべての非同期操作にサスペンド関数を使う
+- KotlinのNull安全性と型システムを活用する
+- 構造化データにはデータクラスを使う
+- JSON処理にはkotlinx.serializationを適用する
+- 結果の型にはsealed classを使う
+- Result/Eitherパターンで適切なエラー処理を実装する
+- kotlinx-coroutines-testを使ってテストを書く
+- テスト容易性のために依存性注入を使う
+- Kotlinのコーディング規約に従う
+- 意味のある名前とKDocコメントを使う
 
-## Transport Options
+## トランスポートの選択肢
 
-### Stdio Transport
+### Stdioトランスポート
 ```kotlin
 val transport = StdioServerTransport()
 server.connect(transport)
 ```
 
-### SSE Transport (Ktor)
+### SSEトランスポート（Ktor）
 ```kotlin
 embeddedServer(Netty, port = 8080) {
     mcp {
@@ -430,9 +430,9 @@ embeddedServer(Netty, port = 8080) {
 }.start(wait = true)
 ```
 
-## Multiplatform Configuration
+## マルチプラットフォーム構成
 
-For multiplatform projects, add to `build.gradle.kts`:
+マルチプラットフォームプロジェクトでは、`build.gradle.kts`に次を追加する。
 
 ```kotlin
 kotlin {

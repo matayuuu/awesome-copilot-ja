@@ -1,23 +1,22 @@
 ---
 name: desk-journal
-description: 'Write, append, or read desk journal entries. The journal is persistent memory — what survives session boundaries. A good entry has: what was done, current state, next step.'
+description: 'デスクジャーナルのエントリを作成、追記、閲覧する。ジャーナルはセッションを越えて残る永続的な記憶であり、良いエントリには実施内容、現在の状態、次のステップを記録する。'
 ---
 
-# Desk Journal
+# デスクジャーナル
 
-Manage a desk's journal — the persistent memory that survives
-session boundaries.
+デスクのジャーナル、つまりセッションを越えて残る永続的な記憶を管理します。
 
-## When to use
+## 使用する場面
 
-- **End of session:** Write what was done, current state, next step
-- **Start of session:** Read the journal to pick up where you left off
-- **Mid-session checkpoint:** Note significant progress or decisions
-- **Desk wind-down:** Write a final summary when a desk is being closed
+- **セッション終了時:** 実施内容、現在の状態、次のステップを記録する
+- **セッション開始時:** ジャーナルを読み、前回の続きから再開する
+- **セッション途中のチェックポイント:** 重要な進捗や判断を記録する
+- **デスク終了時:** デスクを閉じる際に最終要約を書く
 
-## How to write a journal entry
+## ジャーナルエントリの書き方
 
-Append to `desks/<desk-name>/journal.md`. Each entry is a section:
+`desks/<desk-name>/journal.md` に追記します。各エントリは 1 つのセクションです。
 
 ```markdown
 ## <date> — <short summary>
@@ -26,24 +25,16 @@ Append to `desks/<desk-name>/journal.md`. Each entry is a section:
 - **Next step:** <what the next session should pick up>
 ```
 
-### Guidelines
+### ガイドライン
 
-- **Be specific.** "Worked on security scanning" is useless to the
-  next session. "Scanned repos A, B, C for CWE-502; found 3
-  findings in A, 0 in B and C; findings triaged to bench" — that's
-  a trail.
-- **Include what didn't work.** Dead ends are valuable — they prevent
-  the next session from walking the same path.
-- **Keep it short.** The journal is a trail marker, not a diary.
-  3-5 lines per entry. If you need more, the important context
-  should go on the bench as a separate artifact.
-- **Always include next step.** The next session starts from zero.
-  Without a next step, it has to re-derive everything.
+- **具体的に書く。** 「セキュリティスキャンを実施」だけでは次のセッションに役立ちません。「リポジトリ A、B、C を CWE-502 についてスキャンし、A で 3 件、B と C で 0 件を検出。検出事項はベンチでトリアージ済み」と書けば、たどれる記録になります。
+- **うまくいかなかったことも含める。** 行き止まりの情報は、次のセッションが同じ道を進むのを防ぐため有用です。
+- **短く保つ。** ジャーナルは日記ではなく道標です。1 エントリ 3～5 行にします。それ以上必要な重要情報は、別の成果物としてベンチに置きます。
+- **必ず次のステップを含める。** 次のセッションはゼロから始まります。次のステップがなければ、すべてを再び導き出す必要があります。
 
-## End-of-desk entry
+## デスク終了時のエントリ
 
-When a desk is being wound down (not just a session ending, but
-the desk itself closing):
+単なるセッション終了ではなく、デスク自体を閉じる場合:
 
 ```markdown
 ## <date> — Desk closed
@@ -52,17 +43,12 @@ the desk itself closing):
 - **Handoff:** <anything another desk or the operator needs to know>
 ```
 
-## Reading the journal
+## ジャーナルを読む
 
-At session start, read the desk's journal to pick up context.
-The most recent entry is the most important — it has the current
-state and next step. Earlier entries provide history if needed.
+セッション開始時にデスクのジャーナルを読み、コンテキストを引き継ぎます。最新のエントリには現在の状態と次のステップがあるため、最も重要です。必要に応じて、それ以前のエントリから履歴を確認します。
 
-## Principles
+## 原則
 
-- The journal is a cairn — stones left so the next traveler finds
-  the way. Every entry is a stone.
-- Honesty over completeness. "I got stuck on X and don't know why"
-  is more useful than silence.
-- The journal is for the next session, not for the current one.
-  Write for someone who knows nothing about what you just did.
+- ジャーナルはケルンです。次の旅人が道を見つけられるように残す石であり、各エントリがその一石です。
+- 完全さより正直さを優先します。「X で行き詰まり、理由は不明」と書く方が、何も書かないより役立ちます。
+- ジャーナルは現在ではなく次のセッションのためにあります。今行ったことを何も知らない人に向けて書きます。

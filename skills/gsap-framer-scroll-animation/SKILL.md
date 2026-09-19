@@ -1,47 +1,45 @@
 ---
 name: gsap-framer-scroll-animation
 description: >-
-  Use this skill whenever the user wants to build scroll animations, scroll effects,
-  parallax, scroll-triggered reveals, pinned sections, horizontal scroll, text animations,
-  or any motion tied to scroll position — in vanilla JS, React, or Next.js.
-  Covers GSAP ScrollTrigger (pinning, scrubbing, snapping, timelines, horizontal scroll,
-  ScrollSmoother, matchMedia) and Framer Motion / Motion v12 (useScroll, useTransform,
-  useSpring, whileInView, variants). Use this skill even if the user just says
-  "animate on scroll", "fade in as I scroll", "make it scroll like Apple",
-  "parallax effect", "sticky section", "scroll progress bar", or "entrance animation".
-  Also triggers for Copilot prompt patterns for GSAP or Framer Motion code generation.
-  Pairs with the premium-frontend-ui skill for creative philosophy and design-level polish.
+  ユーザーが vanilla JS、React、Next.js でスクロールアニメーション、スクロール効果、パララックス、
+  スクロール連動の表示、ピン留めセクション、横スクロール、テキストアニメーション、または
+  スクロール位置に連動するモーションを作りたい場合に、この Skill を使う。
+  GSAP ScrollTrigger（pinning、scrubbing、snapping、timelines、horizontal scroll、ScrollSmoother、
+  matchMedia）と Framer Motion / Motion v12（useScroll、useTransform、useSpring、whileInView、
+  variants）を扱う。「スクロールでアニメーション」「スクロール中にフェードイン」「Apple のような
+  スクロール」「パララックス効果」「sticky section」「スクロール進捗バー」「entrance animation」
+  とだけ言われた場合にも使う。GSAP または Framer Motion のコード生成を求める Copilot プロンプト
+  パターンにも対応する。創造的な考え方とデザイン品質の向上には premium-frontend-ui Skill と組み合わせる。
 metadata:
   author: 'Utkarsh Patrikar'
   author_url: 'https://github.com/utkarsh232005'
 ---
 
-# GSAP & Framer Motion — Scroll Animations Skill
+# GSAP と Framer Motion — スクロールアニメーション Skill
 
-Production-grade scroll animations with GitHub Copilot prompts, ready-to-use code recipes, and deep API references.
+GitHub Copilot プロンプト、すぐ使えるコードレシピ、詳細な API リファレンスを備えた本番品質のスクロールアニメーション。
 
-> **Design Companion:** This skill provides the *technical implementation* for scroll-driven motion.
-> For the *creative philosophy*, design principles, and premium aesthetics that should guide **how**
-> and **when** to animate, always cross-reference the **premium-frontend-ui** skill.
-> Together they form a complete approach: premium-frontend-ui decides the **what** and **why**;
-> this skill delivers the **how**.
+> **デザイン上の補助:** この Skill はスクロール駆動モーションの*技術実装*を提供する。
+> アニメーションの**方法**と**タイミング**を導く*創造的な考え方*、デザイン原則、プレミアムな美学については、
+> 常に **premium-frontend-ui** Skill を参照する。両者を組み合わせることで、premium-frontend-ui が
+> **何を**、**なぜ**行うかを決め、この Skill が**どのように**実装するかを担う。
 
-## Quick Library Selector
+## ライブラリのクイック選択
 
-| Need | Use |
+| 要件 | 使用するもの |
 |---|---|
-| Vanilla JS, Webflow, Vue | **GSAP** |
-| Pinning, horizontal scroll, complex timelines | **GSAP** |
-| React / Next.js, declarative style | **Framer Motion** |
-| whileInView entrance animations | **Framer Motion** |
-| Both in same Next.js app | See notes in references |
+| Vanilla JS、Webflow、Vue | **GSAP** |
+| ピン留め、横スクロール、複雑なタイムライン | **GSAP** |
+| React / Next.js、宣言的なスタイル | **Framer Motion** |
+| whileInView による entrance animation | **Framer Motion** |
+| 同じ Next.js アプリで両方を使う | references の注記を参照 |
 
-Read the relevant reference file for full recipes and Copilot prompts:
+完全なレシピと Copilot プロンプトについては、関連するリファレンスファイルを読む。
 
-- **GSAP** → `references/gsap.md` — ScrollTrigger API, all recipes, React integration
-- **Framer Motion** → `references/framer.md` — useScroll, useTransform, all recipes
+- **GSAP** → `references/gsap.md` — ScrollTrigger API、全レシピ、React 統合
+- **Framer Motion** → `references/framer.md` — useScroll、useTransform、全レシピ
 
-## Setup (Always Do First)
+## セットアップ（必ず最初に行う）
 
 ### GSAP
 ```bash
@@ -63,17 +61,17 @@ import { motion, useScroll, useTransform, useSpring } from 'motion/react';
 // legacy: import { motion } from 'framer-motion'  — also valid
 ```
 
-## Workflow
+## ワークフロー
 
-1. Interpret the user's intent to identify if GSAP or Framer Motion is the best fit.
-2. Read the relevant reference document in `references/` for detailed APIs and patterns.
-3. Suggest the required package installation if not already present.
-4. Implement the scaffold for the animation structure, adhering to the requested format (React components, hook requirements, or vanilla JS).
-5. Apply the correct tools (scrolling vs in-view elements) ensuring accessibility options are present and hooks don't cause infinite re-renders.
+1. ユーザーの意図を解釈し、GSAP と Framer Motion のどちらが適切か判断する。
+2. 詳細な API とパターンについて `references/` の関連文書を読む。
+3. 必要なパッケージがまだ存在しなければ、インストールを提案する。
+4. 求められた形式（React コンポーネント、hook 要件、vanilla JS）に従って、アニメーション構造の雛形を実装する。
+5. アクセシビリティ設定を用意し、hook が無限再レンダリングを起こさないようにしながら、スクロール要素と in-view 要素に適切なツールを適用する。
 
-## The 5 Most Common Scroll Patterns
+## よく使う 5 つのスクロールパターン
 
-Quick reference — full recipes with Copilot prompts are in the reference files.
+クイックリファレンス。Copilot プロンプト付きの完全なレシピはリファレンスファイルにある。
 
 ### 1. Fade-in on enter (GSAP)
 ```js
@@ -116,36 +114,35 @@ const tl = gsap.timeline({
 tl.from('.title', { opacity: 0, y: 60 }).from('.img', { scale: 0.85 });
 ```
 
-## Critical Rules (Apply Always)
+## 重要なルール（常に適用する）
 
-- **GSAP**: always call `gsap.registerPlugin(ScrollTrigger)` before using it
-- **GSAP scrub**: always use `ease: 'none'` — easing feels wrong when scrub is active
-- **GSAP React**: use `useGSAP` from `@gsap/react`, never plain `useEffect` — it auto-cleans ScrollTriggers
-- **GSAP debug**: add `markers: true` during development; remove before production
-- **Framer**: `useTransform` output must go into `style` prop of a `motion.*` element, not a plain div
-- **Framer Next.js**: always add `'use client'` at top of any file using motion hooks
-- **Both**: animate only `transform` and `opacity` — avoid `width`, `height`, `box-shadow`
-- **Accessibility**: always check `prefers-reduced-motion` — see each reference file for patterns
-- **Premium polish**: follow the **premium-frontend-ui** skill principles for motion timing, easing curves, and restraint — animation should enhance, never overwhelm
+- **GSAP**: 使用前に必ず `gsap.registerPlugin(ScrollTrigger)` を呼び出す
+- **GSAP scrub**: 必ず `ease: 'none'` を使う。scrub 中の easing は不自然に感じられる
+- **GSAP React**: `@gsap/react` の `useGSAP` を使い、通常の `useEffect` は使わない。ScrollTrigger を自動でクリーンアップできる
+- **GSAP デバッグ**: 開発中は `markers: true` を追加し、本番前に削除する
+- **Framer**: `useTransform` の出力は通常の div ではなく、`motion.*` 要素の `style` prop に渡す
+- **Framer Next.js**: motion hook を使うファイルの先頭には必ず `'use client'` を追加する
+- **両方**: `transform` と `opacity` だけをアニメーションし、`width`、`height`、`box-shadow` は避ける
+- **アクセシビリティ**: 必ず `prefers-reduced-motion` を確認する。パターンは各リファレンスファイルを参照する
+- **プレミアムな仕上げ**: モーションのタイミング、easing カーブ、抑制について **premium-frontend-ui** Skill の原則に従う。アニメーションは補助するものであり、圧倒してはならない
 
-## Copilot Prompting Tips
+## Copilot へのプロンプト作成のヒント
 
-- Give Copilot the full selector, base image, and scroll range upfront — vague prompts produce vague code
-- For GSAP, always specify: selector, start/end strings, whether you want scrub or toggleActions
-- For Framer, always specify: which hook (useScroll vs whileInView), offset values, what to transform
-- Paste the exact error message when asking `/fix` — Copilot fixes are dramatically better with real errors
-- Use `@workspace` scope in Copilot Chat so it reads your existing component structure
+- 最初に完全な selector、基準画像、スクロール範囲を Copilot に渡す。曖昧なプロンプトからは曖昧なコードが生まれる
+- GSAP では selector、start/end 文字列、scrub と toggleActions のどちらが必要かを必ず指定する
+- Framer では使用する hook（useScroll または whileInView）、offset 値、変換対象を必ず指定する
+- `/fix` を依頼するときは正確なエラーメッセージを貼る。実際のエラーがある方が Copilot の修正精度は大幅に高い
+- Copilot Chat では `@workspace` スコープを使い、既存のコンポーネント構造を読み取らせる
 
-## Reference Files
+## リファレンスファイル
 
-| File | Contents |
+| ファイル | 内容 |
 |---|---|
-| `references/gsap.md` | Full ScrollTrigger API reference, 10 recipes, React (useGSAP), Lenis, matchMedia, accessibility |
-| `references/framer.md` | Full useScroll / useTransform API, 8 recipes, variants, Motion v12 notes, Next.js tips |
+| `references/gsap.md` | ScrollTrigger API 完全リファレンス、10 レシピ、React（useGSAP）、Lenis、matchMedia、アクセシビリティ |
+| `references/framer.md` | useScroll / useTransform API 完全リファレンス、8 レシピ、variants、Motion v12 の注記、Next.js のヒント |
 
-## Related Skills
+## 関連 Skill
 
-| Skill | Relationship |
+| Skill | 関係 |
 |---|---|
 | **premium-frontend-ui** | Creative philosophy, design principles, and aesthetic guidelines — defines *when* and *why* to animate |
-

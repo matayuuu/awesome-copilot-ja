@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "ruby-mcp-development",
-  "description": "Complete toolkit for building Model Context Protocol servers in Ruby using the official MCP Ruby SDK gem with Rails integration support.",
+  "description": "公式MCP Ruby SDK gemを使い、Rails統合にも対応したModel Context ProtocolサーバーをRubyで構築するための総合ツールキットです。",
   "version": "1.0.0",
   "author": {
     "name": "Awesome Copilot Community"

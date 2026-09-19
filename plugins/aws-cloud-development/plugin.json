@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "aws-cloud-development",
-  "description": "Comprehensive AWS cloud development tools including Infrastructure as Code, serverless functions, architecture patterns, and cost optimization for building scalable cloud applications.",
+  "description": "スケーラブルなクラウドアプリケーションを構築するための、Infrastructure as Code、サーバーレス関数、アーキテクチャパターン、コスト最適化を含む包括的な AWS クラウド開発ツールです。",
   "version": "1.0.0",
   "author": {
     "name": "Awesome Copilot Community"

@@ -1,19 +1,19 @@
 ---
 name: gtm-operating-cadence
-description: Design meeting rhythms, metric reporting, quarterly planning, and decision-making velocity for scaling companies. Use when decisions are slow, planning is broken, the company is growing but alignment is worse, or leadership meetings consume all time without producing decisions.
+description: 成長企業向けに会議のリズム、指標報告、四半期計画、意思決定の速度を設計する。意思決定が遅い、計画が機能しない、会社の成長に伴って連携が悪化した、または経営会議が意思決定を生まないまま時間を消費している場合に使う。
 license: MIT
 metadata:
   author: Smit Patel (https://linkedin.com/in/smitkpatel)
   source: https://github.com/beingsmit/technical-product-gtm
 ---
 
-# Operating Cadence
+# オペレーションのリズム
 
-The meeting structure that worked at 30 people collapses at 100. What worked at 100 collapses at 300. The failure mode is always the same: too many people in too many meetings making too few decisions.
+30人で機能した会議構成は100人で崩れ、100人で機能した構成は300人で崩れる。失敗の形はいつも同じで、多すぎる人が多すぎる会議に参加し、少なすぎる意思決定しか行わない。
 
-## When to Use
+## 使う場面
 
-**Triggers:**
+**トリガー:**
 - "Our meetings don't produce decisions"
 - "We're growing but alignment is getting worse"
 - "How often should we meet?"
@@ -21,7 +21,7 @@ The meeting structure that worked at 30 people collapses at 100. What worked at 
 - "Decisions take forever"
 - "Leadership is in meetings all day"
 
-**Context:**
+**コンテキスト:**
 - Companies scaling from 20 to 300+ people
 - Post-PMF through growth stage
 - Distributed / remote teams
@@ -29,15 +29,15 @@ The meeting structure that worked at 30 people collapses at 100. What worked at 
 
 ---
 
-## Core Frameworks
+## 中核フレームワーク
 
-### 1. The Five-Level Meeting Architecture
+### 1. 5段階の会議アーキテクチャ
 
-**The Pattern:**
+**パターン:**
 
-Different meetings serve different purposes. Conflating them creates either inefficiency (too much time) or confusion (unclear decisions). Separate meetings by function, frequency, and decision authority.
+会議ごとに目的は異なる。混同すると、時間を使いすぎる非効率か、決定が不明確になる混乱が生じる。会議を機能、頻度、意思決定権限で分ける。
 
-**Level 1: Daily Standup (15 min, teams only)**
+**レベル1: デイリースタンドアップ（15分、チームのみ）**
 
 - What we finished yesterday, what we're starting today, what's blocking us
 - 5-10 people max. Whole-company standups are theater
@@ -45,7 +45,7 @@ Different meetings serve different purposes. Conflating them creates either inef
 - Anti-pattern: Strategic discussion (wrong time, wrong place)
 - Success criteria: Finishes in 15 minutes, surfaces 1-2 blockers
 
-**Level 2: Weekly Functional Reviews (60 min, function leadership)**
+**レベル2: 週次の機能別レビュー（60分、各機能のリーダー）**
 
 Each function gets its own weekly rhythm:
 - Product team Friday 4pm: metrics, user feedback, roadmap blockers
@@ -56,7 +56,7 @@ Format: Metric recap (10 min) → Wins/blockers (15 min) → One deep-dive (30 m
 
 Anti-pattern: Trying to solve every problem in the meeting. Pick 1-2, delegate the rest to follow-ups.
 
-**Level 3: Weekly All-Hands (60 min, whole company)**
+**レベル3: 週次オールハンズ（60分、全社）**
 
 The single most important alignment mechanism at a scaling company.
 
@@ -68,7 +68,7 @@ The single most important alignment mechanism at a scaling company.
 Anti-pattern: Defensive tone. All-hands should be straightforward, not spin.
 Anti-pattern: Inconsistent metrics. If you change the dashboard, the team can't track progress.
 
-**Level 4: Bi-Weekly Leadership Alignment (90 min)**
+**レベル4: 隔週のリーダーシップ連携（90分）**
 
 - North star progress (5 min)
 - Functional updates (30 min, 5-7 min each)
@@ -77,7 +77,7 @@ Anti-pattern: Inconsistent metrics. If you change the dashboard, the team can't 
 
 This is where cross-functional blockers get resolved. If functions operate independently, this meeting isn't working.
 
-**Level 5: Quarterly Strategic Planning (half-day to full-day)**
+**レベル5: 四半期戦略計画（半日から1日）**
 
 - Previous quarter retrospective (90 min): What worked, what didn't, what we'd do differently
 - Next quarter planning (120 min): What are we optimizing for? What's the roadmap?
@@ -94,13 +94,13 @@ Anti-pattern: No clear decisions coming out.
 - **100-300 people**: Add skip-level reviews. You're 2+ layers from execution.
 - **300+ people**: Add function-specific sub-cadences. CEO should be in *fewer* meetings than at 50 — not more.
 
-**The Rule That Makes This Work:**
+**これを機能させるルール:**
 
-Every meeting must produce decisions or be cancelled. Status updates are async. If you're in a meeting and nobody is making a decision, leave.
+すべての会議は意思決定を生むか、キャンセルする。進捗報告は非同期で行う。会議中に誰も決めていないなら退出する。
 
 ---
 
-### 2. Weekly Metric Reporting (The Dashboard That Catches Problems Early)
+### 2. 週次の指標報告（問題を早期に捉えるダッシュボード）
 
 **The Pattern:**
 
@@ -149,7 +149,7 @@ Vanity metrics that look good but don't predict business outcomes. Total downloa
 
 ---
 
-### 3. Quarterly Planning (The Process That Prevents Strategic Drift)
+### 3. 四半期計画（戦略の漂流を防ぐプロセス）
 
 **The Pattern:**
 
@@ -213,7 +213,7 @@ Quarterly planning that produces a 30-page doc nobody reads. The output should b
 
 ---
 
-### 4. Decision Velocity and Authority
+### 4. 意思決定の速度と権限
 
 **The Pattern:**
 
@@ -251,7 +251,7 @@ Consensus culture masquerading as collaboration. "Let's get everyone aligned" of
 
 ---
 
-### 5. Async-First Communication
+### 5. 非同期優先のコミュニケーション
 
 **The Pattern:**
 
@@ -281,7 +281,7 @@ Store in searchable format (wiki, shared drive). New hires onboard faster. Past 
 
 ---
 
-### 6. The CEO Weekly Update
+### 6. CEOの週次アップデート
 
 **The Pattern:**
 
@@ -314,7 +314,7 @@ Too long (team doesn't read), too detailed (save that for function meetings), on
 
 ---
 
-### 7. Role Clarity > Titles
+### 7. 肩書きより役割の明確さ
 
 **The Pattern:**
 
@@ -337,7 +337,7 @@ Assigning projects to multiple people ("everyone owns it" = nobody owns it). Mea
 
 ---
 
-## Decision Trees
+## 判断ツリー
 
 ### Which Meeting Levels Do We Need?
 
@@ -365,7 +365,7 @@ Does it produce decisions?
 
 ---
 
-## Common Mistakes
+## よくある失敗
 
 **1. Adding meetings as you grow**
 Replace them. At 200 people, the CEO should be in fewer meetings than at 50.
@@ -387,7 +387,7 @@ Ephemeral, noisy, unsearchable. Important decisions go in docs.
 
 ---
 
-## Quick Reference
+## クイックリファレンス
 
 **Meeting architecture:**
 Daily standup (15 min) → Weekly functional (60 min) → Weekly all-hands (60 min) → Bi-weekly leadership (90 min) → Quarterly planning (half-day)
@@ -409,7 +409,7 @@ Daily: Slack wins/customer-voice → Weekly: CEO email + function updates → Mo
 
 ---
 
-## Related Skills
+## 関連Skill
 
 - **enterprise-account-planning**: Stakeholder management and deal cadence patterns
 - **0-to-1-launch**: Launch-specific execution cadence

@@ -1,6 +1,6 @@
 ---
 name: quasi-coder
-description: 'Expert 10x engineer skill for interpreting and implementing code from shorthand, quasi-code, and natural language descriptions. Use when collaborators provide incomplete code snippets, pseudo-code, or descriptions with potential typos or incorrect terminology. Excels at translating non-technical or semi-technical descriptions into production-quality code.'
+description: 'quasi-coder に関する作業を支援する Skill です。対象のファイルや設定を確認し、必要な手順、検証方法、注意点を案内します。対象技術の調査、実装、運用、トラブルシューティングに使用します。'
 ---
 
 # Quasi-Coder Skill
@@ -116,7 +116,7 @@ Lines starting with `()=>` indicate shorthand that requires interpretation:
 - `NOTE` → Important information to consider during implementation
 - Natural language descriptions → Convert to valid code or proper documentation
 
-## Best Practices
+## ベストプラクティス
 
 1. **Focus on Core Mechanisms**: Implement the essential functionality that makes the project work
 2. **Apply Expert Knowledge**: Use computer science principles, design patterns, and industry best practices
@@ -164,7 +164,7 @@ These resources are relevant for immediate work but may not apply to future impl
 5. **Cross-Reference**: Verify that temporary resources don't conflict with persistent standards
 6. **Document Deviations**: If a temporary resource requires breaking persistent patterns, document why
 
-### Examples
+### 例
 
 **Persistent Resource Usage**:
 ```javascript
@@ -297,7 +297,7 @@ function validateUserInput(email, password) {
 6. Returned boolean as requested
 7. **Removed all `()=>` shorthand lines**
 
-## Troubleshooting
+## トラブルシューティング
 
 | Issue | Solution |
 |-------|----------|
@@ -362,7 +362,7 @@ adults = [user for user in users if user.get('age', 0) > 18]
 
 **Implementation**: Convert to proper TypeScript with authentication checks, routing, data fetching, and error handling.
 
-## Summary
+## まとめ
 
 The Quasi-Coder skill enables expert-level interpretation and implementation of code from imperfect descriptions. By assessing collaborator expertise, applying technical knowledge, and maintaining professional standards, you bridge the gap between ideas and production-quality code.
 

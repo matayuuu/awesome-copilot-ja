@@ -1,17 +1,17 @@
-# Backlog Swipe Triage Plugin
+# Backlog Swipe Triage プラグイン
 
-Quickly swipe through backlog issues to triage decisions like assign, needs-info, defer, close, or ignore.
+バックログの issue をすばやくスワイプし、assign、needs-info、defer、close、ignore などのトリアージ判断を行います。
 
-## Installation
+## インストール
 
 ``bash
 copilot plugin install backlog-swipe-triage@awesome-copilot
 ``
 
-## Source
+## ソース
 
-This plugin is part of [Awesome Copilot](https://github.com/github/awesome-copilot).
+このプラグインは [Awesome Copilot](https://github.com/github/awesome-copilot) の一部です。
 
-## License
+## ライセンス
 
 MIT

@@ -1,70 +1,70 @@
 ---
 name: kotlin-springboot
-description: 'Get best practices for developing applications with Spring Boot and Kotlin.'
+description: 'Spring BootとKotlinでアプリケーションを開発するためのベストプラクティスを得る。'
 ---
 
-# Spring Boot with Kotlin Best Practices
+# KotlinによるSpring Bootのベストプラクティス
 
-Your goal is to help me write high-quality, idiomatic Spring Boot applications using Kotlin.
+Kotlinを使って、高品質でKotlinらしいSpring Bootアプリケーションを書けるよう支援する。
 
-## Project Setup & Structure
+## プロジェクトのセットアップと構成
 
-- **Build Tool:** Use Maven (`pom.xml`) or Gradle (`build.gradle`) with the Kotlin plugins (`kotlin-maven-plugin` or `org.jetbrains.kotlin.jvm`).
-- **Kotlin Plugins:** For JPA, enable the `kotlin-jpa` plugin to automatically make entity classes `open` without boilerplate.
-- **Starters:** Use Spring Boot starters (e.g., `spring-boot-starter-web`, `spring-boot-starter-data-jpa`) as usual.
-- **Package Structure:** Organize code by feature/domain (e.g., `com.example.app.order`, `com.example.app.user`) rather than by layer.
+- **ビルドツール:** Kotlinプラグイン（`kotlin-maven-plugin`または`org.jetbrains.kotlin.jvm`）とともに、Maven（`pom.xml`）またはGradle（`build.gradle`）を使う。
+- **Kotlinプラグイン:** JPAでは、定型コードなしでエンティティクラスを自動的に`open`にするため、`kotlin-jpa`プラグインを有効にする。
+- **スターター:** 通常どおりSpring Bootスターター（例: `spring-boot-starter-web`、`spring-boot-starter-data-jpa`）を使う。
+- **パッケージ構成:** レイヤー単位ではなく、機能/ドメイン単位（例: `com.example.app.order`、`com.example.app.user`）でコードを整理する。
 
-## Dependency Injection & Components
+## 依存性注入とコンポーネント
 
-- **Primary Constructors:** Always use the primary constructor for required dependency injection. It's the most idiomatic and concise approach in Kotlin.
-- **Immutability:** Declare dependencies as `private val` in the primary constructor. Prefer `val` over `var` everywhere to promote immutability.
-- **Component Stereotypes:** Use `@Service`, `@Repository`, and `@RestController` annotations just as you would in Java.
+- **プライマリコンストラクター:** 必須の依存性注入には常にプライマリコンストラクターを使う。これはKotlinで最もKotlinらしく簡潔な方法である。
+- **不変性:** プライマリコンストラクターでは依存関係を`private val`として宣言する。不変性を促進するため、どこでも`var`より`val`を優先する。
+- **コンポーネントステレオタイプ:** Javaの場合と同じように、`@Service`、`@Repository`、`@RestController`アノテーションを使う。
 
-## Configuration
+## 構成
 
-- **Externalized Configuration:** Use `application.yml` for its readability and hierarchical structure.
-- **Type-Safe Properties:** Use `@ConfigurationProperties` with `data class` to create immutable, type-safe configuration objects.
-- **Profiles:** Use Spring Profiles (`application-dev.yml`, `application-prod.yml`) to manage environment-specific configurations.
-- **Secrets Management:** Never hardcode secrets. Use environment variables or a dedicated secret management tool like HashiCorp Vault or AWS Secrets Manager.
+- **外部化された構成:** 読みやすく階層構造を表現できる`application.yml`を使う。
+- **型安全なプロパティ:** `data class`と`@ConfigurationProperties`を使って、不変で型安全な構成オブジェクトを作成する。
+- **プロファイル:** Spring Profiles（`application-dev.yml`、`application-prod.yml`）で環境固有の構成を管理する。
+- **シークレット管理:** シークレットをハードコードしない。環境変数、またはHashiCorp VaultやAWS Secrets Managerのような専用のシークレット管理ツールを使う。
 
-## Web Layer (Controllers)
+## Web層（コントローラー）
 
-- **RESTful APIs:** Design clear and consistent RESTful endpoints.
-- **Data Classes for DTOs:** Use Kotlin `data class` for all DTOs. This provides `equals()`, `hashCode()`, `toString()`, and `copy()` for free and promotes immutability.
-- **Validation:** Use Java Bean Validation (JSR 380) with annotations (`@Valid`, `@NotNull`, `@Size`) on your DTO data classes.
-- **Error Handling:** Implement a global exception handler using `@ControllerAdvice` and `@ExceptionHandler` for consistent error responses.
+- **RESTful API:** 明確で一貫したRESTfulエンドポイントを設計する。
+- **DTOのデータクラス:** すべてのDTOにKotlinの`data class`を使う。これにより`equals()`、`hashCode()`、`toString()`、`copy()`が無料で提供され、不変性が促進される。
+- **バリデーション:** DTOのデータクラスでアノテーション（`@Valid`、`@NotNull`、`@Size`）を使い、Java Bean Validation（JSR 380）を適用する。
+- **エラー処理:** `@ControllerAdvice`と`@ExceptionHandler`を使ってグローバル例外ハンドラーを実装し、エラーレスポンスを一貫させる。
 
-## Service Layer
+## サービス層
 
-- **Business Logic:** Encapsulate business logic within `@Service` classes.
-- **Statelessness:** Services should be stateless.
-- **Transaction Management:** Use `@Transactional` on service methods. In Kotlin, this can be applied to class or function level.
+- **ビジネスロジック:** ビジネスロジックを`@Service`クラス内にカプセル化する。
+- **ステートレス性:** サービスはステートレスにする。
+- **トランザクション管理:** サービスメソッドに`@Transactional`を使う。Kotlinではクラスレベルまたは関数レベルに適用できる。
 
-## Data Layer (Repositories)
+## データ層（リポジトリ）
 
-- **JPA Entities:** Define entities as classes. Remember they must be `open`. It's highly recommended to use the `kotlin-jpa` compiler plugin to handle this automatically.
-- **Null Safety:** Leverage Kotlin's null-safety (`?`) to clearly define which entity fields are optional or required at the type level.
-- **Spring Data JPA:** Use Spring Data JPA repositories by extending `JpaRepository` or `CrudRepository`.
-- **Coroutines:** For reactive applications, leverage Spring Boot's support for Kotlin Coroutines in the data layer.
+- **JPAエンティティ:** エンティティをクラスとして定義する。`open`でなければならない点に注意する。これを自動処理するため、`kotlin-jpa`コンパイラープラグインの使用を強く推奨する。
+- **Null安全性:** KotlinのNull安全性（`?`）を活用し、どのエンティティフィールドが任意または必須かを型レベルで明確に定義する。
+- **Spring Data JPA:** `JpaRepository`または`CrudRepository`を拡張してSpring Data JPAリポジトリを使う。
+- **コルーチン:** リアクティブアプリケーションでは、データ層でSpring BootのKotlin Coroutinesサポートを活用する。
 
-## Logging
+## ロギング
 
-- **Companion Object Logger:** The idiomatic way to declare a logger is in a companion object.
+- **コンパニオンオブジェクトのロガー:** ロガーはコンパニオンオブジェクトで宣言するのがKotlinらしい方法である。
   ```kotlin
   companion object {
       private val logger = LoggerFactory.getLogger(MyClass::class.java)
   }
   ```
-- **Parameterized Logging:** Use parameterized messages (`logger.info("Processing user {}...", userId)`) for performance and clarity.
+- **パラメーター化ロギング:** パフォーマンスと明確さのため、パラメーター化メッセージ（`logger.info("Processing user {}...", userId)`）を使う。
 
-## Testing
+## テスト
 
-- **JUnit 5:** JUnit 5 is the default and works seamlessly with Kotlin.
-- **Idiomatic Testing Libraries:** For more fluent and idiomatic tests, consider using **Kotest** for assertions and **MockK** for mocking. They are designed for Kotlin and offer a more expressive syntax.
-- **Test Slices:** Use test slice annotations like `@WebMvcTest` or `@DataJpaTest` to test specific parts of the application.
-- **Testcontainers:** Use Testcontainers for reliable integration tests with real databases, message brokers, etc.
+- **JUnit 5:** JUnit 5が標準であり、Kotlinとシームレスに動作する。
+- **Kotlinらしいテストライブラリ:** より流暢でKotlinらしいテストには、アサーションに**Kotest**、モックに**MockK**の使用を検討する。どちらもKotlin向けに設計され、より表現力の高い構文を提供する。
+- **テストスライス:** `@WebMvcTest`や`@DataJpaTest`のようなテストスライスアノテーションを使い、アプリケーションの特定部分をテストする。
+- **Testcontainers:** 実際のデータベースやメッセージブローカーなどを使った信頼性の高い統合テストにはTestcontainersを使う。
 
-## Coroutines & Asynchronous Programming
+## コルーチンと非同期プログラミング
 
-- **`suspend` functions:** For non-blocking asynchronous code, use `suspend` functions in your controllers and services. Spring Boot has excellent support for coroutines.
-- **Structured Concurrency:** Use `coroutineScope` or `supervisorScope` to manage the lifecycle of coroutines.
+- **`suspend`関数:** ノンブロッキングの非同期コードには、コントローラーとサービスで`suspend`関数を使う。Spring Bootはコルーチンを優れた形でサポートしている。
+- **構造化並行性:** `coroutineScope`または`supervisorScope`を使ってコルーチンのライフサイクルを管理する。

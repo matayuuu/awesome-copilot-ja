@@ -1,8 +1,8 @@
-# Edit Tutorial Plugin
+# Edit Tutorial プラグイン
 
-Turn the code edits Copilot made in your session into an interactive lesson: a step-by-step walkthrough of each change with before/after views and quizzes, then a hands-on exercise that varies those edits so you finish the change yourself.
+セッション中に Copilot が行ったコード編集をインタラクティブなレッスンに変換します。各変更を before/after 表示とクイズで段階的に解説し、その後、編集内容を変えた実習で自分自身で変更を完成させます。
 
-## Installation
+## インストール
 
 ```bash
 copilot plugin install edit-tutorial@awesome-copilot

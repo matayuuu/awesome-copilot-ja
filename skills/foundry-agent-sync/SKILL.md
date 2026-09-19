@@ -1,35 +1,35 @@
 ---
 name: foundry-agent-sync
-description: "Create and synchronize prompt-based AI agents directly within Azure AI Foundry via REST API, from a local JSON manifest. Unlike scaffolding skills that only generate local code, this skill registers agents in the Foundry service itself — making them immediately available for invocation. Use when the user asks to create agents in Foundry, sync, deploy, register, or push agents to Foundry, update agent instructions, or scaffold the manifest and sync script for a new repository. Triggers: 'create agent in foundry', 'sync foundry agents', 'deploy agents to foundry', 'register agents in foundry', 'push agents', 'create foundry agent manifest', 'scaffold agent sync'."
+description: 'ローカル JSON マニフェストから REST API を介して Azure AI Foundry 内にプロンプトベースの AI エージェントを直接作成・同期します。ローカルコードだけを生成するスキャフォールディングスキルとは異なり、Foundry サービス自体にエージェントを登録し、すぐに呼び出せるようにします。Foundry でのエージェント作成、同期、デプロイ、登録、プッシュ、エージェント指示の更新、新しいリポジトリ用のマニフェストと同期スクリプトのスキャフォールディングを求められた場合に使用します。トリガー: エージェントを Foundry で作成、Foundry エージェントを同期、エージェントを Foundry にデプロイ、エージェントを登録、エージェントをプッシュ、Foundry エージェントマニフェストを作成、エージェント同期をスキャフォールディング。'
 ---
 
-# Foundry Agent Sync
+# Foundry Agent 同期
 
-## Overview
+## 概要
 
-Create and synchronize prompt-based AI agents directly within Azure AI Foundry via the Agent Service REST API. This skill registers agents in the Foundry service itself — making them immediately available for invocation, evaluation, and management through the Foundry portal or API. Each agent is created or updated idempotently via a named POST call, using definitions from a local JSON manifest file.
+Agent Service REST API を介して、プロンプトベースの AI エージェントを Azure AI Foundry 内に直接作成・同期します。このスキルは Foundry サービス自体にエージェントを登録するため、Foundry ポータルまたは API を通じて、即座に呼び出し、評価、管理できるようになります。各エージェントは、ローカル JSON マニフェスト ファイルの定義を使用し、名前付き POST 呼び出しによって冪等に作成または更新されます。
 
-> **Key distinction:** This skill creates agents inside AI Foundry (server-side). It does not scaffold local agent code or container images — for that, use the `microsoft-foundry` skill's `create` sub-skill.
+> **重要な違い:** このスキルは AI Foundry 内部（サーバー側）にエージェントを作成します。ローカルのエージェント コードやコンテナー イメージをスキャフォールディングするものではありません。その場合は、`microsoft-foundry` スキルの `create` サブスキルを使用してください。
 
-## Prerequisites
+## 前提条件
 
-The user must have:
+ユーザーには次のものが必要です。
 
-1. An Azure AI Foundry project with a deployed model (e.g. `gpt-5-4`)
-2. Azure CLI (`az`) authenticated with access to the Foundry project
-3. The **Azure AI User** role (or higher) on the Foundry project resource
+1. デプロイ済みモデルを含む Azure AI Foundry プロジェクト（例: `gpt-5-4`）
+2. Foundry プロジェクトへのアクセス権で認証済みの Azure CLI（`az`）
+3. Foundry プロジェクト リソースに対する **Azure AI User** ロール（またはそれ以上）
 
-Collect these values before proceeding:
+開始前に次の値を収集してください。
 
-| Value | How to get it |
+| 値 | 取得方法 |
 |---|---|
-| **Foundry project endpoint** | Azure Portal → AI Foundry project → Overview → Endpoint, or `az resource show` |
-| **Subscription ID** | `az account show --query id -o tsv` |
-| **Model deployment name** | The model name deployed in the Foundry project (e.g. `gpt-5-4`) |
+| **Foundry プロジェクト エンドポイント** | Azure Portal → AI Foundry プロジェクト → Overview → Endpoint、または `az resource show` |
+| **サブスクリプション ID** | `az account show --query id -o tsv` |
+| **モデル デプロイ名** | Foundry プロジェクトにデプロイされたモデル名（例: `gpt-5-4`） |
 
-## Manifest Format
+## マニフェスト形式
 
-The manifest is a JSON array where each entry defines one agent. Look for it at common paths: `infra/foundry-agents.json`, `foundry-agents.json`, or `.foundry/agents.json`. If none exists, scaffold one.
+マニフェストは JSON 配列であり、各エントリが 1 つのエージェントを定義します。一般的なパスで探してください: `infra/foundry-agents.json`、`foundry-agents.json`、または `.foundry/agents.json`。存在しない場合は、作成してください。
 
 ```json
 [
@@ -41,19 +41,19 @@ The manifest is a JSON array where each entry defines one agent. Look for it at 
 ]
 ```
 
-### Field Reference
+### フィールド リファレンス
 
-| Field | Required | Description |
+| フィールド | 必須 | 説明 |
 |---|---|---|
-| `useCaseId` | Yes | Kebab-case identifier; used to build the agent name (`{prefix}-{useCaseId}`) |
-| `description` | Yes | Human-readable description stored as agent metadata |
-| `baseInstruction` | Yes | System prompt / base instructions for the agent |
+| `useCaseId` | はい | ケバブケースの識別子。エージェント名の構築に使用します（`{prefix}-{useCaseId}`） |
+| `description` | はい | エージェント メタデータとして保存される、人が読める説明 |
+| `baseInstruction` | はい | エージェントのシステム プロンプト / 基本指示 |
 
-## Sync Script
+## 同期スクリプト
 
-### PowerShell (interactive / CI)
+### PowerShell（対話形式 / CI）
 
-Create or locate the sync script. The canonical path is `infra/scripts/sync-foundry-agents.ps1` but adapt to the repo layout.
+同期スクリプトを作成または見つけます。標準パスは `infra/scripts/sync-foundry-agents.ps1` ですが、リポジトリのレイアウトに合わせて調整してください。
 
 ```powershell
 param(
@@ -101,57 +101,57 @@ foreach ($def in $definitions) {
 $results | Format-Table -AutoSize
 ```
 
-### Bash (Bicep deployment script / CI)
+### Bash（Bicep デプロイ スクリプト / CI）
 
-For automated deployment via `Microsoft.Resources/deploymentScripts`, use a bash script that:
+`Microsoft.Resources/deploymentScripts` を介した自動デプロイには、次の処理を行う bash スクリプトを使用します。
 
-1. Authenticates with a managed identity: `az login --identity --username "$CLIENT_ID"`
-2. Acquires a Foundry token: `az account get-access-token --resource https://ai.azure.com/`
-3. Iterates definitions from the `FOUNDRY_AGENT_DEFINITIONS` environment variable (JSON string)
-4. POSTs each agent to `{endpoint}/agents/{name}?api-version=2025-11-15-preview`
+1. マネージド ID で認証します: `az login --identity --username "$CLIENT_ID"`
+2. Foundry トークンを取得します: `az account get-access-token --resource https://ai.azure.com/`
+3. `FOUNDRY_AGENT_DEFINITIONS` 環境変数（JSON 文字列）から定義を反復処理します
+4. 各エージェントを `{endpoint}/agents/{name}?api-version=2025-11-15-preview` に POST します
 
-## Bicep Integration (optional)
+## Bicep 統合（任意）
 
-To run the sync automatically during infrastructure deployment:
+インフラストラクチャのデプロイ時に同期を自動実行するには、次の手順に従います。
 
-1. **Load the manifest** at compile time:
+1. コンパイル時に**マニフェストを読み込みます**。
    ```bicep
    var agentDefinitions = loadJsonContent('foundry-agents.json')
    ```
 
-2. **Create a User-Assigned Managed Identity** with the **Azure AI User** role on the Foundry project.
+2. Foundry プロジェクトに対する **Azure AI User** ロールを持つ**ユーザー割り当てマネージド ID**を作成します。
 
-3. **Create a `Microsoft.Resources/deploymentScripts`** resource (kind `AzureCLI`) that:
-   - Uses the managed identity
-   - Loads the bash sync script via `loadTextContent`
-   - Passes the project endpoint, definitions, and model as environment variables
+3. 次の条件を満たす `Microsoft.Resources/deploymentScripts` リソース（kind: `AzureCLI`）を作成します。
+   - マネージド ID を使用する
+   - `loadTextContent` を介して bash 同期スクリプトを読み込む
+   - プロジェクト エンドポイント、定義、モデルを環境変数として渡す
 
-Gate behind a `deployFoundryAgents` parameter so teams can opt in/out.
+チームがオプトインまたはオプトアウトできるよう、`deployFoundryAgents` パラメーターの背後に配置してください。
 
-## Workflow
+## ワークフロー
 
-### Step 1 — Locate or scaffold the manifest
+### 手順 1 — マニフェストを検索または作成する
 
-Search the repo for `foundry-agents.json`. If it doesn't exist, ask the user what agents they need and create the manifest.
+リポジトリ内で `foundry-agents.json` を検索します。存在しない場合は、必要なエージェントをユーザーに確認し、マニフェストを作成します。
 
-### Step 2 — Locate or scaffold the sync script
+### 手順 2 — 同期スクリプトを検索または作成する
 
-Search for `sync-foundry-agents.ps1` or `foundry-agent-sync.sh`. If missing, create the PowerShell script using the template above, adapting:
-- `$AgentNamePrefix` to match the project name
-- `$ModelName` to the user's deployed model
-- `$ManifestPath` to the actual manifest location
+`sync-foundry-agents.ps1` または `foundry-agent-sync.sh` を検索します。見つからない場合は、上記のテンプレートを使用して PowerShell スクリプトを作成し、次の項目を調整します。
+- `$AgentNamePrefix` をプロジェクト名に合わせる
+- `$ModelName` をユーザーがデプロイしたモデルに合わせる
+- `$ManifestPath` を実際のマニフェストの場所に合わせる
 
-### Step 3 — Collect parameters
+### 手順 3 — パラメーターを収集する
 
-Ask the user for:
-- Foundry project endpoint
-- Subscription ID
-- Model deployment name (default: `gpt-5-4`)
-- Agent name prefix (default: repo name in kebab-case)
+ユーザーに次の項目を確認します。
+- Foundry プロジェクト エンドポイント
+- サブスクリプション ID
+- モデル デプロイ名（既定値: `gpt-5-4`）
+- エージェント名のプレフィックス（既定値: ケバブケースのリポジトリ名）
 
-### Step 4 — Run the sync
+### 手順 4 — 同期を実行する
 
-Execute the PowerShell script with the collected parameters:
+収集したパラメーターを使用して PowerShell スクリプトを実行します。
 
 ```powershell
 .\infra\scripts\sync-foundry-agents.ps1 `
@@ -161,9 +161,9 @@ Execute the PowerShell script with the collected parameters:
   -AgentNamePrefix '<prefix>'
 ```
 
-### Step 5 — Verify
+### 手順 5 — 検証する
 
-Confirm synced agents by listing them:
+一覧表示して、同期されたエージェントを確認します。
 
 ```powershell
 $token = az account get-access-token --resource https://ai.azure.com/ --query accessToken -o tsv
@@ -172,16 +172,16 @@ Invoke-RestMethod -Uri "$endpoint/agents?api-version=2025-11-15-preview" `
   -Headers @{ Authorization = "Bearer $token" }
 ```
 
-## REST API Reference
+## REST API リファレンス
 
-| Operation | Method | URL |
+| 操作 | メソッド | URL |
 |---|---|---|
-| Create/update agent | POST | `{projectEndpoint}/agents/{agentName}?api-version=2025-11-15-preview` |
-| List agents | GET | `{projectEndpoint}/agents?api-version=2025-11-15-preview` |
-| Get agent | GET | `{projectEndpoint}/agents/{agentName}?api-version=2025-11-15-preview` |
-| Delete agent | DELETE | `{projectEndpoint}/agents/{agentName}?api-version=2025-11-15-preview` |
+| エージェントの作成/更新 | POST | `{projectEndpoint}/agents/{agentName}?api-version=2025-11-15-preview` |
+| エージェントの一覧表示 | GET | `{projectEndpoint}/agents?api-version=2025-11-15-preview` |
+| エージェントの取得 | GET | `{projectEndpoint}/agents/{agentName}?api-version=2025-11-15-preview` |
+| エージェントの削除 | DELETE | `{projectEndpoint}/agents/{agentName}?api-version=2025-11-15-preview` |
 
-### Create/Update Payload
+### 作成/更新ペイロード
 
 ```json
 {
@@ -198,12 +198,12 @@ Invoke-RestMethod -Uri "$endpoint/agents?api-version=2025-11-15-preview" `
 }
 ```
 
-## Troubleshooting
+## トラブルシューティング
 
-| Symptom | Cause | Fix |
+| 症状 | 原因 | 修正方法 |
 |---|---|---|
-| `401 Unauthorized` | Token expired or wrong audience | Re-run `az account get-access-token --resource https://ai.azure.com/` |
-| `403 Forbidden` | Missing Azure AI User role | Assign the role on the Foundry project scope |
-| `404 Not Found` | Wrong project endpoint | Verify endpoint includes `/api/projects/{projectName}` |
-| Model not found | Model not deployed in project | Deploy the model in AI Foundry portal first |
-| Empty definitions | Manifest path wrong | Check `-ManifestPath` points to the JSON file |
+| `401 Unauthorized` | トークンの期限切れ、または対象者が誤っている | `az account get-access-token --resource https://ai.azure.com/` を再実行する |
+| `403 Forbidden` | Azure AI User ロールがない | Foundry プロジェクトのスコープでロールを割り当てる |
+| `404 Not Found` | プロジェクト エンドポイントが誤っている | エンドポイントに `/api/projects/{projectName}` が含まれていることを確認する |
+| モデルが見つからない | モデルがプロジェクトにデプロイされていない | 最初に AI Foundry ポータルでモデルをデプロイする |
+| 定義が空 | マニフェスト パスが誤っている | `-ManifestPath` が JSON ファイルを指していることを確認する |

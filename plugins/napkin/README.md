@@ -1,10 +1,10 @@
-# Napkin — Visual Whiteboard for Copilot CLI
+# Napkin — Copilot CLI向けビジュアルホワイトボード
 
-A whiteboard that opens in your browser and connects to Copilot CLI. Draw, sketch, add sticky notes — then share everything back with Copilot. Copilot sees your drawings and responds with analysis, suggestions, and ideas.
+ブラウザーで開いてCopilot CLIに接続するホワイトボードです。描画、スケッチ、付箋の追加を行い、その内容をCopilotと共有できます。Copilotは描いた内容を見て、分析、提案、アイデアを返します。
 
-Built for people who aren't software developers: lawyers, PMs, business stakeholders, designers, writers — anyone who thinks better visually.
+ソフトウェア開発者ではない人、たとえば弁護士、PM、ビジネス関係者、デザイナー、ライターなど、視覚的に考える方のために作られています。
 
-## Installation
+## インストール
 
 Install the plugin directly from Copilot CLI:
 

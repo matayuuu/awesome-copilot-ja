@@ -1,8 +1,8 @@
 # OpenAPI to Application - Python FastAPI Plugin
 
-Generate production-ready FastAPI applications from OpenAPI specifications. Includes project scaffolding, route generation, dependency injection, and Python best practices for async APIs.
+OpenAPI仕様から本番対応のFastAPIアプリケーションを生成します。プロジェクトのスキャフォールディング、ルート生成、依存性注入、非同期API向けPythonのベストプラクティスを含みます。
 
-## Installation
+## インストール
 
 ```bash
 # Using Copilot CLI

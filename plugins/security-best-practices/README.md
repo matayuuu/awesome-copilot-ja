@@ -1,8 +1,8 @@
 # Security & Code Quality Plugin
 
-Security frameworks, accessibility guidelines, performance optimization, and code quality best practices for building secure, maintainable, and high-performance applications.
+安全で保守しやすく、高性能なアプリケーションを構築するためのセキュリティフレームワーク、アクセシビリティガイドライン、パフォーマンス最適化、コード品質のベストプラクティスです。
 
-## Installation
+## インストール
 
 ```bash
 # Using Copilot CLI

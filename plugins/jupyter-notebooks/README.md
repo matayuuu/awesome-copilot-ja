@@ -1,8 +1,8 @@
-# Jupyter Notebooks Plugin
+# Jupyter Notebooks プラグイン
 
-Create, edit, run, save, and checkpoint Jupyter notebooks in an interactive GitHub Copilot canvas.
+インタラクティブな GitHub Copilot canvas で Jupyter notebook の作成、編集、実行、保存、チェックポイント作成を行います。
 
-## Installation
+## インストール
 
 ```bash
 copilot plugin install jupyter-notebooks@awesome-copilot

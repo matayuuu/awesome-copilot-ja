@@ -1,6 +1,6 @@
 ---
 name: react-container-presentation-component
-description: "Create a React component using the Container/Presentation pattern in src/components by asking for the component name and type (ui or features), then scaffold files that follow this repository's TypeScript, Storybook, and SCSS conventions. Use when the user explicitly asks for a Container/Presentation-based component or runs /react-container-presentation-component."
+description: 'react-container-presentation-component に関する作業を支援する Skill です。対象のファイルや設定を確認し、必要な手順、検証方法、注意点を案内します。対象技術の調査、実装、運用、トラブルシューティングに使用します。'
 argument-hint: "componentName type(ui|features)"
 user-invocable: true
 ---

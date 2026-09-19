@@ -1,18 +1,18 @@
 ---
-name: 'Dependency License Checker'
-description: 'Scans newly added dependencies for license compliance (GPL, AGPL, etc.) at session end'
+name: '依存関係ライセンスチェッカー'
+description: 'セッション終了時に新しく追加された依存関係のライセンス適合性（GPL、AGPL など）を確認します'
 tags: ['compliance', 'license', 'dependencies', 'session-end']
 ---
 
-# Dependency License Checker Hook
+# 依存関係ライセンスチェッカーフック
 
 Scans newly added dependencies for license compliance at the end of a GitHub Copilot coding agent session, flagging copyleft and restrictive licenses (GPL, AGPL, SSPL, etc.) before they get committed.
 
-## Overview
+## 概要
 
 AI coding agents may add new dependencies during a session without considering license implications. This hook acts as a compliance safety net by detecting new dependencies across multiple ecosystems, looking up their licenses, and checking them against a configurable blocked list of copyleft and restrictive licenses.
 
-## Features
+## 機能
 
 - **Multi-ecosystem support**: npm, pip, Go, Ruby, and Rust dependency detection
 - **Two modes**: `warn` (log only) or `block` (exit non-zero to prevent commit)
@@ -24,7 +24,7 @@ AI coding agents may add new dependencies during a session without considering l
 - **Timeout protection**: Each license lookup wrapped with 5-second timeout
 - **Zero mandatory dependencies**: Uses standard Unix tools; optional `jq` for better JSON parsing
 
-## Installation
+## インストール
 
 1. Copy the hook folder to your repository:
 
@@ -47,7 +47,7 @@ AI coding agents may add new dependencies during a session without considering l
 
 4. Commit the hook configuration to your repository's default branch.
 
-## Configuration
+## 設定
 
 The hook is configured in `hooks.json` to run on the `sessionEnd` event:
 
@@ -80,7 +80,7 @@ The hook is configured in `hooks.json` to run on the `sessionEnd` event:
 | `BLOCKED_LICENSES` | comma-separated SPDX IDs | copyleft set | Licenses to flag as violations |
 | `LICENSE_ALLOWLIST` | comma-separated | unset | Package names to skip (e.g., `linux-headers,glibc`) |
 
-## How It Works
+## 仕組み
 
 1. When a Copilot coding agent session ends, the hook executes
 2. Runs `git diff HEAD` against manifest files (package.json, requirements.txt, go.mod, etc.)
@@ -92,7 +92,7 @@ The hook is configured in `hooks.json` to run on the `sessionEnd` event:
 8. Writes a structured JSON log entry for audit purposes
 9. In `block` mode, exits non-zero to signal the agent to stop before committing
 
-## Supported Ecosystems
+## 対応するエコシステム
 
 | Ecosystem | Manifest File | Primary Lookup | Fallback |
 |-----------|--------------|----------------|----------|
@@ -102,7 +102,7 @@ The hook is configured in `hooks.json` to run on the `sessionEnd` event:
 | Ruby | `Gemfile` | `gem spec <pkg> license` | UNKNOWN |
 | Rust | `Cargo.toml` | `cargo metadata` license field | UNKNOWN |
 
-## Default Blocked Licenses
+## デフォルトでブロックされるライセンス
 
 The following licenses are blocked by default (copyleft and restrictive):
 
@@ -114,7 +114,7 @@ The following licenses are blocked by default (copyleft and restrictive):
 
 Override with `BLOCKED_LICENSES` to customize.
 
-## Example Output
+## 出力例
 
 ### Clean scan (no new dependencies)
 
@@ -171,7 +171,7 @@ Override with `BLOCKED_LICENSES` to customize.
    Set LICENSE_MODE=warn to log without blocking, or add packages to LICENSE_ALLOWLIST.
 ```
 
-## Log Format
+## ログ形式
 
 Check events are written to `logs/copilot/license-checker/check.log` in JSON Lines format:
 
@@ -183,28 +183,28 @@ Check events are written to `logs/copilot/license-checker/check.log` in JSON Lin
 {"timestamp":"2026-03-17T10:30:00Z","event":"license_check_complete","mode":"warn","status":"clean","dependencies_checked":0}
 ```
 
-## Pairing with Other Hooks
+## 他のフックとの組み合わせ
 
 This hook pairs well with:
 
 - **Secrets Scanner**: Run secrets scanning first, then license checking, before auto-commit
 - **Session Auto-Commit**: When both are installed, order them so that `dependency-license-checker` runs first. Set `LICENSE_MODE=block` to prevent auto-commit when violations are detected.
 
-## Customization
+## カスタマイズ
 
 - **Modify blocked licenses**: Set `BLOCKED_LICENSES` to a custom comma-separated list of SPDX IDs
 - **Allowlist packages**: Use `LICENSE_ALLOWLIST` for known-acceptable packages with copyleft licenses
 - **Change log location**: Set `LICENSE_LOG_DIR` to route logs to your preferred directory
 - **Add ecosystems**: Extend the detection and lookup sections in `check-licenses.sh`
 
-## Disabling
+## 無効化
 
 To temporarily disable the checker:
 
 - Set `SKIP_LICENSE_CHECK=true` in the hook environment
 - Or remove the `sessionEnd` entry from `hooks.json`
 
-## Limitations
+## 制限事項
 
 - License detection relies on manifest file diffs; dependencies added outside standard manifest files are not detected
 - License lookup requires the package manager CLI or local cache to be available

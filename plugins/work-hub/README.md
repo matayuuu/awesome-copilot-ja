@@ -1,8 +1,8 @@
 # Work Hub Plugin
 
-Generic cross-repo command center canvas for GitHub Copilot with onboarding, focus planning, repo health, work signals, and session cleanup.
+オンボーディング、集中計画、リポジトリ健全性、作業シグナル、セッション整理を備えた、GitHub Copilot向けの汎用クロスリポジトリ司令塔キャンバスです。
 
-## Installation
+## インストール
 
 ``bash
 copilot plugin install work-hub@awesome-copilot

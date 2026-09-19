@@ -1,12 +1,12 @@
 ---
-name: 'Tool Guardian'
-description: 'Blocks dangerous tool operations (destructive file ops, force pushes, DB drops) before the Copilot coding agent executes them'
+name: 'ツールガーディアン'
+description: 'Copilot coding agent が実行する前に、危険なツール操作（破壊的なファイル操作、強制プッシュ、DB削除など）をブロックします'
 tags: ['security', 'safety', 'preToolUse', 'guardrails']
 ---
 
-# Tool Guardian Hook
+# ツールガーディアンフック
 
-Blocks dangerous tool operations before a GitHub Copilot coding agent executes them, acting as a safety net against destructive commands, force pushes, database drops, and other high-risk actions.
+GitHub Copilot coding agent が実行する前に危険なツール操作をブロックし、破壊的コマンド、強制プッシュ、データベース削除などの高リスク操作に対する安全網として機能します。
 
 ## Overview
 
@@ -19,41 +19,41 @@ AI coding agents can autonomously execute shell commands, file operations, and d
 - **Network exfiltration**: `curl | bash`, `wget | sh`, uploading files via `curl --data @`
 - **System danger**: `sudo`, `npm publish`
 
-## Features
+## 機能
 
-- **Two guard modes**: `block` (exit non-zero to prevent execution) or `warn` (log only)
-- **Safer alternatives**: Every blocked pattern includes a suggestion for a safer command
-- **Allowlist support**: Skip specific patterns via `TOOL_GUARD_ALLOWLIST`
-- **Structured logging**: JSON Lines output for integration with monitoring tools
-- **Fast execution**: 10-second timeout; no external network calls
-- **Zero dependencies**: Uses only standard Unix tools (`grep`, `sed`); optional `jq` for input parsing
+- **2つのガードモード**: `block`（実行を防ぐため非ゼロ終了）または `warn`（記録のみ）
+- **より安全な代替案**: ブロックされた各パターンに安全なコマンドの提案を付加
+- **許可リスト対応**: `TOOL_GUARD_ALLOWLIST` で特定パターンを除外
+- **構造化ログ**: 監視ツールと統合しやすい JSON Lines 出力
+- **高速実行**: 10秒のタイムアウト、外部ネットワーク呼び出しなし
+- **依存関係ゼロ**: 標準 Unix ツール（`grep`、`sed`）のみ使用。入力解析には `jq` を任意で使用
 
-## Installation
+## インストール
 
-1. Copy the hook folder to your repository:
+1. フックフォルダーをリポジトリへコピーします。
 
    ```bash
    cp -r hooks/tool-guardian your-repo/hooks/
    ```
 
-2. Ensure the script is executable:
+2. スクリプトに実行権限があることを確認します。
 
    ```bash
    chmod +x hooks/tool-guardian/guard-tool.sh
    ```
 
-3. Create the logs directory and add it to `.gitignore`:
+3. ログディレクトリを作成し、`.gitignore` に追加します。
 
    ```bash
    mkdir -p .github/logs/copilot/tool-guardian
    echo ".github/logs/" >> .gitignore
    ```
 
-4. Commit the hook configuration to your repository's default branch.
+4. フック設定をリポジトリのデフォルトブランチへコミットします。
 
 ## Configuration
 
-The hook is configured in `hooks.json` to run on the `preToolUse` event:
+フックは `hooks.json` で `preToolUse` イベント時に実行するよう設定します。
 
 ```json
 {
@@ -83,16 +83,16 @@ The hook is configured in `hooks.json` to run on the `preToolUse` event:
 | `TOOL_GUARD_LOG_DIR` | path | `.github/logs/copilot/tool-guardian` | Directory where guard logs are written |
 | `TOOL_GUARD_ALLOWLIST` | comma-separated | unset | Patterns to skip (e.g., `git push --force,npm publish`) |
 
-## How It Works
+## 仕組み
 
-1. Before the Copilot coding agent executes a tool, the hook receives the tool invocation as JSON on stdin
-2. Extracts `toolName` and `toolInput` fields (via `jq` if available, regex fallback otherwise)
-3. Checks the combined text against the allowlist — if matched, skips all scanning
-4. Scans combined text against ~20 regex threat patterns across 6 severity categories
-5. Reports findings with category, severity, matched text, and a safer alternative
-6. Writes a structured JSON log entry for audit purposes
-7. In `block` mode, exits non-zero to prevent the tool from executing
-8. In `warn` mode, logs the threat and allows execution to proceed
+1. Copilot coding agent がツールを実行する前に、フックはツール呼び出しを JSON として標準入力から受け取ります
+2. `toolName` と `toolInput` フィールドを抽出します（`jq` があれば使用し、なければ正規表現へフォールバック）
+3. 結合したテキストを許可リストと照合し、一致した場合は検査をすべて省略します
+4. 結合したテキストを6つの重大度カテゴリにまたがる約20種類の正規表現脅威パターンと照合します
+5. カテゴリ、重大度、一致テキスト、安全な代替案とともに検出結果を報告します
+6. 監査用に構造化 JSON ログエントリを書き込みます
+7. `block` モードではツールの実行を防ぐため非ゼロで終了します
+8. `warn` モードでは脅威を記録し、実行を続行させます
 
 ## Threat Categories
 
@@ -105,7 +105,7 @@ The hook is configured in `hooks.json` to run on the `preToolUse` event:
 | `network_exfiltration` | critical/high | `curl \| bash`, `wget \| sh`, `curl --data @file` | Download first, review, then execute |
 | `system_danger` | high | `sudo`, `npm publish` | Use least privilege; `--dry-run` first |
 
-## Examples
+## 例
 
 ### Safe command (exit 0)
 
@@ -161,21 +161,21 @@ Guard events are written to `.github/logs/copilot/tool-guardian/guard.log` in JS
 {"timestamp":"2026-03-16T10:30:00Z","event":"guard_skipped","reason":"allowlisted","tool":"bash"}
 ```
 
-## Customization
+## カスタマイズ
 
 - **Add custom patterns**: Edit the `PATTERNS` array in `guard-tool.sh` to add project-specific threat patterns
 - **Adjust severity**: Change severity levels for patterns that need different treatment
 - **Allowlist known commands**: Use `TOOL_GUARD_ALLOWLIST` for commands that are safe in your context
 - **Change log location**: Set `TOOL_GUARD_LOG_DIR` to route logs to your preferred directory
 
-## Disabling
+## 無効化
 
 To temporarily disable the guardian:
 
 - Set `SKIP_TOOL_GUARD=true` in the hook environment
 - Or remove the `preToolUse` entry from `hooks.json`
 
-## Limitations
+## 制限事項
 
 - Pattern-based detection; does not perform semantic analysis of command intent
 - May produce false positives for commands that match patterns in safe contexts (use the allowlist to suppress these)

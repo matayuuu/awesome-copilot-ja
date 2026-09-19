@@ -1,78 +1,78 @@
 ---
 name: incident-postmortem
-description: 'Use when an outage, production incident, or significant service degradation has occurred and the team needs to write a structured blameless post-mortem. Triggers on phrases like "write a post-mortem", "incident review", "what went wrong", "outage report", "root cause analysis", or "RCA". Covers timeline reconstruction, contributing factor analysis, impact quantification, and action item generation with owners.'
+description: '障害、本番インシデント、重大なサービス劣化が発生し、チームが構造化された非難のないポストモーテムを書く必要があるときに使う。「write a post-mortem」「incident review」「what went wrong」「outage report」「root cause analysis」「RCA」などで起動し、タイムライン再構成、要因分析、影響定量化、担当者付きアクション項目作成を扱う。'
 ---
 
-# Incident Post-Mortem
+# インシデント・ポストモーテム
 
-Guide a team through writing a structured, blameless post-mortem after a production incident. The output is a document that builds shared understanding, identifies root causes without blame, and produces concrete action items to prevent recurrence.
+本番インシデント後に、構造化された非難のないポストモーテムを書くようチームを導く。出力文書は共通認識を形成し、非難せずに根本原因を特定し、再発防止の具体的なアクション項目を作成する。
 
-## Blameless Principle
+## 非難しない原則
 
-Systems fail, not people. The goal is to understand HOW the incident happened — not WHO caused it. Avoid language like "X forgot to", "Y should have known". Use "the system did not", "the process lacked", "the alert did not fire".
+失敗するのは人ではなくシステムである。目的はインシデントがどのように起きたかを理解することであり、誰が起こしたかではない。「Xが忘れた」「Yは知っているべきだった」のような表現を避け、「システムが実行しなかった」「プロセスに欠落があった」「アラートが発火しなかった」と表現する。
 
-## When to Use
+## 使用する場面
 
-- Production outage or service degradation has been resolved
-- A significant near-miss occurred (would have been an incident if caught later)
-- User-facing errors, data loss, or SLA breach happened
-- Team wants to capture learnings before context fades
+- 本番障害またはサービス劣化が解消した
+- 重大なニアミスが発生した（後で発見されていればインシデントになっていた）
+- ユーザー向けエラー、データ損失、SLA違反が発生した
+- 文脈が失われる前にチームが学びを記録したい
 
-**Not for:** Minor bugs caught in staging, planned maintenance windows, or incidents with no learning value.
+**対象外:** ステージングで発見した軽微なバグ、計画済みメンテナンス、学びがないインシデント。
 
-## Input Requirements
+## 入力要件
 
-Gather these details before writing the post-mortem. Ask for anything missing:
+ポストモーテムを書く前に次の情報を集める。不足があれば確認する。
 
-### Incident Metadata
-- Incident title (short, descriptive)
-- Date and time of detection (with timezone)
-- Date and time of resolution
-- Severity / impact level (P1–P4 or equivalent)
-- Incident commander / on-call owner
+### インシデントメタデータ
+- インシデントのタイトル（短く説明的に）
+- 検知日時（タイムゾーン付き）
+- 解決日時
+- 重大度 / 影響レベル（P1–P4または同等）
+- インシデントコマンダー / オンコール担当者
 
-### Impact
-- Affected services and systems
-- User-facing impact (errors, slowness, full outage)
-- Estimated number of users affected
-- Data loss or corruption (yes/no, scope)
-- SLA/SLO breach (yes/no, by how much)
+### 影響
+- 影響を受けたサービスとシステム
+- ユーザー向けの影響（エラー、遅延、全面停止）
+- 影響を受けたユーザー数の推定
+- データ損失または破損（有無、範囲）
+- SLA/SLO違反（有無、違反量）
 
-### Timeline Events
-Key moments to reconstruct:
-- First symptom occurred
-- Alert fired (or was noticed manually)
-- On-call paged / incident declared
-- Investigation started
-- Root cause identified
-- Mitigation applied
-- Full resolution confirmed
-- Customer communication sent (if any)
+### タイムラインイベント
+再構成する重要な時点:
+- 最初の症状が発生した
+- アラートが発火した（または手動で気付いた）
+- オンコールが呼び出された / インシデントが宣言された
+- 調査が開始された
+- 根本原因が特定された
+- 緩和策が適用された
+- 完全な解決が確認された
+- 顧客への連絡が送られた（ある場合）
 
-### Contributing Factors
-Ask the team: "What made this worse than it needed to be?" — not "who failed". Examples:
-- Alert threshold too high / alert didn't fire
-- Runbook was missing or outdated
-- Deploy lacked a feature flag for rollback
-- Monitoring didn't cover this failure mode
-- On-call handoff missed context
+### 寄与要因
+チームには「必要以上に悪化させたものは何か」と尋ね、「誰が失敗したか」とは聞かない。例:
+- アラートしきい値が高すぎた / アラートが発火しなかった
+- ランブックがなかった、または古かった
+- デプロイにロールバック用の機能フラグがなかった
+- 監視がこの障害モードをカバーしていなかった
+- オンコール引き継ぎで文脈が失われた
 
-## Process
+## プロセス
 
-### Step 1 — Gather Metadata
-If the user has not provided full incident details, ask for them section by section. Don't proceed to writing until you have: title, times, severity, affected services, and at least a rough timeline.
+### 手順1 — メタデータを集める
+ユーザーがインシデントの詳細をすべて提供していない場合は、セクションごとに確認する。タイトル、時刻、重大度、影響を受けたサービス、少なくとも大まかなタイムラインが揃うまで執筆に進まない。
 
-### Step 2 — Reconstruct Timeline
-Work with the user to build a precise chronological timeline. For each event:
-- Exact time (UTC preferred)
-- What happened (system event or human action)
-- Who observed it or took the action
-- Link to log / alert / Slack message if available
+### 手順2 — タイムラインを再構成する
+ユーザーと協力して、正確な時系列を作る。各イベントについて次を記録する。
+- 正確な時刻（UTCを推奨）
+- 何が起きたか（システムイベントまたは人の操作）
+- 誰が観測または操作したか
+- 可能ならログ / アラート / Slackメッセージへのリンク
 
-Flag gaps: "We don't know what happened between 14:32 and 14:47 — worth checking logs."
+空白を明示する。「14:32から14:47の間に何が起きたか分からない。ログを確認する価値がある」。
 
-### Step 3 — Root Cause Analysis
-Use the **5 Whys** iteratively:
+### 手順3 — 根本原因分析
+**5 Whys**を反復して使う。
 
 ```
 Why did users see 500 errors?
@@ -91,32 +91,32 @@ Why did load tests only cover p50?
 → We had no test fixtures for large accounts.
 ```
 
-Stop when you reach a system/process gap you can fix. The last "why" should point to an action item.
+修正可能なシステムまたはプロセスの欠落に到達したら止める。最後の「なぜ」はアクション項目につながるべきである。
 
-Distinguish:
-- **Root cause** — the deepest systemic gap (one or two)
-- **Contributing factors** — conditions that made it worse but aren't the root cause
+区別する。
+- **根本原因** — 最も深いシステム上の欠落（1つまたは2つ）
+- **寄与要因** — 事態を悪化させたが根本原因ではない条件
 
-### Step 4 — Impact Quantification
-Help the user be precise:
-- Duration: detection to resolution (not symptom start to resolution — separate these)
-- Error rate at peak vs. normal baseline
-- Percentage of traffic affected
-- Revenue / business impact if known
+### 手順4 — 影響を定量化する
+ユーザーが正確に記述できるよう支援する。
+- 継続時間: 検知から解決まで（症状開始から解決までとは分ける）
+- ピーク時と通常時のエラー率
+- 影響を受けたトラフィックの割合
+- 分かる場合は売上 / ビジネスへの影響
 
-### Step 5 — Action Items
-For each root cause and contributing factor, generate at least one action item:
+### 手順5 — アクション項目
+各根本原因と寄与要因について、少なくとも1つのアクション項目を作成する。
 
-| # | Action | Owner | Due Date | Priority |
+| # | アクション | 担当者 | 期限 | 優先度 |
 |---|--------|-------|----------|----------|
-| 1 | Add load test fixtures for accounts > 10k records | @eng-team | 2026-07-01 | High |
-| 2 | Lower memory alert threshold from 90% to 75% | @platform | 2026-06-23 | High |
-| 3 | Add runbook for memory OOM pods | @on-call-rotation | 2026-06-30 | Medium |
+| 1 | 10,000件超のアカウント用ロードテストフィクスチャを追加 | @eng-team | 2026-07-01 | 高 |
+| 2 | メモリのアラートしきい値を90%から75%へ下げる | @platform | 2026-06-23 | 高 |
+| 3 | メモリOOM Pod用のランブックを追加 | @on-call-rotation | 2026-06-30 | 中 |
 
-Action items must have an owner (a person, not a team) and a due date. Vague actions like "improve monitoring" are not acceptable — break them into specific deliverables.
+アクション項目には担当者（チームではなく個人）と期限を必ず付ける。「監視を改善する」のような曖昧なアクションは認めず、具体的な成果物に分解する。
 
-### Step 6 — Write the Document
-Produce the full post-mortem using the template below. Save to `docs/postmortems/YYYY-MM-DD-<slug>.md`.
+### 手順6 — 文書を書く
+以下のテンプレートを使って完全なポストモーテムを作成する。`docs/postmortems/YYYY-MM-DD-<slug>.md` に保存する。
 
 ## Output Template
 
@@ -192,13 +192,13 @@ All times UTC.
 [Optional. 2–4 bullet points capturing non-obvious insights worth sharing with the broader team.]
 ```
 
-## Common Mistakes
+## よくある誤り
 
-| Mistake | Fix |
+| 誤り | 改善 |
 |---------|-----|
-| "Bob forgot to check the config" | "The deploy checklist did not include config validation" |
-| Root cause is "human error" | Keep asking Why — human error is always a symptom |
-| Action items without owners | Every item needs a named individual, not a team |
-| Timeline reconstructed from memory | Check logs, alerts, Slack, PagerDuty before writing |
-| "Improve monitoring" as an action | Specify: which service, which metric, what threshold, by when |
-| Post-mortem written weeks later | Write within 48–72 hours while context is fresh |
+| 「Bobが設定の確認を忘れた」 | 「デプロイチェックリストに設定検証が含まれていなかった」 |
+| 根本原因が「ヒューマンエラー」 | なぜを問い続ける。ヒューマンエラーは常に症状である |
+| 担当者のないアクション項目 | すべての項目にチームではなく個人名を付ける |
+| 記憶から再構成したタイムライン | 執筆前にログ、アラート、Slack、PagerDutyを確認する |
+| アクションとして「監視を改善する」 | 対象サービス、メトリクス、しきい値、期限を明示する |
+| 数週間後に書かれたポストモーテム | 文脈が新鮮な48～72時間以内に書く |

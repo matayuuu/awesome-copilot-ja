@@ -1,8 +1,8 @@
-# Chromium Control Canvas Plugin
+# Chromium Control Canvas プラグイン
 
-Opens a real Chromium window you can navigate and interact with from a Copilot canvas control panel and agent actions.
+実際の Chromium ウィンドウを開き、Copilot canvas のコントロールパネルと agent actions から移動・操作できます。
 
-## Installation
+## インストール
 
 ``bash
 copilot plugin install chromium-control-canvas@awesome-copilot

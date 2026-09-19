@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "automate-this",
-  "description": "Record your screen doing a manual process, drop the video on your Desktop, and let Copilot CLI analyze it frame-by-frame to build working automation scripts. Supports narrated recordings with audio transcription.",
+  "description": "手作業を行う画面を録画し、動画を Desktop に置いて、Copilot CLI にフレーム単位で分析させ、動作する自動化スクリプトを作成します。音声文字起こし付きの録画にも対応します。",
   "version": "1.0.0",
   "author": {
     "name": "Awesome Copilot Community"

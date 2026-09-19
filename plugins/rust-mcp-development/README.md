@@ -1,8 +1,8 @@
 # Rust MCP Server Development Plugin
 
-Build high-performance Model Context Protocol servers in Rust using the official rmcp SDK with async/await, procedural macros, and type-safe implementations.
+公式rmcp SDKを使い、async/await、手続き型マクロ、型安全な実装に対応した高性能なModel Context ProtocolサーバーをRustで構築します。
 
-## Installation
+## インストール
 
 ```bash
 # Using Copilot CLI

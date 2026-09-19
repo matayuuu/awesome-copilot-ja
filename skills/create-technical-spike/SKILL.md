@@ -1,15 +1,15 @@
 ---
 name: create-technical-spike
-description: 'Create time-boxed technical spike documents for researching and resolving critical development decisions before implementation.'
+description: '実装前に重要な開発上の意思決定を調査して解決するため、期間を限定した技術スパイク文書を作成する。'
 ---
 
-# Create Technical Spike Document
+# 技術スパイク文書の作成
 
-Create time-boxed technical spike documents for researching critical questions that must be answered before development can proceed. Each spike focuses on a specific technical decision with clear deliverables and timelines.
+開発を進める前に回答すべき重要な問いを調査するため、期間を限定した技術スパイク文書を作成する。各スパイクでは、明確な成果物と期限を持つ特定の技術的意思決定に焦点を当てる。
 
-## Document Structure
+## 文書構造
 
-Create individual files in `${input:FolderPath|docs/spikes}` directory. Name each file using the pattern: `[category]-[short-description]-spike.md` (e.g., `api-copilot-integration-spike.md`, `performance-realtime-audio-spike.md`).
+`${input:FolderPath|docs/spikes}` ディレクトリに個別ファイルを作成する。各ファイルは `[category]-[short-description]-spike.md` の形式で命名する（例: `api-copilot-integration-spike.md`、`performance-realtime-audio-spike.md`）。
 
 ```md
 ---
@@ -124,107 +124,107 @@ tags: ["technical-spike", "${input:Category|technical}", "research"]
 _Last updated: [Date] by [Name]_
 ```
 
-## Categories for Technical Spikes
+## 技術スパイクのカテゴリ
 
-### API Integration
+### API統合
 
-- Third-party API capabilities and limitations
-- Integration patterns and authentication
-- Rate limits and performance characteristics
+- サードパーティAPIの機能と制限
+- 統合パターンと認証
+- レート制限と性能特性
 
-### Architecture & Design
+### アーキテクチャと設計
 
-- System architecture decisions
-- Design pattern applicability
-- Component interaction models
+- システムアーキテクチャの意思決定
+- デザインパターンの適用可能性
+- コンポーネント間の連携モデル
 
-### Performance & Scalability
+### 性能とスケーラビリティ
 
-- Performance requirements and constraints
-- Scalability bottlenecks and solutions
-- Resource utilization patterns
+- 性能要件と制約
+- スケーラビリティのボトルネックと解決策
+- リソース利用パターン
 
-### Platform & Infrastructure
+### プラットフォームとインフラストラクチャ
 
-- Platform capabilities and limitations
-- Infrastructure requirements
-- Deployment and hosting considerations
+- プラットフォームの機能と制限
+- インフラストラクチャ要件
+- デプロイとホスティングに関する考慮事項
 
-### Security & Compliance
+### セキュリティとコンプライアンス
 
-- Security requirements and implementations
-- Compliance constraints
-- Authentication and authorization approaches
+- セキュリティ要件と実装
+- コンプライアンス上の制約
+- 認証と認可の方式
 
-### User Experience
+### ユーザー体験
 
-- User interaction patterns
-- Accessibility requirements
-- Interface design decisions
+- ユーザー操作のパターン
+- アクセシビリティ要件
+- インターフェイス設計の意思決定
 
-## File Naming Conventions
+## ファイル命名規則
 
-Use descriptive, kebab-case names that indicate the category and specific unknown:
+カテゴリと具体的な未解決事項を示す、説明的なkebab-case名を使う。
 
-**API/Integration Examples:**
+**API/統合の例:**
 
 - `api-copilot-chat-integration-spike.md`
 - `api-azure-speech-realtime-spike.md`
 - `api-vscode-extension-capabilities-spike.md`
 
-**Performance Examples:**
+**性能の例:**
 
 - `performance-audio-processing-latency-spike.md`
 - `performance-extension-host-limitations-spike.md`
 - `performance-webrtc-reliability-spike.md`
 
-**Architecture Examples:**
+**アーキテクチャの例:**
 
 - `architecture-voice-pipeline-design-spike.md`
 - `architecture-state-management-spike.md`
 - `architecture-error-handling-strategy-spike.md`
 
-## Best Practices for AI Agents
+## AIエージェントのベストプラクティス
 
-1. **One Question Per Spike:** Each document focuses on a single technical decision or research question
+1. **1スパイクにつき1つの問い:** 各文書では単一の技術的意思決定または調査課題に焦点を当てる
 
-2. **Time-Boxed Research:** Define specific time limits and deliverables for each spike
+2. **期間を限定した調査:** 各スパイクに具体的な時間制限と成果物を定義する
 
-3. **Evidence-Based Decisions:** Require concrete evidence (tests, prototypes, documentation) before marking as complete
+3. **根拠に基づく意思決定:** 完了とする前に、テスト、プロトタイプ、文書などの具体的な根拠を求める
 
-4. **Clear Recommendations:** Document specific recommendations and rationale for implementation
+4. **明確な推奨事項:** 具体的な推奨事項と実装理由を記録する
 
-5. **Dependency Tracking:** Identify how spikes relate to each other and impact project decisions
+5. **依存関係の追跡:** スパイク同士の関係とプロジェクトの意思決定への影響を特定する
 
-6. **Outcome-Focused:** Every spike must result in an actionable decision or recommendation
+6. **成果重視:** 各スパイクから実行可能な意思決定または推奨事項を導く
 
-## Research Strategy
+## 調査戦略
 
-### Phase 1: Information Gathering
+### フェーズ1: 情報収集
 
-1. **Search existing documentation** using search/fetch tools
-2. **Analyze codebase** for existing patterns and constraints
-3. **Research external resources** (APIs, libraries, examples)
+1. search/fetchツールで**既存文書を検索する**
+2. 既存のパターンと制約について**コードベースを分析する**
+3. API、ライブラリ、例などの**外部リソースを調査する**
 
-### Phase 2: Validation & Testing
+### フェーズ2: 検証とテスト
 
-1. **Create focused prototypes** to test specific hypotheses
-2. **Run targeted experiments** to validate assumptions
-3. **Document test results** with supporting evidence
+1. 特定の仮説を検証するための**焦点を絞ったプロトタイプを作成する**
+2. 仮定を検証するための**対象を限定した実験を実行する**
+3. 裏付けとなる証拠とともに**テスト結果を記録する**
 
-### Phase 3: Decision & Documentation
+### フェーズ3: 意思決定と文書化
 
-1. **Synthesize findings** into clear recommendations
-2. **Document implementation guidance** for development team
-3. **Create follow-up tasks** for implementation
+1. 調査結果を明確な推奨事項へ**統合する**
+2. 開発チーム向けの**実装指針を記録する**
+3. 実装のための**後続タスクを作成する**
 
-## Tools Usage
+## ツールの使用
 
-- **search/searchResults:** Research existing solutions and documentation
-- **fetch/githubRepo:** Analyze external APIs, libraries, and examples
-- **codebase:** Understand existing system constraints and patterns
-- **runTasks:** Execute prototypes and validation tests
-- **editFiles:** Update research progress and findings
-- **vscodeAPI:** Test VS Code extension capabilities and limitations
+- **search/searchResults:** 既存の解決策と文書を調査する
+- **fetch/githubRepo:** 外部API、ライブラリ、例を分析する
+- **codebase:** 既存システムの制約とパターンを理解する
+- **runTasks:** プロトタイプと検証テストを実行する
+- **editFiles:** 調査の進捗と結果を更新する
+- **vscodeAPI:** VS Code拡張機能の機能と制限をテストする
 
-Focus on time-boxed research that resolves critical technical decisions and unblocks development progress.
+重要な技術的意思決定を解決し、開発の進行を妨げる要因を取り除く、期間限定の調査に集中する。

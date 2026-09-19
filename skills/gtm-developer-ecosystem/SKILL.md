@@ -1,38 +1,38 @@
 ---
 name: gtm-developer-ecosystem
-description: Build and scale developer-led adoption through ecosystem programs. Use when deciding open vs curated ecosystems, building developer programs, scaling platform adoption, or designing student program pipelines.
+description: 'エコシステムプログラムを通じて開発者主導の採用を構築・拡大する。オープンとキュレーションの選択、開発者プログラムの構築、プラットフォーム採用の拡大、学生プログラムのパイプライン設計に使う。'
 license: MIT
 metadata:
   author: Smit Patel (https://linkedin.com/in/smitkpatel)
   source: https://github.com/beingsmit/technical-product-gtm
 ---
 
-# Developer Ecosystem
+# 開発者エコシステム
 
 Build and scale developer-led adoption through ecosystem programs, community, and partnerships. Focus on what actually drives adoption, not vanity metrics.
 
-## When to Use
+## 使用する場面
 
-**Triggers:**
-- "How do we build a developer ecosystem?"
-- "Should we curate quality or go open?"
-- "Developer community isn't growing"
-- "Nobody's building on our API"
-- "How do we compete with larger platforms?"
+**トリガー:**
+- 「開発者エコシステムをどう構築するか」
+- 「品質をキュレーションすべきか、オープンにすべきか」
+- 「開発者コミュニティが成長しない」
+- 「誰もこちらの API 上に構築していない」
+- 「大規模なプラットフォームとどう競争するか」
 
-**Context:**
-- API platforms and developer tools
-- Products with extensibility (plugins, integrations)
-- Developer-first GTM motion
-- Platform business models
+**コンテキスト:**
+- API プラットフォームと開発者ツール
+- 拡張性を備えた製品（プラグイン、統合）
+- 開発者ファーストの GTM モーション
+- プラットフォーム型ビジネスモデル
 
 ---
 
-## Core Frameworks
+## 中核フレームワーク
 
-### 1. Open vs Curated Ecosystem (The Marketplace Decision)
+### 1. オープンかキュレーションか（マーケットプレイスの判断）
 
-**The Pattern:**
+**パターン:**
 
 Running ecosystem at a developer platform. Leadership debate: Open the marketplace to anyone, or curate for quality?
 
@@ -42,26 +42,26 @@ Running ecosystem at a developer platform. Leadership debate: Open the marketpla
 
 **The decision:** Went open. Quality concerns were real, but we made a bet: control comes from discovery and trust layers, not submission gatekeeping.
 
-**What We Built Instead of Gatekeeping:**
+**ゲートキーピングの代わりに構築したもの:**
 
 1. **Search and discovery** — Surface high-quality integrations through algorithms, not human curation
 2. **Trust signals** — Verified badges, usage stats, health scores
 3. **Community curation** — User ratings, collections, recommendations
 4. **Moderation** — Remove spam after publication, not block before
 
-**Result:** Network effects won. Thousands of integrations published. Quality surfaced through usage, not through us deciding upfront.
+**結果:** Network effects won. Thousands of integrations published. Quality surfaced through usage, not through us deciding upfront.
 
-**Decision Framework:**
+**判断フレームワーク:**
 - **Curated** works when: Brand risk high, dozens of partners, can scale human review
 - **Open** works when: Hundreds/thousands of potential partners, network effects matter more than quality control
 
-**Common Mistake:**
+**よくある失敗:**
 
 Defaulting to curated because "we need quality control." This works when you have 10 partners. At 100+, you become the bottleneck. Build discovery and trust systems instead.
 
 ---
 
-### 2. The Three-Year Student Program Arc
+### 2. 3 年間の学生プログラム
 
 **The Pattern:**
 
@@ -85,7 +85,7 @@ Most developer programs optimize for quick wins. Better approach: Build long-ter
 - Alumni network
 - Metrics: # hired, company partnerships
 
-**Why This Works:**
+**これが機能する理由:**
 
 Students become enterprise buyers 5-10 years later. You're building brand loyalty before they have purchasing power.
 
@@ -95,7 +95,7 @@ Treating students as immediate revenue. They're not. They're future enterprise d
 
 ---
 
-### 3. Developer Journey (Awareness → Integration → Advocacy)
+### 3. 開発者の道のり（認知 → 統合 → 支持）
 
 **Stage 1: Awareness**
 - How do they discover you?
@@ -121,7 +121,7 @@ Treating students as immediate revenue. They're not. They're future enterprise d
 - Recommending to others
 - Contributing back (docs, code, community)
 
-**Metrics That Matter:**
+**重要な指標:**
 - Time to first API call (onboarding)
 - % reaching production (integration success)
 - Monthly active developers (engagement)
@@ -133,7 +133,7 @@ Measuring vanity metrics (sign-ups, downloads) instead of real engagement (API c
 
 ---
 
-### 4. Documentation Hierarchy
+### 4. ドキュメント階層
 
 **Tier 1: Quick Starts (Get to Value Fast)**
 - "Hello World" in 5 minutes
@@ -163,7 +163,7 @@ Starting with Tier 3 (comprehensive API reference). Developers want quick wins f
 
 ---
 
-### 5. Community vs Support (When to Use Which)
+### 5. Community と Support（どちらを使うか）
 
 **Community (Async, Scalable):**
 - Slack/Discord for real-time help
@@ -177,7 +177,7 @@ Starting with Tier 3 (comprehensive API reference). Developers want quick wins f
 - Video calls for complex integrations
 - Best for: Paying customers, strategic partners
 
-**How to Route:**
+**振り分け方:**
 
 **Community first:**
 - Developer asks question
@@ -185,7 +185,7 @@ Starting with Tier 3 (comprehensive API reference). Developers want quick wins f
 - You validate and upvote
 - Searchable for future developers
 
-**Escalate to support when:**
+**次の場合は Support にエスカレーションする:**
 - No community answer in 24 hours
 - Enterprise/paying customer
 - Security or compliance issue
@@ -197,7 +197,7 @@ Providing white-glove support to everyone. Doesn't scale. Build community that h
 
 ---
 
-### 6. Partner Tiering for Developer Ecosystems
+### 6. 開発者エコシステムのパートナー階層
 
 **Tier 1: Integration Partners (Self-Serve)**
 - Build with public API
@@ -215,9 +215,9 @@ Providing white-glove support to everyone. Doesn't scale. Build community that h
 
 ---
 
-## Decision Trees
+## 判断ツリー
 
-### Open or Curated Ecosystem?
+### オープンかキュレーションか
 
 ```
 Is brand damage risk high if low-quality partners join?
@@ -229,7 +229,7 @@ Is brand damage risk high if low-quality partners join?
     └─ Yes (dozens) → Curated
 ```
 
-### Community or Support?
+### Community か Support か
 
 ```
 Is this a common question?
@@ -243,7 +243,7 @@ Is this a common question?
 
 ---
 
-## Common Mistakes
+## よくある失敗
 
 **1. Building ecosystem before product-market fit**
    - Fix core product first, then build ecosystem
@@ -268,7 +268,7 @@ Is this a common question?
 
 ---
 
-## Quick Reference
+## クイックリファレンス
 
 **Open ecosystem checklist:**
 - [ ] Search and discovery (surface quality algorithmically)
@@ -299,7 +299,7 @@ Is this a common question?
 
 ---
 
-## Related Skills
+## 関連 Skill
 
 - **partnership-architecture**: Partner deal structures and co-marketing
 - **product-led-growth**: Self-serve activation funnels for developer products

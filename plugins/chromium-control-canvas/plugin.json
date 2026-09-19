@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "chromium-control-canvas",
-  "description": "Opens a real Chromium window you can navigate and interact with from a Copilot canvas control panel and agent actions.",
+  "description": "実際の Chromium ウィンドウを開き、Copilot canvas のコントロールパネルと agent actions から移動・操作できます。",
   "version": "1.0.2",
   "author": {
     "name": "Andrea Griffiths",

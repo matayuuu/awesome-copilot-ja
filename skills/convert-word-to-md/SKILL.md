@@ -1,52 +1,47 @@
 ---
 name: convert-word-to-md
-description: 'Converts Word (.docx) documents into Markdown so their contents can be accurately analyzed, summarized, searched, or extracted from. Use this skill whenever the user shares, references, or asks about a .docx file — even if they don''t say "convert" or "markdown" explicitly. This includes requests to "read", "summarize", "review", "extract data from", "compare", or "analyze" a Word document, resume, report, contract, or proposal. Always run the bundled conversion script to produce Markdown first; do not attempt to parse .docx content directly or write ad-hoc conversion code. Also use this skill for batch requests involving a whole folder of Word documents. IMPORTANT: When the user references a folder or set of documents containing multiple file types (.pdf, .docx, .xlsx), invoke ALL three sibling skills — convert-pdf-to-md, convert-word-to-md, and convert-excel-to-md — so no file type is silently skipped.'
+description: 'Word（.docx）文書をMarkdownへ変換し、内容を正確に分析、要約、検索、抽出できるようにする。ユーザーが.docxファイルを共有、参照、または質問した場合は、「変換」や「Markdown」と明示していなくても必ず使用する。Word文書、履歴書、レポート、契約書、提案書の読み取り、要約、レビュー、データ抽出、比較、分析の依頼を含む。まず同梱の変換スクリプトでMarkdownを生成し、.docxを直接解析したり、その場限りの変換コードを書いたりしない。Word文書を含むフォルダー全体の一括処理にも使用する。重要: 複数のファイル形式（.pdf、.docx、.xlsx）を含むフォルダーや文書群が参照された場合は、どの形式も見落とさないよう、convert-pdf-to-md、convert-word-to-md、convert-excel-to-mdの3つすべてを呼び出す。'
 ---
 
-# Convert Word to Markdown
+# WordをMarkdownへ変換
 
-## When to use this skill
+## このSkillを使う場面
 
-Trigger this skill any time there is a `.docx` file that needs to be
-understood or processed — for example, a user attaches a Word document and
-asks questions about it, wants a summary, wants specific data pulled out, or
-wants multiple Word documents in a folder processed together. Word's native
-`.docx` format is a zipped XML bundle that is not reliably readable as plain
-text, so always convert it to Markdown first using the script in this
-skill rather than trying to open or parse the file directly.
+理解または処理が必要な `.docx` ファイルがある場合は、常にこのSkillを起動する。
+たとえば、ユーザーがWord文書を添付して質問する、要約を求める、特定のデータの抽出を
+求める、フォルダー内の複数のWord文書をまとめて処理したい場合が該当する。Word固有の
+`.docx` 形式はZIP化されたXMLの集合であり、プレーンテキストとして確実に読み取れない。
+ファイルを直接開いたり解析したりせず、必ずこのSkillのスクリプトで先にMarkdownへ変換する。
 
-This skill only supports `.docx`. If asked to convert a legacy `.doc` file,
-tell the user it isn't supported and ask them to re-save it as `.docx`
-(Word: File > Save As > Word Document (.docx)) first.
+このSkillが対応するのは `.docx` のみである。従来形式の `.doc` の変換を依頼された
+場合は、未対応であることを伝え、先に `.docx` として保存し直すよう依頼する
+（Word: File > Save As > Word Document (.docx)）。
 
-**Mixed file types:** When the user references a folder or set of documents
-containing multiple supported file types (`.pdf`, `.docx`, `.xlsx`), this
-skill handles only `.docx` files. The agent MUST also invoke the sibling
-skills in parallel:
-- `convert-pdf-to-md` for any `.pdf` files
-- `convert-excel-to-md` for any `.xlsx` files
+**複数のファイル形式:** ユーザーが対応形式（`.pdf`、`.docx`、`.xlsx`）を複数含む
+フォルダーや文書群を参照した場合、このSkillが処理するのは `.docx` ファイルだけである。
+エージェントは、次の兄弟Skillも並列で必ず呼び出す。
+- `.pdf` ファイルには `convert-pdf-to-md`
+- `.xlsx` ファイルには `convert-excel-to-md`
 
-Never process a folder and silently skip a supported file type. All three
-skills must be invoked together when mixed types are present.
+フォルダーを処理するとき、対応形式を黙って除外してはならない。複数形式が含まれる
+場合は、3つのSkillをすべて同時に呼び出す。
 
-## Setup (once per environment)
+## セットアップ（環境ごとに1回）
 
-Before the first conversion in a given environment, follow
-[`references/setup.md`](references/setup.md) step by step to ensure Python,
-pip, and the `markitdown` package are installed. Do this proactively rather
-than guessing whether the environment is ready — the script itself will
-also fail with a clear pointer back to that file if `markitdown` turns out
-to be missing, so it's safe to just try the conversion first if you're
-reasonably confident setup was already done.
+各環境で初めて変換する前に、[`references/setup.md`](references/setup.md) の手順に従い、
+Python、pip、`markitdown` パッケージがインストール済みであることを確認する。
+環境の準備状況を推測せず、先回りして確認する。`markitdown` が不足していれば、
+スクリプト自体もこのファイルを案内する明確なエラーで失敗するため、セットアップ済み
+だと十分確信できる場合は、先に変換を試してもよい。
 
-## Usage
+## 使用方法
 
-The conversion script lives at `scripts/convert_word_to_md.py`.
+変換スクリプトは `scripts/convert_word_to_md.py` にある。
 
-**Output structure:** MarkItDown embeds images as a truncated `data:image/png;base64...` URI
-placeholder (not real image data), so the script
-extracts real images directly from the `.docx` and writes a self-contained
-folder per document instead of a single loose `.md` file:
+**出力構造:** MarkItDownは画像を、実際の画像データではなく、途中で省略された
+`data:image/png;base64...` URIプレースホルダーとして埋め込む。そのためスクリプトは
+`.docx` から実際の画像を直接抽出し、単独の `.md` ファイルではなく、文書ごとに
+自己完結したフォルダーへ書き出す。
 
 ```
 <name>/
@@ -57,9 +52,9 @@ folder per document instead of a single loose `.md` file:
     <name>.md          (image references are relative: img/imgNNN.ext)
 ```
 
-If the document has no embedded images, no `img/` folder is created.
+文書に埋め込み画像がなければ、`img/` フォルダーは作成しない。
 
-**Single file:**
+**単一ファイル:**
 
 ```powershell
 # Windows
@@ -71,59 +66,57 @@ python scripts\convert_word_to_md.py "C:\path\to\document.docx"
 python scripts/convert_word_to_md.py "/path/to/document.docx"
 ```
 
-This creates a `document\` folder next to the source file (containing
-`document.md` and, if present, `document\img\`). To control the destination
-folder explicitly:
+これにより、元ファイルの隣に `document\` フォルダーが作成される
+（`document.md` と、存在する場合は `document\img\` を含む）。出力先フォルダーを
+明示的に指定する場合:
 
 ```powershell
 python scripts\convert_word_to_md.py "C:\path\to\document.docx" -o "C:\path\to\output_folder"
 ```
 
-**A folder of Word documents (batch mode):**
+**Word文書のフォルダー（一括モード）:**
 
 ```powershell
 python scripts\convert_word_to_md.py "C:\path\to\folder"
 ```
 
-Add `--recursive` to also include subfolders:
+サブフォルダーも含めるには `--recursive` を追加する。
 
 ```powershell
 python scripts\convert_word_to_md.py "C:\path\to\folder" --recursive
 ```
 
-Each `.docx` found gets its own `<name>\` output folder next to it by
-default. Pass `-o "C:\path\to\output_parent"` to collect all the generated
-`<name>\` folders under a separate parent directory instead (subfolder
-structure is preserved when combined with `--recursive`).
+既定では、見つかった各 `.docx` の隣に、それぞれの `<name>\` 出力フォルダーが
+作成される。生成したすべての `<name>\` フォルダーを別の親ディレクトリ配下へ
+まとめるには、`-o "C:\path\to\output_parent"` を指定する
+（`--recursive` と組み合わせた場合もサブフォルダー構造は保持される）。
 
-After conversion, read the resulting `.md` file(s) to perform the actual
-analysis the user asked for — the script's job is only to produce accurate
-Markdown (and images), not to interpret the content.
+変換後、生成された `.md` ファイルを読み、ユーザーが依頼した実際の分析を行う。
+スクリプトの役割は正確なMarkdown（および画像）を生成することだけであり、
+内容の解釈ではない。
 
-## Deciding where output goes
+## 出力先の決定
 
-**Default — always output next to the source file.** The `<name>/` folder
-is created in the same directory as the source `.docx`. This is the required
-default for every case. Do NOT override it unless the user explicitly asks
-for a different location.
+**既定では必ず元ファイルの隣へ出力する。** `<name>/` フォルダーは元の `.docx` と
+同じディレクトリに作成する。これはすべての場合に必須の既定動作である。
+ユーザーが別の場所を明示的に求めない限り、変更してはならない。
 
-**Only use `-o` when** the user explicitly provides an output path (e.g.,
-"save the output to `C:\output`", "put the results in `D:\work`"). Do NOT
-pass `-o` based on the agent's current working directory, the session state
-folder, or any implied location.
+**`-o` を使うのは、** ユーザーが出力パスを明示した場合だけである
+（例: 「出力を `C:\output` に保存して」「結果を `D:\work` に置いて」）。
+エージェントの現在の作業ディレクトリ、セッション状態フォルダー、暗黙の場所を
+根拠に `-o` を渡してはならない。
 
-**If the source file path cannot be fully resolved** — for example, the
-user provides only a filename with no directory, or the path is ambiguous —
-use `ask_user` to confirm the full absolute path before running the
-conversion. Never guess or assume the directory.
+**元ファイルのパスを完全に解決できない場合**（たとえば、ユーザーがディレクトリ
+なしのファイル名だけを示した場合や、パスが曖昧な場合）は、変換前に `ask_user` で
+完全な絶対パスを確認する。ディレクトリを推測したり決めつけたりしてはならない。
 
-## Troubleshooting
+## トラブルシューティング
 
-| Symptom | Likely cause | Fix |
+| 症状 | 考えられる原因 | 対処 |
 |---|---|---|
-| `ModuleNotFoundError: No module named 'markitdown'` / exit code 2 | MarkItDown not installed | Follow `references/setup.md` |
-| `ERROR: Unsupported file type '.doc'` / exit code 3 | Legacy `.doc`, not `.docx` | Ask the user to re-save as `.docx` |
-| `ERROR: Input path not found` / exit code 3 | Wrong path, or file moved | Confirm the correct path with the user |
-| `FAILED <file> -> ...` in batch output | That specific file is corrupt, password-protected, or otherwise unreadable | Report which file(s) failed; other files in the batch still succeed |
-| `NOTE: skipped N non-.docx file(s)` | Folder contains non-Word files | Expected — those files are intentionally ignored |
-| `WARNING: found N image placeholder(s) ... but extracted M image file(s)` | Mismatch between MarkItDown's placeholder count and images found in `word/media/` (unusual/malformed docx) | Placeholders are left unreplaced rather than risk wrong images; inspect the source file's media manually if images are needed |
+| `ModuleNotFoundError: No module named 'markitdown'` / exit code 2 | MarkItDownが未インストール | `references/setup.md` に従う |
+| `ERROR: Unsupported file type '.doc'` / exit code 3 | `.docx` ではなく従来形式の `.doc` | `.docx` として保存し直すようユーザーへ依頼する |
+| `ERROR: Input path not found` / exit code 3 | パスが誤っているか、ファイルが移動された | 正しいパスをユーザーに確認する |
+| 一括出力の `FAILED <file> -> ...` | 該当ファイルが破損、パスワード保護、またはその他の理由で読み取れない | 失敗したファイルを報告する。一括処理内の他のファイルは引き続き成功する |
+| `NOTE: skipped N non-.docx file(s)` | フォルダーにWord以外のファイルが含まれる | 想定どおり。これらのファイルは意図的に無視される |
+| `WARNING: found N image placeholder(s) ... but extracted M image file(s)` | MarkItDownのプレースホルダー数と `word/media/` で見つかった画像数が一致しない（通常でない、または不正なdocx） | 誤った画像へ置換する危険を避け、プレースホルダーは未置換のままにする。画像が必要な場合は元ファイルのメディアを手動で確認する |

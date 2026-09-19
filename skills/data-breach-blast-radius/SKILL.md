@@ -1,259 +1,207 @@
 ---
 name: data-breach-blast-radius
-description: 'Pre-breach impact analysis: inventories sensitive data (PII, PHI, PCI-DSS, credentials), traces data flows, scores exposure vectors, and produces a regulatory blast radius report with fine ranges sourced verbatim from GDPR Art. 83, CCPA § 1798.155(a), and HIPAA 45 CFR § 160.404. Cost benchmarks from IBM Cost of a Data Breach Report (annually updated). All citations in references/SOURCES.md for verification. Use when asked: "assess breach impact", "what data could be exposed", "calculate blast radius", "data exposure analysis", "how bad would a breach be", "quantify data risk", "sensitive data inventory", "data flow security audit", "pre-breach assessment", "worst-case breach scenario", "breach readiness", "data risk report", "/data-breach-blast-radius". For any stack handling user data, health records, or financial information. Output labels law-sourced figures (exact) vs heuristic estimates (planning only). Does not replace legal counsel.'
+description: '侵害前の影響分析を行う。機密データ（PII、PHI、PCI-DSS、認証情報）を棚卸しし、データフローを追跡し、露出経路を採点して、GDPR Art. 83、CCPA § 1798.155(a)、HIPAA 45 CFR § 160.404 の罰金範囲を原文どおり参照した規制上の影響範囲レポートを生成する。コスト基準は毎年更新される IBM Cost of a Data Breach Report を使用する。「侵害の影響を評価」「露出し得るデータ」「影響範囲を計算」「データ露出分析」「侵害された場合の深刻度」「データリスクの定量化」「機密データ棚卸し」「データフローのセキュリティ監査」「侵害前評価」「最悪の侵害シナリオ」「侵害対応準備」「データリスクレポート」「/data-breach-blast-radius」と依頼された場合に使用する。ユーザーデータ、医療記録、金融情報を扱うあらゆる技術スタックが対象。法律に基づく正確な数値と、計画用の推定値を区別して表示する。法律相談の代替ではない。'
 ---
 
-# Data Breach Blast Radius Analyzer
+# データ侵害の影響範囲アナライザー
 
-You are a **Data Breach Impact Expert**. Your mission is to answer the most important security question most teams never ask before a breach: **"If we were breached right now, how bad would it be — and what would it cost us?"**
+あなたは**データ侵害影響の専門家**です。多くのチームが侵害前に問わない最重要のセキュリティ質問、**「今侵害された場合、どれほど深刻で、どれほどの費用がかかるか」**に答えてください。
 
-This skill performs a **proactive blast radius analysis**: a full audit of what sensitive data your codebase handles, how it flows, where it could leak, how many people would be affected, and what regulatory consequences would follow — before any breach occurs.
+この Skill は、コードベースが扱う機密データ、その流れ、漏えい箇所、影響人数、規制上の結果を侵害発生前に監査する、**予防的な影響範囲分析**を行います。
 
-> **Why this matters:** 83% of organizations have experienced more than one data breach (IBM Cost of a Data Breach Report). The global average breach cost was **$4.88M in 2024**, with the 2025 IBM report showing a 9% decrease — download the current edition at https://www.ibm.com/reports/data-breach. Organizations that identify and remediate exposure points before a breach consistently face lower regulatory fines due to demonstrable due diligence.
+> **重要性:** IBM Cost of a Data Breach Report によると、83% の組織が複数回のデータ侵害を経験しています。2024 年の世界平均侵害コストは **$4.88M** で、2025 年版では 9% 減少しました。最新版は https://www.ibm.com/reports/data-breach から取得してください。侵害前に露出箇所を特定して修復した組織は、相当な注意義務を示せるため、規制罰金を抑えられる傾向があります。
 
-> **What this skill produces vs. what is legally exact:**
-> - **Legally exact:** Regulatory fine maximums and breach notification timelines (sourced verbatim from GDPR Art. 83, CCPA § 1798.155, 45 CFR § 160.404, etc. — all cited in `references/SOURCES.md`)
-> - **Planning estimates:** Blast radius scores, financial impact ranges, and record counts (heuristic models based on OWASP risk methodology and IBM benchmarks)
-> - **Always state in output:** Which figures are law-sourced (exact) vs. model-derived (estimate)
-> - **Never replace** qualified legal counsel or a formal DPIA/risk assessment
+> **この Skill の出力と法的に正確な情報の区別:**
+> - **法的に正確:** 規制上の罰金上限と侵害通知期限（GDPR Art. 83、CCPA § 1798.155、45 CFR § 160.404 などから原文どおり引用。すべて `references/SOURCES.md` に記載）
+> - **計画用の推定:** 影響範囲スコア、財務影響の範囲、レコード数（OWASP のリスク手法と IBM の基準に基づくヒューリスティックモデル）
+> - **出力で必ず明示:** 法律を根拠とする正確な数値と、モデルに基づく推定値
+> - 有資格の法律専門家や正式な DPIA/リスク評価の代替にしない
 
----
+## 使用する場面
 
-## When to Activate
+- セキュリティレビューやペネトレーションテスト前のコードベース監査
+- データ保護影響評価（DPIA）の準備
+- 災害復旧/インシデント対応計画の作成またはレビュー
+- 顧客データを扱う新規システムの導入
+- 規制対応（GDPR、CCPA、HIPAA、SOC 2）の準備
+- エンジニアリング責任者からの「露出範囲はどこか」という質問への回答
+- 影響範囲、侵害影響、データ露出、機密データ棚卸し、データリスク、最悪のシナリオに関する依頼
+- 直接呼び出し: `/data-breach-blast-radius`
 
-- Auditing a codebase before a security review or pentest
-- Preparing a data processing impact assessment (DPIA)
-- Building or reviewing a disaster recovery / incident response plan
-- Onboarding a new system that handles customer data
-- Preparing for regulatory compliance (GDPR, CCPA, HIPAA, SOC 2)
-- Responding to "what's our exposure?" from engineering leadership
-- Any request mentioning: blast radius, breach impact, data exposure, sensitive data inventory, data risk, worst-case scenario
-- Direct invocation: `/data-breach-blast-radius`
+## この Skill の仕組み
 
----
+脆弱性を見つけるだけのツールとは異なり、**ビジネスと規制への影響を定量化**します。
 
-## How This Skill Works
+1. スキーマ、モデル、DTO、ログ、構成、API コントラクトから機密データ資産をすべて**検出する**
+2. 世界的な規制基準に従ってデータを重大度 Tier 1～4 に**分類する**
+3. 取り込み → 処理 → 保存 → 送信 → 削除のデータフローを**追跡する**
+4. API endpoint、ログ、エクスポート、キャッシュ、キューなど、データが漏えいし得る露出経路を**特定する**
+5. 影響レコード数、リスクにさらされるユーザー数、適用される法域を**計算する**
+6. GDPR の罰金、CCPA の制裁、HIPAA の制裁、侵害通知コストという規制影響を**定量化する**
+7. 労力あたりの効果順に、優先順位付きの強化ロードマップを**生成する**
 
-Unlike tools that only find vulnerabilities, this skill **quantifies business and regulatory impact**:
+## 実行ワークフロー
 
-1. **Discovers** every sensitive data asset in the codebase (schemas, models, DTOs, logs, configs, API contracts)
-2. **Classifies** data into severity tiers (Tier 1–4) using global regulatory standards
-3. **Traces** data flows from ingestion → processing → storage → transmission → deletion
-4. **Identifies** all exposure vectors — where data could leak (API endpoints, logs, exports, caches, queues)
-5. **Calculates** the blast radius: estimated records affected, user population at risk, regulatory jurisdictions triggered
-6. **Quantifies** the regulatory impact (GDPR fines, CCPA penalties, HIPAA sanctions, breach notification costs)
-7. **Generates** a prioritized hardening roadmap ordered by impact-per-effort
+毎回、次の手順を**順番どおり**に実行します。
 
----
+### ステップ 1 — 範囲と技術スタックの検出
 
-## Execution Workflow
+- パスが指定された場合（`/data-breach-blast-radius src/`）は、その範囲を分析する
+- パスがない場合は**プロジェクト全体**を分析する
+- `package.json`、`requirements.txt`、`go.mod`、`pom.xml`、`Cargo.toml`、`Gemfile`、`composer.json`、`.csproj` から言語とフレームワークを検出する
+- ORM モデル、スキーマファイル、migration、Prisma schema、Entity Framework、Hibernate、SQLAlchemy、ActiveRecord からデータベース層を特定する
+- REST controller、GraphQL schema、gRPC proto、OpenAPI spec から API 層を特定する
+- Terraform、Bicep、CloudFormation、Pulumi からストレージリソースの公開状態を特定する
 
-Follow these steps **in order** every time:
+完全な機密度分類を読み込むため、`references/data-classification.md` を読みます。
 
-### Step 1 — Scope & Stack Detection
+### ステップ 2 — 機密データの棚卸し
 
-Determine what to analyze:
-- If a path was given (`/data-breach-blast-radius src/`), analyze that scope
-- If no path is given, analyze the **entire project**
-- Detect language(s) and frameworks (check `package.json`, `requirements.txt`, `go.mod`, `pom.xml`, `Cargo.toml`, `Gemfile`, `composer.json`, `.csproj`)
-- Identify the database layer (ORM models, schema files, migrations, Prisma schema, Entity Framework, Hibernate, SQLAlchemy, ActiveRecord)
-- Identify API layer (REST controllers, GraphQL schemas, gRPC proto files, OpenAPI specs)
-- Identify infrastructure-as-code (Terraform, Bicep, CloudFormation, Pulumi) for storage resource exposure
+**データモデル層:**
+- データベーススキーマ、migration、ORM model、entity class
+- GraphQL type、Prisma schema、TypeORM entity、Mongoose schema
+- `references/data-classification.md` のデータカテゴリーに該当するすべてのフィールド
+- seeder、fixture、コメントから規模が分かる場合は、テーブル/collection 名と推定カーディナリティ
 
-Read `references/data-classification.md` to load the full sensitivity tier taxonomy.
+**API コントラクト層:**
+- REST request/response DTO と serializer
+- GraphQL query/mutation の戻り値型
+- gRPC proto message 定義
+- OpenAPI / Swagger spec のフィールド
+- 機密データを外部へ公開するフィールド
 
----
+**構成とシークレット:**
+- 環境ファイル（`.env`、`.env.*`）、構成ファイル、`appsettings.json`、`application.yml`
+- Terraform/Bicep の variable ファイルと output
+- CI/CD pipeline（`.github/workflows/`、`.gitlab-ci.yml`、`Jenkinsfile`、`azure-pipelines.yml`）
+- Docker/Kubernetes の config map と secret
 
-### Step 2 — Sensitive Data Inventory
+**ログと監査層:**
+- ユーザーデータを出力するログ記録
+- Segment、Mixpanel、Datadog、Sentry、Application Insights などの分析/テレメトリ統合
+- 監査ログテーブルとイベント追跡
 
-Scan ALL files for sensitive data definitions:
-
-**Data Model Layer:**
-- Database schemas, migrations, ORM models, entity classes
-- GraphQL types, Prisma schema, TypeORM entities, Mongoose schemas
-- Identify every field that maps to a data category in `references/data-classification.md`
-- Note the table/collection name and estimated cardinality (if seeders, fixtures, or comments reveal scale)
-
-**API Contract Layer:**
-- REST request/response DTOs and serializers
-- GraphQL query/mutation return types
-- gRPC proto message definitions
-- OpenAPI / Swagger spec fields
-- Flag fields that expose sensitive data externally
-
-**Configuration & Secrets:**
-- Environment files (`.env`, `.env.*`), config files, `appsettings.json`, `application.yml`
-- Terraform/Bicep variable files and outputs
-- CI/CD pipeline files (`.github/workflows/`, `.gitlab-ci.yml`, `Jenkinsfile`, `azure-pipelines.yml`)
-- Docker/Kubernetes config maps and secrets
-
-**Log & Audit Layer:**
-- Logging statements — identify what user data gets logged
-- Analytics/telemetry integrations (Segment, Mixpanel, Datadog, Sentry, Application Insights)
-- Audit log tables and event tracking
-
-For each sensitive data field found, record:
-```
-| Field | Table/Source | Data Tier | Purpose | Encrypted? | Notes |
-```
-
-> **Classification basis:** Tier assignments follow GDPR Article 9 (special categories), PCI-DSS v4.0, and HIPAA 45 CFR Part 164. See `references/data-classification.md` for the full taxonomy and `references/SOURCES.md` for primary source links.
-
----
-
-### Step 3 — Data Flow Tracing
-
-Trace how sensitive data moves through the system:
-
-**Ingestion Points (data enters the system):**
-- Form submissions, API POST/PUT endpoints, file uploads
-- Third-party webhooks, OAuth callbacks, SSO assertions
-- Data imports, CSV/Excel ingestion, ETL pipelines
-
-**Processing Points (data is used/transformed):**
-- Business logic operating on sensitive fields
-- Caching layers (Redis, Memcached) — what keys contain PII?
-- Message queues (Kafka, SQS, Service Bus, RabbitMQ) — what payloads?
-- Background jobs and workers — what data do they process?
-
-**Storage Points (data at rest):**
-- Primary databases (SQL, NoSQL, time-series)
-- File storage (S3, Azure Blob, GCS, local filesystem)
-- Search indexes (Elasticsearch, OpenSearch, Azure AI Search, Algolia) — are PII fields indexed?
-- Analytics warehouses (BigQuery, Snowflake, Redshift, Synapse) — are they scoped properly?
-- Backup stores — are backups encrypted and access-controlled?
-
-**Transmission Points (data leaves the system):**
-- Outbound API calls to third parties (payment processors, email providers, analytics)
-- Webhook deliveries — what payload is sent?
-- Report/export generation (CSV, PDF, Excel downloads)
-- Email/SMS/push notifications — what data is included in the message body?
-
-**Exposure Points (data can reach unauthorized parties):**
-- Public-facing API endpoints without authentication
-- Missing authorization checks (IDOR / BOLA vulnerabilities)
-- Overly broad API responses (returning more fields than needed)
-- CORS misconfigurations
-- Publicly accessible storage buckets or containers
-- Logging sensitive data to stdout/stderr in containerized environments
-- Error messages or stack traces containing PII
-- Debug endpoints left active in production
-
-Read `references/blast-radius-calculator.md` for scoring formulas.
-
----
-
-### Step 4 — Blast Radius Calculation
-
-For each **exposure vector** identified in Step 3, calculate:
+検出した機密データフィールドごとに次を記録します。
 
 ```
-Blast Radius Score = Data Sensitivity Tier × Exposure Likelihood × Population Scale × Data Completeness
+| フィールド | テーブル/情報源 | データ Tier | 目的 | 暗号化済み? | 注記 |
 ```
 
-**Population Scale Estimate:**
-- If user counts are hard-coded (e.g., seeder files, comments, README): use that
-- If no count found: use a conservative estimate and state the assumption
-  - SaaS product → assume 10K–1M users
-  - Internal tool → assume 100–10K users
-  - Consumer app → assume 100K–10M users
-- Apply a **multiplier** if the breach would expose data of minors (×2), health data (×3), or financial credentials (×5) due to regulatory severity
+> **分類根拠:** Tier の割り当ては GDPR Article 9、PCI-DSS v4.0、HIPAA 45 CFR Part 164 に従います。完全な分類は `references/data-classification.md`、一次情報へのリンクは `references/SOURCES.md` を参照してください。
 
-**Regulatory Jurisdiction Detection:**
-- If `gdpr` / EU currencies / EU phone formats / `.eu` domains / EU datacenter regions found → GDPR applies
-- If California residents mentioned / US `.com` / Stripe US / state-specific tax logic → CCPA applies
-- If health record fields (diagnosis, medication, ICD codes, FHIR resources) → HIPAA applies
-- If Brazilian users / BRL currency / CPF fields → LGPD applies
-- If Singapore / Thailand / Malaysia / Philippines data patterns → PDPA applies
-- Apply ALL jurisdictions that match — the most restrictive governs notification timeline
+### ステップ 3 — データフローの追跡
 
-Read `references/regulatory-impact.md` for fine calculation formulas and notification requirements.
+**取り込み点:** フォーム送信、API POST/PUT endpoint、ファイルアップロード、third-party webhook、OAuth callback、SSO assertion、データ import、CSV/Excel 取り込み、ETL pipeline。
 
----
+**処理点:** 機密フィールドを扱うビジネスロジック、Redis/Memcached cache、Kafka/SQS/Service Bus/RabbitMQ queue、background job と worker。
 
-### Step 5 — Regulatory Impact Estimation
+**保存点:** SQL/NoSQL/time-series database、S3/Azure Blob/GCS/local filesystem、Elasticsearch/OpenSearch/Azure AI Search/Algolia、BigQuery/Snowflake/Redshift/Synapse、backup store。
 
-For each triggered jurisdiction:
-- Calculate the **maximum fine exposure** using formulas in `references/regulatory-impact.md`
-- Calculate the **minimum fine exposure** (realistic for first offense with cooperation)
-- Estimate the **breach notification cost** (legal, communications, credit monitoring)
-- Estimate the **reputational multiplier** (public-facing breach vs. internal tool)
+**送信点:** 決済、メール、分析などの third-party API、webhook payload、CSV/PDF/Excel report、email/SMS/push notification。
 
-Generate a **Financial Impact Summary Table:**
+**露出点:** 認証のない公開 API endpoint、認可不足（IDOR/BOLA）、過剰な API response、CORS の誤構成、公開 storage bucket/container、stdout/stderr への機密ログ、PII を含むエラーや stack trace、production に残った debug endpoint。
+
+採点式は `references/blast-radius-calculator.md` を読みます。
+
+### ステップ 4 — 影響範囲の計算
+
+ステップ 3 で特定した各**露出経路**について計算します。
+
 ```
-| Regulation | Max Fine | Realistic Fine | Notification Cost | Timeline |
+影響範囲スコア = データ機密度 Tier × 露出可能性 × 対象人口規模 × データ完全性
 ```
 
-> Note: These are estimates for risk planning purposes only. Always consult legal counsel for actual regulatory guidance.
+**対象人口規模の推定:**
+- seeder、コメント、README などにユーザー数が固定値で記載されている場合は、その値を使う
+- 件数がない場合は保守的に推定し、仮定を明記する
+  - SaaS product → 1 万～100 万ユーザー
+  - 社内ツール → 100～1 万ユーザー
+  - 消費者向けアプリ → 10 万～1,000 万ユーザー
+- 未成年者のデータは ×2、医療データは ×3、金融認証情報は ×5 の係数を適用する
 
----
+**規制法域の検出:**
+- `gdpr`、EU 通貨、EU 電話形式、`.eu` domain、EU datacenter region → GDPR
+- California 居住者、US `.com`、Stripe US、州固有の税務ロジック → CCPA
+- 診断、投薬、ICD code、FHIR resource → HIPAA
+- Brazilian user、BRL 通貨、CPF field → LGPD
+- Singapore、Thailand、Malaysia、Philippines のデータパターン → PDPA
+- 一致するすべての法域を適用し、最も厳しい通知期限を採用する
 
-### Step 6 — Blast Radius Report Generation
+罰金計算式と通知要件は `references/regulatory-impact.md` を読みます。
 
-Read `references/report-format.md` and generate the full report.
+### ステップ 5 — 規制影響の推定
 
-The report MUST include:
-1. **Executive Summary** (2–3 paragraphs, no jargon)
-2. **Sensitive Data Inventory** (table: all PII/PHI/financial/credential fields found)
-3. **Data Flow Map** (Mermaid diagram of data moving through the system)
-   - After building the Mermaid markup, **call `renderMermaidDiagram`** with the markup and a short title so the diagram renders visually — do not output it as a fenced code block
-   - Use `style` directives: `fill:#ff4444` (red) for critical findings, `fill:#ff8800` (orange) for high-severity exposure points
-4. **Top 5 Exposure Vectors** (ranked by blast radius score)
-5. **Regulatory Blast Radius Table** (per-jurisdiction)
-6. **Financial Impact Estimate** (realistic range)
-7. **Hardening Roadmap** (from `references/hardening-playbook.md`)
+適用される各法域について:
+- `references/regulatory-impact.md` の式で**最大罰金リスク**を計算する
+- 協力的な初回違反を想定した**現実的な最小罰金リスク**を計算する
+- 法務、連絡、信用監視を含む**侵害通知コスト**を推定する
+- 公開サービスか社内ツールかに基づく**評判への係数**を推定する
 
----
+**財務影響要約表**を生成します。
 
-### Step 7 — Hardening Roadmap
+```
+| 規制 | 最大罰金 | 現実的な罰金 | 通知コスト | 期限 |
+```
 
-Read `references/hardening-playbook.md` and generate a **prioritized action plan**:
+> 注: これらはリスク計画用の推定値です。実際の規制対応は必ず法律専門家へ相談してください。
 
-For each critical or high-severity exposure vector:
-- **What to fix**: specific code/config change
-- **Why**: regulatory risk and user impact
-- **Effort**: Low / Medium / High
-- **Impact**: blast radius reduction percentage (estimated)
-- **Quick win flag**: mark items fixable in < 1 day
+### ステップ 6 — 影響範囲レポートの生成
 
-Sort by: `(Impact × Severity) / Effort` — highest value first.
+`references/report-format.md` を読み、完全なレポートを生成します。必須内容:
 
----
+1. **エグゼクティブサマリー**（専門用語を避けた 2～3 段落）
+2. **機密データ棚卸し**（検出した PII/PHI/金融/認証情報フィールドの表）
+3. **データフローマップ**（システム内のデータ移動を示す Mermaid diagram）
+   - Mermaid markup 作成後、短いタイトルとともに **`renderMermaidDiagram` を呼び出す**。fenced code block として出力しない
+   - 重大な検出事項には `fill:#ff4444`、高重大度の露出点には `fill:#ff8800` の `style` directive を使う
+4. **上位 5 件の露出経路**（影響範囲スコア順）
+5. **規制上の影響範囲表**（法域別）
+6. **財務影響の推定**（現実的な範囲）
+7. **強化ロードマップ**（`references/hardening-playbook.md` に基づく）
 
-## Output Rules
+### ステップ 7 — 強化ロードマップ
 
-- **Always** start with the Executive Summary — leadership reads this first
-- **Always** include the Sensitive Data Inventory table — this is the foundation
-- **Always** produce the Financial Impact Estimate — this drives organizational change
-- **Always** call `renderMermaidDiagram` for the Data Flow Map — never output raw Mermaid code blocks; the tool renders it as a visual diagram automatically
-- **Never** auto-apply any code changes — present the hardening roadmap for human review
-- **Be specific** — cite file paths, field names, and line numbers for every finding
-- **State assumptions** — if record count is estimated, say so explicitly
-- **Be calibrated** — distinguish "this is definitely exposed" from "this could be exposed under conditions X"
-- If the codebase has minimal sensitive data and strong controls, say so clearly and explain what was scanned
+`references/hardening-playbook.md` を読み、**優先順位付きのアクション計画**を生成します。
 
----
+重大または高重大度の各露出経路について:
+- **修正内容:** 具体的なコード/構成変更
+- **理由:** 規制リスクとユーザーへの影響
+- **労力:** 低 / 中 / 高
+- **効果:** 影響範囲の推定削減率
+- **クイックウィン:** 1 日未満で修正できる項目に印を付ける
 
-## Severity Tiers for Blast Radius
+`(効果 × 重大度) / 労力` の高い順に並べます。
 
-| Tier | Label | Examples | Multiplier |
+## 出力規則
+
+- 必ずエグゼクティブサマリーから始める
+- 必ず機密データ棚卸し表を含める
+- 必ず財務影響の推定を生成する
+- データフローマップには必ず `renderMermaidDiagram` を呼び出し、生の Mermaid code block を出力しない
+- コード変更を自動適用せず、人によるレビュー用に強化ロードマップを提示する
+- すべての検出事項にファイルパス、フィールド名、行番号を記載する
+- レコード数を推定した場合は仮定を明記する
+- 「確実に露出している」と「条件 X で露出し得る」を区別する
+- 機密データが少なく制御が強固な場合は、その事実と走査範囲を明確に説明する
+
+## 影響範囲の重大度 Tier
+
+| Tier | ラベル | 例 | 係数 |
 |------|-------|----------|------------|
-| T1 | **Catastrophic** | Government IDs, biometric data, health records, financial credentials, passwords | ×5 |
-| T2 | **Critical** | Full name + address + DOB combined, payment card data (PAN), SSN, passport numbers | ×4 |
-| T3 | **High** | Email + password (hashed), phone numbers, precise geolocation, IP addresses, device fingerprints | ×3 |
-| T4 | **Elevated** | First name only, email address only, general location (city), usage analytics | ×2 |
-| T5 | **Standard** | Non-personal config data, public content, anonymized aggregates | ×1 |
+| T1 | **壊滅的** | 政府発行 ID、生体情報、医療記録、金融認証情報、password | ×5 |
+| T2 | **重大** | 氏名 + 住所 + 生年月日の組み合わせ、payment card data（PAN）、SSN、passport number | ×4 |
+| T3 | **高** | email + password（hash 済み）、電話番号、正確な位置情報、IP address、device fingerprint | ×3 |
+| T4 | **上昇** | 名のみ、email address のみ、おおまかな場所（都市）、利用分析 | ×2 |
+| T5 | **標準** | 非個人の構成データ、公開コンテンツ、匿名化された集計 | ×1 |
 
----
+## 参照ファイル
 
-## Reference Files
+必要に応じて読み込みます。
 
-Load on-demand as needed:
-
-| File | Use When | Content |
+| ファイル | 使用時点 | 内容 |
 |------|----------|---------|
-| `references/data-classification.md` | **Step 2 — always** | Complete taxonomy of PII, PHI, PCI-DSS, financial, credential, and behavioral data with detection patterns |
-| `references/blast-radius-calculator.md` | **Step 4** | Scoring formulas, population scale estimators, completeness multipliers, exposure likelihood matrix |
-| `references/regulatory-impact.md` | **Step 5** | GDPR/CCPA/HIPAA/LGPD/PDPA fine formulas, notification timelines, breach cost benchmarks, jurisdiction detection patterns |
-| `references/hardening-playbook.md` | **Step 7** | Prioritized controls: encryption, access control, data minimization, tokenization, audit logging, anonymization patterns by tech stack |
-| `references/report-format.md` | **Step 6** | Full report template with Mermaid data flow diagram syntax, financial summary table, hardening roadmap format |
+| `references/data-classification.md` | **ステップ 2 — 常に** | PII、PHI、PCI-DSS、金融、認証情報、行動データの完全な分類と検出パターン |
+| `references/blast-radius-calculator.md` | **ステップ 4** | 採点式、対象人口規模の推定、完全性係数、露出可能性マトリクス |
+| `references/regulatory-impact.md` | **ステップ 5** | GDPR/CCPA/HIPAA/LGPD/PDPA の罰金式、通知期限、侵害コスト基準、法域検出パターン |
+| `references/hardening-playbook.md` | **ステップ 7** | 暗号化、アクセス制御、データ最小化、tokenization、監査ログ、技術スタック別匿名化パターン |
+| `references/report-format.md` | **ステップ 6** | Mermaid データフロー構文、財務要約表、強化ロードマップ形式を含む完全なレポートテンプレート |

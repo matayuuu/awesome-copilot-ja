@@ -1,8 +1,8 @@
 # AI Team Orchestration
 
-Run a lightweight, role-separated AI development team with flexible tools, developer-selected models, proportionate planning, and optional QA.
+柔軟なツール、開発者が選択したモデル、作業規模に応じた計画、任意の QA を備えた、軽量で役割分担された AI 開発チームを運用します。
 
-## What's Included
+## 含まれるもの
 
 ### Agents
 

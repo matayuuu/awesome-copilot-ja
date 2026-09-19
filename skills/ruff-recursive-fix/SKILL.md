@@ -1,11 +1,11 @@
 ---
 name: ruff-recursive-fix
-description: Run Ruff checks with optional scope and rule overrides, apply safe and unsafe autofixes iteratively, review each change, and resolve remaining findings with targeted edits or user decisions.
+description: 'ruff-recursive-fix に関する作業を支援する Skill です。対象のファイルや設定を確認し、必要な手順、検証方法、注意点を案内します。対象技術の調査、実装、運用、トラブルシューティングに使用します。'
 ---
 
 # Ruff Recursive Fix
 
-## Overview
+## 概要
 
 Use this skill to enforce code quality with Ruff in a controlled, iterative workflow.
 It supports:
@@ -99,7 +99,7 @@ uv run ruff check src --extend-ignore D,TD
 ruff check src/data --select F,E9,I
 ```
 
-## Workflow
+## ワークフロー
 
 ### 1. Baseline Analysis
 

@@ -1,13 +1,13 @@
 ---
 name: python-mcp-server-generator
-description: 'Generate a complete MCP server project in Python with tools, resources, and proper configuration'
+description: 'python-mcp-server-generator に関する作業を支援する Skill です。対象のファイルや設定を確認し、必要な手順、検証方法、注意点を案内します。対象技術の調査、実装、運用、トラブルシューティングに使用します。'
 ---
 
 # Generate Python MCP Server
 
 Create a complete Model Context Protocol (MCP) server in Python with the following specifications:
 
-## Requirements
+## 要件
 
 1. **Project Structure**: Create a new Python project with proper structure using uv
 2. **Dependencies**: Include mcp[cli] package with uv
@@ -66,7 +66,7 @@ Create a complete Model Context Protocol (MCP) server in Python with the followi
   - Simple direct execution
   - Test with `uv run mcp dev server.py`
   - Install to Claude: `uv run mcp install server.py`
-  
+
 - **For HTTP Servers**:
   - Port configuration via environment variables
   - Stateless mode for scalability: `stateless_http=True`
@@ -93,7 +93,7 @@ Create a complete Model Context Protocol (MCP) server in Python with the followi
 - Image handling with Image class
 - Completion support for better UX
 
-## Best Practices
+## ベストプラクティス
 - Use type hints everywhere - they're not optional
 - Return structured data when possible
 - Log to stderr (or use Context logging) to avoid stdout pollution

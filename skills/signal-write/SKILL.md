@@ -1,52 +1,51 @@
 ---
 name: signal-write
-description: 'Emit structured agent signals — hands-up, blocked, done, checkpoint, partnership. Signals are written as JSON to .signals/ for dashboard consumption and noted in the journal for persistence.'
+description: '構造化されたエージェントシグナル（hands-up、blocked、done、checkpoint、partnership）を発行する。シグナルはダッシュボード向けに .signals/ へ JSON として書き込み、永続化のためジャーナルにも記録する。'
 ---
+# エージェントシグナル
 
-# Agent Signals
+デスクからオペレーターや他のデスクへ、構造化されたシグナルを発行します。
 
-Emit structured signals from a desk to the operator or other desks.
+## 使用する場面
 
-## When to use
+- デスクがオペレーターの注意を必要とするとき（hands-up、blocked）
+- 作業が完了し、レビュー可能になったとき（done）
+- 記録する価値のある大きな進捗があったとき（checkpoint）
+- 2つのデスクの意見が食い違い、解決できないとき（hands-up）
+- TA が連携品質を報告するとき（partnership）
 
-- A desk needs operator attention (hands-up, blocked)
-- Work is complete and ready for review (done)
-- Significant progress worth noting (checkpoint)
-- Two desks disagree and can't resolve it (hands-up)
-- The TA is reporting coordination quality (partnership)
-
-## Signal types
+## シグナルの種類
 
 ### `hands-up`
-Two desks disagree and can't settle it against external facts.
-This is the system working — the operator reads where desks
-*disagree*, not where they perform confidence.
+2つのデスクの意見が外部の事実に照らしても一致しない。
+これはシステムが機能している状態です。オペレーターが読むのは、デスクが自信を示した箇所ではなく、
+*意見が食い違った*箇所です。
 
 ### `blocked`
-A desk can't proceed without input — missing access, ambiguous
-scope, need a decision only the operator can make.
+入力がなければデスクが進められない。アクセス不足、範囲の曖昧さ、
+オペレーターだけが下せる判断が必要、といった場合です。
 
 ### `done`
-Work is complete and ready for review. Artifacts are on the bench.
+作業が完了し、レビュー可能です。成果物はベンチにあります。
 
 ### `checkpoint`
-Significant progress worth the operator knowing about, but work
-continues. Not blocked, not done — just a marker.
+オペレーターが把握しておく価値のある大きな進捗があるが、作業は継続中です。
+blocked でも done でもなく、単なる目印です。
 
 ### `partnership`
-Used by the TA (room coordinator) to report coordination quality.
-Self-assessment scores reflect coordination, not code accuracy:
-- **intent** — understood what the operator needed
-- **confidence** — right work went to the right desks
-- **accuracy** — dispatched work produced the right outcome
-- **completeness** — nothing fell through the cracks
+TA（ルームコーディネーター）が連携品質を報告するために使用します。
+自己評価スコアはコードの正確さではなく、連携を評価します。
+- **intent** — オペレーターが必要としていることを理解した
+- **confidence** — 適切な作業を適切なデスクへ割り当てた
+- **accuracy** — 割り当てた作業が正しい結果を生んだ
+- **completeness** — 抜け漏れがなかった
 
-## How to emit
+## 発行方法
 
-### 1. Write a JSON signal file to `.signals/`
+### 1. `.signals/` に JSON シグナルファイルを書き込む
 
-This is the primary output — it's what the dashboard reads.
-Create `desks/<desk-name>/.signals/<timestamp>.json`:
+これが主な出力であり、ダッシュボードが読み取る対象です。
+`desks/<desk-name>/.signals/<timestamp>.json` を作成します。
 
 ```json
 {
@@ -74,9 +73,9 @@ Create `desks/<desk-name>/.signals/<timestamp>.json`:
 }
 ```
 
-### Signal type mapping
+### シグナル種別の対応
 
-| Signal    | `signal_type`   | `subtype`      |
+| シグナル  | `signal_type`   | `subtype`      |
 |-----------|-----------------|----------------|
 | hands-up  | `"escalation"`  | `"hands-up"`   |
 | blocked   | `"escalation"`  | `"blocked"`    |
@@ -84,41 +83,37 @@ Create `desks/<desk-name>/.signals/<timestamp>.json`:
 | checkpoint| `"execution"`   | `"checkpoint"` |
 | partnership| `"partnership"` | `"partnership"`|
 
-The `subtype` field preserves the specific signal state for
-dashboard consumers. `signal_type` controls sort priority
-(escalation → top).
+`subtype` フィールドはダッシュボード利用者向けに具体的なシグナル状態を保持します。
+`signal_type` は並べ替えの優先度（escalation → 上位）を制御します。
 
-> **Note:** The signals-dashboard canvas extension reads `subtype`
-> when present and falls back to `signal_type` for display. If
-> consuming signals in your own tooling, prefer `subtype` for the
-> specific state.
+> **注記:** signals-dashboard キャンバス拡張は `subtype` がある場合に
+> それを読み取り、表示時は `signal_type` を代替として使います。
+> 独自のツールでシグナルを利用する場合は、具体的な状態を示す
+> `subtype` を優先してください。
 
-> **Ordering:** include a `timestamp` (ISO 8601 UTC). The dashboard
-> orders signals by it and falls back to file mtime only when it's
-> absent — a git clone/checkout resets mtimes, so mtime alone is not a
-> dependable clock.
+> **順序:** `timestamp`（ISO 8601 UTC）を含めてください。ダッシュボードは
+> その値でシグナルを並べ、値がない場合だけファイルの mtime を使います。
+> git clone/checkout では mtime がリセットされるため、mtime だけでは
+> 信頼できる時計になりません。
 
-### 2. Note the signal in the journal
+### 2. ジャーナルにシグナルを記録する
 
-Also append a short marker to the desk's journal for persistence:
+永続化のため、デスクのジャーナルにも短いマーカーを追記します。
 
 ```markdown
 ## <date> — [signal:<type>] <summary>
 - <key details>
 ```
 
-The journal note is the trail marker. The JSON file is the
-machine-readable signal.
+ジャーナルの記録は追跡用の目印です。JSON ファイルは機械可読なシグナルです。
 
-## Outcome signals (calibration)
+## 結果シグナル（キャリブレーション）
 
-The signals-dashboard can pair a desk's self-assessment with an
-*outcome* — an independent rating of the realized result — and show
-the **honesty gap** (how far the desk's confidence was from the
-delivered quality). Outcome signals are optional and are usually
-emitted by a reviewer/evaluator, not the desk itself.
+signals-dashboard はデスクの自己評価と、実際の結果に対する独立した評価である
+*outcome* を対応付け、**honesty gap**（デスクの自信と実際に届けた品質の差）を表示できます。
+結果シグナルは任意で、通常はデスク自身ではなくレビュアーまたは評価者が発行します。
 
-Write them to the **same** `.signals/` directory:
+**同じ** `.signals/` ディレクトリに書き込みます。
 
 ```json
 {
@@ -132,25 +127,21 @@ Write them to the **same** `.signals/` directory:
 }
 ```
 
-- **`run_id`** correlates an outcome with the execution/partnership
-  signal it rates — set the same `run_id` on both. If it's absent, the
-  dashboard falls back to the nearest outcome emitted shortly after the
-  latest signal.
-- **`quality_rating`** (0–5) is the realized quality; the dashboard
-  compares it to the desk's self-assessed `confidence` to compute the
-  honesty gap.
-- **`effort_to_merge`** — `"minimal"`, `"moderate"`, or `"significant"`.
-- **`issues_found`** — optional array of short strings.
+- **`run_id`** は評価対象の実行または partnership シグナルと結果を関連付けます。
+  両方に同じ `run_id` を設定してください。ない場合、ダッシュボードは
+  最新シグナルの直後に発行された最も近い結果を使います。
+- **`quality_rating`**（0～5）は実際に得られた品質です。ダッシュボードは
+  デスクが自己評価した `confidence` と比較し、honesty gap を計算します。
+- **`effort_to_merge`** — `"minimal"`、`"moderate"`、または `"significant"`。
+- **`issues_found`** — 短い文字列の任意配列。
 
-## Principles
+## 原則
 
-- Signals are structured, not chatty. Short, factual, actionable.
-- hands-up is not failure — it's the most valuable signal. It
-  means the system caught something one frame alone would have
-  missed.
-- Don't signal for routine progress. Signals are for state
-  changes that affect the room, not status updates.
-- blocked means truly blocked — not "I'd prefer input." If you
-  can proceed with a reasonable default, proceed and note it.
-- Self-assessment scores should be honest, not optimistic. A 3/5
-  is fine. A 5/5 on everything is suspicious.
+- シグナルは構造化されたもので、饒舌にしない。短く、事実に基づき、行動につながる内容にする。
+- hands-up は失敗ではなく、最も価値のあるシグナルです。1つの視点だけでは見落としたものを
+  システムが捉えたことを意味します。
+- 定常的な進捗ではシグナルを発行しない。シグナルは部屋に影響する状態変化のためであり、
+  ステータス更新のためではありません。
+- blocked は本当に進めない状態を意味し、「入力がある方が好ましい」という意味ではない。
+  妥当なデフォルトで進められるなら、進めたうえで記録する。
+- 自己評価スコアは楽観的でなく正直にする。3/5 は問題ありません。すべて 5/5 は疑わしい。

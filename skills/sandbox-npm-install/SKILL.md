@@ -1,56 +1,55 @@
 ---
 name: sandbox-npm-install
-description: 'Install npm packages in a Docker sandbox environment. Use this skill whenever you need to install, reinstall, or update node_modules inside a container where the workspace is mounted via virtiofs. Native binaries (esbuild, lightningcss, rollup) crash on virtiofs, so packages must be installed on the local ext4 filesystem and symlinked back.'
+description: 'Docker sandbox environmentにnpm packageをインストールします。workspaceがvirtiofsでmountされたcontainer内でnode_modulesをインストール、再インストール、更新する必要がある場合に使用します。native binary（esbuild、lightningcss、rollup）はvirtiofs上でクラッシュするため、packageはlocal ext4 filesystemへインストールしてからsymlinkで戻します。'
 ---
+# Sandboxでのnpm install
 
-# Sandbox npm Install
+## このSkillを使う場面
 
-## When to Use This Skill
+次の場合は必ずこの Skill を使います。
+- 新しい sandbox sessionで初めてnpm packageをインストールするとき
+- `package.json`または`package-lock.json`が変更され、再インストールが必要なとき
+- `SIGILL`、`SIGSEGV`、`mmap`、`unaligned sysNoHugePageOS`などのerrorでnative binaryがクラッシュするとき
+- `node_modules` directoryがない、または壊れているとき
 
-Use this skill whenever:
-- You need to install npm packages for the first time in a new sandbox session
-- `package.json` or `package-lock.json` has changed and you need to reinstall
-- You encounter native binary crashes with errors like `SIGILL`, `SIGSEGV`, `mmap`, or `unaligned sysNoHugePageOS`
-- The `node_modules` directory is missing or corrupted
+## 前提条件
 
-## Prerequisites
+- virtiofs で workspace が mount された Docker sandbox environment
+- container で Node.js と npm が使用できること
+- target workspace に `package.json` file があること
 
-- A Docker sandbox environment with a virtiofs-mounted workspace
-- Node.js and npm available in the container
-- A `package.json` file in the target workspace
+## 背景
 
-## Background
+Docker sandbox workspaceは通常**virtiofs**（hostとLinux VM間のfile sync）でmountされます。native Go / Rust binary（esbuild、lightningcss、rollupなど）は、aarch64のvirtiofsから実行するとmmap alignment failureでcrashします。containerのlocal ext4 filesystemへinstallし、workspaceへsymlinkを戻して解決します。
 
-Docker sandbox workspaces are typically mounted via **virtiofs** (file sync between the host and Linux VM). Native Go and Rust binaries (esbuild, lightningcss, rollup, etc.) crash with mmap alignment failures when executed from virtiofs on aarch64. The fix is to install on the container's local ext4 filesystem and symlink back into the workspace.
+## インストール手順
 
-## Step-by-Step Installation
-
-Run the bundled install script from the workspace root:
+workspace root から同梱の install script を実行します。
 
 ```bash
 bash scripts/install.sh
 ```
 
-### Common Options
+### 主なoption
 
-| Option | Description |
+| option | 説明 |
 |---|---|
-| `--workspace <path>` | Path to directory containing `package.json` (auto-detected if omitted) |
-| `--playwright` | Also install Playwright Chromium browser for E2E testing |
+| `--workspace <path>` | `package.json`を含むdirectoryへのpath（省略時はauto-detect） |
+| `--playwright` | E2E testing用にPlaywright Chromium browserもinstall |
 
-### What the Script Does
+### Scriptの動作
 
-1. Copies `package.json`, `package-lock.json`, and `.npmrc` (if present) to a local ext4 directory
-2. Runs `npm ci` (or `npm install` if no lockfile) on the local filesystem
-3. Symlinks `node_modules` back into the workspace
-4. Verifies known native binaries (esbuild, rollup, lightningcss, vite) if present
-5. Optionally installs Playwright browsers and system dependencies (uses `sudo` when available)
+1. `package.json`、`package-lock.json`、`.npmrc`（存在する場合）をlocal ext4 directoryへコピーする
+2. local filesystemで`npm ci`（lockfileがなければ`npm install`）を実行する
+3. `node_modules`をworkspaceへsymlinkする
+4. 存在する場合、既知のnative binary（esbuild、rollup、lightningcss、vite）を検証する
+5. 任意でPlaywright browserとsystem dependencyをインストールする（利用可能なら`sudo`を使用）
 
-If verification fails, run the script again — crashes can be intermittent during initial setup.
+検証に失敗した場合はscriptを再実行します。初期setup中のcrashは一時的なことがあります。
 
-## Post-Install Verification
+## インストール後の検証
 
-After the script completes, verify your toolchain works. For example:
+script完了後、toolchainが動作することを確認します。例:
 
 ```bash
 npm test             # Run project tests
@@ -58,23 +57,23 @@ npm run build        # Build the project
 npm run dev          # Start dev server
 ```
 
-## Important Notes
+## 重要な注意
 
-- The local install directory (e.g., `/home/agent/project-deps`) is **container-local** and is NOT synced back to the host
-- The `node_modules` symlink appears as a broken link on the host — this is harmless since `node_modules` is typically gitignored
-- Running `npm ci` or `npm install` on the host naturally replaces the symlink with a real directory
-- After any `package.json` or `package-lock.json` change, re-run the install script
-- Do NOT run `npm ci` or `npm install` directly in the mounted workspace — native binaries will crash
+- local install directory（例: `/home/agent/project-deps`）は**container-local**で、hostへ同期されない
+- `node_modules` symlinkはhostではbroken linkに見えるが、通常`node_modules`はgitignore対象なので問題ない
+- hostで`npm ci`または`npm install`を実行すると、symlinkは自然に実directoryへ置き換わる
+- `package.json`または`package-lock.json`を変更したら、install scriptを再実行する
+- mountされたworkspaceで`npm ci`や`npm install`を直接実行しない — native binaryがcrashする
 
-## Troubleshooting
+## トラブルシューティング
 
-| Problem | Solution |
+| 問題 | 解決策 |
 |---|---|
-| `SIGILL` or `SIGSEGV` when running dev server | Re-run the install script; ensure you're not running `npm install` directly in the workspace |
-| `node_modules` not found after install | Check that the symlink exists: `ls -la node_modules` |
-| Permission errors during install | Ensure the local deps directory is writable by the current user |
-| Verification fails intermittently | Run the script again — native binary crashes can be non-deterministic on first load |
+| dev server実行時の`SIGILL`または`SIGSEGV` | install scriptを再実行し、workspaceで`npm install`を直接実行していないことを確認する |
+| install後に`node_modules`が見つからない | symlinkの存在を`ls -la node_modules`で確認する |
+| install中のpermission error | local deps directoryへcurrent userがwriteできることを確認する |
+| verificationが断続的に失敗 | scriptを再実行する — native binaryの初回load時クラッシュは非決定的な場合がある |
 
-## Vite Compatibility
+## Viteの互換性
 
-If your project uses Vite, you may need to allow the symlinked path in `server.fs.allow`. Add the symlink target's parent directory (e.g., `/home/agent/project-deps/`) to your Vite config so that Vite can serve files through the symlink.
+projectがViteを使う場合、symlink pathを`server.fs.allow`で許可する必要があります。Viteがsymlink経由でfileをserveできるよう、symlink targetのparent directory（例: `/home/agent/project-deps/`）をVite configへ追加します。

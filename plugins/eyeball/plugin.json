@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "eyeball",
-  "description": "Document analysis with inline source screenshots. When you ask Copilot to analyze a document, Eyeball generates a Word doc where every factual claim includes a highlighted screenshot from the source material so you can verify it with your own eyes.",
+  "description": "出典のスクリーンショットを本文内に含めた文書分析です。Copilot に文書分析を依頼すると、Eyeball は各事実の主張に出典資料のハイライト付きスクリーンショットを含む Word doc を生成し、自分の目で検証できるようにします。",
   "version": "1.0.0",
   "author": {
     "name": "Awesome Copilot Community"

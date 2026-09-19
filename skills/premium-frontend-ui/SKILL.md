@@ -1,6 +1,6 @@
 ---
 name: premium-frontend-ui
-description: 'A comprehensive guide for GitHub Copilot to craft immersive, high-performance web experiences with advanced motion, typography, and architectural craftsmanship.'
+description: 'premium-frontend-ui に関する作業を支援する Skill です。対象のファイルや設定を確認し、必要な手順、検証方法、注意点を案内します。対象技術の調査、実装、運用、トラブルシューティングに使用します。'
 metadata:
   author: 'Utkarsh Patrikar'
   author_url: 'https://github.com/utkarsh232005'
@@ -16,7 +16,7 @@ When a user requests a high-end landing page, an interactive portfolio, or a spe
 
 ## 1. Establishing the Creative Foundation
 
-Before generating layout code, ensure you understand the core emotional resonance the UI should deliver. Do not default to generic, unopinionated code. 
+Before generating layout code, ensure you understand the core emotional resonance the UI should deliver. Do not default to generic, unopinionated code.
 
 Commit to a strong visual identity in your CSS and component structure:
 - **Editorial Brutalism**: High-contrast monochromatic palettes, oversized typography, sharp rectangular edges, and raw grid structures.
@@ -69,7 +69,7 @@ The cursor is the user's avatar. Build interactions around it.
 
 The aesthetics of your generated code must reflect premium craftsmanship.
 
-- **Type Hierarchy**: Enforce massive contrast in scale. Headlines should utilize extreme sizing (`clamp()` functions spanning up to `12vw`), while body copy remains incredibly crisp (`16px-18px` minimum). 
+- **Type Hierarchy**: Enforce massive contrast in scale. Headlines should utilize extreme sizing (`clamp()` functions spanning up to `12vw`), while body copy remains incredibly crisp (`16px-18px` minimum).
 - **Font Selection**: Always recommend or implement highly specified variable fonts or premium typefaces over system defaults.
 - **Atmospheric Filters**: Implement CSS/SVG noise overlays (`mix-blend-mode: overlay`, opacity `0.02 - 0.05`) to remove digital sterility and add photographic grain.
 - **Lighting & Glass**: Utilize `backdrop-filter: blur(x)` combined with ultra-thin, semi-transparent borders to create modern, frosted-glass depth.

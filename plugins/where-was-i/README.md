@@ -1,8 +1,8 @@
 # Where Was I Plugin
 
-Reconstruct your dev context (branch, commits, uncommitted work, PR clues) and trigger a resume prompt to continue quickly.
+開発コンテキスト（ブランチ、コミット、未コミットの作業、PRの手がかり）を再構成し、すぐに再開できるプロンプトを起動します。
 
-## Installation
+## インストール
 
 ``bash
 copilot plugin install where-was-i@awesome-copilot

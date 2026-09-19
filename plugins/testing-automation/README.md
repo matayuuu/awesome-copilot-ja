@@ -1,8 +1,8 @@
 # Testing & Test Automation Plugin
 
-Comprehensive collection for writing tests, test automation, and test-driven development including unit tests, integration tests, and end-to-end testing strategies.
+単体テスト、統合テスト、エンドツーエンドテスト戦略を含む、テスト作成、テスト自動化、テスト駆動開発の総合コレクションです。
 
-## Installation
+## インストール
 
 ```bash
 # Using Copilot CLI

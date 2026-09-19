@@ -1,14 +1,14 @@
 ---
-name: 'Secrets Scanner'
-description: 'Scans files modified during a Copilot coding agent session for leaked secrets, credentials, and sensitive data'
+name: 'シークレットスキャナー'
+description: 'Copilot coding agent のセッション中に変更されたファイルから、漏えいしたシークレット、認証情報、機密データを検査します'
 tags: ['security', 'secrets', 'scanning', 'session-end']
 ---
 
-# Secrets Scanner Hook
+# シークレットスキャナーフック
 
 Scans files modified during a GitHub Copilot coding agent session for accidentally leaked secrets, credentials, API keys, and other sensitive data before they are committed.
 
-## Overview
+## 概要
 
 AI coding agents generate and modify code rapidly, which increases the risk of hardcoded secrets slipping into the codebase. This hook acts as a safety net by scanning all modified files at session end for 20+ categories of secret patterns, including:
 
@@ -19,7 +19,7 @@ AI coding agents generate and modify code rapidly, which increases the risk of h
 - **Generic secrets**: API keys, passwords, bearer tokens, JWTs
 - **Internal infrastructure**: Private IP addresses with ports
 
-## Features
+## 機能
 
 - **Two scan modes**: `warn` (log only) or `block` (exit non-zero to prevent commit)
 - **Two scan scopes**: `diff` (modified files vs HEAD) or `staged` (git-staged files only)
@@ -29,7 +29,7 @@ AI coding agents generate and modify code rapidly, which increases the risk of h
 - **Redacted output**: Findings are truncated in logs to avoid re-exposing secrets
 - **Zero dependencies**: Uses only standard Unix tools (`grep`, `file`, `git`)
 
-## Installation
+## インストール
 
 1. Copy the hook folder to your repository:
 
@@ -52,7 +52,7 @@ AI coding agents generate and modify code rapidly, which increases the risk of h
 
 4. Commit the hook configuration to your repository's default branch.
 
-## Configuration
+## 設定
 
 The hook is configured in `hooks.json` to run on the `sessionEnd` event:
 
@@ -86,7 +86,7 @@ The hook is configured in `hooks.json` to run on the `sessionEnd` event:
 | `SECRETS_LOG_DIR` | path | `logs/copilot/secrets` | Directory where scan logs are written |
 | `SECRETS_ALLOWLIST` | comma-separated | unset | Patterns to ignore (e.g., `test_key_123,example.com`) |
 
-## How It Works
+## 仕組み
 
 1. When a Copilot coding agent session ends, the hook executes
 2. Collects all modified files using `git diff` (respects the configured scope)
@@ -98,7 +98,7 @@ The hook is configured in `hooks.json` to run on the `sessionEnd` event:
 8. Writes a structured JSON log entry for audit purposes
 9. In `block` mode, exits non-zero to signal the agent to stop before committing
 
-## Detected Secret Patterns
+## 検出するシークレットパターン
 
 | Pattern | Severity | Example Match |
 |---------|----------|---------------|
@@ -120,7 +120,7 @@ The hook is configured in `hooks.json` to run on the `sessionEnd` event:
 
 See the full list in `scan-secrets.sh`.
 
-## Example Output
+## 出力例
 
 ### Clean scan
 
@@ -159,7 +159,7 @@ See the full list in `scan-secrets.sh`.
    Set SCAN_MODE=warn to log without blocking, or add patterns to SECRETS_ALLOWLIST.
 ```
 
-## Log Format
+## ログ形式
 
 Scan events are written to `logs/copilot/secrets/scan.log` in JSON Lines format:
 
@@ -171,7 +171,7 @@ Scan events are written to `logs/copilot/secrets/scan.log` in JSON Lines format:
 {"timestamp":"2026-03-13T10:30:00Z","event":"scan_complete","mode":"warn","scope":"diff","status":"clean","files_scanned":5}
 ```
 
-## Pairing with Other Hooks
+## 他のフックとの組み合わせ
 
 This hook pairs well with the **Session Auto-Commit** hook. When both are installed, order them so that `secrets-scanner` runs first:
 
@@ -180,21 +180,21 @@ This hook pairs well with the **Session Auto-Commit** hook. When both are instal
 
 Set `SCAN_MODE=block` to prevent auto-commit when secrets are detected.
 
-## Customization
+## カスタマイズ
 
 - **Add custom patterns**: Edit the `PATTERNS` array in `scan-secrets.sh` to add project-specific secret formats
 - **Adjust sensitivity**: Change severity levels or remove patterns that generate false positives
 - **Allowlist known values**: Use `SECRETS_ALLOWLIST` for test fixtures or known safe patterns
 - **Change log location**: Set `SECRETS_LOG_DIR` to route logs to your preferred directory
 
-## Disabling
+## 無効化
 
 To temporarily disable the scanner:
 
 - Set `SKIP_SECRETS_SCAN=true` in the hook environment
 - Or remove the `sessionEnd` entry from `hooks.json`
 
-## Limitations
+## 制限事項
 
 - Pattern-based detection; does not perform entropy analysis or contextual validation
 - May produce false positives for test fixtures or example code (use the allowlist to suppress these)

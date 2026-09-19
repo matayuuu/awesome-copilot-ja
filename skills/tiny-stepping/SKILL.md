@@ -1,30 +1,30 @@
 ---
 name: tiny-stepping
-description: Incremental development workflow that makes the smallest meaningful change per step and pauses for feedback, so the direction gets validated early before continuing. Use for careful, iterative implementation with continuous validation.
+description: '各ステップで意味のある最小変更だけを行い、継続的に検証しながらフィードバックを受ける段階的な開発ワークフロー。方向性を早期に確認したい、慎重で反復的な実装に使います。'
 ---
 
-# Tiny Stepping
+# 小さな一歩
 
-Drive implementation in the smallest possible meaningful increments, pausing for feedback after each step so the work stays reviewable and easy to course-correct.
+各ステップで意味のある最小単位まで実装を分割し、毎回フィードバックを受けてから進めます。作業をレビューしやすくし、必要に応じて容易に軌道修正できるようにします。
 
-## Purpose
-- Make the smallest possible meaningful change at each step
-- Get user feedback after every step before proceeding
-- Reduce risk of going in the wrong direction
-- Keep changes reviewable and easy to understand
+## 目的
+- 各ステップで可能な限り小さく、意味のある変更を行う
+- 次へ進む前に、すべてのステップでユーザーのフィードバックを受ける
+- 誤った方向へ進むリスクを減らす
+- 変更をレビューしやすく、理解しやすい状態に保つ
 
-## Workflow
-1. Agree on the next tiny step
-2. Implement only that step — nothing more
-3. Review uncommitted changes together to verify the step looks right
-4. Short check-in: is this the right direction?
-5. Commit the step before moving on
-6. Agree on the next step
-7. Repeat
+## ワークフロー
+1. 次に行う小さなステップについて合意する
+2. そのステップだけを実装し、それ以上は行わない
+3. 未コミットの変更を一緒にレビューし、ステップが適切か確認する
+4. 短く確認する: この方向でよいか
+5. 次へ進む前に、そのステップをコミットする
+6. 次のステップについて合意する
+7. 繰り返す
 
-## Principles
-- One concern per step — don't mix unrelated changes
-- Each step should be independently understandable
-- Prefer compiling/working state after each step
-- Don't anticipate future steps — wait for feedback first
-- If a step feels too big, split it further
+## 原則
+- 1ステップにつき1つの関心事だけを扱い、無関係な変更を混ぜない
+- 各ステップを単独で理解できるようにする
+- 各ステップの後は、コンパイルまたは動作する状態を優先する
+- 将来のステップを先回りせず、まずフィードバックを待つ
+- ステップが大きすぎると感じたら、さらに分割する

@@ -1,17 +1,17 @@
-# Gesture Review Plugin
+# Gesture Review プラグイン
 
-Review pull requests with a live camera feed and approve or reject using thumbs-up/thumbs-down gestures.
+ライブカメラ映像で pull request をレビューし、thumbs-up/thumbs-down ジェスチャーで承認または却下します。
 
-## Installation
+## インストール
 
 ``bash
 copilot plugin install gesture-review@awesome-copilot
 ``
 
-## Source
+## ソース
 
-This plugin is part of [Awesome Copilot](https://github.com/github/awesome-copilot).
+このプラグインは [Awesome Copilot](https://github.com/github/awesome-copilot) の一部です。
 
-## License
+## ライセンス
 
 MIT

@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "java-development",
-  "description": "Comprehensive collection of prompts and instructions for Java development including Spring Boot, Quarkus, testing, documentation, and best practices.",
+  "description": "Spring Boot、Quarkus、テスト、ドキュメント、ベストプラクティスを含む Java 開発向け prompts と instructions の包括的なコレクションです。",
   "version": "1.0.0",
   "author": {
     "name": "Awesome Copilot Community"

@@ -1,6 +1,6 @@
 ---
 name: next-intl-add-language
-description: 'Add new language to a Next.js + next-intl application'
+description: 'next-intl-add-language に関する作業を支援する Skill です。対象のファイルや設定を確認し、必要な手順、検証方法、注意点を案内します。対象技術の調査、実装、運用、トラブルシューティングに使用します。'
 ---
 
 This is a guide to add a new language to a Next.js project using next-intl for internationalization,

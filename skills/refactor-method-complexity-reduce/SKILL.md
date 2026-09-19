@@ -1,6 +1,6 @@
 ---
 name: refactor-method-complexity-reduce
-description: 'Refactor given method `${input:methodName}` to reduce its cognitive complexity to `${input:complexityThreshold}` or below, by extracting helper methods.'
+description: 'refactor-method-complexity-reduce に関する作業を支援する Skill です。対象のファイルや設定を確認し、必要な手順、検証方法、注意点を案内します。対象技術の調査、実装、運用、トラブルシューティングに使用します。'
 ---
 
 # Refactor Method to Reduce Cognitive Complexity

@@ -1,70 +1,70 @@
 ---
 name: create-implementation-plan
-description: 'Create a new implementation plan file for new features, refactoring existing code or upgrading packages, design, architecture or infrastructure.'
+description: '新機能、既存コードのリファクタリング、パッケージ更新、設計、アーキテクチャ、インフラストラクチャのための新しい実装計画ファイルを作成する。'
 ---
 
-# Create Implementation Plan
+# 実装計画の作成
 
-## Primary Directive
+## 主要指示
 
-Your goal is to create a new implementation plan file for `${input:PlanPurpose}`. Your output must be machine-readable, deterministic, and structured for autonomous execution by other AI systems or humans.
+`${input:PlanPurpose}` の新しい実装計画ファイルを作成する。出力は機械可読かつ決定的で、他のAIシステムまたは人が自律的に実行できる構造にする。
 
-## Execution Context
+## 実行コンテキスト
 
-This prompt is designed for AI-to-AI communication and automated processing. All instructions must be interpreted literally and executed systematically without human interpretation or clarification.
+このプロンプトはAI間の通信と自動処理向けに設計されている。すべての指示を文字どおりに解釈し、人による解釈や確認を必要とせず体系的に実行する。
 
-## Core Requirements
+## 中核要件
 
-- Generate implementation plans that are fully executable by AI agents or humans
-- Use deterministic language with zero ambiguity
-- Structure all content for automated parsing and execution
-- Ensure complete self-containment with no external dependencies for understanding
+- AIエージェントまたは人が完全に実行できる実装計画を生成する
+- 曖昧さのない決定的な言葉を使う
+- すべての内容を自動解析と実行に適した構造にする
+- 理解のために外部依存を必要としない、完全に自己完結した内容にする
 
-## Plan Structure Requirements
+## 計画構造の要件
 
-Plans must consist of discrete, atomic phases containing executable tasks. Each phase must be independently processable by AI agents or humans without cross-phase dependencies unless explicitly declared.
+計画は、実行可能なタスクを含む独立した最小単位のフェーズで構成する。明示的に宣言しない限り、各フェーズは他のフェーズに依存せずAIエージェントまたは人が単独で処理できるようにする。
 
-## Phase Architecture
+## フェーズ構成
 
-- Each phase must have measurable completion criteria
-- Tasks within phases must be executable in parallel unless dependencies are specified
-- All task descriptions must include specific file paths, function names, and exact implementation details
-- No task should require human interpretation or decision-making
+- 各フェーズに測定可能な完了条件を設ける
+- 依存関係が指定されていない限り、フェーズ内のタスクは並列実行できるようにする
+- すべてのタスク説明に、具体的なファイルパス、関数名、正確な実装詳細を含める
+- 人による解釈や意思決定を必要とするタスクを作らない
 
-## AI-Optimized Implementation Standards
+## AI向けに最適化した実装標準
 
-- Use explicit, unambiguous language with zero interpretation required
-- Structure all content as machine-parseable formats (tables, lists, structured data)
-- Include specific file paths, line numbers, and exact code references where applicable
-- Define all variables, constants, and configuration values explicitly
-- Provide complete context within each task description
-- Use standardized prefixes for all identifiers (REQ-, TASK-, etc.)
-- Include validation criteria that can be automatically verified
+- 解釈を必要としない、明示的で曖昧さのない言葉を使う
+- すべての内容を機械解析可能な形式（表、リスト、構造化データ）にする
+- 該当する場合は、具体的なファイルパス、行番号、正確なコード参照を含める
+- すべての変数、定数、構成値を明示的に定義する
+- 各タスク説明に完全なコンテキストを含める
+- すべての識別子に標準化された接頭辞（REQ-、TASK-など）を使う
+- 自動検証可能な検証条件を含める
 
-## Output File Specifications
+## 出力ファイル仕様
 
-- Save implementation plan files in `/plan/` directory
-- Use naming convention: `[purpose]-[component]-[version].md`
-- Purpose prefixes: `upgrade|refactor|feature|data|infrastructure|process|architecture|design`
-- Example: `upgrade-system-command-4.md`, `feature-auth-module-1.md`
-- File must be valid Markdown with proper front matter structure
+- 実装計画ファイルは `/plan/` ディレクトリに保存する
+- 命名規則は `[purpose]-[component]-[version].md` とする
+- 目的の接頭辞: `upgrade|refactor|feature|data|infrastructure|process|architecture|design`
+- 例: `upgrade-system-command-4.md`、`feature-auth-module-1.md`
+- ファイルは適切なfront matter構造を持つ有効なMarkdownにする
 
-## Mandatory Template Structure
+## 必須テンプレート構造
 
-All implementation plans must strictly adhere to the following template. Each section is required and must be populated with specific, actionable content. AI agents must validate template compliance before execution.
+すべての実装計画は次のテンプレートへ厳密に従う。各セクションは必須であり、具体的で実行可能な内容を記入する。AIエージェントは実行前にテンプレートへの準拠を検証する。
 
-## Template Validation Rules
+## テンプレート検証規則
 
-- All front matter fields must be present and properly formatted
-- All section headers must match exactly (case-sensitive)
-- All identifier prefixes must follow the specified format
-- Tables must include all required columns
-- No placeholder text may remain in the final output
-- **Identifiers must be uniquely declared.** Every identifier (`REQ-NNN`, `SEC-NNN`, `CON-NNN`, `GUD-NNN`, `PAT-NNN`, `GOAL-NNN`, `TASK-NNN`, `ALT-NNN`, `DEP-NNN`, `FILE-NNN`, `TEST-NNN`, `RISK-NNN`, `ASSUMPTION-NNN`) must be **declared exactly once**. A declaration is where the identifier introduces a row: the leading cell in a TASK/GOAL table row, or the bolded prefix in a bullet line like `- **REQ-001**: ...`. The same identifier may then appear any number of times as a **reference** elsewhere in the plan (a `TASK` body citing a `REQ`, one `TASK` citing another `TASK`, the Dependencies section pointing at a `DEP` already declared upstream, etc.). References are expected and not collisions.
+- すべてのfront matterフィールドを含め、適切に書式設定する
+- すべてのセクション見出しを大文字と小文字も含めて正確に一致させる
+- すべての識別子接頭辞を指定形式に従わせる
+- 表に必須列をすべて含める
+- 最終出力にプレースホルダーテキストを残さない
+- **識別子は一意に宣言する。** 各識別子（`REQ-NNN`、`SEC-NNN`、`CON-NNN`、`GUD-NNN`、`PAT-NNN`、`GOAL-NNN`、`TASK-NNN`、`ALT-NNN`、`DEP-NNN`、`FILE-NNN`、`TEST-NNN`、`RISK-NNN`、`ASSUMPTION-NNN`）は**正確に1回だけ宣言**する。宣言とは、TASK/GOAL表の先頭セルや `- **REQ-001**: ...` のような箇条書きの太字接頭辞で、識別子が行を導入する箇所を指す。同じ識別子は、その後計画内の別の場所で**参照**として何度使ってもよい。参照は想定されており、衝突ではない。
 
-## Identifier Uniqueness Check
+## 識別子の一意性確認
 
-Run these checks before finalizing the plan. Checks (1) and (2) target declarations and must return zero rows. Check (3) is a broad informational scan: it will surface valid references too, so use it for awareness rather than as a gate.
+計画を確定する前に次の確認を実行する。確認（1）と（2）は宣言を対象とし、結果が0行でなければならない。確認（3）は情報収集用の広範な走査で、有効な参照も表示するため、ゲートではなく状況把握に使う。
 
 ```bash
 # Set PLAN_FILE to the plan being validated.
@@ -85,13 +85,13 @@ grep -oE '(REQ|SEC|CON|GUD|RISK|ASSUMPTION|TASK|GOAL|FILE|TEST|PAT|ALT|DEP)-[0-9
   | sort | uniq -d
 ```
 
-Prerequisites: a POSIX-compatible shell (`sh` / `bash`) with `grep`, `sed`, `sort`, and `uniq`. On Windows without these tools, use equivalent platform-native commands and preserve the same declaration-vs-reference logic.
+前提条件: `grep`、`sed`、`sort`、`uniq` を備えたPOSIX互換シェル（`sh` / `bash`）。これらのツールがないWindowsでは、同じ宣言と参照の判定ロジックを保つ同等のプラットフォーム固有コマンドを使う。
 
-If check (1) or (2) returns any row, re-number the duplicate so each identifier is declared exactly once, then re-run the checks until both are empty.
+確認（1）または（2）が行を返した場合は、各識別子が正確に1回だけ宣言されるよう重複を採番し直し、両方が空になるまで再実行する。
 
-## Status
+## ステータス
 
-The status of the implementation plan must be clearly defined in the front matter and must reflect the current state of the plan. The status can be one of the following (status_color in brackets): `Completed` (bright green badge), `In progress` (yellow badge), `Planned` (blue badge), `Deprecated` (red badge), or `On Hold` (orange badge). It should also be displayed as a badge in the introduction section.
+実装計画のステータスをfront matterで明確に定義し、計画の現在状態を反映する。ステータスは次のいずれかとする（括弧内はstatus_color）: `Completed`（明るい緑のバッジ）、`In progress`（黄色のバッジ）、`Planned`（青のバッジ）、`Deprecated`（赤のバッジ）、`On Hold`（オレンジのバッジ）。導入セクションにもバッジとして表示する。
 
 ```md
 ---

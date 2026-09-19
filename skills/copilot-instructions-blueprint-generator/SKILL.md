@@ -1,19 +1,19 @@
 ---
 name: copilot-instructions-blueprint-generator
-description: 'Technology-agnostic blueprint generator for creating comprehensive copilot-instructions.md files that guide GitHub Copilot to produce code consistent with project standards, architecture patterns, and exact technology versions by analyzing existing codebase patterns and avoiding assumptions.'
+description: '既存コードベースのパターンを分析して推測を避け、GitHub Copilotがプロジェクト標準、アーキテクチャパターン、正確な技術バージョンに沿ったコードを生成するための包括的なcopilot-instructions.mdを作成する、技術非依存のブループリント生成ツール。'
 ---
 
-# Copilot Instructions Blueprint Generator
+# Copilot Instructionsブループリント生成ツール
 
-## Configuration Variables
-${PROJECT_TYPE="Auto-detect|.NET|Java|JavaScript|TypeScript|React|Angular|Python|Multiple|Other"} <!-- Primary technology -->
-${ARCHITECTURE_STYLE="Layered|Microservices|Monolithic|Domain-Driven|Event-Driven|Serverless|Mixed"} <!-- Architectural approach -->
-${CODE_QUALITY_FOCUS="Maintainability|Performance|Security|Accessibility|Testability|All"} <!-- Quality priorities -->
-${DOCUMENTATION_LEVEL="Minimal|Standard|Comprehensive"} <!-- Documentation requirements -->
-${TESTING_REQUIREMENTS="Unit|Integration|E2E|TDD|BDD|All"} <!-- Testing approach -->
-${VERSIONING="Semantic|CalVer|Custom"} <!-- Versioning approach -->
+## 構成変数
+${PROJECT_TYPE="Auto-detect|.NET|Java|JavaScript|TypeScript|React|Angular|Python|Multiple|Other"} <!-- 主要技術 -->
+${ARCHITECTURE_STYLE="Layered|Microservices|Monolithic|Domain-Driven|Event-Driven|Serverless|Mixed"} <!-- アーキテクチャ方式 -->
+${CODE_QUALITY_FOCUS="Maintainability|Performance|Security|Accessibility|Testability|All"} <!-- 品質上の優先事項 -->
+${DOCUMENTATION_LEVEL="Minimal|Standard|Comprehensive"} <!-- 文書要件 -->
+${TESTING_REQUIREMENTS="Unit|Integration|E2E|TDD|BDD|All"} <!-- テスト方式 -->
+${VERSIONING="Semantic|CalVer|Custom"} <!-- バージョニング方式 -->
 
-## Generated Prompt
+## 生成するプロンプト
 
 "Generate a comprehensive copilot-instructions.md file that will guide GitHub Copilot to produce code consistent with our project's standards, architecture, and technology versions. The instructions must be strictly based on actual code patterns in our codebase and avoid making any assumptions. Follow this approach:
 
@@ -289,6 +289,6 @@ The final copilot-instructions.md should:
 Important: Only include guidance based on patterns actually observed in the codebase. Explicitly instruct Copilot to prioritize consistency with existing code over external best practices or newer language features.
 "
 
-## Expected Output
+## 期待する出力
 
-A comprehensive copilot-instructions.md file that will guide GitHub Copilot to produce code that is perfectly compatible with your existing technology versions and follows your established patterns and architecture.
+GitHub Copilotが既存の技術バージョンと完全に互換性があり、確立されたパターンとアーキテクチャに従うコードを生成できるよう導く、包括的なcopilot-instructions.mdファイル。

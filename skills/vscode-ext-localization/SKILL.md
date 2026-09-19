@@ -1,25 +1,25 @@
 ---
 name: vscode-ext-localization
-description: 'Guidelines for proper localization of VS Code extensions, following VS Code extension development guidelines, libraries and good practices'
+description: 'VS Code拡張機能を適切にローカライズするための指針。VS Code拡張機能の開発ガイドライン、ライブラリ、ベストプラクティスに従います。'
 ---
 
-# VS Code extension localization
+# VS Code拡張機能のローカライズ
 
-This skill helps you localize every aspect of VS Code extensions
+このSkillは、VS Code拡張機能のあらゆる要素のローカライズを支援します。
 
-## When to use this skill
+## このSkillを使う場面
 
-Use this skill when you need to:
-- Localize new or existing contributed configurations (settings), commands, menus, views or walkthroughs
-- Localize new or existing messages or other string resources contained in extension source code that are displayed to the end user
+次の作業が必要なときに使ってください。
+- 新規または既存の提供構成（設定、コマンド、メニュー、ビュー、ウォークスルー）をローカライズする
+- 拡張機能のソースコードに含まれ、エンドユーザーに表示される新規または既存のメッセージやその他の文字列リソースをローカライズする
 
 # Instructions
 
-VS Code localization is composed by three different approaches, depending on the resource that is being localized. When a new localizable resource is created or updated, the corresponding localization for all currently available languages must be created/updated.
+VS Codeのローカライズには、対象リソースに応じて3つの方法があります。ローカライズ可能なリソースを新規作成または更新した場合は、現在利用できるすべての言語について対応するローカライズも作成または更新してください。
 
-1. Configurations like Settings, Commands, Menus, Views, ViewsWelcome, Walkthrough Titles and Descriptions, defined in `package.json`
-  -> An exclusive `package.nls.LANGID.json` file, like `package.nls.pt-br.json` of Brazilian Portuguese (`pt-br`) localization
-2. Walkthrough content (defined in its own `Markdown` files)
-  -> An exclusive `Markdown` file like `walkthrough/someStep.pt-br.md` for Brazilian Portuguese localization
-3. Messages and string located in extension source code (JavaScript or TypeScript files)
-  -> An exclusive `bundle.l10n.pt-br.json` for Brazilian Portuguese localization
+1. `package.json` に定義されたSettings、Commands、Menus、Views、ViewsWelcome、Walkthrough Titles、Descriptionsなどの構成
+  -> ブラジルポルトガル語（`pt-br`）のローカライズなら `package.nls.pt-br.json` のような専用の `package.nls.LANGID.json` ファイル
+2. 独自の `Markdown` ファイルに定義されたウォークスルーの内容
+  -> ブラジルポルトガル語のローカライズなら `walkthrough/someStep.pt-br.md` のような専用の `Markdown` ファイル
+3. 拡張機能のソースコード（JavaScriptまたはTypeScriptファイル）にあるメッセージや文字列
+  -> ブラジルポルトガル語のローカライズなら専用の `bundle.l10n.pt-br.json`

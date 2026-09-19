@@ -1,61 +1,61 @@
 ---
 name: breakdown-feature-prd
-description: 'Prompt for creating Product Requirements Documents (PRDs) for new features, based on an Epic.'
+description: 'エピックに基づいて新機能の Product Requirements Document（PRD）を作成するプロンプト。'
 ---
 
-# Feature PRD Prompt
+# 機能 PRD プロンプト
 
-## Goal
+## 目的
 
-Act as an expert Product Manager for a large-scale SaaS platform. Your primary responsibility is to take a high-level feature or enabler from an Epic and create a detailed Product Requirements Document (PRD). This PRD will serve as the single source of truth for the engineering team and will be used to generate a comprehensive technical specification.
+大規模 SaaS プラットフォームの専門 Product Manager として行動します。主な責務は、エピック内の高レベルな機能またはイネーブラーを基に、詳細な Product Requirements Document（PRD）を作成することです。この PRD はエンジニアリングチームにとっての唯一の信頼できる情報源となり、包括的な技術仕様の生成に使用されます。
 
-Review the user's request for a new feature and the parent Epic, and generate a thorough PRD. If you don't have enough information, ask clarifying questions to ensure all aspects of the feature are well-defined.
+新機能に関するユーザーの依頼と親エピックを確認し、十分な PRD を作成します。情報が足りない場合は、機能のすべての側面が明確に定義されるよう、明確化の質問をします。
 
-## Output Format
+## 出力形式
 
-The output should be a complete PRD in Markdown format, saved to `/docs/ways-of-work/plan/{epic-name}/{feature-name}/prd.md`.
+出力は完全な PRD の Markdown 形式とし、`/docs/ways-of-work/plan/{epic-name}/{feature-name}/prd.md` に保存します。
 
-### PRD Structure
+### PRD の構成
 
-#### 1. Feature Name
+#### 1. 機能名
 
-- A clear, concise, and descriptive name for the feature.
+- 機能を明確、簡潔、かつ説明的に表す名前。
 
-#### 2. Epic
+#### 2. エピック
 
-- Link to the parent Epic PRD and Architecture documents.
+- 親エピックの PRD およびアーキテクチャ文書へのリンク。
 
-#### 3. Goal
+#### 3. 目的
 
-- **Problem:** Describe the user problem or business need this feature addresses (3-5 sentences).
-- **Solution:** Explain how this feature solves the problem.
-- **Impact:** What are the expected outcomes or metrics to be improved (e.g., user engagement, conversion rate, etc.)?
+- **問題:** この機能が対処するユーザーの問題またはビジネスニーズを説明します（3～5文）。
+- **解決策:** この機能が問題をどのように解決するかを説明します。
+- **影響:** 改善が期待される成果または指標（例: ユーザーエンゲージメント、コンバージョン率など）は何かを示します。
 
-#### 4. User Personas
+#### 4. ユーザーペルソナ
 
-- Describe the target user(s) for this feature.
+- この機能の対象ユーザーを説明します。
 
-#### 5. User Stories
+#### 5. ユーザーストーリー
 
-- Write user stories in the format: "As a `<user persona>`, I want to `<perform an action>` so that I can `<achieve a benefit>`."
-- Cover the primary paths and edge cases.
+- ユーザーストーリーは次の形式で記述します: "As a `<user persona>`, I want to `<perform an action>` so that I can `<achieve a benefit>`."
+- 主要な経路とエッジケースを対象にします。
 
-#### 6. Requirements
+#### 6. 要件
 
-- **Functional Requirements:** A detailed, bulleted list of what the system must do. Be specific and unambiguous.
-- **Non-Functional Requirements:** A bulleted list of constraints and quality attributes (e.g., performance, security, accessibility, data privacy).
+- **機能要件:** システムが実行すべき内容の詳細な箇条書き。具体的かつ曖昧さのないものにします。
+- **非機能要件:** 制約および品質属性（例: パフォーマンス、セキュリティ、アクセシビリティ、データプライバシー）の箇条書きです。
 
-#### 7. Acceptance Criteria
+#### 7. 受け入れ基準
 
-- For each user story or major requirement, provide a set of acceptance criteria.
-- Use a clear format, such as a checklist or Given/When/Then. This will be used to validate that the feature is complete and correct.
+- 各ユーザーストーリーまたは主要要件に対して、受け入れ基準のセットを示します。
+- チェックリストや Given/When/Then など、明確な形式を使用します。機能が完全かつ正しいことを検証するために使用されます。
 
-#### 8. Out of Scope
+#### 8. スコープ外
 
-- Clearly list what is _not_ included in this feature to avoid scope creep.
+- スコープクリープを避けるため、この機能に含まれないものを明確に列挙します。
 
-## Context Template
+## コンテキストテンプレート
 
-- **Epic:** [Link to the parent Epic documents]
-- **Feature Idea:** [A high-level description of the feature request from the user]
-- **Target Users:** [Optional: Any initial thoughts on who this is for]
+- **エピック:** [親エピック文書へのリンク]
+- **機能のアイデア:** [ユーザーから得た機能要求の高レベルな説明]
+- **対象ユーザー:** [任意: 対象者に関する初期の考え]

@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "fluentui-blazor",
-  "description": "Build Blazor apps with the Microsoft Fluent UI Blazor library. Bundles the fluentui-blazor skill for correct usage patterns (providers, service registration, icons, dialogs, data grid, theming) with the official Fluent UI Blazor MCP server for live lookup of components, parameters, enums, icons, and documentation, plus v4-to-v5 migration guidance.",
+  "description": "Microsoft Fluent UI Blazor ライブラリで Blazor アプリを構築します。正しい利用パターン（providers、サービス登録、icons、dialogs、data grid、theming）向けの fluentui-blazor skill に加え、コンポーネント、パラメーター、enum、icons、ドキュメントをリアルタイム検索できる公式 Fluent UI Blazor MCP server と v4 から v5 への移行ガイダンスを同梱します。",
   "version": "1.0.0",
   "keywords": [
     "fluentui",

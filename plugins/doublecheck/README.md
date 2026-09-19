@@ -1,8 +1,8 @@
 # Doublecheck
 
-A three-layer verification pipeline for AI-generated output. Extracts verifiable claims, finds sources via web search, runs adversarial review for hallucination patterns, and produces a structured report with source links so humans can verify before acting.
+AI 生成出力を検証する 3 層パイプラインです。検証可能な主張を抽出し、Web 検索で情報源を探し、幻覚パターンの敵対的レビューを行い、行動する前に人が確認できるよう情報源リンク付きの構造化レポートを作成します。
 
-## Why This Exists
+## 目的
 
 AI hallucinations are a model-level problem. No plugin can fix them. But the *consequences* of hallucinations -- acting on fabricated citations, relying on made-up statistics, citing nonexistent case law -- can be mitigated by making verification fast and structured.
 

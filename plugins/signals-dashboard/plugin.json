@@ -1,6 +1,6 @@
 {
   "name": "signals-dashboard",
-  "description": "Real-time Workshop dashboard with agent signals, honesty calibration, cost-aware desk profiles, and fail-closed Local Delegation.",
+  "description": "エージェントシグナル、正直さのキャリブレーション、コストを考慮したデスクプロファイル、フェイルクローズ型のLocal Delegationを備えたリアルタイムWorkshopダッシュボードです。",
   "version": "0.3.0",
   "author": {
     "name": "jennyf19",

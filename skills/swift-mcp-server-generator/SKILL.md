@@ -1,15 +1,14 @@
 ---
 name: swift-mcp-server-generator
-description: 'Generate a complete Model Context Protocol server project in Swift using the official MCP Swift SDK package.'
+description: '公式 MCP Swift SDK パッケージを使って、完全な Model Context Protocol サーバープロジェクトを Swift で生成する。'
 ---
+# Swift MCP Server ジェネレーター
 
-# Swift MCP Server Generator
+公式 Swift SDK パッケージを使って、完全で本番利用可能な MCP サーバーを Swift で生成します。
 
-Generate a complete, production-ready MCP server in Swift using the official Swift SDK package.
+## プロジェクト生成
 
-## Project Generation
-
-When asked to create a Swift MCP server, generate a complete project with this structure:
+Swift MCP サーバーの作成を求められたら、次の構成で完全なプロジェクトを生成します。
 
 ```
 my-mcp-server/
@@ -33,7 +32,7 @@ my-mcp-server/
 └── README.md
 ```
 
-## Package.swift Template
+## Package.swift テンプレート
 
 ```swift
 // swift-tools-version: 6.0
@@ -79,7 +78,7 @@ let package = Package(
 )
 ```
 
-## main.swift Template
+## main.swift テンプレート
 
 ```swift
 import MCP
@@ -131,7 +130,7 @@ do {
 }
 ```
 
-## Server.swift Template
+## Server.swift テンプレート
 
 ```swift
 import MCP
@@ -161,7 +160,7 @@ func createServer() async -> Server {
 }
 ```
 
-## ToolDefinitions.swift Template
+## ToolDefinitions.swift テンプレート
 
 ```swift
 import MCP
@@ -218,7 +217,7 @@ func getToolDefinitions() -> [Tool] {
 }
 ```
 
-## ToolHandlers.swift Template
+## ToolHandlers.swift テンプレート
 
 ```swift
 import MCP
@@ -314,7 +313,7 @@ private func handleCalculate(params: CallTool.Params) -> CallTool.Result {
 }
 ```
 
-## ResourceDefinitions.swift Template
+## ResourceDefinitions.swift テンプレート
 
 ```swift
 import MCP
@@ -337,7 +336,7 @@ func getResourceDefinitions() -> [Resource] {
 }
 ```
 
-## ResourceHandlers.swift Template
+## ResourceHandlers.swift テンプレート
 
 ```swift
 import MCP
@@ -416,7 +415,7 @@ func registerResourceHandlers(server: Server) async {
 }
 ```
 
-## PromptDefinitions.swift Template
+## PromptDefinitions.swift テンプレート
 
 ```swift
 import MCP
@@ -435,7 +434,7 @@ func getPromptDefinitions() -> [Prompt] {
 }
 ```
 
-## PromptHandlers.swift Template
+## PromptHandlers.swift テンプレート
 
 ```swift
 import MCP
@@ -489,7 +488,7 @@ private func handleCodeReviewPrompt(params: GetPrompt.Params) -> GetPrompt.Resul
 }
 ```
 
-## ServerTests.swift Template
+## ServerTests.swift テンプレート
 
 ```swift
 import XCTest
@@ -553,7 +552,7 @@ final class ServerTests: XCTestCase {
 }
 ```
 
-## README.md Template
+## README.md テンプレート
 
 ```markdown
 # MyMCPServer
@@ -621,20 +620,20 @@ The server uses:
 MIT
 ```
 
-## Generation Instructions
+## 生成手順
 
-1. **Ask for project name and description**
-2. **Generate all files** with proper naming
-3. **Use actor-based state** for thread safety
-4. **Include comprehensive logging** with swift-log
-5. **Implement graceful shutdown** with ServiceLifecycle
-6. **Add tests** for all handlers
-7. **Use modern Swift concurrency** (async/await)
-8. **Follow Swift naming conventions** (camelCase, PascalCase)
-9. **Include error handling** with proper MCPError usage
-10. **Document public APIs** with doc comments
+1. **プロジェクト名と説明を確認する**
+2. **適切な命名で全ファイルを生成する**
+3. **スレッドセーフ性のため actor ベースの状態管理を使う**
+4. **swift-log による包括的なロギングを含める**
+5. **ServiceLifecycle による graceful shutdown を実装する**
+6. **すべてのハンドラーにテストを追加する**
+7. **現代的な Swift 並行処理**（async/await）を使う
+8. **Swift の命名規則**（camelCase、PascalCase）に従う
+9. **適切な MCPError の利用によるエラー処理を含める**
+10. **doc comment で public API を文書化する**
 
-## Build and Run
+## ビルドと実行
 
 ```bash
 # Build
@@ -654,9 +653,9 @@ swift build -c release
 cp .build/release/MyMCPServer /usr/local/bin/
 ```
 
-## Integration with Claude Desktop
+## Claude Desktop との統合
 
-Add to `claude_desktop_config.json`:
+`claude_desktop_config.json` に追加します。
 
 ```json
 {

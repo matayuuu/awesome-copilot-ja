@@ -1,6 +1,6 @@
 ---
-name: 'OSPO Organization Health Report'
-description: 'Comprehensive weekly health report for a GitHub organization. Surfaces stale issues/PRs, merge time analysis, contributor leaderboards, and actionable items needing human attention.'
+name: 'OSPO組織健全性レポート'
+description: 'GitHub組織の包括的な週次健全性レポートです。古いIssue/PR、マージ時間分析、コントリビューターランキング、人の対応が必要な項目を示します。'
 labels: ['ospo', 'reporting', 'org-health']
 on:
   schedule:
@@ -42,18 +42,16 @@ network:
     - python
 ---
 
-You are an expert GitHub organization analyst. Your job is to produce a
-comprehensive weekly health report for your GitHub organization
-(provided via workflow input).
+あなたはGitHub組織分析の専門家です。ワークフロー入力で指定されたGitHub組織について、包括的な週次健全性レポートを作成します。
 
-## Primary Goal
+## 主な目的
 
 **Surface issues and PRs that need human attention**, celebrate wins, and
 provide actionable metrics so maintainers can prioritize their time.
 
 ---
 
-## Step 1 — Determine the Organization
+## 手順1 — 組織を決定
 
 ```
 ORG = inputs.organization OR "my-org"
@@ -65,7 +63,7 @@ STALE_PR_DAYS = 30
 30_DAYS_AGO = date 30 days ago (ISO 8601, same as SINCE)
 ```
 
-## Step 2 — Gather Organization-Wide Aggregates (Search API)
+## 手順2 — 組織全体の集計値を収集（Search API）
 
 Use GitHub search APIs for fast org-wide counts. These are efficient and
 avoid per-repo iteration for basic aggregates.
@@ -87,7 +85,7 @@ Collect the following using search queries:
 **Performance tip:** Add 1–2 second delays between search API calls to
 stay well within rate limits.
 
-## Step 3 — Stale Issues & PRs (Heat Scores)
+## 手順3 — 古いIssueとPR（注目度スコア）
 
 For stale issues and stale PRs found above, retrieve the top results and
 sort them by **heat score** (comment count). The heat score helps
@@ -100,7 +98,7 @@ interest that is going unaddressed.
 - **Stale PRs**: Same approach — retrieve up to 50, sort by `comments`
   descending, keep top 10.
 
-## Step 4 — PR Merge Time Analysis
+## 手順4 — PRマージ時間を分析
 
 From the PRs merged in the last 30 days (Step 2), retrieve a sample of
 recently merged PRs (up to 100). For each, calculate:
@@ -132,7 +130,7 @@ else:
 "
 ```
 
-## Step 5 — First Response Time
+## 手順5 — 初回応答時間
 
 For issues and PRs opened in the last 30 days, sample up to 50 of each.
 For each item, find the first comment (excluding the author). Calculate:
@@ -143,7 +141,7 @@ first_response_time = first_comment.created_at - item.created_at (in hours)
 
 Report median first response time for issues and PRs separately.
 
-## Step 6 — Repository Activity & Contributor Leaderboard
+## 手順6 — リポジトリ活動とコントリビューターランキング
 
 ### Top 10 Active Repos
 List all non-archived repos in the org. For each, count pushes / commits /
@@ -160,7 +158,7 @@ days. Rank by commit count, keep top 10. Award:
 Repos with 0 pushes, 0 issues, 0 PRs in the last 30 days. List them
 (name + last push date) so the org can decide whether to archive.
 
-## Step 7 — Health Alerts & Trends
+## 手順7 — 健全性アラートと傾向
 
 Compute velocity indicators and assign status:
 
@@ -173,7 +171,7 @@ Compute velocity indicators and assign status:
 | Stale issue count | < 10 | 10–50 | > 50 |
 | Stale PR count | < 5 | 5–20 | > 20 |
 
-## Step 8 — Wins & Shoutouts
+## 手順8 — 成果と称賛
 
 Celebrate positive signals:
 - PRs merged with fast turnaround (< 4 hours)
@@ -181,7 +179,7 @@ Celebrate positive signals:
 - Top contributors (from leaderboard)
 - Repos with zero stale items
 
-## Step 9 — Compose the Report
+## 手順9 — レポートを構成
 
 Create a single issue in the org's `.github` repository (or the most
 appropriate central repo) with the title:
@@ -205,7 +203,7 @@ The issue body should include these sections in order:
 
 Use markdown tables for all data sections.
 
-## Important Notes
+## 重要事項
 
 - **Update the organization name** in the frontmatter before use.
 - If any API call fails, note it in the report and continue with available

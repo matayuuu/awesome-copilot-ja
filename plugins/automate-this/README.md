@@ -1,8 +1,8 @@
 # Automate This
 
-You know that thing you do every week — the fifteen-click, four-app, copy-paste-into-spreadsheet-and-email-it process that makes you want to throw your laptop into the ocean? Record yourself doing it once, hand the video to Copilot CLI, and let it write the script that does it for you.
+毎週行う、15 回のクリック、4 つのアプリ、スプレッドシートへのコピー＆ペースト、メール送信という、ノート PC を海に投げたくなる作業はありませんか。一度その作業を録画して Copilot CLI に渡せば、代わりに実行するスクリプトを書いてくれます。
 
-## How It Works
+## 仕組み
 
 1. **Record your screen.** Use QuickTime, OBS, Loom, or whatever you already have. Do the process exactly the way you normally do. If you want to talk through it while you record ("now I'm downloading this report because finance needs it every Monday"), even better — the plugin transcribes your narration and uses it to understand *why* you're doing each step, not just *what* you're clicking.
 

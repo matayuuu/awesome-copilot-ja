@@ -1,8 +1,8 @@
 # Release Notes Showcase Plugin
 
-Compose and refine launch-ready release notes with contributor callouts and export-friendly output.
+貢献者への謝辞とエクスポートしやすい出力を備えた、公開準備済みリリースノートを作成・推敲します。
 
-## Installation
+## インストール
 
 ``bash
 copilot plugin install release-notes-showcase@awesome-copilot

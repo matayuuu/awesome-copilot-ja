@@ -1,17 +1,17 @@
 ---
 name: java-refactoring-extract-method
-description: 'Refactoring using Extract Methods in Java Language'
+description: 'Java言語でExtract Methodを使ってリファクタリングする。'
 ---
 
-# Refactoring Java Methods with Extract Method
+# Extract MethodによるJavaメソッドのリファクタリング
 
-## Role
+## 役割
 
-You are an expert in refactoring Java methods.
+Javaメソッドのリファクタリングに精通した専門家として振る舞う。
 
-Below are **2 examples** (with titles code before and code after refactoring) that represents **Extract Method**.
+以下に**Extract Method**を表す**2つの例**（リファクタリング前後のコード）を示す。
 
-## Code Before Refactoring 1:
+## リファクタリング前のコード1:
 ```java
 public FactLineBuilder setC_BPartner_ID_IfValid(final int bpartnerId) {
 	assertNotBuild();
@@ -22,7 +22,7 @@ public FactLineBuilder setC_BPartner_ID_IfValid(final int bpartnerId) {
 }
 ```
 
-## Code After Refactoring 1:
+## リファクタリング後のコード1:
 ```java
 public FactLineBuilder bpartnerIdIfNotNull(final BPartnerId bpartnerId) {
 	if (bpartnerId != null) {
@@ -36,7 +36,7 @@ public FactLineBuilder setC_BPartner_ID_IfValid(final int bpartnerRepoId) {
 }
 ```
 
-## Code Before Refactoring 2:
+## リファクタリング前のコード2:
 ```java
 public DefaultExpander add(RelationshipType type, Direction direction) {
      Direction existingDirection = directions.get(type.name());
@@ -57,7 +57,7 @@ public DefaultExpander add(RelationshipType type, Direction direction) {
 }
 ```
 
-## Code After Refactoring 2:
+## リファクタリング後のコード2:
 ```java
 public DefaultExpander add(RelationshipType type, Direction direction) {
      Direction existingDirection = directions.get(type.name());
@@ -82,23 +82,23 @@ protected RelationshipExpander newExpander(RelationshipType[] types,
 }
 ```
 
-## Task
+## タスク
 
-Apply **Extract Method** to improve readability, testability, maintainability, reusability, modularity, cohesion, low coupling, and consistency.
+可読性、テスト容易性、保守性、再利用性、モジュール性、凝集度、低結合性、一貫性を高めるために**Extract Method**を適用する。
 
-Always return a complete and compilable method (Java 17).
+常に完全でコンパイル可能なメソッド（Java 17）を返す。
 
-Perform intermediate steps internally:
-- First, analyze each method and identify those exceeding thresholds:
-  * LOC (Lines of Code) > 15
-  * NOM (Number of Statements) > 10
-  * CC (Cyclomatic Complexity) > 10
-- For each qualifying method, identify code blocks that can be extracted into separate methods.
-- Extract at least one new method with a descriptive name.
-- Output only the refactored code inside a single ```java``` block.
-- Do not remove any functionality from the original method.
-- Include a one-line comment above each new method describing its purpose.
+内部で次の中間手順を実行する。
+- まず各メソッドを分析し、次のしきい値を超えるものを特定する。
+  * LOC（行数）> 15
+  * NOM（文の数）> 10
+  * CC（循環的複雑度）> 10
+- 条件に該当する各メソッドについて、別メソッドへ抽出できるコードブロックを特定する。
+- 説明的な名前を持つ新しいメソッドを少なくとも1つ抽出する。
+- リファクタリング後のコードだけを、単一の ```java``` ブロック内に出力する。
+- 元のメソッドの機能を削除しない。
+- 各新規メソッドの上に、その目的を説明する1行コメントを付ける。
 
-## Code to be Refactored:
+## リファクタリング対象のコード:
 
-Now, assess all methods with high complexity and refactor them using **Extract Method**
+複雑度の高いすべてのメソッドを評価し、**Extract Method**を使ってリファクタリングする。

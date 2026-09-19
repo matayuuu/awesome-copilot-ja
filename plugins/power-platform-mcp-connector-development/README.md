@@ -1,8 +1,8 @@
 # Power Platform MCP Connector Development Plugin
 
-Complete toolkit for developing Power Platform custom connectors with Model Context Protocol integration for Microsoft Copilot Studio
+Microsoft Copilot Studio向けに、Model Context Protocol統合を備えたPower Platformカスタムコネクタを開発するための総合ツールキットです。
 
-## Installation
+## インストール
 
 ```bash
 # Using Copilot CLI

@@ -1,8 +1,8 @@
 # OpenAPI to Application - C# .NET Plugin
 
-Generate production-ready .NET applications from OpenAPI specifications. Includes ASP.NET Core project scaffolding, controller generation, entity framework integration, and C# best practices.
+OpenAPI仕様から本番対応の.NETアプリケーションを生成します。ASP.NET Coreプロジェクトのスキャフォールディング、コントローラー生成、Entity Framework統合、C#のベストプラクティスを含みます。
 
-## Installation
+## インストール
 
 ```bash
 # Using Copilot CLI

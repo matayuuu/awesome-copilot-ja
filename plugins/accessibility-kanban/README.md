@@ -1,17 +1,17 @@
-# Accessibility Kanban Plugin
+# Accessibility Kanban プラグイン
 
-Kanban board to manage accessibility issues, allow you to plan, track, and complete remediation work.
+アクセシビリティの課題を管理するカンバンボード。改善作業の計画、追跡、完了に役立ちます。
 
-## Installation
+## インストール
 
 ``bash
 copilot plugin install accessibility-kanban@awesome-copilot
 ``
 
-## Source
+## ソース
 
-This plugin is part of [Awesome Copilot](https://github.com/github/awesome-copilot).
+このプラグインは [Awesome Copilot](https://github.com/github/awesome-copilot) の一部です。
 
-## License
+## ライセンス
 
 MIT

@@ -1,8 +1,8 @@
-# MCP-based M365 Agents Plugin
+# MCP-based M365 Agents プラグイン
 
-Comprehensive collection for building declarative agents with Model Context Protocol integration for Microsoft 365 Copilot
+Microsoft 365 Copilot 向けに Model Context Protocol 統合を備えた宣言型 agents を構築するための包括的なコレクションです。
 
-## Installation
+## インストール
 
 ```bash
 # Using Copilot CLI

@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "convert-to-md",
-  "description": "A collection of Copilot skills that convert common document formats into Markdown so their contents can be accurately analyzed, summarized, searched, or extracted from. Just tell Copilot what you need — the right skill is invoked automatically and the conversion happens behind the scenes.",
+  "description": "一般的な文書形式を Markdown に変換し、内容を正確に分析、要約、検索、抽出できるようにする Copilot skills のコレクションです。必要なことを Copilot に伝えるだけで、適切な skill が自動的に呼び出され、変換がバックグラウンドで行われます。",
   "version": "1.0.1",
   "keywords": [
     "skills",

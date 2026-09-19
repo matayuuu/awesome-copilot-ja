@@ -1,41 +1,41 @@
 ---
 name: aspnet-minimal-api-openapi
-description: 'Create ASP.NET Minimal API endpoints with proper OpenAPI documentation'
+description: '適切な OpenAPI ドキュメントを備えた ASP.NET Minimal API エンドポイントを作成します。'
 ---
 
-# ASP.NET Minimal API with OpenAPI
+# OpenAPI を使用する ASP.NET Minimal API
 
-Your goal is to help me create well-structured ASP.NET Minimal API endpoints with correct types and comprehensive OpenAPI/Swagger documentation.
+正しい型と包括的な OpenAPI/Swagger ドキュメントを備えた、適切に構造化された ASP.NET Minimal API エンドポイントの作成を支援することが目的です。
 
-## API Organization
+## API の構成
 
-- Group related endpoints using `MapGroup()` extension
-- Use endpoint filters for cross-cutting concerns
-- Structure larger APIs with separate endpoint classes
-- Consider using a feature-based folder structure for complex APIs
+- `MapGroup()` 拡張を使用して関連するエンドポイントをグループ化する
+- 横断的関心事にはエンドポイントフィルターを使用する
+- 大規模な API は個別のエンドポイントクラスで構成する
+- 複雑な API では機能ベースのフォルダー構造を検討する
 
-## Request and Response Types
+## 要求および応答の型
 
-- Define explicit request and response DTOs/models
-- Create clear model classes with proper validation attributes
-- Use record types for immutable request/response objects
-- Use meaningful property names that align with API design standards
-- Apply `[Required]` and other validation attributes to enforce constraints
-- Use the ProblemDetailsService and StatusCodePages to get standard error responses
+- 明示的な要求および応答の DTO／モデルを定義する
+- 適切な検証属性を備えた明確なモデルクラスを作成する
+- 不変の要求／応答オブジェクトにはレコード型を使用する
+- API 設計標準に沿った意味のあるプロパティ名を使用する
+- `[Required]` などの検証属性を適用して制約を強制する
+- 標準エラー応答を取得するために ProblemDetailsService と StatusCodePages を使用する
 
-## Type Handling
+## 型の処理
 
-- Use strongly-typed route parameters with explicit type binding
-- Use `Results<T1, T2>` to represent multiple response types
-- Return `TypedResults` instead of `Results` for strongly-typed responses
-- Leverage C# 10+ features like nullable annotations and init-only properties
+- 明示的な型バインディングを伴う厳密に型指定されたルートパラメーターを使用する
+- 複数の応答型を表すには `Results<T1, T2>` を使用する
+- 厳密に型指定された応答には `Results` ではなく `TypedResults` を返す
+- null許容注釈や init 専用プロパティなど、C# 10+ の機能を活用する
 
-## OpenAPI Documentation
+## OpenAPI ドキュメント
 
-- Use the built-in OpenAPI document support added in .NET 9
-- Define operation summary and description
-- Add operationIds using the `WithName` extension method
-- Add descriptions to properties and parameters with `[Description()]`
-- Set proper content types for requests and responses
-- Use document transformers to add elements like servers, tags, and security schemes
-- Use schema transformers to apply customizations to OpenAPI schemas
+- .NET 9 で追加された組み込みの OpenAPI ドキュメントサポートを使用する
+- 操作の要約と説明を定義する
+- `WithName` 拡張メソッドを使用して operationId を追加する
+- `[Description()]` でプロパティとパラメーターに説明を追加する
+- 要求と応答に適切なコンテンツ型を設定する
+- ドキュメントトランスフォーマーを使用して、サーバー、タグ、セキュリティスキームなどの要素を追加する
+- スキーマトランスフォーマーを使用して OpenAPI スキーマにカスタマイズを適用する

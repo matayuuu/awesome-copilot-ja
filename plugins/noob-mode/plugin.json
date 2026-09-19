@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "noob-mode",
-  "description": "Plain-English translation layer for non-technical Copilot CLI users. Translates every approval prompt, error message, and technical output into clear, jargon-free English with color-coded risk indicators.",
+  "description": "技術者ではないCopilot CLIユーザー向けの平易な言葉への翻訳レイヤー。承認プロンプト、エラーメッセージ、技術的な出力をすべて、色分けしたリスク表示付きの、明確で専門用語の少ない日本語に翻訳します。",
   "version": "1.0.0",
   "author": {
     "name": "Awesome Copilot Community"

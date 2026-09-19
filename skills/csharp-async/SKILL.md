@@ -1,49 +1,49 @@
 ---
 name: csharp-async
-description: 'Get best practices for C# async programming'
+description: 'C# の非同期プログラミングに関するベストプラクティスを提供する'
 ---
 
-# C# Async Programming Best Practices
+# C# 非同期プログラミングのベストプラクティス
 
-Your goal is to help me follow best practices for asynchronous programming in C#.
+C# の非同期プログラミングに関するベストプラクティスに従えるよう支援してください。
 
-## Naming Conventions
+## 命名規則
 
-- Use the 'Async' suffix for all async methods
-- Match method names with their synchronous counterparts when applicable (e.g., `GetDataAsync()` for `GetData()`)
+- すべての非同期メソッドに `Async` サフィックスを付ける
+- 該当する場合は、同期版のメソッド名と対応させる（例: `GetData()` に対する `GetDataAsync()`）
 
-## Return Types
+## 戻り値の型
 
-- Return `Task<T>` when the method returns a value
-- Return `Task` when the method doesn't return a value
-- Consider `ValueTask<T>` for high-performance scenarios to reduce allocations
-- Avoid returning `void` for async methods except for event handlers
+- メソッドが値を返す場合は `Task<T>` を返す
+- メソッドが値を返さない場合は `Task` を返す
+- 高パフォーマンスが必要な場面では、割り当てを減らすために `ValueTask<T>` を検討する
+- イベントハンドラーを除き、非同期メソッドで `void` を返さない
 
-## Exception Handling
+## 例外処理
 
-- Use try/catch blocks around await expressions
-- Avoid swallowing exceptions in async methods
-- Use `ConfigureAwait(false)` when appropriate to prevent deadlocks in library code
-- Propagate exceptions with `Task.FromException()` instead of throwing in async Task returning methods
+- await 式を try/catch ブロックで囲む
+- 非同期メソッド内で例外を握りつぶさない
+- ライブラリコードでのデッドロックを防ぐため、適切な場合は `ConfigureAwait(false)` を使う
+- 非同期の Task 戻り値メソッドでは、例外を直接スローする代わりに `Task.FromException()` で伝播する
 
-## Performance
+## パフォーマンス
 
-- Use `Task.WhenAll()` for parallel execution of multiple tasks
-- Use `Task.WhenAny()` for implementing timeouts or taking the first completed task
-- Avoid unnecessary async/await when simply passing through task results
-- Consider cancellation tokens for long-running operations
+- 複数のタスクを並列実行するには `Task.WhenAll()` を使う
+- タイムアウトの実装や最初に完了したタスクの取得には `Task.WhenAny()` を使う
+- タスクの結果をそのまま返すだけの場合は、不要な async/await を避ける
+- 長時間実行される操作にはキャンセルトークンを検討する
 
-## Common Pitfalls
+## よくある落とし穴
 
-- Never use `.Wait()`, `.Result`, or `.GetAwaiter().GetResult()` in async code
-- Avoid mixing blocking and async code
-- Don't create async void methods (except for event handlers)
-- Always await Task-returning methods
+- 非同期コードで `.Wait()`、`.Result`、`.GetAwaiter().GetResult()` を使わない
+- ブロッキングコードと非同期コードを混在させない
+- イベントハンドラーを除き、async void メソッドを作らない
+- Task を返すメソッドは必ず await する
 
-## Implementation Patterns
+## 実装パターン
 
-- Implement the async command pattern for long-running operations
-- Use async streams (IAsyncEnumerable<T>) for processing sequences asynchronously
-- Consider the task-based asynchronous pattern (TAP) for public APIs
+- 長時間実行される操作には非同期コマンドパターンを実装する
+- シーケンスを非同期処理するには非同期ストリーム（IAsyncEnumerable<T>）を使う
+- 公開 API にはタスクベース非同期パターン（TAP）を検討する
 
-When reviewing my C# code, identify these issues and suggest improvements that follow these best practices.
+C# コードをレビューするときは、これらの問題を特定し、このベストプラクティスに沿った改善を提案してください。

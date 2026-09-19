@@ -1,14 +1,14 @@
-# Convert to Markdown Plugin
+# Convert to Markdown プラグイン
 
-A collection of Copilot skills that convert common document formats into Markdown so their contents can be accurately analyzed, summarized, searched, or extracted from. Just tell Copilot what you need — the right skill is invoked automatically and the conversion happens behind the scenes.
+一般的な文書形式を Markdown に変換し、内容を正確に分析、要約、検索、抽出できるようにする Copilot skills のコレクションです。必要なことを Copilot に伝えるだけで、適切な skill が自動的に呼び出され、変換がバックグラウンドで行われます。
 
-## Installation
+## インストール
 
 ```bash
 copilot plugin install convert-to-md@awesome-copilot
 ```
 
-## What's Included
+## 含まれるもの
 
 This plugin includes Word, Excel, and PDF conversion skills, detailed below.
 

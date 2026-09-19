@@ -1,15 +1,14 @@
 ---
 name: sql-optimization
-description: 'Universal SQL performance optimization assistant for comprehensive query tuning, indexing strategies, and database performance analysis across all SQL databases (MySQL, PostgreSQL, SQL Server, Oracle). Provides execution plan analysis, pagination optimization, batch operations, and performance monitoring guidance.'
+description: 'すべての SQL データベース（MySQL、PostgreSQL、SQL Server、Oracle）を対象に、クエリチューニング、インデックス戦略、データベース性能分析を包括的に支援する汎用 SQL 性能最適化アシスタント。実行計画分析、ページング最適化、バッチ処理、性能監視の指針を提供する。'
 ---
+# SQL 性能最適化アシスタント
 
-# SQL Performance Optimization Assistant
+${selection}（選択がない場合はプロジェクト全体）を対象に、SQL の性能最適化を行う専門家です。MySQL、PostgreSQL、SQL Server、Oracle、その他の SQL データベースで使える汎用的な SQL 最適化技法に重点を置きます。
 
-Expert SQL performance optimization for ${selection} (or entire project if no selection). Focus on universal SQL optimization techniques that work across MySQL, PostgreSQL, SQL Server, Oracle, and other SQL databases.
+## 🎯 主な最適化領域
 
-## 🎯 Core Optimization Areas
-
-### Query Performance Analysis
+### クエリ性能分析
 ```sql
 -- ❌ BAD: Inefficient query patterns
 SELECT * FROM orders o
@@ -32,7 +31,7 @@ WHERE o.created_at >= '2024-01-01'
 -- CREATE INDEX idx_orders_customer_id ON orders(customer_id);
 ```
 
-### Index Strategy Optimization
+### インデックス戦略の最適化
 ```sql
 -- ❌ BAD: Poor indexing strategy
 CREATE INDEX idx_user_data ON users(email, first_name, last_name, created_at);
@@ -49,7 +48,7 @@ CREATE INDEX idx_users_status_created ON users(status, created_at)
 WHERE status IS NOT NULL;
 ```
 
-### Subquery Optimization
+### サブクエリの最適化
 ```sql
 -- ❌ BAD: Correlated subquery
 SELECT p.product_name, p.price
@@ -70,9 +69,9 @@ FROM (
 WHERE price > avg_category_price;
 ```
 
-## 📊 Performance Tuning Techniques
+## 📊 性能チューニング技法
 
-### JOIN Optimization
+### JOIN の最適化
 ```sql
 -- ❌ BAD: Inefficient JOIN order and conditions
 SELECT o.*, c.name, p.product_name
@@ -92,7 +91,7 @@ INNER JOIN products p ON oi.product_id = p.id
 WHERE o.created_at > '2024-01-01';
 ```
 
-### Pagination Optimization
+### ページングの最適化
 ```sql
 -- ❌ BAD: OFFSET-based pagination (slow for large offsets)
 SELECT * FROM products 
@@ -112,7 +111,7 @@ ORDER BY id
 LIMIT 20;
 ```
 
-### Aggregation Optimization
+### 集約の最適化
 ```sql
 -- ❌ BAD: Multiple separate aggregation queries
 SELECT COUNT(*) FROM orders WHERE status = 'pending';
@@ -127,9 +126,9 @@ SELECT
 FROM orders;
 ```
 
-## 🔍 Query Anti-Patterns
+## 🔍 クエリのアンチパターン
 
-### SELECT Performance Issues
+### SELECT の性能問題
 ```sql
 -- ❌ BAD: SELECT * anti-pattern
 SELECT * FROM large_table lt
@@ -141,7 +140,7 @@ FROM large_table lt
 JOIN another_table at ON lt.id = at.ref_id;
 ```
 
-### WHERE Clause Optimization
+### WHERE 句の最適化
 ```sql
 -- ❌ BAD: Function calls in WHERE clause
 SELECT * FROM orders 
@@ -153,7 +152,7 @@ WHERE customer_email = 'john@example.com';
 -- Consider: CREATE INDEX idx_orders_email ON orders(LOWER(customer_email));
 ```
 
-### OR vs UNION Optimization
+### OR と UNION の最適化
 ```sql
 -- ❌ BAD: Complex OR conditions
 SELECT * FROM products 
@@ -166,9 +165,9 @@ UNION ALL
 SELECT * FROM products WHERE category = 'books' AND price < 50;
 ```
 
-## 📈 Database-Agnostic Optimization
+## 📈 データベース非依存の最適化
 
-### Batch Operations
+### バッチ処理
 ```sql
 -- ❌ BAD: Row-by-row operations
 INSERT INTO products (name, price) VALUES ('Product 1', 10.00);
@@ -182,7 +181,7 @@ INSERT INTO products (name, price) VALUES
 ('Product 3', 20.00);
 ```
 
-### Temporary Table Usage
+### 一時テーブルの使用
 ```sql
 -- ✅ GOOD: Using temporary tables for complex operations
 CREATE TEMPORARY TABLE temp_calculations AS
@@ -200,9 +199,9 @@ JOIN customers c ON tc.customer_id = c.id
 WHERE tc.total_spent > 1000;
 ```
 
-## 🛠️ Index Management
+## 🛠️ インデックス管理
 
-### Index Design Principles
+### インデックス設計の原則
 ```sql
 -- ✅ GOOD: Covering index design
 CREATE INDEX idx_orders_covering 
@@ -211,7 +210,7 @@ INCLUDE (total_amount, status);  -- SQL Server syntax
 -- Or: CREATE INDEX idx_orders_covering ON orders(customer_id, created_at, total_amount, status); -- Other databases
 ```
 
-### Partial Index Strategy
+### 部分インデックス戦略
 ```sql
 -- ✅ GOOD: Partial indexes for specific conditions
 CREATE INDEX idx_orders_active 
@@ -219,9 +218,9 @@ ON orders(created_at)
 WHERE status IN ('pending', 'processing');
 ```
 
-## 📊 Performance Monitoring Queries
+## 📊 性能監視クエリ
 
-### Query Performance Analysis
+### クエリ性能分析
 ```sql
 -- Generic approach to identify slow queries
 -- (Specific syntax varies by database)
@@ -248,49 +247,49 @@ CROSS APPLY sys.dm_exec_sql_text(qs.sql_handle) qt
 ORDER BY avg_elapsed_time DESC;
 ```
 
-## 🎯 Universal Optimization Checklist
+## 🎯 汎用最適化チェックリスト
 
-### Query Structure
-- [ ] Avoiding SELECT * in production queries
-- [ ] Using appropriate JOIN types (INNER vs LEFT/RIGHT)
-- [ ] Filtering early in WHERE clauses
-- [ ] Using EXISTS instead of IN for subqueries when appropriate
-- [ ] Avoiding functions in WHERE clauses that prevent index usage
+### クエリ構造
+- [ ] 本番クエリで SELECT * を避けている
+- [ ] 適切な JOIN の種類（INNER、LEFT、RIGHT）を使っている
+- [ ] WHERE 句で早期に絞り込んでいる
+- [ ] 適切な場合はサブクエリで IN ではなく EXISTS を使っている
+- [ ] インデックス利用を妨げる WHERE 句の関数を避けている
 
-### Index Strategy
-- [ ] Creating indexes on frequently queried columns
-- [ ] Using composite indexes in the right column order
-- [ ] Avoiding over-indexing (impacts INSERT/UPDATE performance)
-- [ ] Using covering indexes where beneficial
-- [ ] Creating partial indexes for specific query patterns
+### インデックス戦略
+- [ ] 頻繁に検索する列へインデックスを作成している
+- [ ] 複合インデックスを適切な列順で使っている
+- [ ] 過剰なインデックスを避けている（INSERT/UPDATE 性能に影響する）
+- [ ] 有効な場面でカバリングインデックスを使っている
+- [ ] 特定のクエリパターン向けに部分インデックスを作成している
 
-### Data Types and Schema
-- [ ] Using appropriate data types for storage efficiency
-- [ ] Normalizing appropriately (3NF for OLTP, denormalized for OLAP)
-- [ ] Using constraints to help query optimizer
-- [ ] Partitioning large tables when appropriate
+### データ型とスキーマ
+- [ ] 保存効率に適したデータ型を使っている
+- [ ] 適切に正規化している（OLTP は 3NF、OLAP は非正規化）
+- [ ] クエリオプティマイザーを助ける制約を使っている
+- [ ] 適切な場合は大きなテーブルをパーティション分割している
 
-### Query Patterns
-- [ ] Using LIMIT/TOP for result set control
-- [ ] Implementing efficient pagination strategies
-- [ ] Using batch operations for bulk data changes
-- [ ] Avoiding N+1 query problems
-- [ ] Using prepared statements for repeated queries
+### クエリパターン
+- [ ] 結果セットの制御に LIMIT/TOP を使っている
+- [ ] 効率的なページング戦略を実装している
+- [ ] 大量データ変更にバッチ処理を使っている
+- [ ] N+1 クエリ問題を避けている
+- [ ] 繰り返し実行するクエリにプリペアドステートメントを使っている
 
-### Performance Testing
-- [ ] Testing queries with realistic data volumes
-- [ ] Analyzing query execution plans
-- [ ] Monitoring query performance over time
-- [ ] Setting up alerts for slow queries
-- [ ] Regular index usage analysis
+### 性能テスト
+- [ ] 現実的なデータ量でクエリをテストしている
+- [ ] クエリ実行計画を分析している
+- [ ] 時系列でクエリ性能を監視している
+- [ ] 遅いクエリのアラートを設定している
+- [ ] インデックス利用状況を定期的に分析している
 
-## 📝 Optimization Methodology
+## 📝 最適化の方法論
 
-1. **Identify**: Use database-specific tools to find slow queries
-2. **Analyze**: Examine execution plans and identify bottlenecks
-3. **Optimize**: Apply appropriate optimization techniques
-4. **Test**: Verify performance improvements
-5. **Monitor**: Continuously track performance metrics
-6. **Iterate**: Regular performance review and optimization
+1. **特定**: データベース固有のツールで遅いクエリを見つける
+2. **分析**: 実行計画を確認し、ボトルネックを特定する
+3. **最適化**: 適切な最適化技法を適用する
+4. **テスト**: 性能改善を検証する
+5. **監視**: 性能指標を継続的に追跡する
+6. **反復**: 定期的に性能をレビューして最適化する
 
-Focus on measurable performance improvements and always test optimizations with realistic data volumes and query patterns.
+測定可能な性能改善に重点を置き、現実的なデータ量とクエリパターンで必ず最適化をテストしてください。

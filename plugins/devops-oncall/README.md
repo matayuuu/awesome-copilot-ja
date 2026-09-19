@@ -1,8 +1,8 @@
-# DevOps On-Call Plugin
+# DevOps On-Call プラグイン
 
-A focused set of prompts, instructions, and a chat mode to help triage incidents and respond quickly with DevOps tools and Azure resources.
+DevOps ツールと Azure リソースを使ってインシデントをトリアージし、迅速に対応するための prompts、instructions、chat mode をまとめています。
 
-## Installation
+## インストール
 
 ```bash
 # Using Copilot CLI

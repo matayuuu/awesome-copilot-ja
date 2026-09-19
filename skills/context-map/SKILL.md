@@ -1,24 +1,24 @@
 ---
 name: context-map
-description: 'Generate a map of all files relevant to a task before making changes'
+description: '変更を加える前に、タスクに関連するすべてのファイルを整理したコンテキストマップを生成する。'
 ---
 
-# Context Map
+# コンテキストマップ
 
-Before implementing any changes, analyze the codebase and create a context map.
+変更を実装する前にコードベースを分析し、コンテキストマップを作成してください。
 
-## Task
+## タスク
 
 {{task_description}}
 
-## Instructions
+## 手順
 
-1. Search the codebase for files related to this task
-2. Identify direct dependencies (imports/exports)
-3. Find related tests
-4. Look for similar patterns in existing code
+1. このタスクに関連するファイルをコードベースから検索する
+2. 直接の依存関係（import/export）を特定する
+3. 関連するテストを見つける
+4. 既存コードから類似パターンを探す
 
-## Output Format
+## 出力形式
 
 ```markdown
 ## Context Map
@@ -49,4 +49,4 @@ Before implementing any changes, analyze the codebase and create a context map.
 - [ ] Configuration changes required
 ```
 
-Do not proceed with implementation until this map is reviewed.
+このマップがレビューされるまで実装を開始しないでください。

@@ -1,150 +1,150 @@
 ---
 name: containerize-aspnetcore
-description: 'Containerize an ASP.NET Core project by creating Dockerfile and .dockerfile files customized for the project.'
+description: 'プロジェクトに合わせたDockerfileと.dockerfileファイルを作成し、ASP.NET Coreプロジェクトをコンテナー化する。'
 ---
 
-# ASP.NET Core Docker Containerization Prompt
+# ASP.NET Core Dockerコンテナー化プロンプト
 
-## Containerization Request
+## コンテナー化の依頼
 
-Containerize the ASP.NET Core (.NET) project specified in the settings below, focusing **exclusively** on changes required for the application to run in a Linux Docker container. Containerization should consider all settings specified here.
+以下の設定で指定されたASP.NET Core（.NET）プロジェクトを、アプリケーションがLinux Dockerコンテナーで実行するために必要な変更**だけ**に集中してコンテナー化してください。ここで指定されたすべての設定を考慮します。
 
-Abide by best practices for containerizing .NET Core applications, ensuring that the container is optimized for performance, security, and maintainability.
+.NET Coreアプリケーションのコンテナー化に関するベストプラクティスに従い、パフォーマンス、セキュリティ、保守性についてコンテナーを最適化します。
 
-## Containerization Settings
+## コンテナー化設定
 
-This section of the prompt contains the specific settings and configurations required for containerizing the ASP.NET Core application. Prior to running this prompt, ensure that the settings are filled out with the necessary information. Note that in many cases, only the first few settings are required. Later settings can be left as defaults if they do not apply to the project being containerized.
+このセクションには、ASP.NET Coreアプリケーションのコンテナー化に必要な具体的な設定と構成が含まれます。このプロンプトを実行する前に、必要な情報を設定へ入力してください。多くの場合、必要なのは最初の数項目だけです。後半の設定が対象プロジェクトに該当しない場合は、既定値のままにできます。
 
-Any settings that are not specified will be set to default values. The default values are provided in `[square brackets]`.
+指定されていない設定には既定値が適用されます。既定値は`[角括弧]`内に示されています。
 
-### Basic Project Information
-1. Project to containerize: 
-   - `[ProjectName (provide path to .csproj file)]`
+### 基本プロジェクト情報
+1. コンテナー化するプロジェクト:
+   - `[ProjectName（.csprojファイルへのパスを指定）]`
 
-2. .NET version to use:
-   - `[8.0 or 9.0 (Default 8.0)]`
+2. 使用する.NETバージョン:
+   - `[8.0または9.0（既定は8.0）]`
 
-3. Linux distribution to use:
-   - `[debian, alpine, ubuntu, chiseled, or Azure Linux (mariner) (Default debian)]`
+3. 使用するLinuxディストリビューション:
+   - `[debian、alpine、ubuntu、chiseled、Azure Linux（mariner）のいずれか（既定はdebian）]`
 
-4. Custom base image for the build stage of the Docker image ("None" to use standard Microsoft base image):
-   - `[Specify base image to use for build stage (Default None)]`
+4. Dockerイメージのビルドステージで使用するカスタムベースイメージ（標準のMicrosoftベースイメージを使用する場合は"None"）:
+   - `[ビルドステージで使用するベースイメージを指定（既定はNone）]`
 
-5. Custom base image for the run stage of the Docker image ("None" to use standard Microsoft base image):
-   - `[Specify base image to use for run stage (Default None)]`   
+5. Dockerイメージの実行ステージで使用するカスタムベースイメージ（標準のMicrosoftベースイメージを使用する場合は"None"）:
+   - `[実行ステージで使用するベースイメージを指定（既定はNone）]`
 
-### Container Configuration
-1. Ports that must be exposed in the container image:
-   - Primary HTTP port: `[e.g., 8080]`
-   - Additional ports: `[List any additional ports, or "None"]`
+### コンテナー構成
+1. コンテナーイメージで公開する必要があるポート:
+   - プライマリHTTPポート: `[例: 8080]`
+   - 追加ポート: `[追加ポートを列挙、または"None"]`
 
-2. User account the container should run as:
-   - `[User account, or default to "$APP_UID"]`
+2. コンテナーを実行するユーザーアカウント:
+   - `[ユーザーアカウント、または既定の"$APP_UID"]`
 
-3. Application URL configuration:
-   - `[Specify ASPNETCORE_URLS, or default to "http://+:8080"]`
+3. アプリケーションURLの構成:
+   - `[ASPNETCORE_URLSを指定、または既定の"http://+:8080"]`
 
-### Build configuration
-1. Custom build steps that must be performed before building the container image:
-   - `[List any specific build steps, or "None"]`
+### ビルド構成
+1. コンテナーイメージのビルド前に実行する必要があるカスタムビルド手順:
+   - `[具体的なビルド手順を列挙、または"None"]`
 
-2. Custom build steps that must be performed after building the container image:
-   - `[List any specific build steps, or "None"]`
+2. コンテナーイメージのビルド後に実行する必要があるカスタムビルド手順:
+   - `[具体的なビルド手順を列挙、または"None"]`
 
-3. NuGet package sources that must be configured:
-   - `[List any private NuGet feeds with authentication details, or "None"]`
+3. 構成する必要があるNuGetパッケージソース:
+   - `[認証情報を含むprivate NuGet feedを列挙、または"None"]`
 
-### Dependencies
-1. System packages that must be installed in the container image:
-   - `[Package names for the chosen Linux distribution, or "None"]`
+### 依存関係
+1. コンテナーイメージへインストールする必要があるシステムパッケージ:
+   - `[選択したLinuxディストリビューション用のパッケージ名、または"None"]`
 
-2. Native libraries that must be copied to the container image:
-   - `[Library names and paths, or "None"]`
+2. コンテナーイメージへコピーする必要があるネイティブライブラリ:
+   - `[ライブラリ名とパス、または"None"]`
 
-3. Additional .NET tools that must be installed:
-   - `[Tool names and versions, or "None"]`
+3. インストールする必要がある追加の.NET Tool:
+   - `[Tool名とバージョン、または"None"]`
 
-### System Configuration
-1. Environment variables that must be set in the container image:
-   - `[Variable names and values, or "Use defaults"]`
+### システム構成
+1. コンテナーイメージで設定する必要がある環境変数:
+   - `[変数名と値、または"Use defaults"]`
 
-### File System
-1. Files/directories that need to be copied to the container image:
-   - `[Paths relative to project root, or "None"]`
-   - Target location in container: `[Container paths, or "Not applicable"]`
+### ファイルシステム
+1. コンテナーイメージへコピーする必要があるファイル／ディレクトリ:
+   - `[プロジェクトルートからの相対パス、または"None"]`
+   - コンテナー内のコピー先: `[コンテナーパス、または"Not applicable"]`
 
-2. Files/directories to exclude from containerization:
-   - `[Paths to exclude, or "None"]`
+2. コンテナー化から除外するファイル／ディレクトリ:
+   - `[除外するパス、または"None"]`
 
-3. Volume mount points that should be configured:
-   - `[Volume paths for persistent data, or "None"]`
+3. 構成するボリュームマウントポイント:
+   - `[永続データ用のボリュームパス、または"None"]`
 
-### .dockerignore Configuration
-1. Patterns to include in the `.dockerignore` file (.dockerignore will already have common defaults; these are additional patterns):
-   - Additional patterns: `[List any additional patterns, or "None"]`
+### .dockerignoreの構成
+1. `.dockerignore`ファイルへ含めるパターン（.dockerignoreには一般的な既定値がすでに含まれ、ここでは追加パターンを指定）:
+   - 追加パターン: `[追加パターンを列挙、または"None"]`
 
-### Health Check Configuration
-1. Health check endpoint:
-   - `[Health check URL path, or "None"]`
+### ヘルスチェック構成
+1. ヘルスチェックエンドポイント:
+   - `[ヘルスチェックURLパス、または"None"]`
 
-2. Health check interval and timeout:
-   - `[Interval and timeout values, or "Use defaults"]`
+2. ヘルスチェックの間隔とタイムアウト:
+   - `[間隔とタイムアウトの値、または"Use defaults"]`
 
-### Additional Instructions
-1. Other instructions that must be followed to containerize the project:
-   - `[Specific requirements, or "None"]`
+### 追加指示
+1. プロジェクトのコンテナー化で従う必要があるその他の指示:
+   - `[具体的な要件、または"None"]`
 
-2. Known issues to address:
-   - `[Describe any known issues, or "None"]`
+2. 対処する既知の問題:
+   - `[既知の問題を説明、または"None"]`
 
-## Scope
+## スコープ
 
-- ✅ App configuration modification to ensure application settings and connection strings can be read from environment variables
-- ✅ Dockerfile creation and configuration for an ASP.NET Core application
-- ✅ Specifying multiple stages in the Dockerfile to build/publish the application and copy the output to the final image
-- ✅ Configuration of Linux container platform compatibility (Alpine, Ubuntu, Chiseled, or Azure Linux (Mariner))
-- ✅ Proper handling of dependencies (system packages, native libraries, additional tools)
-- ❌ No infrastructure setup (assumed to be handled separately)
-- ❌ No code changes beyond those required for containerization
+- ✅ 環境変数からアプリケーション設定と接続文字列を読み取れるようにするアプリ構成変更
+- ✅ ASP.NET Coreアプリケーション用Dockerfileの作成と構成
+- ✅ アプリケーションをビルド／公開し、出力を最終イメージへコピーするDockerfileのマルチステージ指定
+- ✅ Linuxコンテナープラットフォーム互換性（Alpine、Ubuntu、Chiseled、Azure Linux（Mariner））の構成
+- ✅ 依存関係（システムパッケージ、ネイティブライブラリ、追加Tool）の適切な処理
+- ❌ インフラストラクチャのセットアップは行わない（別途処理される前提）
+- ❌ コンテナー化に必要な範囲を超えるコード変更は行わない
 
-## Execution Process
+## 実行プロセス
 
-1. Review the containerization settings above to understand the containerization requirements
-2. Create a `progress.md` file to track changes with check marks
-3. Determine the .NET version from the project's .csproj file by checking the `TargetFramework` element
-4. Select the appropriate Linux container image based on:
-   - The .NET version detected from the project
-   - The Linux distribution specified in containerization settings (Alpine, Ubuntu, Chiseled, or Azure Linux (Mariner))
-   - If the user does not request specific base images in the containerization settings, then the base images MUST be valid mcr.microsoft.com/dotnet images with a tag as shown in the example Dockerfile, below, or in documentation
-   - Official Microsoft .NET images for build and runtime stages:
-      - SDK image tags (for build stage): https://github.com/dotnet/dotnet-docker/blob/main/README.sdk.md
-      - ASP.NET Core runtime image tags: https://github.com/dotnet/dotnet-docker/blob/main/README.aspnet.md
-      - .NET runtime image tags: https://github.com/dotnet/dotnet-docker/blob/main/README.runtime.md
-5. Create a Dockerfile in the root of the project directory to containerize the application
-   - The Dockerfile should use multiple stages:
-     - Build stage: Use a .NET SDK image to build the application
-       - Copy csproj file(s) first
-       - Copy NuGet.config if one exists and configure any private feeds
-       - Restore NuGet packages
-       - Then, copy the rest of the source code and build and publish the application to /app/publish
-     - Final stage: Use the selected .NET runtime image to run the application
-       - Set the working directory to /app
-       - Set the user as directed (by default, to a non-root user (e.g., `$APP_UID`))
-         - Unless directed otherwise in containerization settings, a new user does *not* need to be created. Use the `$APP_UID` variable to specify the user account.
-       - Copy the published output from the build stage to the final image
-   - Be sure to consider all requirements in the containerization settings:
-     - .NET version and Linux distribution
-     - Exposed ports
-     - User account for container
-     - ASPNETCORE_URLS configuration
-     - System package installation
-     - Native library dependencies
-     - Additional .NET tools
-     - Environment variables
-     - File/directory copying
-     - Volume mount points
-     - Health check configuration
-6. Create a `.dockerignore` file in the root of the project directory to exclude unnecessary files from the Docker image. The `.dockerignore` file **MUST** include at least the following elements as well as additional patterns as specified in the containerization settings:
+1. 上記のコンテナー化設定を確認し、コンテナー化の要件を理解する
+2. チェックマークで変更を追跡する`progress.md`ファイルを作成する
+3. プロジェクトの.csprojファイルにある`TargetFramework`要素を確認し、.NETバージョンを特定する
+4. 次に基づいて適切なLinuxコンテナーイメージを選択する:
+   - プロジェクトから検出した.NETバージョン
+   - コンテナー化設定で指定されたLinuxディストリビューション（Alpine、Ubuntu、Chiseled、Azure Linux（Mariner））
+   - ユーザーがコンテナー化設定で特定のベースイメージを要求していない場合、ベースイメージは、以下のDockerfile例またはドキュメントに示されるタグを持つ有効なmcr.microsoft.com/dotnetイメージで**なければならない**
+   - ビルドステージとランタイムステージ用のMicrosoft公式.NETイメージ:
+      - SDKイメージタグ（ビルドステージ用）: https://github.com/dotnet/dotnet-docker/blob/main/README.sdk.md
+      - ASP.NET Coreランタイムイメージタグ: https://github.com/dotnet/dotnet-docker/blob/main/README.aspnet.md
+      - .NETランタイムイメージタグ: https://github.com/dotnet/dotnet-docker/blob/main/README.runtime.md
+5. アプリケーションをコンテナー化するDockerfileをプロジェクトディレクトリのルートに作成する
+   - Dockerfileではマルチステージを使用する:
+     - ビルドステージ: .NET SDKイメージを使用してアプリケーションをビルドする
+       - 最初にcsprojファイルをコピーする
+       - NuGet.configが存在する場合はコピーし、private feedを構成する
+       - NuGetパッケージを復元する
+       - 次に残りのソースコードをコピーし、アプリケーションをビルドして/app/publishへ公開する
+     - 最終ステージ: 選択した.NETランタイムイメージを使用してアプリケーションを実行する
+       - 作業ディレクトリを/appに設定する
+       - 指示されたユーザーを設定する（既定では非rootユーザー、例: `$APP_UID`）
+         - コンテナー化設定で別の指示がない限り、新しいユーザーを作成する必要は*ない*。ユーザーアカウントの指定には`$APP_UID`変数を使用する。
+       - ビルドステージから公開済み出力を最終イメージへコピーする
+   - コンテナー化設定のすべての要件を必ず考慮する:
+     - .NETバージョンとLinuxディストリビューション
+     - 公開ポート
+     - コンテナーのユーザーアカウント
+     - ASPNETCORE_URLSの構成
+     - システムパッケージのインストール
+     - ネイティブライブラリの依存関係
+     - 追加の.NET Tool
+     - 環境変数
+     - ファイル／ディレクトリのコピー
+     - ボリュームマウントポイント
+     - ヘルスチェック構成
+6. Dockerイメージから不要なファイルを除外する`.dockerignore`ファイルをプロジェクトディレクトリのルートに作成する。`.dockerignore`ファイルには、次の要素とコンテナー化設定で指定された追加パターンを少なくとも**必ず**含める:
    - bin/
    - obj/
    - .dockerignore
@@ -158,26 +158,26 @@ Any settings that are not specified will be set to default values. The default v
    - *.suo
    - **/.DS_Store
    - **/Thumbs.db
-   - Any additional patterns specified in the containerization settings
-7. Configure health checks if specified in the containerization settings:
-   - Add HEALTHCHECK instruction to Dockerfile if health check endpoint is provided
-   - Use curl or wget to check the health endpoint
-8. Mark tasks as completed: [ ] → [✓]
-9. Continue until all tasks are complete and Docker build succeeds
+   - コンテナー化設定で指定された追加パターン
+7. コンテナー化設定で指定されている場合はヘルスチェックを構成する:
+   - ヘルスチェックエンドポイントが指定されている場合は、DockerfileへHEALTHCHECK命令を追加する
+   - curlまたはwgetを使用してヘルスエンドポイントを確認する
+8. タスクを完了としてマークする: [ ] → [✓]
+9. すべてのタスクが完了し、Dockerビルドが成功するまで続行する
 
-## Build and Runtime Verification
+## ビルドとランタイムの検証
 
-Confirm that Docker build succeeds once the Dockerfile is completed. Use the following command to build the Docker image:
+Dockerfileの完成後にDockerビルドが成功することを確認します。次のコマンドを使用してDockerイメージをビルドします:
 
 ```bash
 docker build -t aspnetcore-app:latest .
 ```
 
-If the build fails, review the error messages and make necessary adjustments to the Dockerfile or project configuration. Report success/failure.
+ビルドが失敗した場合は、エラーメッセージを確認し、Dockerfileまたはプロジェクト構成へ必要な調整を行います。成功／失敗を報告します。
 
-## Progress Tracking
+## 進捗追跡
 
-Maintain a `progress.md` file with the following structure:
+次の構造で`progress.md`ファイルを維持します:
 ```markdown
 # Containerization Progress
 
@@ -206,13 +206,13 @@ Maintain a `progress.md` file with the following structure:
 - [ ] Docker build success
 ```
 
-Do not pause for confirmation between steps. Continue methodically until the application has been containerized and Docker build succeeds.
+手順の途中で確認のために停止しないでください。アプリケーションのコンテナー化とDockerビルドが成功するまで、順序立てて続行してください。
 
-**YOU ARE NOT DONE UNTIL ALL CHECKBOXES ARE MARKED!** This includes building the Docker image successfully and addressing any issues that arise during the build process.
+**すべてのチェックボックスを完了するまで作業は終了ではありません。** これには、Dockerイメージのビルド成功と、ビルドプロセス中に発生した問題への対処が含まれます。
 
-## Example Dockerfile
+## Dockerfileの例
 
-An example Dockerfile for an ASP.NET Core (.NET) application using a Linux base image.
+Linuxベースイメージを使用するASP.NET Core（.NET）アプリケーションのDockerfile例です。
 
 ```dockerfile
 # ============================================================
@@ -332,23 +332,23 @@ USER $APP_UID
 ENTRYPOINT ["dotnet", "YourProject.dll"]
 ```
 
-## Adapting this Example
+## この例の調整
 
-**Note:** Customize this template based on the specific requirements in containerization settings.
+**注記:** コンテナー化設定の具体的な要件に基づいて、このテンプレートをカスタマイズしてください。
 
-When adapting this example Dockerfile:
+このDockerfile例を調整するときは:
 
-1. Replace `YourProject.csproj`, `YourProject.dll`, etc. with your actual project names
-2. Adjust the .NET version and Linux distribution as needed
-3. Modify the dependency installation steps based on your requirements and remove any unnecessary ones
-4. Configure environment variables specific to your application
-5. Add or remove stages as needed for your specific workflow
-6. Update the health check endpoint to match your application's health check route
+1. `YourProject.csproj`、`YourProject.dll`などを実際のプロジェクト名へ置き換える
+2. 必要に応じて.NETバージョンとLinuxディストリビューションを調整する
+3. 要件に基づいて依存関係のインストール手順を変更し、不要な手順を削除する
+4. アプリケーション固有の環境変数を構成する
+5. 具体的なワークフローに応じてステージを追加または削除する
+6. アプリケーションのヘルスチェックルートに合わせてヘルスチェックエンドポイントを更新する
 
-## Linux Distribution Variations
+## Linuxディストリビューション別の差異
 
 ### Alpine Linux
-For smaller image sizes, you can use Alpine Linux:
+イメージサイズを小さくするには、Alpine Linuxを使用できます:
 
 ```dockerfile
 FROM mcr.microsoft.com/dotnet/sdk:8.0-alpine AS build
@@ -360,15 +360,15 @@ RUN apk update && apk add --no-cache curl ca-certificates
 ```
 
 ### Ubuntu Chiseled
-For minimal attack surface, consider using chiseled images:
+攻撃対象領域を最小限にするには、chiseledイメージの使用を検討します:
 
 ```dockerfile
 FROM mcr.microsoft.com/dotnet/aspnet:8.0-jammy-chiseled AS final
 # Note: Chiseled images have minimal packages, so you may need to use a different base for additional dependencies
 ```
 
-### Azure Linux (Mariner)
-For Azure-optimized containers:
+### Azure Linux（Mariner）
+Azure向けに最適化されたコンテナーには:
 
 ```dockerfile
 FROM mcr.microsoft.com/dotnet/aspnet:8.0-azurelinux3.0 AS final
@@ -376,17 +376,17 @@ FROM mcr.microsoft.com/dotnet/aspnet:8.0-azurelinux3.0 AS final
 RUN tdnf update -y && tdnf install -y curl ca-certificates && tdnf clean all
 ```
 
-## Notes on Stage Naming
+## ステージ命名に関する注記
 
-- The `AS stage-name` syntax gives each stage a name
-- Use `--from=stage-name` to copy files from a previous stage
-- You can have multiple intermediate stages that aren't used in the final image
-- The `final` stage is the one that becomes the final container image
+- `AS stage-name`構文は各ステージに名前を付ける
+- 前のステージからファイルをコピーするには`--from=stage-name`を使用する
+- 最終イメージで使用しない中間ステージを複数作成できる
+- `final`ステージが最終コンテナーイメージになる
 
-## Security Best Practices
+## セキュリティのベストプラクティス
 
-- Always run as a non-root user in production
-- Use specific image tags instead of `latest`
-- Minimize the number of installed packages
-- Keep base images updated
-- Use multi-stage builds to exclude build dependencies from the final image
+- 本番環境では常に非rootユーザーで実行する
+- `latest`ではなく具体的なイメージタグを使用する
+- インストールするパッケージ数を最小限にする
+- ベースイメージを最新に保つ
+- マルチステージビルドを使用して、最終イメージからビルド依存関係を除外する

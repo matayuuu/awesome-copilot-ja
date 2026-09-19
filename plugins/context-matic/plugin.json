@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "context-matic",
-  "description": "Coding agents hallucinate APIs. ContextMatic gives them curated, versioned API and SDK docs. Ask your agent to \"integrate the payments API\" and it guesses — falling back on outdated training data and generic patterns that don't match your actual SDK. ContextMatic solves this by giving the agent deterministic, version-aware, SDK-native context at the exact moment it's needed.",
+  "description": "コーディング agents は API を幻覚することがあります。ContextMatic は厳選されたバージョン管理済みの API と SDK のドキュメントを提供します。agent に「payments API を統合して」と頼むと、実際の SDK に合わない古い学習データや一般的なパターンに頼って推測することがあります。ContextMatic は必要な瞬間に、決定論的でバージョンを認識した SDK ネイティブのコンテキストを agent に与えて解決します。",
   "version": "0.1.0",
   "keywords": [
     "api-context",

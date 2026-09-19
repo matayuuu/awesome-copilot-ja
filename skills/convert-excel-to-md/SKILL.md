@@ -1,54 +1,48 @@
 ---
 name: convert-excel-to-md
-description: 'Converts Excel (.xlsx) workbooks into Markdown so their contents can be accurately analyzed, summarized, searched, or extracted from. Use this skill whenever the user shares, references, or asks about a .xlsx file — even if they don''t say "convert" or "markdown" explicitly. This includes requests to "read", "summarize", "review", "extract data from", "compare", "chart", or "analyze" a spreadsheet, workbook, budget, data export, or tracker. Always run the bundled conversion script to produce Markdown first; do not attempt to parse .xlsx content directly or write ad-hoc extraction code. Also use this skill for batch requests involving a whole folder of Excel workbooks. IMPORTANT: When the user references a folder or set of documents containing multiple file types (.pdf, .docx, .xlsx), invoke ALL three sibling skills — convert-pdf-to-md, convert-word-to-md, and convert-excel-to-md — so no file type is silently skipped.'
+description: 'Excel（.xlsx）ワークブックをMarkdownへ変換し、内容を正確に分析、要約、検索、抽出できるようにする。ユーザーが.xlsxファイルを共有、参照、または質問した場合は、「変換」や「Markdown」と明示していなくても必ず使用する。スプレッドシート、ワークブック、予算表、データ出力、トラッカーの読み取り、要約、レビュー、データ抽出、比較、グラフ化、分析の依頼を含む。まず同梱の変換スクリプトでMarkdownを生成し、.xlsxを直接解析したり、その場限りの抽出コードを書いたりしない。Excelワークブックを含むフォルダー全体の一括処理にも使用する。重要: 複数のファイル形式（.pdf、.docx、.xlsx）を含むフォルダーや文書群が参照された場合は、どの形式も見落とさないよう、convert-pdf-to-md、convert-word-to-md、convert-excel-to-mdの3つすべてを呼び出す。'
 ---
 
-# Convert Excel to Markdown
+# ExcelをMarkdownへ変換
 
-## When to use this skill
+## このSkillを使う場面
 
-Trigger this skill any time there is a `.xlsx` file that needs to be
-understood or processed — for example, a user attaches a spreadsheet and
-asks questions about it, wants a summary of the data, wants specific rows or
-values pulled out, or wants multiple workbooks in a folder processed
-together. Excel's native `.xlsx` format is a zipped XML bundle that is not
-reliably readable as plain text, so always convert it to Markdown first
-using the script in this skill rather than trying to open or parse the file
-directly.
+理解または処理が必要な `.xlsx` ファイルがある場合は、常にこのSkillを起動する。
+たとえば、ユーザーがスプレッドシートを添付して質問する、データの要約を求める、
+特定の行や値の抽出を求める、フォルダー内の複数のワークブックをまとめて処理したい
+場合が該当する。Excel固有の `.xlsx` 形式はZIP化されたXMLの集合であり、
+プレーンテキストとして確実に読み取れないため、ファイルを直接開いたり解析したり
+せず、必ずこのSkillのスクリプトで先にMarkdownへ変換する。
 
-This skill only supports `.xlsx`. If asked to convert a legacy `.xls` file,
-tell the user it isn't supported and ask them to re-save it as `.xlsx`
-(Excel: File > Save As > Excel Workbook (.xlsx)) first.
+このSkillが対応するのは `.xlsx` のみである。従来形式の `.xls` の変換を依頼された
+場合は、未対応であることを伝え、先に `.xlsx` として保存し直すよう依頼する
+（Excel: File > Save As > Excel Workbook (.xlsx)）。
 
-**Mixed file types:** When the user references a folder or set of documents
-containing multiple supported file types (`.pdf`, `.docx`, `.xlsx`), this
-skill handles only `.xlsx` files. The agent MUST also invoke the sibling
-skills in parallel:
-- `convert-pdf-to-md` for any `.pdf` files
-- `convert-word-to-md` for any `.docx` files
+**複数のファイル形式:** ユーザーが対応形式（`.pdf`、`.docx`、`.xlsx`）を複数含む
+フォルダーや文書群を参照した場合、このSkillが処理するのは `.xlsx` ファイルだけである。
+エージェントは、次の兄弟Skillも並列で必ず呼び出す。
+- `.pdf` ファイルには `convert-pdf-to-md`
+- `.docx` ファイルには `convert-word-to-md`
 
-Never process a folder and silently skip a supported file type. All three
-skills must be invoked together when mixed types are present.
+フォルダーを処理するとき、対応形式を黙って除外してはならない。複数形式が含まれる
+場合は、3つのSkillをすべて同時に呼び出す。
 
-## Setup (once per environment)
+## セットアップ（環境ごとに1回）
 
-Before the first conversion in a given environment, follow
-[`references/setup.md`](references/setup.md) step by step to ensure Python,
-pip, and the `markitdown` package are installed. Do this proactively rather
-than guessing whether the environment is ready — the script itself will
-also fail with a clear pointer back to that file if `markitdown` turns out
-to be missing, so it's safe to just try the conversion first if you're
-reasonably confident setup was already done.
+各環境で初めて変換する前に、[`references/setup.md`](references/setup.md) の手順に従い、
+Python、pip、`markitdown` パッケージがインストール済みであることを確認する。
+環境の準備状況を推測せず、先回りして確認する。`markitdown` が不足していれば、
+スクリプト自体もこのファイルを案内する明確なエラーで失敗するため、セットアップ済み
+だと十分確信できる場合は、先に変換を試してもよい。
 
-## Usage
+## 使用方法
 
-The conversion script lives at `scripts/convert_excel_to_md.py`.
+変換スクリプトは `scripts/convert_excel_to_md.py` にある。
 
-**Output structure:** MarkItDown's XLSX converter renders each sheet as its
-own `## <SheetName>` Markdown table — it has no support for embedded images
-at all. This script separately extracts real embedded images (raster
-pictures, not charts) and maps them to the sheet they belong to, writing a
-self-contained folder per document:
+**出力構造:** MarkItDownのXLSXコンバーターは、各シートを個別の
+`## <SheetName>` Markdownテーブルとして出力し、埋め込み画像には対応しない。
+このスクリプトは、実際の埋め込み画像（グラフではなくラスター画像）を別途抽出し、
+所属するシートへ対応付けて、文書ごとに自己完結したフォルダーへ書き出す。
 
 ```
 <name>/
@@ -60,72 +54,70 @@ self-contained folder per document:
                          under a "#### Images in this sheet" heading)
 ```
 
-This is per-sheet placement, not exact cell position — the finest
-granularity MarkItDown's stable output anchors (the `## <SheetName>`
-headings) allow. If a workbook has no embedded images, no `img/` folder or
-image sections are created. Native Excel **charts** are not extracted as
-images (only actual embedded pictures are — charts would need to be
-rendered by Excel/LibreOffice, which this lightweight skill does not do).
+配置単位はシートであり、正確なセル位置ではない。これはMarkItDownの安定した出力
+アンカー（`## <SheetName>` 見出し）で扱える最小単位である。埋め込み画像がない
+ワークブックでは、`img/` フォルダーも画像セクションも作成しない。Excel固有の
+**グラフ**は画像として抽出しない（対象は実際に埋め込まれた画像だけである。
+グラフの画像化にはExcelまたはLibreOfficeによるレンダリングが必要だが、
+この軽量なSkillでは行わない）。
 
-**Single file:**
+**単一ファイル:**
 
 ```powershell
 python scripts\convert_excel_to_md.py "C:\path\to\workbook.xlsx"
 ```
 
-This creates a `workbook\` folder next to the source file (containing
-`workbook.md` and, if present, `workbook\img\`). To control the destination
-folder explicitly:
+これにより、元ファイルの隣に `workbook\` フォルダーが作成される
+（`workbook.md` と、存在する場合は `workbook\img\` を含む）。出力先フォルダーを
+明示的に指定する場合:
 
 ```powershell
 python scripts\convert_excel_to_md.py "C:\path\to\workbook.xlsx" -o "C:\path\to\output_folder"
 ```
 
-**A folder of workbooks (batch mode):**
+**ワークブックのフォルダー（一括モード）:**
 
 ```powershell
 python scripts\convert_excel_to_md.py "C:\path\to\folder"
 ```
 
-Add `--recursive` to also include subfolders:
+サブフォルダーも含めるには `--recursive` を追加する。
 
 ```powershell
 python scripts\convert_excel_to_md.py "C:\path\to\folder" --recursive
 ```
 
-Each `.xlsx` found gets its own `<name>\` output folder next to it by
-default. Pass `-o "C:\path\to\output_parent"` to collect all the generated
-`<name>\` folders under a separate parent directory instead (subfolder
-structure is preserved when combined with `--recursive`).
+既定では、見つかった各 `.xlsx` の隣に、それぞれの `<name>\` 出力フォルダーが
+作成される。生成したすべての `<name>\` フォルダーを別の親ディレクトリ配下へ
+まとめるには、`-o "C:\path\to\output_parent"` を指定する
+（`--recursive` と組み合わせた場合もサブフォルダー構造は保持される）。
 
-After conversion, read the resulting `.md` file(s) to perform the actual
-analysis the user asked for — the script's job is only to produce accurate
-Markdown (and images), not to interpret the content.
+変換後、生成された `.md` ファイルを読み、ユーザーが依頼した実際の分析を行う。
+スクリプトの役割は正確なMarkdown（および画像）を生成することだけであり、
+内容の解釈ではない。
 
-## Deciding where output goes
+## 出力先の決定
 
-**Default — always output next to the source file.** The `<name>/` folder
-is created in the same directory as the source `.xlsx`. This is the required
-default for every case. Do NOT override it unless the user explicitly asks
-for a different location.
+**既定では必ず元ファイルの隣へ出力する。** `<name>/` フォルダーは元の `.xlsx` と
+同じディレクトリに作成する。これはすべての場合に必須の既定動作である。
+ユーザーが別の場所を明示的に求めない限り、変更してはならない。
 
-**Only use `-o` when** the user explicitly provides an output path (e.g.,
-"save the output to `C:\output`", "put the results in `D:\work`"). Do NOT
-pass `-o` based on the agent's current working directory, the session state
-folder, or any implied location.
+**`-o` を使うのは、** ユーザーが出力パスを明示した場合だけである
+（例: 「出力を `C:\output` に保存して」「結果を `D:\work` に置いて」）。
+エージェントの現在の作業ディレクトリ、セッション状態フォルダー、暗黙の場所を
+根拠に `-o` を渡してはならない。
 
-**If the source file path cannot be fully resolved** — for example, the
-user provides only a filename with no directory, or the path is ambiguous —
-use `ask_user` to confirm the full absolute path before running the
-conversion. Never guess or assume the directory.
+**元ファイルのパスを完全に解決できない場合**（たとえば、ユーザーがディレクトリ
+なしのファイル名だけを示した場合や、パスが曖昧な場合）は、変換前に `ask_user` で
+完全な絶対パスを確認する。ディレクトリを推測したり決めつけたりしてはならない。
 
-## Troubleshooting
+## トラブルシューティング
 
-| Symptom | Likely cause | Fix |
+| 症状 | 考えられる原因 | 対処 |
 |---|---|---|
-| `ModuleNotFoundError: No module named 'markitdown'` / exit code 2 | MarkItDown not installed | Follow `references/setup.md` |
-| `ERROR: Unsupported file type '.xls'` / exit code 3 | Legacy `.xls`, not `.xlsx` | Ask the user to re-save as `.xlsx` |
-| `ERROR: Input path not found` / exit code 3 | Wrong path, or file moved | Confirm the correct path with the user |
-| `FAILED <file> -> ...` in batch output | That specific file is corrupt, password-protected, or otherwise unreadable | Report which file(s) failed; other files in the batch still succeed |
-| `NOTE: skipped N non-.xlsx file(s)` | Folder contains non-Excel files | Expected — those files are intentionally ignored |
-| A sheet's charts don't appear as images | Charts are chart objects, not embedded pictures — this skill only extracts real embedded raster images | Expected; mention this limitation if the user specifically needs chart images |
+| `ModuleNotFoundError: No module named 'markitdown'` / exit code 2 | MarkItDownが未インストール | `references/setup.md` に従う |
+| `ERROR: Unsupported file type '.xls'` / exit code 3 | `.xlsx` ではなく従来形式の `.xls` | `.xlsx` として保存し直すようユーザーへ依頼する |
+| `ERROR: Input path not found` / exit code 3 | パスが誤っているか、ファイルが移動された | 正しいパスをユーザーに確認する |
+| 一括出力の `FAILED <file> -> ...` | 該当ファイルが破損、パスワード保護、またはその他の理由で読み取れない | 失敗したファイルを報告する。一括処理内の他のファイルは引き続き成功する |
+| `NOTE: skipped N non-.xlsx file(s)` | フォルダーにExcel以外のファイルが含まれる | 想定どおり。これらのファイルは意図的に無視される |
+| シートのグラフが画像として表示されない | グラフは埋め込み画像ではなくグラフオブジェクトであり、このSkillが抽出するのは実際に埋め込まれたラスター画像だけである | 想定どおり。ユーザーがグラフ画像を特に必要としている場合は、この制限を伝える |

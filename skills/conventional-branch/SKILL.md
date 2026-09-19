@@ -1,42 +1,42 @@
 ---
 name: conventional-branch
-description: 'Create Git branches following the Conventional Branch specification (feature/, bugfix/, hotfix/, release/, chore/). Use when creating a new branch, naming a branch, or checking whether a branch name complies with the spec.'
+description: 'Conventional Branch仕様（feature/、bugfix/、hotfix/、release/、chore/）に従うGitブランチを作成する。新しいブランチの作成、ブランチ名の決定、ブランチ名が仕様に準拠しているかの確認に使用する。'
 ---
 
 # Conventional Branch
 
-Create Git branches that follow the [Conventional Branch](https://conventional-branch.github.io) specification — a simple, consistent convention for naming Git branches.
+[Conventional Branch](https://conventional-branch.github.io)仕様に従い、Gitブランチの名前を単純かつ一貫した規則で作成します。
 
-## Branch Name Format
+## ブランチ名の形式
 
 ```
 <type>/<description>
 ```
 
-### Branch Types
+### ブランチの種類
 
-| Type | Alias | Purpose |
+| 種類 | 別名 | 目的 |
 |------|-------|---------|
-| `feature/` | `feat/` | New features or enhancements |
-| `bugfix/` | `fix/` | Bug fixes |
-| `hotfix/` | — | Urgent production fixes |
-| `release/` | — | Release preparation (dots allowed in version: `release/v1.2.0`) |
-| `chore/` | — | Non-code tasks (deps, docs, config) |
+| `feature/` | `feat/` | 新機能または機能強化 |
+| `bugfix/` | `fix/` | バグ修正 |
+| `hotfix/` | — | 本番環境の緊急修正 |
+| `release/` | — | リリース準備（バージョン内のドットを許可: `release/v1.2.0`） |
+| `chore/` | — | コード以外の作業（依存関係、ドキュメント、構成） |
 
-### Trunk Branches
+### トランクブランチ
 
-`main`, `master`, and `develop` are trunk branches — they do not use a prefix. Never create new branches with the same names as trunk branches; branch off them instead.
+`main`、`master`、`develop`はトランクブランチであり、接頭辞を使用しません。トランクブランチと同じ名前の新しいブランチは作成せず、トランクブランチから分岐してください。
 
-## Naming Rules
+## 命名規則
 
-- **Lowercase only** — no uppercase letters anywhere
-- **Alphanumerics, hyphens, and dots** — `a-z`, `0-9`, `-`, `.`
-- **Dots allowed only** in `release/` version descriptions (e.g., `release/v1.2.0`)
-- **No underscores, spaces, or special characters**
-- **No consecutive hyphens** (`--`), **dots** (`..`), or **hyphen-dot adjacency** (`-.` or `.-`)
-- **No leading or trailing hyphens or dots** in the description
+- **小文字のみ** — どこにも大文字を使用しない
+- **英数字、ハイフン、ドット** — `a-z`、`0-9`、`-`、`.`
+- **ドットを使用できるのは**`release/`のバージョン説明のみ（例: `release/v1.2.0`）
+- **アンダースコア、空白、特殊文字は禁止**
+- **ハイフン**（`--`）、**ドット**（`..`）の連続、および**ハイフンとドットの隣接**（`-.`または`.-`）は禁止
+- 説明の先頭または末尾に**ハイフンやドットを置かない**
 
-## Valid Examples
+## 有効な例
 
 ```
 main
@@ -52,58 +52,58 @@ chore/update-dependencies
 feature/issue-123-new-login
 ```
 
-## Invalid Examples
+## 無効な例
 
-| Branch | Problem |
+| ブランチ | 問題 |
 |--------|---------|
-| `Feature/Add-Login` | Uppercase letters |
-| `feature/new--login` | Consecutive hyphens |
-| `feature/-new-login` | Leading hyphen |
-| `feature/new-login-` | Trailing hyphen |
-| `release/v1.-2.0` | Hyphen adjacent to dot |
-| `fix/header bug` | Space |
-| `fix/header_bug` | Underscore |
-| `unknown/some-task` | Unknown prefix type |
+| `Feature/Add-Login` | 大文字を使用している |
+| `feature/new--login` | ハイフンが連続している |
+| `feature/-new-login` | 先頭にハイフンがある |
+| `feature/new-login-` | 末尾にハイフンがある |
+| `release/v1.-2.0` | ハイフンがドットに隣接している |
+| `fix/header bug` | 空白がある |
+| `fix/header_bug` | アンダースコアがある |
+| `unknown/some-task` | 不明な接頭辞の種類 |
 
-## Description Guidelines
+## 説明のガイドライン
 
-- Use **kebab-case** with 2-5 words
-- Be descriptive but concise (~50 chars total)
-- Good: `add-oauth-login`, `fix-header-overflow`, `update-ci-config`
-- Bad: `fix-bug`, `new-feature`
+- 2～5語の**kebab-case**を使用する
+- 具体的かつ簡潔にする（全体で約50文字）
+- 良い例: `add-oauth-login`、`fix-header-overflow`、`update-ci-config`
+- 悪い例: `fix-bug`、`new-feature`
 
-## Workflow
+## ワークフロー
 
-**Follow these steps:**
+**次の手順に従ってください:**
 
-**Step 1 — Determine Branch Type**
+**ステップ1 — ブランチの種類を決める**
 
-Ask the user (if not already clear):
+まだ明確でない場合は、ユーザーに次を確認します:
 
-- **Branch type** — default to `feature` when uncertain
-- **Brief description** — what the branch is for
+- **ブランチの種類** — 判断できない場合は`feature`を既定とする
+- **短い説明** — ブランチの目的
 
-If the user mentions a ticket or issue number, include it in the description (e.g., `feature/issue-123-add-oauth`).
+ユーザーがチケット番号またはIssue番号に言及した場合は、説明に含めます（例: `feature/issue-123-add-oauth`）。
 
-**Step 2 — Validate the Name**
+**ステップ2 — 名前を検証する**
 
-Check the assembled name against the **Naming Rules** above. If any rule fails, fix it:
+組み立てた名前を上記の**命名規則**に照らして確認します。規則に違反している場合は修正します:
 
-- Lowercase everything
-- Replace underscores and spaces with hyphens
-- Collapse consecutive hyphens
-- Strip leading/trailing hyphens
+- すべて小文字にする
+- アンダースコアと空白をハイフンに置き換える
+- 連続するハイフンを1つにまとめる
+- 先頭と末尾のハイフンを取り除く
 
-**Step 3 — Detect the Base Branch**
+**ステップ3 — ベースブランチを検出する**
 
-Different repos use different trunk branches. Detect which one this repo uses:
+Repositoryごとに使用するトランクブランチは異なります。このRepositoryで使用しているものを検出します:
 
 ```bash
 # Prefer the remote's default branch
 git symbolic-ref --short refs/remotes/origin/HEAD 2>/dev/null | sed 's|^origin/||'
 ```
 
-If that returns nothing, check which trunk branch exists locally (priority order: `develop`, `main`, `master`):
+何も返されない場合は、ローカルに存在するトランクブランチを確認します（優先順: `develop`、`main`、`master`）:
 
 ```bash
 for b in develop main master; do
@@ -111,7 +111,7 @@ for b in develop main master; do
 done
 ```
 
-**Step 4 — Create and Checkout**
+**ステップ4 — 作成してcheckoutする**
 
 ```bash
 git checkout <base>
@@ -119,22 +119,22 @@ git pull origin <base>
 git checkout -b <type>/<description>
 ```
 
-**Step 5 — Confirm**
+**ステップ5 — 確認する**
 
-Tell the user:
-- The branch name that was created
-- That they are now on the new branch
-- Remind them: `git push -u origin <branch-name>` when ready
+ユーザーに次を伝えます:
+- 作成したブランチ名
+- 現在、新しいブランチにいること
+- 準備ができたら`git push -u origin <branch-name>`を実行すること
 
-## Relationship with Conventional Commits
+## Conventional Commitsとの関係
 
-Conventional Branch complements [Conventional Commits](https://www.conventionalcommits.org):
+Conventional Branchは[Conventional Commits](https://www.conventionalcommits.org)を補完します:
 
-| Conventional Branch | Typical Conventional Commit |
+| Conventional Branch | 典型的なConventional Commit |
 |---------------------|----------------------------|
 | `feature/add-login` | `feat: add login page` |
 | `bugfix/fix-header` | `fix: header overflow on mobile` |
 | `chore/update-deps` | `chore: bump lodash to 5.0` |
 | `release/v1.2.0` | `chore: release v1.2.0` |
 
-Align the branch type with commit types where possible (e.g., `feature/*` branches with `feat:` commits).
+可能な限り、ブランチの種類とコミットの種類を揃えます（例: `feature/*`ブランチには`feat:`コミット）。

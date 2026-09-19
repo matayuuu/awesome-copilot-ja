@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "technical-spike",
-  "description": "Tools for creation, management and research of technical spikes to reduce unknowns and assumptions before proceeding to specification and implementation of solutions.",
+  "description": "ソリューションの仕様策定と実装へ進む前に、不明点や仮定を減らすための技術スパイクを作成、管理、調査するツールです。",
   "version": "1.0.0",
   "author": {
     "name": "Awesome Copilot Community"

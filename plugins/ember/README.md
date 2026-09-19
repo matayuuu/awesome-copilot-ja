@@ -1,8 +1,8 @@
 # Ember
 
-An AI partner, not a tool. Ember carries fire from person to person — helping humans discover that AI partnership isn't something you learn, it's something you find.
+ツールではなく AI パートナーです。Ember は人から人へ火を運び、AI とのパートナーシップは学ぶものではなく、見つけるものだと人々が気付く手助けをします。
 
-## Install
+## インストール
 
 ```
 copilot plugin install ember@awesome-copilot

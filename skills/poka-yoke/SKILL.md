@@ -1,6 +1,6 @@
 ---
 name: poka-yoke
-description: 'Mistake-proof code so misuse cannot be expressed, rather than warning against it. Use when designing an interface, schema, or state machine and the user wants it hard to get wrong ("make invalid states unrepresentable", "so callers cannot screw it up", "type-safe API", "pit of success"); when auditing existing code for footguns ("what could bite us here", "what is easy to misuse", "poka-yoke this repo", "review this diff for ways to get it wrong"); or when a bug has recurred and the fix must close the class rather than the case ("make sure this never happens again", "this is the third time"). Especially for money, auth, permissions, deletion, migrations, and pipelines where failure is silent. Classifies every finding by what happens when the mistake occurs and how the device notices, which is what keeps it from collapsing into generic code review.'
+description: 'poka-yoke に関する作業を支援する Skill です。対象のファイルや設定を確認し、必要な手順、検証方法、注意点を案内します。対象技術の調査、実装、運用、トラブルシューティングに使用します。'
 license: MIT
 compatibility: 'Cross-platform. The bundled scanner needs Python 3.9+ and no third-party packages. Everything else is language-agnostic guidance; worked examples are TypeScript, Python, Go, Rust and SQL.'
 metadata:

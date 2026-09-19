@@ -1,12 +1,12 @@
 ---
 name: refactor
-description: 'Surgical code refactoring to improve maintainability without changing behavior. Covers extracting functions, renaming variables, breaking down god functions, improving type safety, eliminating code smells, and applying design patterns. Less drastic than repo-rebuilder; use for gradual improvements.'
+description: 'refactor に関する作業を支援する Skill です。対象のファイルや設定を確認し、必要な手順、検証方法、注意点を案内します。対象技術の調査、実装、運用、トラブルシューティングに使用します。'
 license: MIT
 ---
 
 # Refactor
 
-## Overview
+## 概要
 
 Improve code structure and readability without changing external behavior. Refactoring is gradual evolution, not revolution. Use this for improving existing code, not rewriting from scratch.
 
@@ -614,7 +614,7 @@ Use this skill when:
 - [ ] No `any` types without justification
 - [ ] Nullable types explicitly marked
 
-### Testing
+### テスト
 
 - [ ] Refactored code is tested
 - [ ] Tests cover edge cases

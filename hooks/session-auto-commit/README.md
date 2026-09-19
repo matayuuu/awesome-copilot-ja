@@ -1,43 +1,43 @@
 ---
-name: 'Session Auto-Commit'
-description: 'Automatically commits and pushes changes when a Copilot coding agent session ends'
+name: 'セッション自動コミット'
+description: 'Copilot coding agent のセッション終了時に変更を自動でコミットしてプッシュします'
 tags: ['automation', 'git', 'productivity']
 ---
 
-# Session Auto-Commit Hook
+# セッション自動コミットフック
 
-Automatically commits and pushes changes when a GitHub Copilot coding agent session ends, ensuring your work is always saved and backed up.
+GitHub Copilot coding agent のセッション終了時に変更を自動でコミットしてプッシュし、作業を常に保存・バックアップします。
 
-## Overview
+## 概要
 
-This hook runs at the end of each Copilot coding agent session and automatically:
-- Detects if there are uncommitted changes
-- Stages all changes
-- Creates a timestamped commit
-- Pushes to the remote repository
+このフックは Copilot coding agent の各セッション終了時に実行され、次を自動的に行います。
+- 未コミットの変更があるか検出
+- すべての変更をステージ
+- タイムスタンプ付きコミットを作成
+- リモートリポジトリへプッシュ
 
-## Features
+## 機能
 
-- **Automatic Backup**: Never lose work from a Copilot session
-- **Timestamped Commits**: Each auto-commit includes the session end time
-- **Safe Execution**: Only commits when there are actual changes
-- **Error Handling**: Gracefully handles push failures
+- **自動バックアップ**: Copilot セッションの作業を失いません
+- **タイムスタンプ付きコミット**: 各自動コミットにセッション終了時刻を含めます
+- **安全な実行**: 実際に変更がある場合だけコミットします
+- **エラー処理**: プッシュ失敗を適切に処理します
 
-## Installation
+## インストール
 
-1. Copy this hook folder to your repository's `.github/hooks/` directory:
+1. このフックフォルダーをリポジトリの `.github/hooks/` ディレクトリへコピーします。
    ```bash
    cp -r hooks/session-auto-commit .github/hooks/
    ```
 
-2. Ensure the script is executable:
+2. スクリプトに実行権限があることを確認します。
    ```bash
    chmod +x .github/hooks/session-auto-commit/auto-commit.sh
    ```
 
-3. Commit the hook configuration to your repository's default branch
+3. フック設定をリポジトリのデフォルトブランチへコミットします。
 
-## Configuration
+## 設定
 
 The hook is configured in `hooks.json` to run on the `sessionEnd` event:
 
@@ -56,35 +56,35 @@ The hook is configured in `hooks.json` to run on the `sessionEnd` event:
 }
 ```
 
-## How It Works
+## 仕組み
 
-1. When a Copilot coding agent session ends, the hook executes
-2. Checks if inside a Git repository
-3. Detects uncommitted changes using `git status`
-4. Stages all changes with `git add -A`
-5. Creates a commit with format: `auto-commit: YYYY-MM-DD HH:MM:SS`
-6. Attempts to push to remote
-7. Reports success or failure
+1. Copilot coding agent のセッション終了時にフックを実行
+2. Git リポジトリ内で実行されているか確認
+3. `git status` で未コミットの変更を検出
+4. `git add -A` ですべての変更をステージ
+5. `auto-commit: YYYY-MM-DD HH:MM:SS` 形式でコミットを作成
+6. リモートへのプッシュを試行
+7. 成功または失敗を報告
 
-## Customization
+## カスタマイズ
 
-You can customize the hook by modifying `auto-commit.sh`:
+`auto-commit.sh` を変更してフックをカスタマイズできます。
 
-- **Commit Message Format**: Change the timestamp format or message prefix
-- **Selective Staging**: Use specific git add patterns instead of `-A`
-- **Branch Selection**: Push to specific branches only
-- **Notifications**: Add desktop notifications or Slack messages
+- **コミットメッセージ形式**: タイムスタンプ形式やメッセージ接頭辞を変更
+- **選択的ステージ**: `-A` の代わりに特定の git add パターンを使用
+- **ブランチ選択**: 特定のブランチだけへプッシュ
+- **通知**: デスクトップ通知や Slack メッセージを追加
 
-## Disabling
+## 無効化
 
-To temporarily disable auto-commits:
+自動コミットを一時的に無効化するには:
 
-1. Remove or comment out the `sessionEnd` hook in `hooks.json`
-2. Or set an environment variable: `export SKIP_AUTO_COMMIT=true`
+1. `hooks.json` の `sessionEnd` フックを削除またはコメントアウト
+2. または環境変数 `export SKIP_AUTO_COMMIT=true` を設定
 
-## Notes
+## 注意事項
 
-- The hook uses `--no-verify` to avoid triggering pre-commit hooks
-- Failed pushes won't block session termination
-- Requires appropriate git credentials configured
-- Works with both Copilot coding agent and GitHub Copilot CLI
+- フックは pre-commit フックを起動しないよう `--no-verify` を使用します
+- プッシュ失敗でもセッション終了は妨げません
+- 適切な git 認証情報の設定が必要です
+- Copilot coding agent と GitHub Copilot CLI の両方で動作します

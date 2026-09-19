@@ -1,405 +1,404 @@
 ---
 name: folder-structure-blueprint-generator
-description: 'Comprehensive technology-agnostic prompt for analyzing and documenting project folder structures. Auto-detects project types (.NET, Java, React, Angular, Python, Node.js, Flutter), generates detailed blueprints with visualization options, naming conventions, file placement patterns, and extension templates for maintaining consistent code organization across diverse technology stacks.'
+description: 'プロジェクトのフォルダー構造を分析・文書化する、包括的で技術に依存しないプロンプトです。プロジェクト種別（.NET、Java、React、Angular、Python、Node.js、Flutter）を自動検出し、可視化オプション、命名規約、ファイル配置パターン、さまざまな技術スタックで一貫したコード整理を維持するための拡張テンプレートを備えた詳細なブループリントを生成します。'
 ---
 
-# Project Folder Structure Blueprint Generator
+# プロジェクト フォルダー構造ブループリント ジェネレーター
 
-## Configuration Variables
+## 構成変数
 
-${PROJECT_TYPE="Auto-detect|.NET|Java|React|Angular|Python|Node.js|Flutter|Other"} 
-<!-- Select primary technology -->
+${PROJECT_TYPE="Auto-detect|.NET|Java|React|Angular|Python|Node.js|Flutter|Other"}
+<!-- 主要技術を選択 -->
 
-${INCLUDES_MICROSERVICES="Auto-detect|true|false"} 
-<!-- Is this a microservices architecture? -->
+${INCLUDES_MICROSERVICES="Auto-detect|true|false"}
+<!-- マイクロサービス アーキテクチャを採用しているか？ -->
 
-${INCLUDES_FRONTEND="Auto-detect|true|false"} 
-<!-- Does project include frontend components? -->
+${INCLUDES_FRONTEND="Auto-detect|true|false"}
+<!-- フロントエンド コンポーネントを含むか？ -->
 
-${IS_MONOREPO="Auto-detect|true|false"} 
-<!-- Is this a monorepo with multiple projects? -->
+${IS_MONOREPO="Auto-detect|true|false"}
+<!-- 複数のプロジェクトを持つモノレポか？ -->
 
-${VISUALIZATION_STYLE="ASCII|Markdown List|Table"} 
-<!-- How to visualize the structure -->
+${VISUALIZATION_STYLE="ASCII|Markdown List|Table"}
+<!-- 構造をどの形式で可視化するか -->
 
-${DEPTH_LEVEL=1-5} 
-<!-- How many levels of folders to document in detail -->
+${DEPTH_LEVEL=1-5}
+<!-- 詳細に記録するフォルダーの深さ -->
 
-${INCLUDE_FILE_COUNTS=true|false} 
-<!-- Include file count statistics -->
+${INCLUDE_FILE_COUNTS=true|false}
+<!-- ファイル数の統計を含める -->
 
-${INCLUDE_GENERATED_FOLDERS=true|false} 
-<!-- Include auto-generated folders -->
+${INCLUDE_GENERATED_FOLDERS=true|false}
+<!-- 自動生成されたフォルダーを含める -->
 
-${INCLUDE_FILE_PATTERNS=true|false} 
-<!-- Document file naming/location patterns -->
+${INCLUDE_FILE_PATTERNS=true|false}
+<!-- ファイル命名/配置パターンを記録する -->
 
-${INCLUDE_TEMPLATES=true|false} 
-<!-- Include file/folder templates for new features -->
+${INCLUDE_TEMPLATES=true|false}
+<!-- 新機能用のファイル/フォルダー テンプレートを含める -->
 
-## Generated Prompt
+## 生成プロンプト
 
-"Analyze the project's folder structure and create a comprehensive 'Project_Folders_Structure_Blueprint.md' document that serves as a definitive guide for maintaining consistent code organization. Use the following approach:
+"プロジェクトのフォルダー構造を分析し、コード整理の一貫性を維持するための確定版ガイドとして機能する包括的な 'Project_Folders_Structure_Blueprint.md' ドキュメントを作成します。以下の方法を使用してください。
 
-### Initial Auto-detection Phase
+### 初期自動検出フェーズ
 
-${PROJECT_TYPE == "Auto-detect" ? 
-"Begin by scanning the folder structure for key files that identify the project type:
-- Look for solution/project files (.sln, .csproj, .fsproj, .vbproj) to identify .NET projects
-- Check for build files (pom.xml, build.gradle, settings.gradle) for Java projects
-- Identify package.json with dependencies for JavaScript/TypeScript projects
-- Look for specific framework files (angular.json, react-scripts entries, next.config.js)
-- Check for Python project identifiers (requirements.txt, setup.py, pyproject.toml)
-- Examine mobile app identifiers (pubspec.yaml, android/ios folders)
-- Note all technology signatures found and their versions" : 
-"Focus analysis on ${PROJECT_TYPE} project structure"}
+${PROJECT_TYPE == "Auto-detect" ?
+"まず、プロジェクトの種類を特定する主要ファイルを特定するためにフォルダー構造をスキャンします:
+- ソリューション/プロジェクト ファイル (.sln, .csproj, .fsproj, .vbproj) を確認して .NET プロジェクトを特定する
+- Java プロジェクト用のビルド ファイル (pom.xml, build.gradle, settings.gradle) を確認する
+- JavaScript/TypeScript プロジェクトの依存関係を含む package.json を特定する
+- フレームワーク固有ファイル (angular.json, react-scripts entries, next.config.js) を確認する
+- Python プロジェクトの識別子 (requirements.txt, setup.py, pyproject.toml) を確認する
+- モバイル アプリの識別子 (pubspec.yaml, android/ios フォルダー) を確認する
+- 検出されたすべての技術シグネチャとそのバージョンを記録する" :
+"分析の対象を ${PROJECT_TYPE} プロジェクト構造に絞り込みます"}
 
-${IS_MONOREPO == "Auto-detect" ? 
-"Determine if this is a monorepo by looking for:
-- Multiple distinct projects with their own configuration files
-- Workspace configuration files (lerna.json, nx.json, turborepo.json, etc.)
-- Cross-project references and shared dependency patterns
-- Root-level orchestration scripts and configuration" : ""}
+${IS_MONOREPO == "Auto-detect" ?
+"モノレポかどうかを次の観点から判断します:
+- 独自の構成ファイルを持つ複数の異なるプロジェクト
+- ワークスペース構成ファイル (lerna.json, nx.json, turborepo.json など)
+- プロジェクト間の参照と共有依存関係のパターン
+- ルート レベルのオーケストレーション スクリプトと構成" : ""}
 
-${INCLUDES_MICROSERVICES == "Auto-detect" ? 
-"Check for microservices architecture indicators:
-- Multiple service directories with similar/repeated structures
-- Service-specific Dockerfiles or deployment configurations
-- Inter-service communication patterns (APIs, message brokers)
-- Service registry or discovery configuration
-- API gateway configuration files
-- Shared libraries or utilities across services" : ""}
+${INCLUDES_MICROSERVICES == "Auto-detect" ?
+"マイクロサービス アーキテクチャの兆候がないか確認します:
+- 類似または繰り返し構造を持つ複数のサービス ディレクトリ
+- サービス固有の Dockerfile やデプロイ構成
+- サービス間の通信パターン (API、メッセージ ブローカー)
+- サービス レジストリまたはディスカバリ構成
+- API ゲートウェイ構成ファイル
+- サービス間で共有されるライブラリやユーティリティ" : ""}
 
-${INCLUDES_FRONTEND == "Auto-detect" ? 
-"Identify frontend components by looking for:
-- Web asset directories (wwwroot, public, dist, static)
-- UI framework files (components, modules, pages)
-- Frontend build configuration (webpack, vite, rollup, etc.)
-- Style sheet organization (CSS, SCSS, styled-components)
-- Static asset organization (images, fonts, icons)" : ""}
+${INCLUDES_FRONTEND == "Auto-detect" ?
+"次の観点からフロントエンド コンポーネントを特定します:
+- Web アセット ディレクトリ (wwwroot, public, dist, static)
+- UI フレームワーク ファイル (components, modules, pages)
+- フロントエンド ビルド構成 (webpack, vite, rollup など)
+- スタイルシートの整理方法 (CSS, SCSS, styled-components)
+- 静的アセットの整理方法 (画像、フォント、アイコン)" : ""}
 
-### 1. Structural Overview
+### 1. 構造の概要
 
-Provide a high-level overview of the ${PROJECT_TYPE == "Auto-detect" ? "detected project type(s)" : PROJECT_TYPE} project's organization principles and folder structure:
-
-- Document the overall architectural approach reflected in the folder structure
-- Identify the main organizational principles (by feature, by layer, by domain, etc.)
-- Note any structural patterns that repeat throughout the codebase
-- Document the rationale behind the structure where it can be inferred
+${PROJECT_TYPE == "Auto-detect" ? "検出されたプロジェクト タイプ" : PROJECT_TYPE} の組織原則とフォルダー構造の高レベルな概要を示します:
 
-${IS_MONOREPO == "Auto-detect" ? 
-"If detected as a monorepo, explain how the monorepo is organized and the relationship between projects." : 
-IS_MONOREPO ? "Explain how the monorepo is organized and the relationship between projects." : ""}
+- フォルダー構造から反映されている全体的なアーキテクチャ アプローチを記録する
+- 主要な組織原則 (機能別、層別、ドメイン別など) を特定する
+- コードベース全体で繰り返される構造パターンを記録する
+- 推測できる範囲で、構造の意図や理由を説明する
 
-${INCLUDES_MICROSERVICES == "Auto-detect" ? 
-"If microservices are detected, describe how they are structured and organized." : 
-INCLUDES_MICROSERVICES ? "Describe how the microservices are structured and organized." : ""}
-
-### 2. Directory Visualization
-
-${VISUALIZATION_STYLE == "ASCII" ? 
-"Create an ASCII tree representation of the folder hierarchy to depth level ${DEPTH_LEVEL}." : ""}
-
-${VISUALIZATION_STYLE == "Markdown List" ? 
-"Use nested markdown lists to represent the folder hierarchy to depth level ${DEPTH_LEVEL}." : ""}
-
-${VISUALIZATION_STYLE == "Table" ? 
-"Create a table with columns for Path, Purpose, Content Types, and Conventions." : ""}
-
-${INCLUDE_GENERATED_FOLDERS ? 
-"Include all folders including generated ones." : 
-"Exclude auto-generated folders like bin/, obj/, node_modules/, etc."}
-
-### 3. Key Directory Analysis
-
-Document each significant directory's purpose, contents, and patterns:
-
-${PROJECT_TYPE == "Auto-detect" ? 
-"For each detected technology, analyze directory structures based on observed usage patterns:" : ""}
-
-${(PROJECT_TYPE == ".NET" || PROJECT_TYPE == "Auto-detect") ? 
-"#### .NET Project Structure (if detected)
-
-- **Solution Organization**: 
-  - How projects are grouped and related
-  - Solution folder organization patterns
-  - Multi-targeting project patterns
-
-- **Project Organization**:
-  - Internal folder structure patterns
-  - Source code organization approach
-  - Resource organization
-  - Project dependencies and references
-
-- **Domain/Feature Organization**:
-  - How business domains or features are separated
-  - Domain boundary enforcement patterns
-
-- **Layer Organization**:
-  - Separation of concerns (Controllers, Services, Repositories, etc.)
-  - Layer interaction and dependency patterns
-
-- **Configuration Management**:
-  - Configuration file locations and purposes
-  - Environment-specific configurations
-  - Secret management approach
-
-- **Test Project Organization**:
-  - Test project structure and naming
-  - Test categories and organization
-  - Test data and mock locations" : ""}
-
-${(PROJECT_TYPE == "React" || PROJECT_TYPE == "Angular" || PROJECT_TYPE == "Auto-detect") ? 
-"#### UI Project Structure (if detected)
-
-- **Component Organization**:
-  - Component folder structure patterns
-  - Grouping strategies (by feature, type, etc.)
-  - Shared vs. feature-specific components
-
-- **State Management**:
-  - State-related file organization
-  - Store structure for global state
-  - Local state management patterns
-
-- **Routing Organization**:
-  - Route definition locations
-  - Page/view component organization
-  - Route parameter handling
-
-- **API Integration**:
-  - API client organization
-  - Service layer structure
-  - Data fetching patterns
-
-- **Asset Management**:
-  - Static resource organization
-  - Image/media file structure
-  - Font and icon organization
-  
-- **Style Organization**:
-  - CSS/SCSS file structure
-  - Theme organization
-  - Style module patterns" : ""}
-
-### 4. File Placement Patterns
-
-${INCLUDE_FILE_PATTERNS ? 
-"Document the patterns that determine where different types of files should be placed:
-
-- **Configuration Files**:
-  - Locations for different types of configuration
-  - Environment-specific configuration patterns
-  
-- **Model/Entity Definitions**:
-  - Where domain models are defined
-  - Data transfer object (DTO) locations
-  - Schema definition locations
-  
-- **Business Logic**:
-  - Service implementation locations
-  - Business rule organization
-  - Utility and helper function placement
-  
-- **Interface Definitions**:
-  - Where interfaces and abstractions are defined
-  - How interfaces are grouped and organized
-  
-- **Test Files**:
-  - Unit test location patterns
-  - Integration test placement
-  - Test utility and mock locations
-  
-- **Documentation Files**:
-  - API documentation placement
-  - Internal documentation organization
-  - README file distribution" : 
-"Document where key file types are located in the project."}
-
-### 5. Naming and Organization Conventions
-Document the naming and organizational conventions observed across the project:
-
-- **File Naming Patterns**:
-  - Case conventions (PascalCase, camelCase, kebab-case)
-  - Prefix and suffix patterns
-  - Type indicators in filenames
-  
-- **Folder Naming Patterns**:
-  - Naming conventions for different folder types
-  - Hierarchical naming patterns
-  - Grouping and categorization conventions
-  
-- **Namespace/Module Patterns**:
-  - How namespaces/modules map to folder structure
-  - Import/using statement organization
-  - Internal vs. public API separation
-
-- **Organizational Patterns**:
-  - Code co-location strategies
-  - Feature encapsulation approaches
-  - Cross-cutting concern organization
-
-### 6. Navigation and Development Workflow
-Provide guidance for navigating and working with the codebase structure:
-
-- **Entry Points**:
-  - Main application entry points
-  - Key configuration starting points
-  - Initial files for understanding the project
-
-- **Common Development Tasks**:
-  - Where to add new features
-  - How to extend existing functionality
-  - Where to place new tests
-  - Configuration modification locations
-  
-- **Dependency Patterns**:
-  - How dependencies flow between folders
-  - Import/reference patterns
-  - Dependency injection registration locations
-
-${INCLUDE_FILE_COUNTS ? 
-"- **Content Statistics**:
-  - Files per directory analysis
-  - Code distribution metrics
-  - Complexity concentration areas" : ""}
-
-### 7. Build and Output Organization
-Document the build process and output organization:
-
-- **Build Configuration**:
-  - Build script locations and purposes
-  - Build pipeline organization
-  - Build task definitions
-  
-- **Output Structure**:
-  - Compiled/built output locations
-  - Output organization patterns
-  - Distribution package structure
-  
-- **Environment-Specific Builds**:
-  - Development vs. production differences
-  - Environment configuration strategies
-  - Build variant organization
-
-### 8. Technology-Specific Organization
-
-${(PROJECT_TYPE == ".NET" || PROJECT_TYPE == "Auto-detect") ? 
-"#### .NET-Specific Structure Patterns (if detected)
-
-- **Project File Organization**:
-  - Project file structure and patterns
-  - Target framework configuration
-  - Property group organization
-  - Item group patterns
-  
-- **Assembly Organization**:
-  - Assembly naming patterns
-  - Multi-assembly architecture
-  - Assembly reference patterns
-  
-- **Resource Organization**:
-  - Embedded resource patterns
-  - Localization file structure
-  - Static web asset organization
-  
-- **Package Management**:
-  - NuGet configuration locations
-  - Package reference organization
-  - Package version management" : ""}
-
-${(PROJECT_TYPE == "Java" || PROJECT_TYPE == "Auto-detect") ? 
-"#### Java-Specific Structure Patterns (if detected)
-
-- **Package Hierarchy**:
-  - Package naming and nesting conventions
-  - Domain vs. technical packages
-  - Visibility and access patterns
-  
-- **Build Tool Organization**:
-  - Maven/Gradle structure patterns
-  - Module organization
-  - Plugin configuration patterns
-  
-- **Resource Organization**:
-  - Resource folder structures
-  - Environment-specific resources
-  - Properties file organization" : ""}
-
-${(PROJECT_TYPE == "Node.js" || PROJECT_TYPE == "Auto-detect") ? 
-"#### Node.js-Specific Structure Patterns (if detected)
-
-- **Module Organization**:
-  - CommonJS vs. ESM organization
-  - Internal module patterns
-  - Third-party dependency management
-  
-- **Script Organization**:
-  - npm/yarn script definition patterns
-  - Utility script locations
-  - Development tool scripts
-  
-- **Configuration Management**:
-  - Configuration file locations
-  - Environment variable management
-  - Secret management approaches" : ""}
-
-### 9. Extension and Evolution
-Document how the project structure is designed to be extended:
-
-- **Extension Points**:
-  - How to add new modules/features while maintaining conventions
-  - Plugin/extension folder patterns
-  - Customization directory structures
-  
-- **Scalability Patterns**:
-  - How the structure scales for larger features
-  - Approach for breaking down large modules
-  - Code splitting strategies
-  
-- **Refactoring Patterns**:
-  - Common refactoring approaches observed
-  - How structural changes are managed
-  - Incremental reorganization patterns
-
-${INCLUDE_TEMPLATES ? 
-"### 10. Structure Templates
-
-Provide templates for creating new components that follow project conventions:
-
-- **New Feature Template**:
-  - Folder structure for adding a complete feature
-  - Required file types and their locations
-  - Naming patterns to follow
-  
-- **New Component Template**:
-  - Directory structure for a typical component
-  - Essential files to include
-  - Integration points with existing structure
-  
-- **New Service Template**:
-  - Structure for adding a new service
-  - Interface and implementation placement
-  - Configuration and registration patterns
-  
-- **New Test Structure**:
-  - Folder structure for test projects/files
-  - Test file organization templates
-  - Test resource organization" : ""}
-
-### ${INCLUDE_TEMPLATES ? "11" : "10"}. Structure Enforcement
-
-Document how the project structure is maintained and enforced:
-
-- **Structure Validation**:
-  - Tools/scripts that enforce structure
-  - Build checks for structural compliance
-  - Linting rules related to structure
-  
-- **Documentation Practices**:
-  - How structural changes are documented
-  - Where architectural decisions are recorded
-  - Structure evolution history
-
-Include a section at the end about maintaining this blueprint and when it was last updated.
-"
+${IS_MONOREPO == "Auto-detect" ?
+"モノレポとして検出された場合は、モノレポがどのように構成されているか、各プロジェクトの関係性を説明します。" :
+IS_MONOREPO ? "モノレポがどのように構成されているか、各プロジェクトの関係性を説明します。" : ""}
+
+${INCLUDES_MICROSERVICES == "Auto-detect" ?
+"マイクロサービスが検出された場合は、それらがどのように構造化され、整理されているかを説明します。" :
+INCLUDES_MICROSERVICES ? "マイクロサービスがどのように構造化され、整理されているかを説明します。" : ""}
+
+### 2. ディレクトリ可視化
+
+${VISUALIZATION_STYLE == "ASCII" ?
+"深さレベル ${DEPTH_LEVEL} までのフォルダー階層を ASCII ツリー形式で作成します。" : ""}
+
+${VISUALIZATION_STYLE == "Markdown List" ?
+"深さレベル ${DEPTH_LEVEL} までのフォルダー階層をネストした Markdown リストで表現します。" : ""}
+
+${VISUALIZATION_STYLE == "Table" ?
+"Path、Purpose、Content Types、Conventions の列を持つ表を作成します。" : ""}
+
+${INCLUDE_GENERATED_FOLDERS ?
+"生成されたフォルダーを含めてすべてのフォルダーを含めます。" :
+"bin/、obj/、node_modules/ などの自動生成フォルダーは除外します。"}
+
+### 3. 重要なディレクトリ分析
+
+各主要ディレクトリの目的、内容、パターンを記録します:
+
+${PROJECT_TYPE == "Auto-detect" ?
+"検出された各技術について、観測された利用パターンに基づいてディレクトリ構造を分析します:" : ""}
+
+${(PROJECT_TYPE == ".NET" || PROJECT_TYPE == "Auto-detect") ?
+"#### .NET プロジェクト構造（検出された場合）
+
+- **ソリューション構成**:
+  - プロジェクトがどのようにグループ化され、関連付けられているか
+  - ソリューション フォルダーの整理パターン
+  - マルチターゲット プロジェクトのパターン
+
+- **プロジェクト構成**:
+  - 内部フォルダー構造のパターン
+  - ソース コードの整理方法
+  - リソースの整理方法
+  - プロジェクト依存関係と参照
+
+- **ドメイン/機能構成**:
+  - ビジネス ドメインまたは機能がどのように分離されているか
+  - ドメイン境界を強制するパターン
+
+- **レイヤー構成**:
+  - 責務分離（Controllers、Services、Repositories など）
+  - レイヤー間の相互作用と依存関係
+
+- **構成管理**:
+  - 構成ファイルの配置場所とその役割
+  - 環境別構成
+  - シークレット管理の方法
+
+- **テスト プロジェクト構成**:
+  - テスト プロジェクトの構造と命名
+  - テスト分類と整理方法
+  - テスト データとモックの配置場所" : ""}
+
+${(PROJECT_TYPE == "React" || PROJECT_TYPE == "Angular" || PROJECT_TYPE == "Auto-detect") ?
+"#### UI プロジェクト構造（検出された場合）
+
+- **コンポーネント構成**:
+  - コンポーネント フォルダーの構造パターン
+  - グループ化戦略（機能別、種類別など）
+  - 共通コンポーネントと機能固有コンポーネントの分離
+
+- **状態管理**:
+  - 状態関連ファイルの整理方法
+  - グローバル状態のストア構造
+  - ローカル状態管理パターン
+
+- **ルーティング構成**:
+  - ルート定義の場所
+  - ページ/ビュー コンポーネントの整理方法
+  - ルート パラメータ処理
+
+- **API 連携**:
+  - API クライアントの整理方法
+  - サービス層の構造
+  - データ取得パターン
+
+- **アセット管理**:
+  - 静的リソースの整理方法
+  - 画像/メディア ファイルの構造
+  - フォントとアイコンの整理
+
+- **スタイル構成**:
+  - CSS/SCSS ファイル構造
+  - テーマ構成
+  - スタイル モジュール パターン" : ""}
+
+### 4. ファイル配置パターン
+
+${INCLUDE_FILE_PATTERNS ?
+"異なる種類のファイルをどこに配置するかを決定するパターンを記録します:
+
+- **構成ファイル**:
+  - 各種構成ファイルの配置場所
+  - 環境別構成パターン
+
+- **モデル/エンティティ定義**:
+  - ドメイン モデルの定義場所
+  - データ転送オブジェクト (DTO) の配置場所
+  - スキーマ定義の場所
+
+- **ビジネス ロジック**:
+  - サービス実装の配置場所
+  - ビジネス ルールの整理方法
+  - ユーティリティとヘルパー関数の配置場所
+
+- **インターフェイス定義**:
+  - インターフェイスと抽象化の定義場所
+  - インターフェイスのグループ化と整理方法
+
+- **テスト ファイル**:
+  - 単体テストの配置パターン
+  - 統合テストの配置場所
+  - テスト ユーティリティとモックの配置場所
+
+- **ドキュメント ファイル**:
+  - API ドキュメントの配置場所
+  - 内部ドキュメントの整理方法
+  - README ファイルの分散方法" :
+"プロジェクト内で主要なファイル タイプが配置されている場所を記録します。"}
+
+### 5. 命名と整理規約
+プロジェクト全体で観察された命名および整理規約を記録します:
+
+- **ファイル命名パターン**:
+  - 大文字小文字の規約 (PascalCase, camelCase, kebab-case)
+  - 接頭辞と接尾辞のパターン
+  - ファイル名に含める型指示子
+
+- **フォルダー命名パターン**:
+  - さまざまなフォルダー タイプの命名規約
+  - 階層的な命名パターン
+  - グループ化とカテゴライズの規約
+
+- **名前空間/モジュール パターン**:
+  - 名前空間/モジュールとフォルダー構造の対応関係
+  - import/using ステートメントの整理方法
+  - 内部 API と公開 API の分離
+
+- **整理パターン**:
+  - コード同所配置戦略
+  - 機能カプセル化アプローチ
+  - 横断的関心事の整理方法
+
+### 6. ナビゲーションと開発ワークフロー
+コードベースの構造をナビゲートし、作業するためのガイダンスを提供します:
+
+- **エントリ ポイント**:
+  - 主要アプリケーションのエントリ ポイント
+  - 重要な構成開始点
+  - プロジェクトを理解するための最初のファイル
+
+- **一般的な開発タスク**:
+  - 新機能を追加する場所
+  - 既存機能を拡張する方法
+  - 新しいテストを配置する場所
+  - 構成変更の場所
+
+- **依存関係パターン**:
+  - フォルダー間の依存関係の流れ
+  - import/reference パターン
+  - 依存性注入の登録場所
+
+${INCLUDE_FILE_COUNTS ?
+"- **コンテンツ統計**:
+  - ディレクトリごとのファイル数分析
+  - コード分布メトリクス
+  - 複雑度が集中している領域" : ""}
+
+### 7. ビルドと出力の整理
+ビルド プロセスと出力構成を記録します:
+
+- **ビルド構成**:
+  - ビルド スクリプトの配置場所と役割
+  - ビルド パイプラインの整理方法
+  - ビルド タスク定義
+
+- **出力構造**:
+  - コンパイル/ビルド済み出力の配置場所
+  - 出力整理パターン
+  - 配布パッケージ構造
+
+- **環境別ビルド**:
+  - 開発環境と本番環境の違い
+  - 環境構成戦略
+  - ビルド バリアントの整理方法
+
+### 8. 技術固有の整理
+
+${(PROJECT_TYPE == ".NET" || PROJECT_TYPE == "Auto-detect") ?
+"#### .NET 固有の構造パターン（検出された場合）
+
+- **プロジェクト ファイルの整理**:
+  - プロジェクト ファイルの構造とパターン
+  - ターゲット フレームワーク構成
+  - Property group の整理
+  - Item group パターン
+
+- **アセンブリ構成**:
+  - アセンブリ命名パターン
+  - マルチアセンブリ アーキテクチャ
+  - アセンブリ参照パターン
+
+- **リソース構成**:
+  - 埋め込みリソース パターン
+  - ローカライズ ファイル構造
+  - 静的 Web アセット構成
+
+- **パッケージ管理**:
+  - NuGet 構成の配置場所
+  - パッケージ参照の整理
+  - パッケージ バージョン管理" : ""}
+
+${(PROJECT_TYPE == "Java" || PROJECT_TYPE == "Auto-detect") ?
+"#### Java 固有の構造パターン（検出された場合）
+
+- **パッケージ階層**:
+  - パッケージ命名とネスト規約
+  - ドメインと技術パッケージの分離
+  - 可視性とアクセスのパターン
+
+- **ビルド ツール構成**:
+  - Maven/Gradle の構造パターン
+  - モジュール構成
+  - プラグイン構成パターン
+
+- **リソース構成**:
+  - リソース フォルダー構造
+  - 環境別リソース
+  - Properties ファイルの整理" : ""}
+
+${(PROJECT_TYPE == "Node.js" || PROJECT_TYPE == "Auto-detect") ?
+"#### Node.js 固有の構造パターン（検出された場合）
+
+- **モジュール構成**:
+  - CommonJS と ESM の整理方法
+  - 内部モジュール パターン
+  - サードパーティ依存関係の管理
+
+- **スクリプト構成**:
+  - npm/yarn スクリプト定義のパターン
+  - ユーティリティ スクリプトの配置場所
+  - 開発ツール スクリプト
+
+- **構成管理**:
+  - 構成ファイルの配置場所
+  - 環境変数管理
+  - シークレット管理方法" : ""}
+
+### 9. 拡張と進化
+プロジェクト構造がどのように拡張可能に設計されているかを記録します:
+
+- **拡張ポイント**:
+  - 規約を維持しながら新しいモジュール/機能を追加する方法
+  - プラグイン/拡張機能のフォルダー パターン
+  - カスタマイズ用ディレクトリ構造
+
+- **スケーラビリティ パターン**:
+  - 大きな機能に対して構造がどのようにスケールするか
+  - 大きなモジュールを分割するアプローチ
+  - コード分割戦略
+
+- **リファクタリング パターン**:
+  - 一般的なリファクタリング アプローチ
+  - 構造変更をどのように管理するか
+  - 段階的な再編成パターン
+
+${INCLUDE_TEMPLATES ?
+"### 10. 構造テンプレート
+
+プロジェクトの規約に従って新しいコンポーネントを作成するためのテンプレートを提供します:
+
+- **新機能テンプレート**:
+  - 完全な機能を追加するためのフォルダー構造
+  - 必要なファイル タイプとその配置場所
+  - 遵守すべき命名パターン
+
+- **新コンポーネント テンプレート**:
+  - 典型的なコンポーネントのディレクトリ構造
+  - 含めるべき基本ファイル
+  - 既存構造との統合ポイント
+
+- **新サービス テンプレート**:
+  - 新しいサービスを追加するための構造
+  - インターフェイスと実装の配置場所
+  - 構成と登録パターン
+
+- **新テスト構造**:
+  - テスト プロジェクト/ファイルのフォルダー構造
+  - テスト ファイルの整理テンプレート
+  - テスト リソースの整理" : ""}
+
+### ${INCLUDE_TEMPLATES ? "11" : "10"}. 構造の強制
+
+プロジェクト構造がどのように維持され、強制されているかを記録します:
+
+- **構造検証**:
+  - 構造を強制するツール/スクリプト
+  - 構造準拠のためのビルド チェック
+  - 構造に関連するリンティング ルール
+
+- **ドキュメント化の実践**:
+  - 構造変更がどのように文書化されるか
+  - アーキテクチャ上の意思決定が記録される場所
+  - 構造の進化履歴
+
+最後に、このブループリントの保守方法と最終更新日時についてのセクションを含めてください。"

@@ -1,98 +1,97 @@
 ---
 name: workiq-copilot
-description: 'Guides the Copilot CLI on how to use the WorkIQ CLI/MCP server to query Microsoft 365 Copilot data (emails, meetings, docs, Teams, people) for live context, summaries, and recommendations.'
+description: 'Copilot CLI が WorkIQ CLI/MCP サーバーを使い、Microsoft 365 Copilot のデータ（メール、会議、ドキュメント、Teams、人物）を検索して、最新のコンテキスト、概要、推奨事項を得る方法を案内する。'
 ---
+# WorkIQ Copilot スキル
 
-# WorkIQ Copilot Skill
+## 概要
 
-## Overview
+WorkIQ (Public Preview) を使うと、Copilot は自然言語で Microsoft 365 データを検索できる。予定、ドキュメント、Teams メッセージ、メールスレッド、フォローアップ追跡、関係者の概要などをサポートする。ローカルリポジトリを超える最新の組織情報が必要なタスクでは、この Skill を使う。
 
-WorkIQ (Public Preview) lets Copilot query Microsoft 365 data with natural language. It supports schedules, documents, Teams messages, email threads, follow-up tracking, stakeholder summaries, and more. Use this skill whenever a task needs live organizational intelligence beyond the local repository.
+## 対応データとプロンプト例
 
-## Supported Data & Sample Prompts
+- **メール** — 「Sarah からの予算に関するメールを要約して」
+- **会議** — 「今週の予定されている会議は何か」
+- **ドキュメント** — 「第 4 四半期の計画に関する最近のドキュメントを探して」
+- **Teams** — 「今日の Engineering チャネルのメッセージを要約して」
+- **人物／プロジェクト** — 「Project Alpha に取り組んでいるのは誰か」
 
-- **Emails** – “Summarize emails from Sarah about the budget.”
-- **Meetings** – “What are my upcoming meetings this week?”
-- **Documents** – “Find recent documents about Q4 planning.”
-- **Teams** – “Summarize messages in the Engineering channel today.”
-- **People/Projects** – “Who is working on Project Alpha?”
+## アクセス方法
 
-## Getting Access
-
-1. **Copilot CLI plugin (preferred)**
+1. **Copilot CLI プラグイン（推奨）**
    - `copilot`
    - `/plugin marketplace add github/copilot-plugins`
    - `/plugin install workiq@copilot-plugins`
-   - Restart Copilot CLI.
-2. **Standalone CLI / MCP server**
-   - `npm install -g @microsoft/workiq` (or `npx -y @microsoft/workiq mcp`).
-   - Run `workiq mcp` to expose MCP tools if needed.
-3. **Tenant consent**
-   - First use prompts for Microsoft 365 admin consent (EULA + permissions). Non-admins must contact tenant admin to approve per the Tenant Administrator Enablement Guide.
+   - Copilot CLI を再起動する。
+2. **スタンドアロン CLI / MCP サーバー**
+   - `npm install -g @microsoft/workiq`（または `npx -y @microsoft/workiq mcp`）。
+   - 必要に応じて `workiq mcp` を実行し、MCP ツールを公開する。
+3. **テナントの同意**
+   - 初回使用時に Microsoft 365 管理者の同意（EULA とアクセス許可）が求められる。管理者以外は Tenant Administrator Enablement Guide に従い、テナント管理者へ承認を依頼する。
 
-## Pre-flight Checklist
+## 事前チェックリスト
 
-- Run `Get-Command workiq` to ensure the binary is available.
-- Accept the EULA once via `workiq accept-eula`.
-- Confirm the correct tenant (`-t <tenant-id>` if different from default `common`).
-- Be ready to complete device login in the browser when prompted.
+- `Get-Command workiq` を実行してバイナリが利用可能であることを確認する。
+- `workiq accept-eula` で EULA に一度同意する。
+- 正しいテナントを確認する（既定の `common` と異なる場合は `-t <tenant-id>`）。
+- 求められた場合にブラウザーでデバイス ログインを完了できるよう準備する。
 
-## Core Workflow
+## 基本ワークフロー
 
-1. **Clarify intent** – agenda, action items, document lookup, people search, risk summary, etc.
-2. **Craft precise prompt** – include timeframe, source, or topic (e.g., “Summarize Teams posts in #eng for today”).
-3. **Run command** – `workiq ask --question "<prompt>"` (use `-q` for shorthand if desired).
-4. **Monitor execution** – long answers may stream; wait for the response to finish before issuing additional requests.
-5. **Summarize & redact** – highlight insights, note conflicts/tasks, avoid pasting raw links unless required.
-6. **Offer follow-ups** – blocking time, drafting notes, deeper queries, etc.
+1. **意図を明確化** – 議題、アクションアイテム、ドキュメント検索、人物検索、リスク概要など。
+2. **正確なプロンプトを作成** – 期間、ソース、トピックを含める（例: 「今日の #eng の Teams 投稿を要約して」）。
+3. **コマンドを実行** – `workiq ask --question "<prompt>"`（短縮形が必要なら `-q` を使う）。
+4. **実行を監視** – 長い回答はストリーミングされる場合がある。追加要求を出す前に応答完了を待つ。
+5. **要約と編集** – 洞察を強調し、矛盾やタスクを記録する。必要がない限り生のリンクを貼らない。
+6. **フォローアップを提示** – 時間の確保、メモの下書き、詳細な検索など。
 
-## Command Reference
+## コマンドリファレンス
 
-| Command                           | Purpose                                                       |
+| コマンド                           | 目的                                                       |
 | --------------------------------- | ------------------------------------------------------------- |
-| `workiq --help`                   | Show global options.                                          |
-| `workiq version`                  | Display installed version.                                    |
-| `workiq accept-eula`              | Accept license (first use).                                   |
-| `workiq ask`                      | Interactive mode.                                             |
-| `workiq ask --question "..."`     | Ask a specific question (use `-q` shorthand if preferred).    |
-| `workiq ask -t <tenant> -q "..."` | Target a specific tenant.                                     |
-| `workiq mcp`                      | Start MCP stdio server (expose WorkIQ tools to other agents). |
+| `workiq --help`                   | グローバル オプションを表示する。                                          |
+| `workiq version`                  | インストール済みバージョンを表示する。                                    |
+| `workiq accept-eula`              | ライセンスに同意する（初回使用時）。                                   |
+| `workiq ask`                      | 対話モード。                                             |
+| `workiq ask --question "..."`     | 指定した質問を行う（必要に応じて `-q` の短縮形を使う）。    |
+| `workiq ask -t <tenant> -q "..."` | 特定のテナントを対象にする。                                     |
+| `workiq mcp`                      | MCP stdio サーバーを起動する（他のエージェントに WorkIQ ツールを公開する）。 |
 
-## Prompt Patterns
+## プロンプトパターン
 
-- Agenda: “What’s on my calendar tomorrow?”
-- Action items: “Summarize follow-ups from today’s customer sync.”
-- Documents: “List PowerPoints about Contoso FY26 roadmap.”
-- Communications: “What did my manager say about the deadline?”
-- Insights: “What blockers came up in the last three meetings?”
-- Planning: “Suggest focus blocks for Tuesday afternoon.”
+- 予定: 「明日の予定表には何があるか」
+- アクション アイテム: 「今日の顧客同期からのフォローアップを要約して」
+- ドキュメント: 「Contoso FY26 ロードマップに関する PowerPoint を一覧表示して」
+- コミュニケーション: 「上司は期限について何と言っていたか」
+- 洞察: 「直近 3 回の会議でどのようなブロッカーが出たか」
+- 計画: 「火曜日の午後に集中作業の時間帯を提案して」
 
-## Response Guidelines
+## 応答ガイドライン
 
-- Keep summaries concise (2–3 sentences) calling out load, priorities, blockers, and optional next steps.
-- Refer to meetings/documents generically unless the user specifically needs links.
-- Mention if WorkIQ can continue (e.g., “WorkIQ can show Thu–Sun if needed”).
-- Map WorkIQ’s suggested actions to clear offers (block time, send follow-up, request recording, run deeper query).
+- 要約は簡潔に（2～3 文）し、負荷、優先事項、ブロッカー、任意の次の手順を示す。
+- ユーザーがリンクを明示的に必要としない限り、会議やドキュメントは一般的に参照する。
+- WorkIQ で続行できる場合はその旨を伝える（例: 「必要なら WorkIQ で木曜から日曜まで表示できます」）。
+- WorkIQ が提案したアクションを明確な選択肢に対応付ける（時間を確保する、フォローアップを送る、録画を依頼する、詳細なクエリを実行する）。
 
-## Best Practices
+## ベストプラクティス
 
-- Prefer narrow prompts to reduce noise; run multiple queries if needed.
-- Combine outputs logically (agenda + conflicts + action items) before responding.
-- Respect privacy: do not expose attendee lists or confidential snippets unless explicitly requested.
-- Log which commands were run so future steps can reference them (“Asked WorkIQ for agenda + conflicts”).
-- Use MCP mode (`workiq mcp`) when another agent/workflow needs direct tool access.
+- ノイズを減らすため、範囲を絞ったプロンプトを優先し、必要なら複数のクエリを実行する。
+- 応答前に出力を論理的に統合する（予定、競合、アクション アイテム）。
+- プライバシーを尊重し、明示的に求められない限り参加者一覧や機密性の高い断片を公開しない。
+- 実行したコマンドを記録し、後続の手順から参照できるようにする（「WorkIQ に予定と競合を問い合わせた」）。
+- 別のエージェントやワークフローがツールへ直接アクセスする必要がある場合は MCP モード（`workiq mcp`）を使う。
 
-## Troubleshooting
+## トラブルシューティング
 
-- **Missing CLI** – install via npm or ensure PATH is set; notify user if unavailable.
-- **Consent/auth errors** – re-run command after admin grants permissions or after completing device login.
-- **Long/incomplete output** – rerun with refined scope or ask for specific data slices (per day/project/person).
-- **Command hanging** – cancel the running command in your terminal (for example, with Ctrl+C) or restart the Copilot CLI session, then retry; ensure browser login completed.
+- **CLI がない** — npm でインストールするか PATH を設定し、利用できない場合はユーザーに知らせる。
+- **同意／認証エラー** — 管理者がアクセス許可を付与するか、デバイス ログインを完了した後にコマンドを再実行する。
+- **長い／不完全な出力** — 範囲を絞って再実行するか、日、プロジェクト、人物ごとの特定のデータ範囲を指定する。
+- **コマンドが停止しない** — ターミナルで実行中のコマンドをキャンセルする（例: Ctrl+C）か Copilot CLI セッションを再起動して再試行し、ブラウザー ログインが完了していることを確認する。
 
-## Follow-up Actions to Offer
+## 提示するフォローアップアクション
 
-- Block focus/overflow holds at suggested times.
-- Draft reschedule/decline messages referencing WorkIQ guidance.
-- Request recordings or summaries for overlapping sessions.
-- Capture action items into task trackers.
-- Run additional WorkIQ queries (by project, stakeholder, time range) for deeper analysis.
+- 提案された時間帯に集中作業または余裕時間を確保する。
+- WorkIQ の指針を参照した日程変更または辞退メッセージを下書きする。
+- 重複する会議の録画または要約を依頼する。
+- アクション アイテムをタスク管理ツールへ記録する。
+- さらに分析するには、プロジェクト、関係者、期間ごとに追加の WorkIQ クエリを実行する。

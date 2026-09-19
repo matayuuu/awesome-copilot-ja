@@ -1,8 +1,8 @@
-# Tasks by microsoft/edge-ai Plugin
+# microsoft/edge-ai の Tasks プラグイン
 
-Task Researcher and Task Planner for intermediate to expert users and large codebases - Brought to you by microsoft/edge-ai
+中級者から上級者、および大規模コードベース向けの Task Researcher と Task Planner。microsoft/edge-ai が提供します。
 
-## Installation
+## インストール
 
 ```bash
 # Using Copilot CLI

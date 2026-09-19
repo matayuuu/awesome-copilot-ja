@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "tiny-tool-town-submitter",
-  "description": "Inspect a repository, improve Tiny Tool Town readiness, submit its listing issue, and launch remediation work.",
+  "description": "リポジトリを調査し、Tiny Tool Townへの掲載準備を整え、掲載課題を提出して、改善作業を開始します。",
   "version": "1.0.2",
   "author": {
     "name": "James Montemagno",

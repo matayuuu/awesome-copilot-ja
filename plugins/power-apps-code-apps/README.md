@@ -1,8 +1,8 @@
 # Power Apps Code Apps Development Plugin
 
-Complete toolkit for Power Apps Code Apps development including project scaffolding, development standards, and expert guidance for building code-first applications with Power Platform integration.
+Power Apps Code Apps開発のための総合ツールキットです。プロジェクトのスキャフォールディング、開発標準、Power Platform統合によるコードファーストアプリケーション構築の専門的ガイダンスを含みます。
 
-## Installation
+## インストール
 
 ```bash
 # Using Copilot CLI

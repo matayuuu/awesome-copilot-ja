@@ -1,65 +1,65 @@
 ---
 name: gtm-0-to-1-launch
-description: Launch new products from idea to first customers. Use when launching products, finding early adopters, building launch week playbooks, diagnosing why adoption stalls, or learning that press coverage does not equal growth. Includes the three-layer diagnosis, the 2-week experiment cycle, and the launch that got 50K impressions and 12 signups.
+description: アイデアから最初の顧客まで新製品を立ち上げる。製品のローンチ、アーリーアダプターの発見、ローンチ週のプレイブック作成、採用停滞の診断、報道露出が成長と同義ではないことの理解に使う。3 層診断、2 週間の実験サイクル、5 万インプレッションと 12 件のサインアップに終わったローンチを含む。
 license: MIT
 metadata:
   author: Smit Patel (https://linkedin.com/in/smitkpatel)
   source: https://github.com/beingsmit/technical-product-gtm
 ---
 
-# 0-to-1 Launch
+# 0-to-1 ローンチ
 
-Launch new products from idea to first customers. The goal isn't headlines — it's finding 10 customers who can't live without you.
+アイデアから最初の顧客まで新製品を立ち上げる。目的は見出しではなく、あなたなしではいられない 10 人の顧客を見つけることだ。
 
-## When to Use
+## 使用する場面
 
-**Triggers:**
-- "How do we launch this product?"
-- "First customer acquisition strategy"
-- "We launched but nobody's using it"
-- "Product Hunt vs direct outreach?"
-- "We have awareness but no conversion"
-- "How do I know if this is working?"
+**トリガー:**
+- 「この製品をどうローンチすればよいか」
+- 「最初の顧客を獲得する戦略」
+- 「ローンチしたが誰も使っていない」
+- 「Product Hunt と直接アプローチのどちらがよいか」
+- 「認知はあるがコンバージョンがない」
+- 「うまくいっているかどう判断するか」
 
-**Context:**
-- New product launches
-- Feature launches that feel like new products
-- Finding first 10-50 customers
-- Validating product-market fit
-- Diagnosing why early traction stalls
+**コンテキスト:**
+- 新製品のローンチ
+- 新製品のように扱う機能ローンチ
+- 最初の 10～50 顧客の発見
+- プロダクトマーケットフィットの検証
+- 初期トラクションが停滞する理由の診断
 
 ---
 
-## Core Frameworks
+## 中核フレームワーク
 
-### 1. Press ≠ Growth (The Launch That Got 12 Signups)
+### 1. 報道 ≠ 成長（12 件のサインアップに終わったローンチ）
 
-**The Pattern:**
+**パターン:**
 
-Coordinated a feature launch with full press tour. TechCrunch, VentureBeat, product blogs. Big announcement day.
+全面的な報道ツアーを伴う機能ローンチを調整した。TechCrunch、VentureBeat、製品ブログで大々的に告知する日だった。
 
-**Result:**
-- 50K impressions
-- 12 signups
-- 2 conversions
+**結果:**
+- 5 万インプレッション
+- 12 件のサインアップ
+- 2 件のコンバージョン
 
-**Why It Failed:**
+**失敗した理由:**
 
 Optimized for media buzz, not user value. The feature wasn't ready for self-serve. It needed education, context, hand-holding. Press gives you eyeballs. But eyeballs without activation = vanity.
 
-**What Works Better:**
+**より効果的な方法:**
 
 Email 50 target customers directly. "We built [feature] because teams like yours struggle with [problem]. Want early access?" Walk them through setup personally. Get feedback, iterate.
 
 **Result:** 50 emails → 15 replies (30% reply rate) → 8 trials → 4 conversions (50% trial-to-paid).
 
-**The Lesson:**
+**教訓:**
 
 Early customers come from direct outreach, not press coverage. Press matters later (Series A announcement, major milestone). For 0-to-1, it's distraction.
 
 ---
 
-### 2. The Three-Layer Diagnosis (Why Launches Stall)
+### 2. 3 層診断（ローンチが停滞する理由）
 
 **The Pattern:**
 
@@ -107,18 +107,18 @@ When a launch stalls, diagnose which layer is broken before throwing resources a
 
 ---
 
-### 3. The First 10 Customers Framework
+### 3. 最初の 10 顧客フレームワーク
 
-**Principle:** First 10 customers are not for revenue. They're for learning.
+**原則:** 最初の 10 顧客は売上のためではなく、学習のためにいる。
 
-**What You're Learning:**
+**学ぶこと:**
 1. Does the product actually solve the problem?
 2. What's the activation flow? (How do they get value?)
 3. What objections come up? (Price, features, integrations?)
 4. Who's the real buyer? (Title, role, budget authority?)
 5. What's the sales cycle? (Days, weeks, months?)
 
-**How to Find Them:**
+**見つけ方:**
 
 **Channel 1: Personal Network (first 2-3)**
 - "I'm building [X], can I get your feedback?"
@@ -142,7 +142,7 @@ When a launch stalls, diagnose which layer is broken before throwing resources a
 
 ---
 
-### 4. The 2-Week Experiment Cycle
+### 4. 2 週間の実験サイクル
 
 **The Pattern:**
 
@@ -157,21 +157,21 @@ Speed in early stages matters more than perfection. The constraint isn't whether
 - If it doesn't, kill it and move to the next test
 - Document what you learned regardless of outcome
 
-**The Playbook Rule:**
+**プレイブックのルール:**
 
 Every successful experiment must become a playbook before scaling. Structure: Goal → Steps → Expected output → Metrics → Risks. If someone unfamiliar can't execute the playbook, it's not documented well enough.
 
-**Why This Matters:**
+**これが重要な理由:**
 
 One-off wins don't compound. Systematized experiments do. The goal isn't a single launch — it's building a repeatable machine for testing assumptions at speed.
 
-**Common Mistake:**
+**よくある失敗:**
 
 Over-planning before testing. Waiting for "perfect" conditions before launching. Staying with failing experiments too long because you've invested emotional energy. Make decisions with 70% information.
 
 ---
 
-### 5. Partner-Led Market Entry (When You Don't Have Distribution)
+### 5. パートナー主導の市場参入（販売網がない場合）
 
 **The Pattern:**
 
@@ -203,7 +203,7 @@ Launching partnerships without clear integration pathways. Expecting partners to
 
 ---
 
-### 6. PMF Validation Checklist
+### 6. PMF 検証チェックリスト
 
 **Product-market fit is when customers pull you forward, not when you push them.**
 
@@ -231,9 +231,9 @@ Launching partnerships without clear integration pathways. Expecting partners to
 
 ---
 
-## Decision Trees
+## 判断ツリー
 
-### Why Is Our Launch Stalling?
+### ローンチが停滞している理由は何か
 
 ```
 Do prospects understand what you are?
@@ -252,7 +252,7 @@ Do prospects understand what you are?
         └─ Yes → Keep iterating, you're on the right track
 ```
 
-### Press Launch or Direct Outreach?
+### 報道ローンチか直接アプローチか
 
 ```
 Self-serve ready? (Users get value in <10 min)
@@ -264,7 +264,7 @@ Self-serve ready? (Users get value in <10 min)
 
 ---
 
-## Common Mistakes
+## よくある失敗
 
 **1. Optimizing for headlines instead of activation**
 50K impressions and 12 signups. Press ≠ growth.
@@ -289,7 +289,7 @@ Positioning fix when the problem is experience = wasted marketing. Experience fi
 
 ---
 
-## Quick Reference
+## クイックリファレンス
 
 **Three-layer diagnosis:**
 Layer 1: Positioning (messaging sounds like competitors) → Test new messaging
@@ -310,7 +310,7 @@ Customer problem first → Narrow pilot → Reference customers together → Lev
 
 ---
 
-## Related Skills
+## 関連 Skill
 
 - **product-led-growth**: Scaling after initial traction
 - **positioning-strategy**: Positioning for launch

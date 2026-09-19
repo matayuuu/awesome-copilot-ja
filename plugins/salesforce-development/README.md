@@ -1,8 +1,8 @@
 # Salesforce Development Plugin
 
-Complete Salesforce agentic development environment covering Apex & Triggers, Flow automation, Lightning Web Components (LWC), Aura components, and Visualforce pages.
+Apexとトリガー、Flow自動化、Lightning Web Components（LWC）、Auraコンポーネント、Visualforceページを網羅するSalesforceエージェント開発環境です。
 
-## Installation
+## インストール
 
 ```bash
 copilot plugin install salesforce-development@awesome-copilot

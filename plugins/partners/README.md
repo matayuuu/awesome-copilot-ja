@@ -1,8 +1,8 @@
-# Partners Plugin
+# Partnersプラグイン
 
-Custom agents that have been created by GitHub partners
+GitHubパートナーが作成したカスタムエージェント
 
-## Installation
+## インストール
 
 ```bash
 # Using Copilot CLI

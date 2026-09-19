@@ -1,17 +1,17 @@
-# Git Worktree Explorer Plugin
+# Git Worktree Explorer プラグイン
 
-Visualize the active Git repository through worktrees, branches, commits, and optional GitHub pull request context.
+worktree、branch、commit、任意の GitHub pull request コンテキストを通して、アクティブな Git リポジトリを可視化します。
 
-## Installation
+## インストール
 
 ```bash
 copilot plugin install git-worktree-explorer@awesome-copilot
 ```
 
-## Source
+## ソース
 
-This plugin is part of [Awesome Copilot](https://github.com/github/awesome-copilot).
+このプラグインは [Awesome Copilot](https://github.com/github/awesome-copilot) の一部です。
 
-## License
+## ライセンス
 
 MIT

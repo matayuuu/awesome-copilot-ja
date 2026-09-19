@@ -1,106 +1,106 @@
 ---
 name: content-management-systems
-description: 'Workflow for building and modifying content management systems across WordPress, Shopify, Wix, Squarespace, Drupal, WooCommerce, Joomla, HubSpot CMS Hub, Webflow, Adobe Experience Manager, and similar platforms. Use when working on CMS themes, plugins, apps, modules, admin panels, media uploads, content models, editors, markdown pipelines, or static export workflows.'
+description: 'WordPress、Shopify、Wix、Squarespace、Drupal、WooCommerce、Joomla、HubSpot CMS Hub、Webflow、Adobe Experience Managerなどのプラットフォームで、コンテンツ管理システムを構築・変更するためのワークフロー。CMSのテーマ、プラグイン、アプリ、モジュール、管理画面、メディアアップロード、コンテンツモデル、エディター、Markdownパイプライン、静的エクスポートの作業に使用する。'
 ---
 
-# Content Management Systems
+# コンテンツ管理システム
 
-Use this skill when the user is working on a content management system or on software that behaves like one.
+ユーザーがコンテンツ管理システム、またはそれに類似するソフトウェアを扱う場合に、このSkillを使用します。
 
-This skill focuses on the seams that matter in CMS work:
+このSkillは、CMS作業で重要となる次の境界に焦点を当てます:
 
-- themes and templates
-- plugins, apps, modules, and extensions
-- admin and editor interfaces
-- media and upload handling
-- content models, taxonomy, and metadata
-- render pipelines and static export flows
+- テーマとテンプレート
+- プラグイン、アプリ、モジュール、Extension
+- 管理画面とエディターのインターフェイス
+- メディアとアップロードの処理
+- コンテンツモデル、分類、メタデータ
+- レンダリングパイプラインと静的エクスポートフロー
 
-## When to Use This Skill
+## このSkillを使用する場面
 
-- The user mentions a CMS platform such as WordPress, Shopify, Drupal, Joomla, Webflow, Squarespace, Wix, WooCommerce, HubSpot CMS Hub, or Adobe Experience Manager.
-- The task is about theme development, template changes, or design system work inside a CMS.
-- The task is about plugins, modules, apps, or extension points.
-- The task touches editor UX, previews, taxonomy, slugs, SEO fields, or publishing behavior.
-- The task involves uploads, media libraries, authored assets, markdown rendering, or static export.
+- ユーザーがWordPress、Shopify、Drupal、Joomla、Webflow、Squarespace、Wix、WooCommerce、HubSpot CMS Hub、Adobe Experience ManagerなどのCMSプラットフォームに言及している。
+- タスクがCMS内でのテーマ開発、テンプレート変更、デザインシステム作業に関するものである。
+- タスクがプラグイン、モジュール、アプリ、拡張ポイントに関するものである。
+- タスクがエディターUX、プレビュー、分類、スラッグ、SEOフィールド、公開動作に関係している。
+- タスクにアップロード、メディアライブラリ、作成済みアセット、Markdownレンダリング、静的エクスポートが含まれる。
 
-## First Pass
+## 最初の確認
 
-1. Identify the platform category: self-hosted CMS, SaaS site builder, commerce platform, or hybrid/headless system.
-2. Find the owning implementation seam before editing:
-   - theme or template layer
-   - plugin, app, module, or extension layer
-   - admin or editor surface
-   - content model or storage layer
-   - media pipeline
-   - export, deploy, or rendering pipeline
-3. Check platform constraints before choosing an approach:
-   - what is editable locally
-   - what is authored content versus code
-   - where media belongs
-   - whether the final site is server-rendered, static-exported, or hosted remotely
+1. プラットフォームのカテゴリを特定する: セルフホスト型CMS、SaaSサイトビルダー、コマースプラットフォーム、ハイブリッド／ヘッドレスシステム。
+2. 編集前に、実装を所有する境界を見つける:
+   - テーマまたはテンプレート層
+   - プラグイン、アプリ、モジュール、Extension層
+   - 管理画面またはエディター
+   - コンテンツモデルまたはストレージ層
+   - メディアパイプライン
+   - エクスポート、デプロイ、レンダリングのパイプライン
+3. アプローチを選ぶ前にプラットフォームの制約を確認する:
+   - ローカルで編集できるもの
+   - 作成コンテンツとコードの区別
+   - メディアを置く場所
+   - 最終サイトがサーバーレンダリング、静的エクスポート、リモートホストのいずれであるか
 
-## CMS Rules
+## CMSのルール
 
-- Follow the platform's naming and folder conventions for themes, modules, template parts, or sections.
-- Keep theme assets separate from user-uploaded media unless the platform explicitly combines them.
-- Prefer structured content fields over storing important metadata inside presentation markup.
-- Treat previews, slugs, taxonomy, excerpts, meta fields, and publish states as first-class CMS concerns.
-- Prefer safe defaults and graceful fallback behavior when config, theme selection, or content input is invalid.
-- When changing editor or admin behavior, trace the stored field, validation rules, preview path, and final render path together.
+- テーマ、モジュール、テンプレートパーツ、セクションについて、プラットフォームの命名規則とフォルダー規則に従う。
+- プラットフォームが明示的に統合している場合を除き、テーマアセットとユーザーがアップロードしたメディアを分離する。
+- 重要なメタデータを表示用マークアップ内に保存するより、構造化されたコンテンツフィールドを優先する。
+- プレビュー、スラッグ、分類、抜粋、メタフィールド、公開状態をCMSの第一級の関心事として扱う。
+- 構成、テーマ選択、コンテンツ入力が無効な場合は、安全な既定値とグレースフルなフォールバック動作を優先する。
+- エディターまたは管理画面の動作を変更するときは、保存されるフィールド、検証規則、プレビューパス、最終レンダリングパスをまとめて追跡する。
 
-## Common Workflows
+## 一般的なワークフロー
 
-### Themes and Templates
+### テーマとテンプレート
 
-- Start at the template loader or theme runtime, not at a downstream include.
-- Preserve the platform's template hierarchy and partial naming conventions.
-- Keep presentation changes close to templates and shared theme helpers.
+- 下流のincludeではなく、テンプレートローダーまたはテーマランタイムから始める。
+- プラットフォームのテンプレート階層と部分テンプレートの命名規則を維持する。
+- 表示上の変更は、テンプレートと共有テーマヘルパーの近くに配置する。
 
-### Plugins, Apps, and Modules
+### プラグイン、アプリ、モジュール
 
-- Add behavior at the platform's extension seam instead of scattering logic into templates.
-- Keep migrations, seed data, and configuration updates explicit and versioned.
-- Document the extension's setup assumptions when the platform requires activation or registration.
+- ロジックをテンプレートへ分散させず、プラットフォームの拡張境界に動作を追加する。
+- 移行、シードデータ、構成更新を明示し、バージョン管理する。
+- プラットフォームで有効化または登録が必要な場合は、Extensionのセットアップ前提を文書化する。
 
-### Admin and Editor UX
+### 管理画面とエディターのUX
 
-- Keep forms aligned with the stored content model.
-- Prefer author-facing previews when content transformations are non-trivial.
-- Keep validation, CSRF or equivalent safeguards, and permissions consistent with the surrounding admin code.
+- フォームを保存先のコンテンツモデルと整合させる。
+- コンテンツ変換が単純でない場合は、作成者向けプレビューを優先する。
+- 検証、CSRFまたは同等の保護、権限を周辺の管理コードと一貫させる。
 
-### Media and Uploads
+### メディアとアップロード
 
-- Use a dedicated upload path for authored media.
-- Keep decorative or theme-owned imagery in the active theme folder.
-- Default to conventional locations like `uploads/` for authored media and `img/` for theme assets unless the platform dictates a stronger convention.
-- When a CMS supports configurable media directories, expose the setting with a safe fallback.
+- 作成コンテンツ用メディアには専用のアップロードパスを使用する。
+- 装飾画像やテーマ所有の画像は、アクティブなテーマフォルダーに置く。
+- プラットフォームにより強い規約がない限り、作成コンテンツ用メディアは`uploads/`、テーマアセットは`img/`などの一般的な場所を既定とする。
+- CMSがメディアディレクトリの構成に対応している場合は、安全なフォールバックとともに設定を公開する。
 
-### Content Models and Migrations
+### コンテンツモデルと移行
 
-- Distinguish content entities clearly: pages, posts, products, entries, collections, taxonomies, and settings.
-- Prefer migration files or exportable schema definitions over ad hoc runtime mutations.
-- Keep slugs, publish dates, excerpts, canonical metadata, and taxonomy relations structured.
+- ページ、投稿、商品、エントリ、コレクション、分類、設定などのコンテンツエンティティを明確に区別する。
+- その場限りのランタイム変更より、移行ファイルまたはエクスポート可能なスキーマ定義を優先する。
+- スラッグ、公開日、抜粋、canonicalメタデータ、分類関係を構造化して保持する。
 
-### Markdown, HTML, and Static Export
+### Markdown、HTML、静的エクスポート
 
-- Decide whether markdown is authored input, intermediate content, or build output before changing the renderer.
-- Pair renderer changes with preview or validation when feasible.
-- For static-exported CMS systems, validate rewritten permalinks and asset paths after build changes.
+- レンダラーを変更する前に、Markdownが作成時の入力、中間コンテンツ、ビルド出力のどれかを判断する。
+- 可能な場合は、レンダラーの変更にプレビューまたは検証を組み合わせる。
+- 静的エクスポート型CMSでは、ビルド変更後に書き換えられたパーマリンクとアセットパスを検証する。
 
-## Identifying the Owning Seam
+## 所有する境界の特定
 
-Regardless of platform, locate the owning seam before editing by mapping the codebase to these CMS roles:
+プラットフォームにかかわらず、コードベースを次のCMSの役割へ対応付け、編集前に所有する境界を特定します:
 
-- Runtime bootstrap and request routing
-- Admin or editor controllers and their view templates
-- Theme loading, template hierarchy, and shared template helpers
-- Repositories, models, or schema/migration files for content, taxonomy, and settings
-- Markdown or content transformation utilities
-- Static export, deploy, or render pipeline entry points
+- ランタイムのブートストラップとリクエストルーティング
+- 管理画面またはエディターのコントローラーとビューテンプレート
+- テーマ読み込み、テンプレート階層、共有テンプレートヘルパー
+- コンテンツ、分類、設定のRepository、モデル、スキーマ／移行ファイル
+- Markdownまたはコンテンツ変換ユーティリティ
+- 静的エクスポート、デプロイ、レンダリングパイプラインのエントリポイント
 
-Step to the owning seam first, then make the smallest change that preserves the CMS structure.
+最初に所有する境界へ進み、CMSの構造を維持できる最小限の変更を加えます。
 
-## Platform Notes
+## プラットフォーム別の注記
 
-See `references/cms-platform-workflows.md` for a compact mapping of common CMS platforms, extension surfaces, and media conventions.
+一般的なCMSプラットフォーム、拡張ポイント、メディア規約の簡潔な対応表については、`references/cms-platform-workflows.md`を参照してください。

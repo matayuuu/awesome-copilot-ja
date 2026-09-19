@@ -1,8 +1,8 @@
 # OpenAPI to Application - Node.js NestJS Plugin
 
-Generate production-ready NestJS applications from OpenAPI specifications. Includes project scaffolding, controller and service generation, TypeScript best practices, and enterprise patterns.
+OpenAPI仕様から本番対応のNestJSアプリケーションを生成します。プロジェクトのスキャフォールディング、コントローラーとサービスの生成、TypeScriptのベストプラクティス、エンタープライズ向けパターンを含みます。
 
-## Installation
+## インストール
 
 ```bash
 # Using Copilot CLI

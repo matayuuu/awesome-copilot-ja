@@ -1,73 +1,72 @@
 ---
 name: secret-scanning
-description: 'Guide for configuring and managing GitHub secret scanning, push protection, custom patterns, and secret alert remediation. For pre-commit secret scanning in AI coding agents via the GitHub MCP Server, this skill references the Advanced Security plugin (`advanced-security@copilot-plugins`). Use this skill when enabling secret scanning, setting up push protection, defining custom patterns, triaging alerts, resolving blocked pushes, or when an agent needs to scan code for secrets before committing.'
+description: 'GitHub secret scanning、push protection、custom pattern、secret alert remediationの設定と管理を案内します。GitHub MCP Server経由でAI coding agentのpre-commit secret scanningを行う場合は、Advanced Security plugin（`advanced-security@copilot-plugins`）を参照します。secret scanningのenable、push protectionのsetup、custom patternの定義、alertのtriage、blocked pushの解決、commit前のsecret scanが必要な場合に使用します。'
 ---
+# Secret Scanning（シークレットスキャン）
 
-# Secret Scanning
+この Skill は GitHub secret scanning の設定手順を示します。漏えい credential の検出、secret push の防止、custom pattern の定義、alert の管理を扱います。
 
-This skill provides procedural guidance for configuring GitHub secret scanning — detecting leaked credentials, preventing secret pushes, defining custom patterns, and managing alerts.
+## この Skill を使う場面
 
-## When to Use This Skill
+依頼に次が含まれる場合にこの Skill を使います。
 
-Use this skill when the request involves:
+- repositoryまたはorganizationでsecret scanningを有効化・設定する
+- secretがrepositoryへ到達する前にblockするpush protectionを設定する
+- regular expressionでcustom secret patternを定義する
+- command lineからblocked pushを解決する
+- secret scanning alertをtriage、dismiss、remediateする
+- push protectionのdelegated bypassを設定する
+- `secret_scanning.yml`でsecret scanningからdirectoryを除外する
+- alert type（user、partner、push protection）を理解する
+- validity checkまたはextended metadata checkを有効にする
+- commit前にlocal code changeのsecretをscanする（MCP / AI coding agent経由）— 推奨pluginは下の**AI coding agentによるPre-Commit Scanning**を参照する
 
-- Enabling or configuring secret scanning for a repository or organization
-- Setting up push protection to block secrets before they reach the repository
-- Defining custom secret patterns with regular expressions
-- Resolving a blocked push from the command line
-- Triaging, dismissing, or remediating secret scanning alerts
-- Configuring delegated bypass for push protection
-- Excluding directories from secret scanning via `secret_scanning.yml`
-- Understanding alert types (user, partner, push protection)
-- Enabling validity checks or extended metadata checks
-- Scanning local code changes for secrets before committing (via MCP / AI coding agent) — see the **Pre-Commit Scanning via AI Coding Agents** section below for the recommended plugin
+## Secret Scanning の仕組み
 
-## How Secret Scanning Works
+Secret scanning は次の場所にある exposed credential を自動検出します。
 
-Secret scanning automatically detects exposed credentials across:
+- すべてのbranchのGit history全体
+- issueのdescription、comment、title（openとclosed）
+- pull requestのtitle、description、comment
+- GitHub Discussionsのtitle、description、comment
+- wikiとsecret gist
 
-- Entire Git history on all branches
-- Issue descriptions, comments, and titles (open and closed)
-- Pull request titles, descriptions, and comments
-- GitHub Discussions titles, descriptions, and comments
-- Wikis and secret gists
+### 利用可能性
 
-### Availability
-
-| Repository Type | Availability |
+| repository type | 利用可能性 |
 |---|---|
-| Public repos | Automatic, free |
-| Private/internal (org-owned) | Requires GitHub Secret Protection on Team/Enterprise Cloud |
-| User-owned | Enterprise Cloud with Enterprise Managed Users |
+| Public repo | 自動で無料 |
+| Private/internal（org-owned） | Team/Enterprise CloudのGitHub Secret Protectionが必要 |
+| User-owned | Enterprise Managed Users付きEnterprise Cloud |
 
-## Core Workflow — Enable Secret Scanning
+## 基本Workflow — Secret Scanningを有効にする
 
-### Step 1: Enable Secret Protection
+### Step 1: Secret Protectionを有効にする
 
-1. Navigate to repository **Settings** → **Advanced Security**
-2. Click **Enable** next to "Secret Protection"
-3. Confirm by clicking **Enable Secret Protection**
+1. repositoryの**Settings** → **Advanced Security**へ移動
+2. "Secret Protection"の横にある**Enable**をclick
+3. **Enable Secret Protection**をclickして確認
 
-For organizations, use security configurations to enable at scale:
+organization では security configuration を使って大規模に有効化します。
 - Settings → Advanced Security → Global settings → Security configurations
 
-### Step 2: Enable Push Protection
+### Step 2: Push Protectionを有効にする
 
-Push protection blocks secrets during the push process — before they reach the repository.
+Push protection は repository に到達する前、push process 中に secret を block します。
 
-1. Navigate to repository **Settings** → **Advanced Security**
-2. Enable "Push protection" under Secret Protection
+1. repositoryの**Settings** → **Advanced Security**へ移動
+2. Secret Protectionの下で"Push protection"をenable
 
-Push protection blocks secrets in:
-- Command line pushes
-- GitHub UI commits
-- File uploads
-- REST API requests
-- REST API content creation endpoints
+Push protectionは次の操作でsecretをblockします。
+- command lineからのpush
+- GitHub UIからのcommit
+- file upload（ファイルアップロード）
+- REST API request（REST APIリクエスト）
+- REST APIのcontent creation endpoint
 
-### Step 3: Configure Exclusions (Optional)
+### Step 3: Exclusionを設定する（任意）
 
-Create `.github/secret_scanning.yml` to auto-close alerts for specific directories:
+特定directoryのalertをauto-closeするため、`.github/secret_scanning.yml`を作成します。
 
 ```yaml
 paths-ignore:
@@ -76,41 +75,41 @@ paths-ignore:
   - "**/*.example"
 ```
 
-**Limits:**
-- Maximum 1,000 entries in `paths-ignore`
-- File must be under 1 MB
-- Excluded paths also skip push protection checks
+**制限:**
+- `paths-ignore`は最大1,000 entry
+- fileは1 MB未満
+- 除外pathはpush protection checkもskip
 
-**Best practices:**
-- Be as specific as possible with exclusion paths
-- Add comments explaining why each path is excluded
-- Review exclusions periodically — remove stale entries
-- Inform the security team about exclusions
+**推奨方法:**
+- exclusion pathは可能な限り具体的にする
+- 各pathを除外する理由を説明するcommentを追加
+- exclusionを定期的にreviewし、古いentryを削除
+- exclusionについてsecurity teamに知らせる
 
-### Step 4: Enable Additional Features (Optional)
+### Step 4: 追加機能を有効にする（任意）
 
-**Non-provider patterns** — detect private keys, connection strings, generic API keys:
-- Settings → Advanced Security → enable "Scan for non-provider patterns"
+**Non-provider pattern** — private key、connection string、generic API keyを検出:
+- Settings → Advanced Security → "Scan for non-provider patterns"をenableする
 
-**AI-powered generic secret detection** — uses Copilot to detect unstructured secrets like passwords:
-- Settings → Advanced Security → enable "Use AI detection"
+**AI-powered generic secret detection** — Copilotでpasswordのようなunstructured secretを検出:
+- Settings → Advanced Security → "Use AI detection"をenableする
 
-**Validity checks** — verify if detected secrets are still active:
+**Validity check** — 検出secretがactiveか検証:
 - Settings → Advanced Security → enable "Validity checks"
-- GitHub periodically tests detected credentials against provider APIs
-- Status shown in alert: `active`, `inactive`, or `unknown`
+- GitHubがprovider APIに対して検出credentialを定期的にtest
+- alertに表示されるstatus: `active`、`inactive`、`unknown`
 
-**Extended metadata checks** — additional context about who owns a secret:
-- Requires validity checks to be enabled first
-- Helps prioritize remediation and identify responsible teams
+**Extended metadata check** — secret ownerに関する追加context:
+- 先にvalidity checkをenableする必要がある
+- remediationの優先順位付けと担当teamの特定に役立つ
 
-## Core Workflow — Resolve Blocked Pushes
+## 基本Workflow — Blocked Pushを解決する
 
-When push protection blocks a push from the command line:
+push protection が command line からの push を block した場合:
 
-### Option A: Remove the Secret
+### Option A: Secretを削除する
 
-**If the secret is in the latest commit:**
+**secretがlatest commitにある場合:**
 ```bash
 # Remove the secret from the file
 # Then amend the commit
@@ -118,7 +117,7 @@ git commit --amend --all
 git push
 ```
 
-**If the secret is in an earlier commit:**
+**secretがearlier commitにある場合:**
 ```bash
 # Find the earliest commit containing the secret
 git log
@@ -134,88 +133,88 @@ git rebase --continue
 git push
 ```
 
-### Option B: Bypass Push Protection
+### Option B: Push Protectionをbypassする
 
-1. Visit the URL returned in the push error message (as the same user)
-2. Select a bypass reason:
-   - **It's used in tests** — alert created and auto-closed
-   - **It's a false positive** — alert created and auto-closed
-   - **I'll fix it later** — open alert created
-3. Click **Allow me to push this secret**
-4. Re-push within 3 hours
+1. push error messageで返されたURLを同じユーザーとして開く
+2. bypassの理由を選択する:
+   - **It's used in tests** — alertを作成してauto-closeする
+   - **It's a false positive** — alertを作成してauto-closeする
+   - **I'll fix it later** — open alertを作成する
+3. **Allow me to push this secret**をクリックする
+4. 3時間以内に再度pushする
 
-### Option C: Request Bypass Privileges
+### Option C: Bypass privilegeを申請する
 
-If delegated bypass is enabled and you lack bypass privileges:
-1. Visit the URL from the push error
-2. Add a comment explaining why the secret is safe
-3. Click **Submit request**
-4. Wait for email notification of approval/denial
-5. If approved, push the commit; if denied, remove the secret
+delegated bypassが有効でbypass権限がない場合:
+1. push errorのURLを開く
+2. secretが安全である理由を説明するcommentを追加する
+3. **Submit request**をクリックする
+4. 承認または拒否のemail notificationを待つ
+5. 承認されたらcommitをpushし、拒否されたらsecretを削除する
 
-> For detailed bypass and delegated bypass workflows, search `references/push-protection.md`.
+> bypassとdelegated bypassの詳細なworkflowは`references/push-protection.md`を検索してください。
 
-## Custom Patterns
+## Custom Pattern（custom pattern）
 
-Define organization-specific secret patterns using regular expressions.
+regular expression を使って organization-specific secret pattern を定義します。
 
-### Quick Setup
+### Quick Setup（簡易setup）
 
 1. Settings → Advanced Security → Custom patterns → **New pattern**
-2. Enter pattern name and regex for secret format
-3. Add a sample test string
-4. Click **Save and dry run** to test (up to 1,000 results)
-5. Review results for false positives
-6. Click **Publish pattern**
-7. Optionally enable push protection for the pattern
+2. pattern nameとsecret format用のregexを入力する
+3. sample test stringを追加する
+4. **Save and dry run**をクリックしてテストする（最大1,000件）
+5. false positiveがないかresultを確認する
+6. **Publish pattern**をクリックする
+7. 必要に応じてpatternのpush protectionを有効にする
 
-### Scopes
+### Scope（適用範囲）
 
-Custom patterns can be defined at:
-- **Repository level** — applies to that repo only
-- **Organization level** — applies to all repos with secret scanning enabled
-- **Enterprise level** — applies across all organizations
+Custom patternは次の単位で定義できます:
+- **Repository level** — そのrepoだけに適用
+- **Organization level** — secret scanningが有効なすべてのrepoに適用
+- **Enterprise level** — すべてのorganizationに適用
 
-### Copilot-Assisted Pattern Generation
+### Copilot-assisted Pattern Generation（Copilot支援pattern生成）
 
-Use Copilot secret scanning to generate regex from a text description of the secret type, including optional example strings.
+Copilot secret scanningを使い、secret typeの説明文から任意のexample stringを含むregexを生成します。
 
-> For detailed custom pattern configuration, search `references/custom-patterns.md`.
+> custom pattern設定の詳細は`references/custom-patterns.md`を検索してください。
 
-## Alert Management
+## Alert Management（alert管理）
 
-### Alert Types
+### Alert Type（alert type）
 
-| Type | Description | Visibility |
+| type | 説明 | 表示場所 |
 |---|---|---|
-| **User alerts** | Secrets found in repository | Security tab |
-| **Push protection alerts** | Secrets pushed via bypass | Security tab (filter: `bypassed: true`) |
-| **Partner alerts** | Secrets reported to provider | Not shown in repo (provider-only) |
+| **User alerts** | repositoryで見つかったsecret | Security tab |
+| **Push protection alerts** | bypassによってpushされたsecret | Security tab（filter: `bypassed: true`） |
+| **Partner alerts** | providerへ報告されたsecret | repoには表示されない（providerのみ） |
 
-### Alert Lists
+### Alert List（alert一覧）
 
-- **Default alerts** — supported provider patterns and custom patterns
-- **Generic alerts** — non-provider patterns and AI-detected secrets (limited to 5,000 per repo)
+- **Default alerts** — 対応provider patternとcustom pattern
+- **Generic alerts** — non-provider patternとAI検出secret（repoあたり5,000件まで）
 
-### Remediation Priority
+### Remediationの優先順位
 
-1. **Rotate the credential immediately** — this is the critical action
-2. Review the alert for context (location, commit, author)
-3. Check validity status: `active` (urgent), `inactive` (lower priority), `unknown`
-4. Remove from Git history if needed (time-intensive, often unnecessary after rotation)
+1. **credentialを直ちにrotateする** — これが最優先の対応です
+2. context（location、commit、author）のためalertを確認する
+3. validity statusを確認する: `active`（緊急）、`inactive`（優先度低）、`unknown`
+4. 必要ならGit historyから削除する（時間がかかり、rotate後は不要なことが多い）
 
-### Dismissing Alerts
+### Alert を dismiss する
 
-Dismiss with a documented reason:
-- **False positive** — detected string is not a real secret
-- **Revoked** — credential has already been revoked
-- **Used in tests** — secret is only in test code
+文書化した理由を付けてdismissします:
+- **False positive** — 検出された文字列が実際のsecretではない
+- **Revoked** — credentialがすでにrevokeされている
+- **Used in tests** — secretがtest code内だけにある
 
-> For detailed alert types, validity checks, and REST API, search `references/alerts-and-remediation.md`.
+> alert type、validity check、REST APIの詳細は`references/alerts-and-remediation.md`を検索してください。
 
-## Pre-Commit Scanning via AI Coding Agents
+## AI Coding Agent による Pre-Commit Scanning
 
-For scanning code changes for secrets inside an AI coding agent before committing, install the **Advanced Security plugin** which provides the `run_secret_scanning` MCP tool and a dedicated scanning skill.
+commit 前に AI coding agent 内で code change の secret を scan するには、`run_secret_scanning` MCP tool と専用 scanning skill を提供する **Advanced Security plugin** を install します。
 
 **GitHub Copilot CLI:**
 ```bash
@@ -223,20 +222,20 @@ For scanning code changes for secrets inside an AI coding agent before committin
 ```
 
 **Visual Studio Code:**
-- In Copilot Chat, open **Chat: Plugins** (or use `@agentPlugins`) and install the `advanced-security` plugin
-- Then run `/secret-scanning` in Copilot Chat
+- Copilot Chatで**Chat: Plugins**を開き（または`@agentPlugins`を使い）、`advanced-security` pluginをインストールする
+- 次にCopilot Chatで`/secret-scanning`を実行する
 
 See: [Advanced Security Plugin — Secret Scanning Skill](https://github.com/github/copilot-plugins/blob/main/plugins/advanced-security/skills/secret-scanning/SKILL.md)
 
-> Announced in [Secret scanning in AI coding agents via the GitHub MCP Server](https://github.blog/changelog/2026-03-17-secret-scanning-in-ai-coding-agents-via-the-github-mcp-server/) (March 2026)
+> [GitHub MCP Server経由のAI coding agentにおけるsecret scanning](https://github.blog/changelog/2026-03-17-secret-scanning-in-ai-coding-agents-via-the-github-mcp-server/)で2026年3月に発表されています。
 
-## Reference Files
+## Reference Files（参照ファイル）
 
-For detailed documentation, load the following reference files as needed:
+詳細な documentation が必要な場合は、次の reference file を読み込みます。
 
-- `references/push-protection.md` — Push protection mechanics, bypass workflow, delegated bypass, user push protection
+- `references/push-protection.md` — Push protectionの仕組み、bypass workflow、delegated bypass、user push protection
   - Search patterns: `bypass`, `delegated`, `bypass request`, `command line`, `REST API`, `user push protection`
-- `references/custom-patterns.md` — Custom pattern creation, regex syntax, dry runs, Copilot regex generation, scopes
+- `references/custom-patterns.md` — Custom patternの作成、regex syntax、dry run、Copilotによるregex生成、scope
   - Search patterns: `custom pattern`, `regex`, `dry run`, `publish`, `organization`, `enterprise`, `Copilot`
-- `references/alerts-and-remediation.md` — Alert types, validity checks, extended metadata, generic alerts, secret removal, REST API
+- `references/alerts-and-remediation.md` — alert type、validity check、extended metadata、generic alert、secret削除、REST API
   - Search patterns: `user alert`, `partner alert`, `validity`, `metadata`, `generic`, `remediation`, `git history`, `REST API`

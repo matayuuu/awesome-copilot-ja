@@ -1,8 +1,8 @@
 # acreadiness-cockpit
 
-Drive [Microsoft AgentRC](https://github.com/microsoft/agentrc) from Copilot chat. Frames every interaction inside AgentRC's **Measure → Generate → Maintain** loop.
+Copilot チャットから [Microsoft AgentRC](https://github.com/microsoft/agentrc) を操作します。AgentRC の **Measure → Generate → Maintain** ループの中で、すべてのやり取りを進めます。
 
-## What's in the plugin
+## プラグインの内容
 
 ### Custom agent
 

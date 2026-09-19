@@ -1,16 +1,16 @@
 ---
 name: gtm-technical-product-pricing
-description: Pricing strategy for technical products. Use when choosing usage-based vs seat-based, designing freemium thresholds, structuring enterprise pricing conversations, deciding when to raise prices, or using price as a positioning signal.
+description: 技術製品の価格戦略。従量課金と席課金の選択、フリーミアムの閾値設計、エンタープライズ価格の会話設計、値上げ時期の判断、または価格をポジショニングのシグナルとして使う場合に使う。
 license: MIT
 metadata:
   author: Smit Patel (https://linkedin.com/in/smitkpatel)
   source: https://github.com/beingsmit/technical-product-gtm
 ---
 
-# Technical Product Pricing
+# 技術製品の価格設定
 
 
-## Initial Assessment
+## 初期評価
 
 Before recommending pricing, understand:
 
@@ -22,9 +22,9 @@ Before recommending pricing, understand:
 
 ---
 
-## Core Frameworks
+## 中核フレームワーク
 
-### 1. The Price Increase Nobody Noticed (You're Probably Underpriced)
+### 1. 誰も気づかなかった値上げ（おそらく安すぎる）
 
 **The Pattern:**
 
@@ -71,7 +71,7 @@ Comparing your price to competitors instead of to customer's alternative cost. C
 
 ---
 
-### 2. The Three Pricing Models (And When Each Breaks)
+### 2. 3つの価格モデル（それぞれが破綻する時期）
 
 **Model 1: Seat-Based ($X/user/month)**
 
@@ -123,7 +123,7 @@ Why this works:
 
 ---
 
-### 3. Freemium Threshold Design (Where Free Ends and Paid Begins)
+### 3. フリーミアム閾値の設計（無料の終わりと有料の始まり）
 
 **The Pattern:**
 
@@ -173,7 +173,7 @@ Setting free tier too high ("we want developers to love us"). If production user
 
 ---
 
-### 4. Enterprise Pricing (The Conversation, Not the Number)
+### 4. エンタープライズ価格（数字ではなく会話）
 
 **The Pattern:**
 
@@ -227,7 +227,7 @@ Publishing enterprise pricing on your website. The moment you publish a number, 
 
 ---
 
-### 5. Pricing as Positioning Signal
+### 5. ポジショニングのシグナルとしての価格
 
 **The Pattern:**
 
@@ -270,7 +270,7 @@ Pricing for the customer you have instead of the customer you want. If your road
 
 ---
 
-### 6. When and How to Raise Prices
+### 6. いつ、どのように値上げするか
 
 **Timing Signals:**
 
@@ -305,7 +305,7 @@ Never apologize for raising prices. Frame it as investment in the product they l
 
 ---
 
-## Decision Trees
+## 判断ツリー
 
 ### Which Pricing Model?
 
@@ -341,7 +341,7 @@ Is value ratio > 5x for most customers?
 
 ---
 
-## Related Skills
+## 関連Skill
 
 - **ai-gtm**: AI-specific pricing models (variable-cost AI, pricing outputs vs inputs)
 - **product-led-growth**: Freemium conversion and PLG pricing gates

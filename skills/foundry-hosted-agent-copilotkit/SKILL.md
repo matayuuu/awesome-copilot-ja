@@ -1,15 +1,15 @@
 ---
 name: foundry-hosted-agent-copilotkit
-description: 'Ongoing development guidance for agentic web apps that pair a CopilotKit frontend with Microsoft Agent Framework agents on Azure AI Foundry hosted agents over the AG-UI protocol - add and gate agent tools, wire human-in-the-loop approvals, build generative UI and shared state, debug the event stream, upgrade pre-1.0 packages safely, and deploy hosted agent updates.'
+description: 'AG-UI プロトコル経由で Azure AI Foundry のホストエージェント上にある Microsoft Agent Framework エージェントと CopilotKit フロントエンドを組み合わせたエージェント型 Web アプリの継続的な開発を支援します。エージェントツールの追加とゲート、ヒューマンインザループ承認の接続、生成 UI と共有状態の構築、イベントストリームのデバッグ、1.0 未満のパッケージの安全なアップグレード、ホストエージェント更新のデプロイを扱います。'
 ---
 
-# Developing with CopilotKit + AG-UI + Azure AI Foundry Hosted Agents
+# CopilotKit + AG-UI + Azure AI Foundry ホストエージェントを使った開発
 
-Use this skill for development work inside an EXISTING application built on this stack: a React/Next.js frontend using CopilotKit, connected over the AG-UI protocol to a Microsoft Agent Framework (MAF) agent (Python or .NET) that runs as — or is being developed against — an Azure AI Foundry hosted agent (paid Azure service; usage may incur costs).
+このスキルは、このスタック上に構築された**既存アプリケーション**内での開発作業に使用してください。CopilotKitを使用するReact/Nextフロントエンド、AG-UIプロトコル経由で接続された Microsoft Agent Framework (MAF) エージェント (PythonまたはC#)、Azure AI Foundryホストエージェント (有料Azureサービス、使用によってコストが発生する場合があります) として実行されている、または開発中のエージェント。
 
-Do NOT use this skill to scaffold a new project. Dedicated scaffolders exist (the CopilotKit CLI, `azd ai agent init`); use those, then return here for everything that follows: adding tools, gating them behind approvals, generative UI, shared state, debugging, dependency upgrades, and deploying agent updates.
+新規プロジェクトをスキャフォールドするためにこのスキルを使用**しないでください**。専用スキャフォルダーが存在します (CopilotKit CLI、`azd ai agent init`)。それらを使用してから、以下の作業に戻ってください: ツールの追加、承認の背後への配置、生成型UI、共有状態、デバッグ、依存関係のアップグレード、エージェント更新のデプロイ。
 
-## Mental model
+## メンタルモデル
 
 ```text
 CopilotKit hooks (React)            useFrontendTool / useHumanInTheLoop /
@@ -24,77 +24,79 @@ AG-UI endpoint                      ← WHERE this lives defines your architectu
 MAF Agent (tools, approval modes)   → model deployment
 ```
 
-The single most important fact: **a deployed Foundry hosted agent endpoint does not speak AG-UI by default.** It exposes an OpenAI Responses endpoint (`.../protocols/openai/responses`) and/or a raw `.../protocols/invocations` endpoint. AG-UI must be produced somewhere, and where it is produced determines how every feature (especially human-in-the-loop) behaves. The three wirings are described in [references/architecture.md](references/architecture.md).
+最も重要な事実は以下の通りです: **デプロイされたFoundryホストエージェントエンドポイントは、デフォルトではAG-UIを話しません。** OpenAI Responsesエンドポイント (`.../protocols/openai/responses`) および/または raw `.../protocols/invocations` エンドポイントを公開します。AG-UIはどこかで生成する必要があり、それがどこで生成されるかは、すべての機能 (特にヒューマンインザループ) がどのように動作するかを決定します。3つのワイヤリングは [references/architecture.md](references/architecture.md) に記載されています。
 
-## Workflow
+## ワークフロー
 
-Follow these steps for every task on this stack:
+このスタック上のすべてのタスクについて、以下の手順に従います:
 
-1. **Identify the wiring first.** Inspect the codebase before changing anything:
-   - `add_agent_framework_fastapi_endpoint(...)` (Python) or `MapAGUI(...)` (.NET) wrapping an in-process agent → Architecture A (in-process AG-UI endpoint).
-   - A hosted agent whose own container serves AG-UI, declared with `protocol: invocations` in `agent.yaml` → Architecture B.
-   - A separate service translating between the AG-UI endpoint and a hosted agent's `/responses` endpoint (look for `previous_response_id`, `mcp_approval_response`, or a Foundry `conversation` object in the code) → Architecture C (translation bridge).
-   - Confirm the frontend agent name: the key in the runtime `agents` config, the `agent` prop on the `<CopilotKit>` provider, and the hosted agent name in `agent.yaml` must all agree.
-2. **Ground in live documentation.** Every layer here is pre-1.0 or preview and moves between minor versions. Never trust memorized APIs:
-   - MAF and Foundry hosted agents: use the Microsoft Docs MCP tools when available, otherwise learn.microsoft.com (`/agent-framework/integrations/ag-ui/`, `/azure/foundry/`).
-   - CopilotKit: docs.copilotkit.ai (Microsoft Agent Framework section). Verify hook and runtime API names against the TypeScript declarations bundled in the installed `@copilotkit/*` packages — names have churned (`useCopilotAction` is legacy; current names include `useFrontendTool`, `useHumanInTheLoop`, `useRenderToolCall`, `useCoAgent`).
-   - AG-UI protocol: docs.ag-ui.com (event reference, dojo patterns).
-3. **Execute the task** using the matching reference below.
-4. **Verify adversarially.** A compiling build, a started dev server, or one successful chat reply is NOT proof. Apply the completion criteria at the end of this skill.
+1. **ワイヤリングを最初に特定してください。** 何かを変更する前にコードベースを検査してください:
+   - `add_agent_framework_fastapi_endpoint(...)` (Python) または `MapAGUI(...)` (.NET) がインプロセスエージェントをラップしている → アーキテクチャA (インプロセスAG-UIエンドポイント)。
+   - `protocol: invocations` が `agent.yaml` で宣言された、AG-UIを提供する独自のコンテナを持つホストエージェント → アーキテクチャB。
+   - AG-UIエンドポイントと、ホストエージェントの `/responses` エンドポイント間を変換する別のサービス (`previous_response_id`、`mcp_approval_response`、またはコード内のFoundry `conversation` オブジェクトを探してください) → アーキテクチャC (変換ブリッジ)。
+   - フロントエンドエージェント名を確認してください: ランタイム `agents` 設定内のキー、`<CopilotKit>` プロバイダー上の `agent` プロップ、および `agent.yaml` 内のホストエージェント名が、すべて一致する必要があります。
+2. **ライブドキュメンテーションに基づいてください。** ここのすべてのレイヤーはpre-1.0またはプレビューであり、マイナーバージョン間で変わります。 暗記したAPIを信頼しないでください:
+   - MAFとFoundryホストエージェント: Microsoft Docs MCPツールが利用可能な場合は使用してください、そうでなければlearn.microsoft.comを参照してください (`/agent-framework/integrations/ag-ui/`、`/azure/foundry/`)。
+   - CopilotKit: docs.copilotkit.ai (Microsoft Agent Framework セクション)。インストールされた `@copilotkit/*` パッケージにバンドルされているTypeScript宣言に対してフックおよびランタイムAPI名を検証してください — 名前が変わっています (`useCopilotAction` はレガシー; 現在の名前は `useFrontendTool`、`useHumanInTheLoop`、`useRenderToolCall`、`useCoAgent` を含みます)。
+   - AG-UIプロトコル: docs.ag-ui.com (イベント参照、dojoパターン)。
+3. **タスクを実行してください** 以下のマッチングリファレンスを使用して。
+4. **対抗的に検証してください。** コンパイルに成功したビルド、開始したdevサーバー、または1つの成功したチャット返信は、証明**ではありません**。このスキルの最後にある完了基準を適用してください。
 
-## References
+## リファレンス
 
-Load on demand; each is self-contained:
+必要に応じてロードしてください。各々は自己完結しています:
 
-| Reference | Load when |
+| リファレンス | ロードするタイミング |
 | --- | --- |
-| [references/architecture.md](references/architecture.md) | Choosing or understanding the wiring; local-vs-deployed modes; why a translation bridge exists and what it must handle |
-| [references/patterns.md](references/patterns.md) | Implementing any of the 7 AG-UI interaction patterns (frontend tools, backend tool rendering, HITL, generative UI, shared state, predictive state) |
-| [references/hitl.md](references/hitl.md) | Adding or debugging human-in-the-loop approvals, including the known duplicate-execution hazard |
-| [references/troubleshooting.md](references/troubleshooting.md) | Any failure: symptom → root cause → fix tables for every layer |
-| [references/upgrading.md](references/upgrading.md) | Bumping any dependency; version compatibility rules; tracked upstream issues |
-| [references/deploy-loop.md](references/deploy-loop.md) | Running the agent locally with `azd ai agent run`, deploying updates, deployment gotchas |
+| [references/architecture.md](references/architecture.md) | ワイヤリングの選択または理解; ローカルとデプロイ済みモード; 変換ブリッジが存在する理由とそれが何を処理する必要があるか |
+| [references/patterns.md](references/patterns.md) | 7つのAG-UIインタラクションパターン (フロントエンドツール、バックエンドツールレンダリング、HITL、生成型UI、共有状態、予測状態) のいずれかの実装 |
+| [references/hitl.md](references/hitl.md) | ヒューマンインザループ承認の追加またはデバッグ、既知の重複実行ハザードを含む |
+| [references/troubleshooting.md](references/troubleshooting.md) | いかなる失敗: 症状 → 根本原因 → すべてのレイヤーの修正テーブル |
+| [references/upgrading.md](references/upgrading.md) | 任意の依存関係のバンプ; バージョン互換性ルール; 追跡されたアップストリームの問題 |
+| [references/deploy-loop.md](references/deploy-loop.md) | `azd ai agent run` を使用してエージェントをローカルで実行、更新のデプロイ、デプロイメント落とし穴 |
 
-## Task playbooks
+## タスクプレイブック
 
-### Add or modify an agent tool
+### エージェントツールを追加または変更する
 
-1. Define the tool on the agent (`@tool` in Python; `AIFunctionFactory.Create` in .NET) with typed, described parameters.
-2. Keep docstrings grounding-safe: do not put concrete example values in parameter descriptions for fields the model must derive from real data — models copy literal examples. Use placeholders and validate inside the tool.
-3. Return compact, model-consumable values; rich formatting belongs in the UI render, not the tool result.
-4. Decide the approval mode now: side-effecting tools get `approval_mode="always_require"` (see [references/hitl.md](references/hitl.md)); read-only tools stay unrestricted.
-5. If the tool call should render in the UI, add a `useRenderToolCall`/render entry for it ([references/patterns.md](references/patterns.md)).
-6. Verify live: trigger the tool through the chat UI, confirm the call and result stream as `TOOL_CALL_*` events, and confirm renamed or re-typed parameters did not break any frontend component that parses the arguments.
+1. エージェント上でツールを定義します (Python の `@tool` ; .NET の `AIFunctionFactory.Create`) 型付きされた、説明のあるパラメータを使用します。
+2. ドックストリングをグラウンディング安全に保つ: モデルが実データから導出する必要があるフィールドのパラメータ説明に具体的な例値を入れないでください — モデルはリテラル例をコピーします。プレースホルダーを使用し、ツール内で検証してください。
+3. コンパクトで、モデルが消費可能な値を返します; リッチフォーマットはツール結果ではなくUIレンダーに属しています。
+4. 承認モード: 副作用を持つツールは `approval_mode="always_require"` を取得します ([references/hitl.md](references/hitl.md) 参照); 読み取り専用ツールは制限されたままです。
+5. ツール呼び出しをUIでレンダリングする必要がある場合、`useRenderToolCall` /renderエントリを追加します ([references/patterns.md](references/patterns.md) 参照)。
+6. ライブで検証: チャットUIを通じてツールをトリガーし、呼び出しと結果ストリームを `TOOL_CALL_*` イベントとして確認し、名前を変更したまたは再型付けされたパラメータが、引数を解析するフロントエンドコンポーネントを破壊していないことを確認します。
 
-### Wire human-in-the-loop onto an existing tool
+### 既存ツールにヒューマンインザループをワイヤリングする
 
-Follow [references/hitl.md](references/hitl.md) end to end. Summary: mark the tool (`approval_mode="always_require"` / `ApprovalRequiredAIFunction`), enable confirmation on the AG-UI wrapper, register the approval UI hook on the frontend, and make the response payload shape match what the server detection expects. Then test approve AND reject AND a follow-up turn after approval (see the duplicate-execution hazard).
+[references/hitl.md](references/hitl.md) を端から端まで実行します。概要: ツールをマークします (`approval_mode="always_require"` / `ApprovalRequiredAIFunction`)、AG-UIラッパーで確認を有効にします、フロントエンドに承認UIフックを登録します、レスポンスペイロード形状がサーバー検出が期待するものと一致するようにします。次に、承認**と**拒否**と**承認後のフォローアップターン (重複実行ハザード参照) をテストします。
 
-### Build generative UI or shared state
+### 生成型UIまたは共有状態を構築する
 
-Follow the pattern table in [references/patterns.md](references/patterns.md). Know the honesty caveat: state synchronization patterns are native when the AG-UI adapter wraps an in-process agent (Architecture A/B); through a Responses-protocol bridge (Architecture C) they require explicit synthesis work — check what the codebase actually implements before promising the feature.
+[references/patterns.md](references/patterns.md) 内のパターンテーブルに従います。正直性の注意を知ってください: 状態同期パターンはAG-UIアダプターがインプロセスエージェント (アーキテクチャA/B) をラップする場合、ネイティブです; Responsesプロトコルブリッジ経由 (アーキテクチャC) では、明示的な合成作業が必要です — 機能を約束する前に、コードベースが実際に何を実装しているかを確認してください。
 
-### Debug a broken flow
+### 壊れたフローをデバッグする
 
-1. Reproduce at the lowest layer first: `curl -N` the AG-UI endpoint with a minimal `RunAgentInput` JSON body and read the raw SSE events. If the bug reproduces there, the frontend is innocent.
-2. For hosted agents, go one layer lower: call the agent's `/responses` endpoint directly. This is how the known re-execution bug was isolated to the framework rather than the UI stack.
-3. Match the symptom against [references/troubleshooting.md](references/troubleshooting.md) — exact error strings are listed.
-4. Restart a locally running hosted agent (`azd ai agent run`) between verification passes if the agent holds in-memory state; stale state makes tests pass or fail for the wrong reason.
+1. 最下層で最初に再現してください: AG-UIエンドポイントを `curl -N` で、最小限の `RunAgentInput` JSONボディで、および raw SSEイベントを読んでください。バグがそこで再現される場合、フロントエンドは無罪です。
+2. ホストエージェントの場合、1層下に移動してください: エージェントの `/responses` エンドポイントを直接呼び出してください。既知の再実行バグがフレームワークではなくUIスタックに分離されたのは、これです。
+3. 症状を [references/troubleshooting.md](references/troubleshooting.md) と照合してください — 正確なエラー文字列がリストされています。
+4. 検証パス間でローカルで実行されているホストエージェント (`azd ai agent run`) を再起動します (エージェントがメモリ内状態を保持する場合); 古い状態はテストが正しい理由のためにパスしたり失敗したりします。
 
-### Upgrade dependencies
+### 依存関係をアップグレードする
 
-Follow [references/upgrading.md](references/upgrading.md). Never bump a single package in isolation: the version relationship rules there (runtime ↔ AG-UI client, agent-framework line consistency, hosting protocol ↔ manifest version) must hold simultaneously, and any local workaround must be re-validated against its tracked upstream issue before removal.
+[references/upgrading.md](references/upgrading.md) に従います。単一パッケージを分離でアップバンプしないでください: バージョン関係ルール (ランタイム ↔ AG-UIクライアント、エージェントフレームワークライン一貫性、ホスティングプロトコル ↔ マニフェストバージョン) はそこに存在し、同時に保持される必要があり、かつローカルワークアラウンドは削除前にその追跡アップストリーム問題に対して再検証される必要があります。
 
-### Deploy an agent update
+### エージェント更新をデプロイする
 
-Follow [references/deploy-loop.md](references/deploy-loop.md): iterate locally against the real agent with `azd ai agent run`, then `azd deploy` (each deploy creates a new agent version), then verify the deployed agent — including the approval pause — before declaring success.
+[references/deploy-loop.md](references/deploy-loop.md) に従います: `azd ai agent run` を使用して実際のエージェントに対してローカルで反復してから、`azd deploy` (各デプロイは新しいエージェントバージョンを作成)、次にデプロイされたエージェント — 承認一時停止を含む — を検証してから、成功を宣言してください。
 
-## Completion criteria
+## 完了基準
 
-A change on this stack is done only when ALL of these hold:
+このスタック上の変更は、これらが**すべて**満たされている場合にのみ完了しています:
 
-1. The read/query path works through the real UI (not only via curl).
-2. Every approval-gated tool was tested both ways: approve → the tool executes server-side and state visibly changes; reject → the tool does not run and the agent acknowledges.
-3. At least one follow-up turn was sent in the same thread after an approval, and the gated tool did NOT silently execute again ([references/hitl.md](references/hitl.md), duplicate-execution hazard).
-4. Tool calls render correctly at stream end, not just during streaming (message snapshots can differ from live events).
-5. For deployed changes: the checks above were run against the deployed endpoint, not only locally — deployment success is not proof of behavior.
+1. 読み取り/クエリパスは実際のUI (curlのみではない) を通じて機能します。
+2. すべての承認ゲートツールは両方の方法でテストされました: 承認 → ツールがサーバー側で実行され、状態が目に見えて変わります; 拒否 → ツールが実行されず、エージェントが確認します。
+3. 少なくとも1つのフォローアップターンが同じスレッドで承認後に送信され、ゲート付きツールは再び無声で実行**されていません** ([references/hitl.md](references/hitl.md) 参照、重複実行ハザード)。
+4. ツール呼び出しはストリーム終了時に正しくレンダリングされ、ストリーミング中だけではありません (メッセージスナップショットはライブイベントと異なる可能性があります)。
+5. デプロイされた変更の場合: 上記のチェックはローカルだけではなく、デプロイされたエンドポイントに対して実行されました — デプロイ成功は動作の証明**ではありません**。
+
+DOCUMENT END

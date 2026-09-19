@@ -1,8 +1,7 @@
 ---
 name: sponsor-finder
-description: Find which of a GitHub repository's dependencies are sponsorable via GitHub Sponsors. Uses deps.dev API for dependency resolution across npm, PyPI, Cargo, Go, RubyGems, Maven, and NuGet. Checks npm funding metadata, FUNDING.yml files, and web search. Verifies every link. Shows direct and transitive dependencies with OSSF Scorecard health data. Invoke with /sponsor followed by a GitHub owner/repo (e.g. "/sponsor expressjs/express").
+description: 'GitHubリポジトリの依存関係のうち、GitHub Sponsorsでスポンサー可能なものを特定します。deps.dev APIでnpm、PyPI、Cargo、Go、RubyGems、Maven、NuGetの依存関係を解決し、npmのfundingメタデータ、FUNDING.yml、Web検索を確認して、すべてのリンクを検証します。OSSF Scorecardの健全性データとともに直接依存関係と推移的依存関係を表示します。GitHubのowner/repoを続けて `/sponsor` で呼び出します（例: `/sponsor expressjs/express`）。'
 ---
-
 # Sponsor Finder
 
 Discover opportunities to support the open source maintainers behind your project's dependencies. Accepts a GitHub `owner/repo` (e.g. `/sponsor expressjs/express`), uses the deps.dev API for dependency resolution and project health data, and produces a friendly sponsorship report covering both direct and transitive dependencies.

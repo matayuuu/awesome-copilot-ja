@@ -1,155 +1,155 @@
 ---
 name: daily-prep
-description: 'Prepare for tomorrow''s meetings and tasks. Pulls calendar from Outlook via WorkIQ, cross-references open tasks and workspace context, classifies meetings, detects conflicts and day-fit issues, finds learning and deep-work slots, and generates a structured HTML prep file with productivity recommendations.'
+description: '翌日の会議とタスクに備える。WorkIQ 経由で Outlook の予定表を取得し、未完了タスクやワークスペースのコンテキストと照合して、会議の分類、競合や理想的な一日との不一致の検出、学習時間と集中作業枠の探索を行い、生産性向上の提案を含む構造化 HTML 準備ファイルを生成する。'
 ---
 
-# Daily Prep
+# 日次準備
 
-Generate a structured prep file for the next working day with meeting details, prep bullets, linked tasks, and productivity recommendations.
+会議の詳細、準備事項、関連タスク、生産性向上の提案を含む、次の営業日向けの構造化準備ファイルを生成します。
 
-## When to Use
+## 使用する場面
 
-- End of day: "prepare me for tomorrow"
-- Any time: "prep me for Friday" or "what does March 25 look like?"
-- Weekly planning: run for multiple days
+- 一日の終わり: 「明日の準備をして」
+- いつでも: 「金曜日の準備をして」「3 月 25 日はどんな予定？」
+- 週間計画: 複数の日付について実行する
 
-## Procedure
+## 手順
 
-### 1. Determine Target Date
+### 1. 対象日を決める
 
-If the user specifies a date, use it. Otherwise, default to tomorrow (current date + 1 day).
-If tomorrow is Saturday, default to Monday. If Sunday, default to Monday.
-Compute the output path: `outputs/YYYY/MM/YYYY-MM-DD-prep.html`
+ユーザーが日付を指定した場合は、その日付を使います。それ以外は明日（現在日 + 1 日）を既定とします。
+明日が土曜日または日曜日の場合は、月曜日を既定とします。
+出力パスを `outputs/YYYY/MM/YYYY-MM-DD-prep.html` として計算します。
 
-### 2. Pull Calendar via WorkIQ
+### 2. WorkIQ 経由で予定表を取得する
 
-Use the WorkIQ MCP tool to fetch the calendar. Ask WorkIQ:
+WorkIQ MCP tool を使って予定表を取得します。WorkIQ に次のように依頼します。
 
 > "What meetings do I have on {target date}? For each meeting, include: subject, start time, end time, organizer, all attendees with their email addresses, location, whether it's online, and whether I've accepted or declined."
 
-If the response is insufficient, make a follow-up query:
+応答が不十分な場合は、追加で問い合わせます。
 
 > "For the meetings on {target date}, which ones are marked as optional or tentative? Which ones are recurring?"
 
-### 3. Classify Each Meeting
+### 3. 各会議を分類する
 
-Apply these labels based on attendee domains and subject:
+参加者のドメインと件名に基づいて、次のラベルを適用します。
 
-| Label | Criteria |
+| ラベル | 基準 |
 |-------|----------|
-| `[Customer · HIGH]` | External attendees from customer/partner domains, or subject matches a known customer name |
-| `[Internal]` | Only internal company domain attendees |
-| `[Community]` | CoP, community, guild, learning sessions |
-| `[Upskilling]` | Training, workshop, certification, learning |
-| `[Optional · skip]` | Tentative, low importance, or known recurring optional (e.g., "Office Hours", "Open Q&A") |
-| `[Personal]` | Private events, non-work |
+| `[Customer · HIGH]` | 顧客/パートナーの外部ドメインの参加者がいる、または件名が既知の顧客名と一致する |
+| `[Internal]` | 社内ドメインの参加者だけ |
+| `[Community]` | CoP、コミュニティ、ギルド、学習セッション |
+| `[Upskilling]` | トレーニング、ワークショップ、認定、学習 |
+| `[Optional · skip]` | 仮承諾、重要度が低い、または任意参加と分かっている定例会議（例: 「Office Hours」「Open Q&A」） |
+| `[Personal]` | 個人的な予定、業務外 |
 
-#### Zone Markers
+#### 時間帯マーカー
 
-For every meeting, check the organizer field and apply these additional markers:
+各会議の開催者フィールドを確認し、次の追加マーカーを適用します。
 
-| Condition | Marker | Action |
+| 条件 | マーカー | アクション |
 |-----------|--------|--------|
-| Starts ≥ 15:30 and < 16:00 (any organizer) | `⚠️ After-hours` | Recommend decline |
-| Starts ≥ 16:00 and **not** self-organized | `⚠️ After-hours` | Recommend decline |
-| Starts ≥ 16:00 and self-organized | _(no flag)_ | OK — you chose to schedule it |
-| Before 09:00 and **not** self-organized | `⚠️ Early` | Recommend decline — intrudes on learning window |
-| Before 09:00 and self-organized | _(no flag)_ | OK — you chose to schedule it |
-| Overlaps 12:00–13:00 | `🍽️ Lunch conflict` | Note in Calendar Notes |
+| 15:30 以降 16:00 未満に開始（開催者を問わない） | `⚠️ After-hours` | 辞退を推奨 |
+| 16:00 以降に開始し、**自分が開催者ではない** | `⚠️ After-hours` | 辞退を推奨 |
+| 16:00 以降に開始し、自分が開催者 | _(フラグなし)_ | 問題なし — 自分で設定した予定 |
+| 09:00 より前に開始し、**自分が開催者ではない** | `⚠️ Early` | 学習時間を侵食するため辞退を推奨 |
+| 09:00 より前に開始し、自分が開催者 | _(フラグなし)_ | 問題なし — 自分で設定した予定 |
+| 12:00～13:00 と重なる | `🍽️ Lunch conflict` | 予定表の注記に記載 |
 
-"Self-organized" means **you** are the meeting organizer (check the organizer field from WorkIQ).
+「自分が開催者」とは、会議の開催者が**ユーザー自身**であることを意味します（WorkIQ の organizer フィールドを確認）。
 
-### 4. Ideal Day Structure
+### 4. 理想的な一日の構成
 
-Use this as the decision framework for all analysis steps. Every meeting must be evaluated against these zones. Users should adapt these times and targets to their personal routine.
+すべての分析ステップで、この構成を判断基準として使います。各会議をこれらの時間帯に照らして評価します。ユーザーは自分の生活リズムに合わせて時間と目標を調整してください。
 
-| Zone | Time | Purpose | Rules |
+| 時間帯 | 時刻 | 目的 | 規則 |
 |------|------|---------|-------|
-| Morning Focus | Before 09:00 | Admin, learning, personal work | Protect from others' meetings. Flag external events. |
-| Customer Zone | 09:00–12:00 | Customer / external meetings | Max 2 customer meetings. Prefer mornings for external calls. |
-| Lunch | 12:00–13:00 | Break | Protected. Flag any overlap. |
-| Deep Work | 13:00–15:30 | Deliverables, focused coding/writing | Minimize meetings. Flag non-essential meetings as deep work disruption. |
-| Protected (strict) | 15:30–16:00 | End of day wind-down | Flag all meetings regardless of organizer. |
-| Protected (flex) | 16:00+ | End of day | Flag others' meetings only. Self-organized OK. |
+| 朝の集中時間 | 09:00 より前 | 管理作業、学習、個人作業 | 他者が設定した会議から保護し、外部の予定にフラグを付ける。 |
+| 顧客対応時間 | 09:00～12:00 | 顧客/外部との会議 | 顧客会議は最大 2 件。外部との通話は午前を優先する。 |
+| 昼休み | 12:00～13:00 | 休憩 | 保護する。重複する予定にフラグを付ける。 |
+| 集中作業 | 13:00～15:30 | 成果物作成、集中したコーディング/執筆 | 会議を最小限にし、必須でない会議を集中作業の妨げとして示す。 |
+| 保護時間（厳格） | 15:30～16:00 | 一日の終了準備 | 開催者にかかわらず、すべての会議にフラグを付ける。 |
+| 保護時間（柔軟） | 16:00 以降 | 一日の終了 | 他者が設定した会議だけにフラグを付ける。自分が開催者なら問題なし。 |
 
-**Targets per day:**
-- Learning hours: **1.5h** (from morning focus + gap time)
-- Deep work hours: **2.5h** (13:00–15:30 zone)
-- Customer meetings: **max 2** (preferably in 09:00–12:00)
+**一日あたりの目標:**
+- 学習時間: **1.5 時間**（朝の集中時間 + 空き時間）
+- 集中作業時間: **2.5 時間**（13:00～15:30）
+- 顧客会議: **最大 2 件**（できれば 09:00～12:00）
 
-### 5. Detect Conflicts & Day Fit Issues
+### 5. 競合と一日の構成上の問題を検出する
 
-Compare event time windows. Flag overlaps in a Conflicts table with a recommendation for each — prioritize customer meetings over internal/optional.
+予定の時間帯を比較します。重複を競合表に記載し、それぞれに推奨対応を示します。社内会議や任意参加の会議より、顧客会議を優先します。
 
-Also detect these **day fit issues** (report in a separate "Day Fit Issues" table):
+さらに、次の**一日の構成上の問題**を検出し、別の「一日の構成上の問題」表に記載します。
 
-| Check | Condition | Flag |
+| 確認項目 | 条件 | フラグ |
 |-------|-----------|------|
-| **Customer overload** | >2 `[Customer · HIGH]` meetings | Flag 3rd+ as "Consider rescheduling to another day" |
-| **Deep work disruption** | Non-essential meetings in 13:00–15:30 zone | "Disrupts deep work — consider moving to morning" |
-| **Non-ideal placement** | Customer meetings outside 09:00–12:00 | "Customer meeting outside preferred morning zone" |
-| **Early intrusion** | Others' meetings before 09:00 | "Intrudes on learning window — recommend decline" |
-| **Lunch conflict** | Meeting overlaps 12:00–13:00 | "Conflicts with lunch break" |
+| **顧客会議の過多** | `[Customer · HIGH]` が 2 件を超える | 3 件目以降に「別日への変更を検討」と表示 |
+| **集中作業の妨げ** | 13:00～15:30 に必須でない会議がある | 「集中作業を妨げるため、午前への移動を検討」 |
+| **理想的でない配置** | 顧客会議が 09:00～12:00 以外にある | 「顧客会議が推奨する午前の時間帯外」 |
+| **早朝への侵入** | 他者が設定した会議が 09:00 より前にある | 「学習時間を侵食するため辞退を推奨」 |
+| **昼休みとの競合** | 会議が 12:00～13:00 と重なる | 「昼休みと競合」 |
 
-### 6. Gather Context from Workspace
+### 6. ワークスペースからコンテキストを収集する
 
-1. Read open task files for tasks related to customer names or attendees in tomorrow's meetings
-2. Search workspace folders for recent files related to those customers or topics
-3. Check recent meeting summaries or plans for relevant prep context
-4. Use this to generate actionable prep bullets per meeting
+1. 翌日の会議に含まれる顧客名や参加者に関連する未完了タスクのファイルを読む
+2. それらの顧客やトピックに関連する最近のファイルをワークスペース内で検索する
+3. 最近の会議要約や計画から、関連する準備情報を確認する
+4. これらを使って、会議ごとに実行可能な準備事項を生成する
 
-### 7. Generate Prep per Meeting
+### 7. 会議ごとの準備を生成する
 
-For each meeting (chronological), include:
-- Time, subject, organizer
-- Attendee list (first name, company if external)
-- 3–5 actionable prep bullets based on open tasks, recent summaries, and meeting subject
-- If no context available, note what to ask/clarify in the meeting
+各会議を時系列で並べ、次を含めます。
+- 時刻、件名、開催者
+- 参加者一覧（名、外部参加者の場合は会社名）
+- 未完了タスク、最近の要約、会議件名に基づく 3～5 個の実行可能な準備事項
+- コンテキストがない場合は、会議で質問または確認すべき事項
 
-### 8. Find Learning & Focus Slots
+### 8. 学習時間と集中作業枠を見つける
 
-After generating prep per meeting, analyze the day's schedule to find open slots:
+会議ごとの準備を生成した後、一日の予定を分析して空き時間を見つけます。
 
-1. **Morning Focus confirmation** — Verify the morning focus window is clear. If any non-self-organized event exists there, flag it.
+1. **朝の集中時間の確認** — 朝の集中時間が空いていることを確認する。自分が開催者ではない予定がある場合はフラグを付ける。
 
-2. **Learning Slots** — Find gaps ≥ 30 min in the morning window and any other free slots suitable for upskilling. Target: **1.5h/day**. For each slot: time range, duration, suggested activity.
+2. **学習枠** — 午前中の 30 分以上の空き時間と、スキル向上に適したほかの空き時間を見つける。目標は **1 日 1.5 時間**。各枠について、時間帯、長さ、推奨活動を示す。
 
-3. **Deep Work Blocks** — Find continuous free gaps in the 13:00–15:30 zone for deliverables. For each block: time range, duration, suggested task from open tasks.
+3. **集中作業ブロック** — 13:00～15:30 に成果物作成に使える連続した空き時間を見つける。各ブロックについて、時間帯、長さ、未完了タスクから選んだ推奨タスクを示す。
 
-4. **Report totals:**
-   - Learning hours found vs. 1.5h target (e.g., "1.0h / 1.5h target — 0.5h short")
-   - Deep work hours available in 13:00–15:30 (e.g., "2.0h / 2.5h available")
+4. **合計を報告する:**
+   - 見つかった学習時間と 1.5 時間の目標との比較（例: 「1.0 時間 / 目標 1.5 時間 — 0.5 時間不足」）
+   - 13:00～15:30 に確保できる集中作業時間（例: 「2.0 時間 / 2.5 時間を確保可能」）
 
-### 9. Productivity Recommendations
+### 9. 生産性向上の提案
 
-Analyze the full day and provide:
+一日全体を分析し、次を提供します。
 
-| Section | What to Include |
+| セクション | 含める内容 |
 |---------|------------------|
-| **Day Fit Score** | Rate 0–100% how well the day matches the Ideal Day Structure. Criteria: (1) morning focus clear (+20%), (2) ≤2 customer meetings in 09:00–12:00 (+20%), (3) lunch 12:00–13:00 protected (+15%), (4) deep work 13:00–15:30 intact (+20%), (5) nothing after 15:30 or only self-organized after 16:00 (+15%), (6) ≥1h learning slots found (+10%). Show as: 🟢 ≥80%, 🟡 50–79%, 🔴 <50%. |
-| **Day Shape** | Total meeting hours, focus time available, learning hours, deep work hours, heavy/moderate/light assessment |
-| **Decline Candidates** | Auto-include: (1) all meetings 15:30–16:00, (2) others' meetings ≥16:00, (3) others' meetings <09:00, (4) 3rd+ customer meeting, (5) optional meetings during deep work zone. Show "Reclaim" column with minutes recovered. Self-organized meetings before 09:00 or after 16:00 are **excluded** from auto-decline. |
-| **Conflict Resolution** | Specific recommendation for each overlap |
-| **Learning Slots** | Gaps for upskilling — from Step 8. Table: Window, Duration, Suggested Activity. Show total vs. 1.5h target. |
-| **Deep Work Blocks** | Free gaps in 13:00–15:30 for deliverables — from Step 8. Table: Window, Duration, Suggested Task. |
-| **Energy Management** | Flag if >3h back-to-back customer meetings without a break |
-| **Top 3 Priorities** | The 3 most impactful things to accomplish (meetings + tasks combined) |
+| **一日の適合スコア** | 理想的な一日の構成にどれだけ合っているかを 0～100% で評価する。基準: (1) 朝の集中時間が空いている（+20%）、(2) 09:00～12:00 の顧客会議が 2 件以下（+20%）、(3) 12:00～13:00 の昼休みが保護されている（+15%）、(4) 13:00～15:30 の集中作業時間が保たれている（+20%）、(5) 15:30 以降に予定がない、または 16:00 以降は自分が開催者の予定だけ（+15%）、(6) 1 時間以上の学習枠がある（+10%）。🟢 80% 以上、🟡 50～79%、🔴 50% 未満で表示する。 |
+| **一日の形** | 会議の合計時間、利用可能な集中時間、学習時間、集中作業時間、過密/中程度/軽めの評価 |
+| **辞退候補** | 自動的に含める: (1) 15:30～16:00 のすべての会議、(2) 16:00 以降に他者が設定した会議、(3) 09:00 より前に他者が設定した会議、(4) 3 件目以降の顧客会議、(5) 集中作業時間中の任意参加会議。回収できる時間を分単位で示す「回収」列を表示する。09:00 より前または 16:00 以降でも、自分が開催者の会議は自動辞退の対象から**除外**する。 |
+| **競合解消** | 各重複に対する具体的な推奨事項 |
+| **学習枠** | 手順 8 で見つけたスキル向上用の空き時間。表: 時間帯、長さ、推奨活動。合計と 1.5 時間の目標を比較して表示する。 |
+| **集中作業ブロック** | 手順 8 で見つけた 13:00～15:30 の成果物作成用の空き時間。表: 時間帯、長さ、推奨タスク。 |
+| **エネルギー管理** | 休憩なしで顧客会議が 3 時間を超えて連続する場合にフラグを付ける |
+| **優先事項トップ 3** | 会議とタスクを合わせ、達成した場合の影響が最も大きい 3 項目 |
 
-### 10. Write the File
+### 10. ファイルを書き込む
 
-Create the output file at `outputs/YYYY/MM/YYYY-MM-DD-prep.html` as a self-contained HTML file with embedded CSS (dark theme, color-coded timeline, responsive layout).
+埋め込み CSS（ダークテーマ、色分けされたタイムライン、レスポンシブレイアウト）を含む自己完結型 HTML ファイルを `outputs/YYYY/MM/YYYY-MM-DD-prep.html` に作成します。
 
-If a file already exists for that date, read it first and update rather than overwrite — the user may have added manual notes.
+その日付のファイルが既にある場合は、ユーザーが手動でメモを追加している可能性があるため、最初に読み、上書きではなく更新します。
 
-## Example Prompts
+## プロンプト例
 
-- "Prepare me for tomorrow"
-- "What does Friday look like?"
-- "Daily prep for March 28"
-- "Prep me for next Monday — focus on customer meetings"
+- 「明日の準備をして」
+- 「金曜日はどんな予定？」
+- 「3 月 28 日の日次準備」
+- 「次の月曜日の準備をして。顧客会議を重視して」
 
-## Requirements
+## 要件
 
-- **WorkIQ MCP tool** must be available for calendar access (Microsoft 365 / Outlook)
-- A workspace with task files and customer/project folders for context enrichment
-- Output is self-contained HTML — no external dependencies
+- 予定表（Microsoft 365 / Outlook）へアクセスするために **WorkIQ MCP tool** が利用可能であること
+- コンテキストを補強するタスクファイルと顧客/プロジェクトフォルダーを含むワークスペース
+- 出力は外部依存関係のない自己完結型 HTML

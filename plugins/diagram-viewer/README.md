@@ -1,17 +1,17 @@
-# Diagram Viewer Plugin
+# Diagram Viewer プラグイン
 
-Render diagrams, click nodes to drill down, and view agent-generated explanations directly in the canvas.
+ダイアグラムをレンダリングし、ノードをクリックして詳細を確認し、agent が生成した説明を canvas で直接表示します。
 
-## Installation
+## インストール
 
 ``bash
 copilot plugin install diagram-viewer@awesome-copilot
 ``
 
-## Source
+## ソース
 
-This plugin is part of [Awesome Copilot](https://github.com/github/awesome-copilot).
+このプラグインは [Awesome Copilot](https://github.com/github/awesome-copilot) の一部です。
 
-## License
+## ライセンス
 
 MIT
