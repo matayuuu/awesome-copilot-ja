@@ -1,6 +1,6 @@
 ---
 name: gtm-ai-gtm
-description: AI 製品の Go-to-market 戦略。AI 製品のポジショニング、「壊れたとき誰が責任を負うのか」という反論への対応、変動コスト AI の価格設定、copilot/agent/teammate の表現選択、自律型ツールのエンタープライズ販売に使う。
+description: 'AI製品のGo-to-market戦略を扱います。AI製品のポジショニング、「壊れたとき誰が責任を負うのか」という反論、変動コストAIの価格設定、copilot/agent/teammateの表現選択、自律型ツールのエンタープライズ販売に使います。'
 license: MIT
 metadata:
   author: Smit Patel (https://linkedin.com/in/smitkpatel)

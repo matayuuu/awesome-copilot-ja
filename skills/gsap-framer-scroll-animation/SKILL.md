@@ -1,15 +1,6 @@
 ---
 name: gsap-framer-scroll-animation
-description: >-
-  ユーザーが vanilla JS、React、Next.js でスクロールアニメーション、スクロール効果、パララックス、
-  スクロール連動の表示、ピン留めセクション、横スクロール、テキストアニメーション、または
-  スクロール位置に連動するモーションを作りたい場合に、この Skill を使う。
-  GSAP ScrollTrigger（pinning、scrubbing、snapping、timelines、horizontal scroll、ScrollSmoother、
-  matchMedia）と Framer Motion / Motion v12（useScroll、useTransform、useSpring、whileInView、
-  variants）を扱う。「スクロールでアニメーション」「スクロール中にフェードイン」「Apple のような
-  スクロール」「パララックス効果」「sticky section」「スクロール進捗バー」「entrance animation」
-  とだけ言われた場合にも使う。GSAP または Framer Motion のコード生成を求める Copilot プロンプト
-  パターンにも対応する。創造的な考え方とデザイン品質の向上には premium-frontend-ui Skill と組み合わせる。
+description: 'vanilla JS、React、Next.jsでスクロールアニメーション、スクロール効果、パララックス、スクロール連動表示、ピン留めセクション、横スクロール、テキストアニメーション、スクロール位置連動モーションを作る場合に使います。GSAP ScrollTriggerとFramer Motion / Motion v12を扱い、GSAPまたはFramer Motionのコード生成を求めるCopilotプロンプトにも対応します。'
 metadata:
   author: 'Utkarsh Patrikar'
   author_url: 'https://github.com/utkarsh232005'

@@ -1,8 +1,6 @@
 ---
 name: github-release
-description: >
-  GitHubライブラリの新しいバージョンを、分析からリリースPRの作成までエンドツーエンドで公開する手順を案内する。
-  SemVerのバージョニングとKeep a Changelog形式を自動的に扱う。
+description: 'GitHubライブラリの新しいバージョンを、分析からリリースPRの作成までエンドツーエンドで公開する手順を案内します。SemVerのバージョニングとKeep a Changelog形式を自動的に扱います。'
 compatibility: "requires: gh CLI and git"
 ---
 

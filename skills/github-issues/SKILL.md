@@ -1,6 +1,6 @@
 ---
 name: github-issues
-description: MCPツールを使ってGitHub issueを作成、更新、管理する。バグ報告、機能要求、タスクissueの作成、既存issueの更新、ラベル／担当者／マイルストーンの追加、リポジトリラベルの管理、issueフィールド（日付、優先度、カスタムフィールド）の設定、issueタイプの設定、issueワークフローの管理、issueのリンク、依存関係の追加、blocked-by／blocking関係の追跡をユーザーが求める場合に使用する。「issueを作成して」「バグを登録して」「issue Xを更新して」「優先度を設定して」「開始日を設定して」「ラベルを作成して」「ラベル名を変更して」「リポジトリのラベルを一覧表示して」「issueをリンクして」「依存関係を追加して」「blocked by」「blocking」などの依頼が対象となる。
+description: 'MCPツールを使ってGitHub issueを作成、更新、管理します。バグ報告、機能要求、タスクissue、既存issue、ラベル、担当者、マイルストーン、issueフィールド、issueタイプ、ワークフロー、issueリンク、依存関係、blocked-by／blocking関係の管理を求められた場合に使います。'
 ---
 
 # GitHub Issues

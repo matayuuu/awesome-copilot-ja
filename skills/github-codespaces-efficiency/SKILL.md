@@ -1,6 +1,6 @@
 ---
 name: github-codespaces-efficiency
-description: GitHub Codespacesの効率を監査・改善する。Codespacesの起動を高速化したい、Codespacesの支出を削減したい、スリムなdevcontainerを作りたい、マシンサイズを適正化したい、アイドルタイムアウトを調整したい、または継続的な利用実績に基づいてprebuildの対象ブランチを絞りたい場合に使用する。
+description: 'GitHub Codespacesの効率を監査・改善します。Codespacesの起動高速化、支出削減、スリムなdevcontainer、マシンサイズの適正化、アイドルタイムアウトの調整、利用実績に基づくprebuild対象ブランチの絞り込みに使います。'
 ---
 
 # GitHub Codespaces Efficiency

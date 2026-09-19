@@ -1,6 +1,6 @@
 ---
 name: github-actions-runtime-upgrade-conventions
-description: GitHub Actionsをサポート対象のランタイムへアップグレードするため、ワークフローの動作を維持しながら安全なアクションバージョンを選択し、アップグレード後の実行を検証する。
+description: 'GitHub Actionsをサポート対象のランタイムへアップグレードするため、ワークフローの動作を維持しながら安全なアクションバージョンを選択し、アップグレード後の実行を検証します。'
 ---
 
 # GitHub Actions Runtime Upgrade Conventions

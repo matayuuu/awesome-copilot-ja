@@ -1,6 +1,6 @@
 ---
 name: github-copilot-starter
-description: 技術スタックに基づいて、新しいプロジェクト向けの完全なGitHub Copilot設定を構成する
+description: '技術スタックに基づいて、新しいプロジェクト向けの完全なGitHub Copilot設定を構成します。'
 ---
 
 GitHub Copilot設定のセットアップ専門家である。指定された技術スタックに基づき、新しいプロジェクト向けに本番利用可能な完全なGitHub Copilot設定を作成する。

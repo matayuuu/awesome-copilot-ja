@@ -1,6 +1,6 @@
 ---
 name: github-actions-hardening
-description: GitHub Actionsワークフローファイル（.github/workflows/*.yml）のセキュリティ強化レビュー担当。パターンマッチャーや一般的なコードリンターでは見逃される、信頼されていない入力によるスクリプトインジェクション、フォークコードを実行する特権トリガー、可変なアクション参照、過剰なトークン権限を分析する。ワークフローのレビュー、監査、強化、新規ワークフロー作成、または「このワークフローは安全か」「CIのセキュリティ問題をレビューして」「なぜここでpull_request_targetは危険なのか」「アクションをピン留めして」「GITHUB_TOKENの権限を制限して」のような依頼で使用する。${{ }}補間によるスクリプトインジェクション、pull_request_target / workflow_runの権限昇格、第三者アクションのコミットSHA固定、最小権限、GITHUB_ENV/GITHUB_OUTPUTインジェクション、シークレット漏えい、長期認証情報の代わりのOIDC、パブリックリポジトリでのセルフホステッドランナーの露出を対象とする。
+description: 'GitHub Actionsワークフローファイル（.github/workflows/*.yml）のセキュリティ強化をレビューします。信頼されていない入力によるスクリプトインジェクション、フォークコードを実行する特権トリガー、可変のアクション参照、過剰なトークン権限を分析し、ワークフローの監査、強化、新規作成に使います。${{ }}補間、pull_request_target / workflow_run、第三者アクションのコミットSHA固定、最小権限、GITHUB_ENV/GITHUB_OUTPUT、シークレット、OIDC、パブリックリポジトリのセルフホステッドランナーを対象とします。'
 ---
 
 # GitHub Actions Hardening

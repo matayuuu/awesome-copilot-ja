@@ -1,15 +1,15 @@
 ---
 name: git-commit
-description: 'Execute git commit with conventional commit message analysis, intelligent staging, and message generation. Use when user asks to commit changes, create a git commit, or mentions "/commit". Supports: (1) Auto-detecting type and scope from changes, (2) Generating conventional commit messages from diff, (3) Interactive commit with optional type/scope/description overrides, (4) Intelligent file staging for logical grouping'
+description: 'Conventional Commitメッセージの分析、インテリジェントなステージング、メッセージ生成を行ってgit commitを実行します。ユーザーが変更のコミット、git commitの作成、または「/commit」に言及した場合に使用します。次をサポートします: (1) 変更からのtypeとscopeの自動検出、(2) 差分からのConventional Commitメッセージ生成、(3) type/scope/descriptionを任意に上書きできる対話的コミット、(4) 論理的なグループ化のためのインテリジェントなファイルステージング'
 license: MIT
 allowed-tools: Bash
 ---
 
-# Git Commit with Conventional Commits
+# Conventional CommitsによるGitコミット
 
-## Overview
+## 概要
 
-Create standardized, semantic git commits using the Conventional Commits specification. Analyze the actual diff to determine appropriate type, scope, and message.
+Conventional Commits仕様に従って、標準化された意味のあるgitコミットを作成します。実際の差分を分析し、適切なtype、scope、メッセージを決定します。
 
 ## Conventional Commit Format
 
@@ -21,21 +21,21 @@ Create standardized, semantic git commits using the Conventional Commits specifi
 [optional footer(s)]
 ```
 
-## Commit Types
+## コミット種別
 
-| Type       | Purpose                        |
+| 種別       | 目的                           |
 | ---------- | ------------------------------ |
-| `feat`     | New feature                    |
-| `fix`      | Bug fix                        |
-| `docs`     | Documentation only             |
-| `style`    | Formatting/style (no logic)    |
-| `refactor` | Code refactor (no feature/fix) |
-| `perf`     | Performance improvement        |
-| `test`     | Add/update tests               |
-| `build`    | Build system/dependencies      |
-| `ci`       | CI/config changes              |
-| `chore`    | Maintenance/misc               |
-| `revert`   | Revert commit                  |
+| `feat`     | 新機能                         |
+| `fix`      | バグ修正                       |
+| `docs`     | ドキュメントのみ               |
+| `style`    | フォーマット／スタイル（ロジック変更なし） |
+| `refactor` | コードリファクタリング（機能追加・修正なし） |
+| `perf`     | パフォーマンス改善             |
+| `test`     | テストの追加／更新             |
+| `build`    | ビルドシステム／依存関係        |
+| `ci`       | CI／設定変更                   |
+| `chore`    | 保守／その他                   |
+| `revert`   | コミットの取り消し             |
 
 ## Breaking Changes
 
@@ -49,9 +49,9 @@ feat: allow config to extend other configs
 BREAKING CHANGE: `extends` key behavior changed
 ```
 
-## Workflow
+## ワークフロー
 
-### 1. Analyze Diff
+### 1. 差分を分析する
 
 ```bash
 # If files are staged, use staged diff
@@ -64,9 +64,9 @@ git diff
 git status --porcelain
 ```
 
-### 2. Stage Files (if needed)
+### 2. ファイルをステージする（必要な場合）
 
-If nothing is staged or you want to group changes differently:
+何もステージされていない場合、または変更を別の方法でグループ化したい場合:
 
 ```bash
 # Stage specific files
@@ -80,17 +80,17 @@ git add src/components/*
 git add -p
 ```
 
-**Never commit secrets** (.env, credentials.json, private keys).
+**秘密情報（.env、credentials.json、秘密鍵）は絶対にコミットしないでください。**
 
-### 3. Generate Commit Message
+### 3. コミットメッセージを生成する
 
-Analyze the diff to determine:
+差分を分析して、次を決定します:
 
-- **Type**: What kind of change is this?
-- **Scope**: What area/module is affected?
-- **Description**: One-line summary of what changed (present tense, imperative mood, <72 chars)
+- **Type**: どのような変更か
+- **Scope**: どの領域／モジュールが影響を受けるか
+- **Description**: 変更内容の1行要約（現在形、命令形、72文字未満）
 
-### 4. Execute Commit
+### 4. コミットを実行する
 
 ```bash
 # Single line
@@ -107,18 +107,18 @@ EOF
 )"
 ```
 
-## Best Practices
+## ベストプラクティス
 
-- One logical change per commit
-- Present tense: "add" not "added"
-- Imperative mood: "fix bug" not "fixes bug"
-- Reference issues: `Closes #123`, `Refs #456`
-- Keep description under 72 characters
+- 1つのコミットには1つの論理的な変更を含める
+- 現在形を使う: "added" ではなく "add"
+- 命令形を使う: "fixes bug" ではなく "fix bug"
+- Issueを参照する: `Closes #123`、`Refs #456`
+- descriptionは72文字未満にする
 
-## Git Safety Protocol
+## Gitの安全プロトコル
 
-- NEVER update git config
-- NEVER run destructive commands (--force, hard reset) without explicit request
-- NEVER skip hooks (--no-verify) unless user asks
-- NEVER force push to main/master
-- If commit fails due to hooks, fix and create NEW commit (don't amend)
+- git configは絶対に更新しない
+- 明示的な依頼なしに破壊的なコマンド（--force、hard reset）を絶対に実行しない
+- ユーザーが依頼しない限りフック（--no-verify）を絶対にスキップしない
+- main/masterへ絶対にforce pushしない
+- フックが原因でコミットに失敗した場合は、修正して新しいコミットを作成する（amendしない）

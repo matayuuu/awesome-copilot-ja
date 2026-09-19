@@ -1,6 +1,6 @@
 ---
 name: gtm-board-and-investor-communication
-description: 取締役会の準備、投資家向け更新、経営層コミュニケーション。ボード資料の準備、投資家更新の作成、取締役会への悪い知らせの伝達、QBR の構成、取締役会レベルの指標運用に使う。「Three Things」ナラティブモデル、4 層の指標階層、取締役会の不意打ちを防ぐ事前説明パターンを含む。
+description: '取締役会の準備、投資家向け更新、経営層コミュニケーションを扱います。ボード資料、投資家更新、悪い知らせの伝達、QBR、取締役会レベルの指標運用に使い、「Three Things」ナラティブモデル、4層の指標階層、取締役会の不意打ちを防ぐ事前説明パターンを含みます。'
 license: MIT
 metadata:
   author: Smit Patel (https://linkedin.com/in/smitkpatel)

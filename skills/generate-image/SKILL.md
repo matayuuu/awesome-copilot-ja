@@ -1,7 +1,6 @@
 ---
 name: generate-image
-description: >-
-  AI を使って画像を生成します。画像の生成、作成、作成依頼、テクスチャ、アイコン、スプライト、アートワーク、視覚アセット、モックアップの生成が必要なときに使います。OpenAI (gpt-image-2) と Google Gemini (Nano Banana) に対応しています。選択したプロバイダーの API キーが必要です。
+description: 'AIを使って画像を生成します。画像、テクスチャ、アイコン、スプライト、アートワーク、視覚アセット、モックアップの作成時に使います。OpenAI (gpt-image-2) と Google Gemini (Nano Banana) に対応し、選択したプロバイダーのAPIキーが必要です。'
 argument-hint: "[description of the image to generate]"
 license: MIT
 metadata:
