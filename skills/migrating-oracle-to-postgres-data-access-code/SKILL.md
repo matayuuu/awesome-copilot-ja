@@ -1,19 +1,19 @@
 ---
 name: migrating-oracle-to-postgres-data-access-code
-description: 'Migrates .NET/C# data access code from Oracle to PostgreSQL (Npgsql). Replaces Oracle NuGet packages, rewrites OracleConnection/OracleCommand/OracleDataReader usage, fixes DbType mappings, updates stored procedure invocation patterns, and adapts connection string configuration. Use when migrating the application code layer of a .NET project during an Oracle-to-PostgreSQL database migration.'
+description: '.NET/C#のデータアクセスコードをOracleからPostgreSQL（Npgsql）へ移行する。Oracle NuGetパッケージ、OracleConnection/OracleCommand/OracleDataReader、DbTypeマッピング、ストアドプロシージャ呼び出し、接続文字列を更新する。'
 ---
 
-# Migrating .NET Data Access Code from Oracle to PostgreSQL
+# .NETデータアクセスコードをOracleからPostgreSQLへ移行
 
-Migrate the C# data access layer of a single `.Postgres`-copy project from Oracle (Oracle.ManagedDataAccess) to PostgreSQL (Npgsql). Work item by item through `Reports/{ProjectName}/MigrationChecklist.md`.
+単一の `.Postgres` コピー・プロジェクトの C# データアクセス層を Oracle（Oracle.ManagedDataAccess）から PostgreSQL（Npgsql）へ移行します。`Reports/{ProjectName}/MigrationChecklist.md` を項目ごとに進めてください。
 
-## Prerequisites
+## 前提条件
 
-- The `.Postgres` project copy exists (created in Phase 5 setup).
-- `Reports/{ProjectName}/MigrationChecklist.md` exists and is the source of truth for what to change.
-- `Reports/{ProjectName}/OracleRiskAnalysis.md` exists for cross-referencing behavioral differences.
+- `.Postgres`プロジェクトのコピーが存在する（Phase 5のセットアップで作成済み）。
+- `Reports/{ProjectName}/MigrationChecklist.md`が存在し、変更内容の正本となっている。
+- `Reports/{ProjectName}/OracleRiskAnalysis.md`が存在し、動作差異の相互参照に使える。
 
-## Workflow
+## ワークフロー
 
 ```
 Progress:
@@ -26,25 +26,25 @@ Progress:
 - [ ] Step 7: Build and verify
 ```
 
-**Step 1: Replace NuGet packages**
+**Step 1：NuGetパッケージを置き換える**
 
-In the `.csproj` of the `.Postgres` project:
+`.Postgres`プロジェクトの`.csproj`で:
 
-- Remove: `Oracle.ManagedDataAccess.Core`, `Oracle.EntityFrameworkCore` (and any other `Oracle.*` packages)
-- Add: `Npgsql` (for ADO.NET) and/or `Npgsql.EntityFrameworkCore.PostgreSQL` (for EF Core)
-- Keep version pinning consistent with the target .NET version; do not introduce newer package versions than what the solution already uses for similar packages.
-- If `System.Data` abstractions (`IDbConnection`, `IDbCommand`) are used project-wide, the surface-level code may need fewer changes — identify them first.
+- 削除: `Oracle.ManagedDataAccess.Core`、`Oracle.EntityFrameworkCore`（その他の`Oracle.*`パッケージも含む）
+- 追加: `Npgsql`（ADO.NET用）および／または`Npgsql.EntityFrameworkCore.PostgreSQL`（EF Core用）
+- 対象.NETバージョンに合わせてバージョン固定を維持し、ソリューション内の類似パッケージより新しいバージョンを導入しない。
+- `System.Data`抽象（`IDbConnection`、`IDbCommand`）をプロジェクト全体で使っている場合、表層コードの変更は少なくて済む可能性があるため、先に確認する。
 
-**Step 2: Update connection string configuration**
+**Step 2：接続文字列の構成を更新する**
 
 - Locate the Oracle connection string in `appsettings.json`, `appsettings.{env}.json`, `web.config`, `app.config`, or environment variable configuration.
 - Replace with a Npgsql-compatible connection string: `Host=localhost;Port=5432;Database=mydb;Username=myuser;Password=mypassword`
 - Do not hardcode credentials — use the same configuration mechanism already in use (e.g., environment variables, secrets manager, `IConfiguration`).
 - Update any named connection string keys only if they were Oracle-specific (e.g., `OracleConnection`). Prefer keeping the same key name to minimize application config changes.
 
-**Step 3: Rewrite ADO.NET type references**
+**Step 3：ADO.NET型参照を書き換える**
 
-Replace Oracle-specific ADO.NET types with Npgsql equivalents:
+Oracle固有のADO.NET型をNpgsqlの同等型に置き換える:
 
 | Oracle type | Npgsql replacement |
 |---|---|
@@ -57,11 +57,11 @@ Replace Oracle-specific ADO.NET types with Npgsql equivalents:
 | `OracleException` | `NpgsqlException` |
 | `OracleDbType` | `NpgsqlDbType` (from `NpgsqlTypes` namespace) |
 
-Update `using` directives accordingly (`using Oracle.ManagedDataAccess.Client` → `using Npgsql`).
+それに応じて`using`ディレクティブを更新する（`using Oracle.ManagedDataAccess.Client` → `using Npgsql`）。
 
 If the codebase uses `IDbConnection`/`IDbCommand` abstractions registered via DI, update only the DI registration and connection string — the consuming code may not need changes.
 
-**Step 4: Fix DbType and NpgsqlDbType mappings**
+**Step 4：DbTypeとNpgsqlDbTypeのマッピングを修正する**
 
 Oracle parameter types do not map 1:1 to Npgsql. Review every `OracleParameter` (now `NpgsqlParameter`) that sets an explicit type:
 
@@ -77,7 +77,7 @@ Oracle parameter types do not map 1:1 to Npgsql. Review every `OracleParameter` 
 
 For parameters where Oracle inferred the type from the value, Npgsql also infers — explicit type setting is often unnecessary and can be removed.
 
-**Step 5: Migrate stored procedure invocation**
+**Step 5：ストアドプロシージャ呼び出しを移行する**
 
 Oracle and PostgreSQL stored procedure invocation differ significantly:
 
@@ -90,7 +90,7 @@ Oracle and PostgreSQL stored procedure invocation differ significantly:
 - **Sequence `NEXTVAL`**: Replace `SELECT {SEQUENCE}.NEXTVAL FROM DUAL` with `SELECT nextval('{sequence_name}')`.
 - **Named parameters**: Npgsql uses `@param_name`; Oracle used `:param_name`. Update all parameter name prefixes.
 
-**Step 6: Address Oracle-specific SQL and C# patterns**
+**Step 6：Oracle固有のSQLとC#パターンに対応する**
 
 Review inline SQL strings and query builders for Oracle-specific constructs and replace:
 
@@ -111,7 +111,7 @@ Review inline SQL strings and query builders for Oracle-specific constructs and 
 | Empty string `''` as NULL | Oracle treats `''` as NULL; PostgreSQL does not — check comparisons and `IS NULL` guards |
 | `VARCHAR2` | `VARCHAR` or `TEXT` |
 
-**Step 7: Build and verify**
+**Step 7：ビルドして検証する**
 
 After addressing all checklist items:
 
@@ -119,7 +119,7 @@ After addressing all checklist items:
 2. Verify no Oracle-specific namespaces remain: search for `Oracle.ManagedDataAccess`, `OracleConnection`, `OracleCommand`, `:param` patterns.
 3. Mark completed items in `Reports/{ProjectName}/MigrationChecklist.md`.
 
-## EF Core projects
+## EF Coreプロジェクト
 
 If the project uses `Oracle.EntityFrameworkCore`:
 
@@ -129,7 +129,7 @@ If the project uses `Oracle.EntityFrameworkCore`:
 - Sequence configuration: `modelBuilder.HasSequence<int>("seq_name").StartsAt(1).IncrementsBy(1)` syntax is compatible; verify column defaults referencing sequences.
 - Do not run EF Core migrations — schema is managed externally via DDL scripts (Phase 4).
 
-## Key Constraints
+## 主な制約
 
 - Work only within the `.Postgres` copy — never modify the original Oracle-targeting project.
 - Keep to existing .NET and C# versions; do not introduce newer language or runtime features.

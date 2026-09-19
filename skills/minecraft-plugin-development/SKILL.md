@@ -1,134 +1,134 @@
 ---
 name: minecraft-plugin-development
-description: 'Use this skill when building or modifying Minecraft server plugins for Paper, Spigot, or Bukkit, including plugin.yml setup, commands, listeners, schedulers, player state, team or arena systems, persistent progression, economy or profile data, configuration files, Adventure text, and version-safe API usage. Trigger for requests like "build a Minecraft plugin", "add a Paper command", "fix a Bukkit listener", "create plugin.yml", "implement a minigame mechanic", "add a perk or quest system", or "debug server plugin behavior".'
+description: 'Paper、Spigot、Bukkit 向け Minecraft サーバープラグインを作成または変更するときに使用する。`plugin.yml` の設定、コマンド、リスナー、スケジューラー、プレイヤー状態、チームまたはアリーナシステム、永続的な進行状況、経済またはプロフィールデータ、構成ファイル、Adventure テキスト、バージョン互換性を保った API 利用を扱う。「Minecraft plugin を作る」「Paper コマンドを追加」「Bukkit リスナーを修正」「plugin.yml を作成」「ミニゲーム機構を実装」「パークまたはクエストシステムを追加」「サーバープラグインの挙動をデバッグ」のような依頼で起動する。'
 ---
 
-# Minecraft Plugin Development
+# Minecraftプラグイン開発
 
-Use this skill for Minecraft server plugin work in the Paper, Spigot, and Bukkit ecosystem.
+Paper、Spigot、BukkitエコシステムでMinecraftサーバープラグインを扱うときにこのSkillを使う。
 
-This skill is especially useful for gameplay-heavy plugins such as combat systems, wave or boss encounters, war or team modes, arenas, kit systems, cooldown-based abilities, scoreboards, and config-driven game rules.
+このSkillは、戦闘システム、ウェーブまたはボス戦、戦争またはチームモード、アリーナ、キットシステム、クールダウン式能力、スコアボード、設定駆動のゲームルールなど、ゲームプレイ中心のプラグインに特に有効である。
 
-For grounded implementation patterns drawn from real Paper plugins, load these references as needed:
+実際のPaperプラグインに基づく実装パターンが必要な場合は、必要に応じて次の参照を読み込む:
 
-- [`references/project-patterns.md`](references/project-patterns.md) for high-level architecture patterns seen in real gameplay plugins
-- [`references/bootstrap-registration.md`](references/bootstrap-registration.md) for `onEnable`, command wiring, listener registration, and shutdown expectations
-- [`references/state-sessions-and-phases.md`](references/state-sessions-and-phases.md) for player session modeling, game phases, match state, and reconnect-safe logic
-- [`references/config-data-and-async.md`](references/config-data-and-async.md) for config managers, database-backed player data, async flushes, and UI refresh tasks
-- [`references/maps-heroes-and-feature-modules.md`](references/maps-heroes-and-feature-modules.md) for map rotation, hero or class systems, and modular feature growth
-- [`references/minigame-instance-flow.md`](references/minigame-instance-flow.md) for arena instances, countdowns, loot refreshes, wave systems, visibility isolation, and entity-to-game ownership
-- [`references/persistent-progression-and-events.md`](references/persistent-progression-and-events.md) for long-running PvP servers with profiles, perks, buffs, quests, economy, custom domain events, and extension registries
-- [`references/build-test-and-runtime-validation.md`](references/build-test-and-runtime-validation.md) for Maven or Gradle packaging, shaded dependencies, generated resources, soft dependencies, config validation commands, and first-round server test plans
+- [`references/project-patterns.md`](references/project-patterns.md): 実際のゲームプレイプラグインに見られる高レベルのアーキテクチャパターン
+- [`references/bootstrap-registration.md`](references/bootstrap-registration.md): `onEnable`、コマンド接続、リスナー登録、終了時の想定
+- [`references/state-sessions-and-phases.md`](references/state-sessions-and-phases.md): プレイヤーセッションモデル、ゲームフェーズ、試合状態、再接続に安全なロジック
+- [`references/config-data-and-async.md`](references/config-data-and-async.md): 設定マネージャー、データベース永続化プレイヤーデータ、非同期フラッシュ、UI更新タスク
+- [`references/maps-heroes-and-feature-modules.md`](references/maps-heroes-and-feature-modules.md): マップローテーション、ヒーローまたはクラスシステム、モジュール拡張
+- [`references/minigame-instance-flow.md`](references/minigame-instance-flow.md): アリーナインスタンス、カウントダウン、戦利品更新、ウェーブシステム、可視性分離、エンティティとゲームの所有権
+- [`references/persistent-progression-and-events.md`](references/persistent-progression-and-events.md): プロフィール、パーク、バフ、クエスト、経済、カスタムドメインイベント、拡張レジストリを持つ長期稼働PvPサーバー
+- [`references/build-test-and-runtime-validation.md`](references/build-test-and-runtime-validation.md): MavenまたはGradleのパッケージ化、シェード依存関係、生成リソース、任意依存関係、設定検証コマンド、初回サーバーテスト計画
 
-## Scope
+## 対象範囲
 
-- In scope: Paper, Spigot, Bukkit plugin development
-- In scope: `plugin.yml`, commands, tab completion, listeners, schedulers, configs, permissions, Adventure text, player state, minigame flow, arena instances, map copies, loot, waves, persistent profiles, perks, buffs, quests, economy, and PvP/PvE game loops
-- In scope: Java-based server plugin architecture, debugging, refactoring, and feature implementation
-- Out of scope by default: Fabric mods, Forge mods, client mods, Bedrock add-ons
+- 対象: Paper、Spigot、Bukkitプラグイン開発
+- 対象: `plugin.yml`、コマンド、タブ補完、リスナー、スケジューラー、設定、権限、Adventureテキスト、プレイヤー状態、ミニゲームフロー、アリーナインスタンス、マップコピー、戦利品、ウェーブ、永続プロフィール、パーク、バフ、クエスト、経済、PvP／PvEゲームループ
+- 対象: Javaベースのサーバープラグインアーキテクチャ、デバッグ、リファクタリング、機能実装
+- 既定で対象外: Fabric mod、Forge mod、クライアントmod、Bedrockアドオン
 
-If the user says "Minecraft plugin" but the stack is unclear, first determine whether the project is Paper/Spigot/Bukkit or a modding stack.
+ユーザーが「Minecraft plugin」と言い、スタックが不明な場合は、まずPaper／Spigot／Bukkitかmodding stackかを判断する。
 
-## Default Working Style
+## 既定の作業スタイル
 
-When this skill triggers:
+このSkillが起動したら:
 
-1. Identify the server API and version target.
-2. Identify the build system and Java version.
-3. Inspect `plugin.yml`, the main plugin class, and command or listener registration.
-4. Map the gameplay flow before editing code:
+1. サーバーAPIと対象バージョンを特定する。
+2. ビルドシステムとJavaバージョンを特定する。
+3. `plugin.yml`、メインプラグインクラス、コマンドまたはリスナーの登録を確認する。
+4. コード編集前にゲームプレイフローを整理する:
    - player lifecycle
    - game phases
    - timers and scheduled tasks
    - team, arena, or match state
    - config and persistence
-5. Make the smallest coherent change that keeps registration, config, and runtime behavior aligned.
+5. 登録、設定、実行時動作の整合性を保つ、最小限で一貫した変更を行う。
 
-If the plugin is gameplay-heavy or stateful, read [`references/project-patterns.md`](references/project-patterns.md) and [`references/state-sessions-and-phases.md`](references/state-sessions-and-phases.md) before editing.
+プラグインがゲームプレイ中心または状態を持つ場合は、編集前に[`references/project-patterns.md`](references/project-patterns.md)と[`references/state-sessions-and-phases.md`](references/state-sessions-and-phases.md)を読む。
 
-If the task touches arena isolation, map instances, chest or resource refills, wave spawning, route voting, spectator visibility, or game-specific chat, also read [`references/minigame-instance-flow.md`](references/minigame-instance-flow.md).
+タスクがアリーナ分離、マップインスタンス、チェストまたはリソース補充、ウェーブ生成、ルート投票、観戦者の可視性、ゲーム固有チャットに関係する場合は、[`references/minigame-instance-flow.md`](references/minigame-instance-flow.md)も読む。
 
-If the task touches persistent player progression, profile saves, economy rewards, perks, buffs, quests, custom combat events, or long-running shared PvP servers, also read [`references/persistent-progression-and-events.md`](references/persistent-progression-and-events.md).
+タスクが永続的なプレイヤー進行、プロフィール保存、経済報酬、パーク、バフ、クエスト、カスタム戦闘イベント、長期稼働の共有PvPサーバーに関係する場合は、[`references/persistent-progression-and-events.md`](references/persistent-progression-and-events.md)も読む。
 
-If the task touches build files, `plugin.yml` metadata, shaded dependencies, generated resource output, deployment to a test server, optional plugin integrations, or release validation, also read [`references/build-test-and-runtime-validation.md`](references/build-test-and-runtime-validation.md).
+タスクがビルドファイル、`plugin.yml`メタデータ、シェード依存関係、生成リソース出力、テストサーバーへのデプロイ、任意プラグイン統合、リリース検証に関係する場合は、[`references/build-test-and-runtime-validation.md`](references/build-test-and-runtime-validation.md)も読む。
 
-## Project Discovery Checklist
+## プロジェクト確認チェックリスト
 
-Check these first when present:
-
-- `plugin.yml`
-- `pom.xml`, `build.gradle`, or `build.gradle.kts`
-- the plugin main class extending `JavaPlugin`
-- command executors and tab completers
-- listener classes
-- config bootstrap code for `config.yml`, messages, kits, arenas, or custom YAML files
-- generated resource output such as `target/classes`, `build/resources`, or copied plugin jars
-- scheduler usage through Bukkit scheduler APIs
-- any player data, team state, arena state, or match state containers
-
-## Core Rules
-
-### Prefer the concrete server API in the repo
-
-- If the project already targets Paper APIs, keep using Paper-first APIs instead of downgrading to generic Bukkit unless compatibility is explicitly required.
-- Do not assume an API exists across all versions. Check the existing dependency and surrounding code style first.
-
-### Keep registration in sync
-
-When adding commands, permissions, or listeners, update the relevant registration points in the same change:
+存在する場合は、まず次を確認する:
 
 - `plugin.yml`
-- plugin startup registration in `onEnable`
-- any permission checks in code
-- any related config or message keys
+- `pom.xml`、`build.gradle`、`build.gradle.kts`
+- `JavaPlugin`を継承するプラグインメインクラス
+- コマンドエグゼキューターとタブ補完
+- リスナークラス
+- `config.yml`、メッセージ、キット、アリーナ、カスタムYAMLファイルの設定初期化コード
+- `target/classes`、`build/resources`、コピーされたプラグインjarなどの生成リソース出力
+- BukkitスケジューラーAPIによるスケジューラー利用
+- プレイヤーデータ、チーム状態、アリーナ状態、試合状態のコンテナー
 
-### Respect main-thread boundaries
+## 基本ルール
 
-- Do not touch world state, entities, inventories, scoreboards, or most Bukkit API objects from async tasks unless the API explicitly permits it.
-- Use async tasks for external I/O, heavy computation, or database work, then switch back to the main thread before applying gameplay changes.
+### リポジトリの具体的なサーバーAPIを優先する
 
-### Model gameplay as state, not scattered booleans
+- プロジェクトがすでにPaper APIを対象としている場合、互換性が明示的に必要でない限り、汎用Bukkitへ下げずPaper優先APIを使い続ける。
+- すべてのバージョンにAPIが存在すると仮定しない。まず既存の依存関係と周辺のコードスタイルを確認する。
 
-For gameplay plugins, prefer explicit state objects over duplicated flags:
+### 登録を同期する
 
-- match or game phase
-- player role or class
-- cooldown state
-- team membership
-- arena assignment
-- alive, eliminated, spectating, or queued state
+コマンド、権限、リスナーを追加するときは、同じ変更で関連する登録箇所を更新する:
 
-When the feature affects match-heavy minigames or persistent-brawl gameplay, look for hidden state transitions first before patching symptoms.
+- `plugin.yml`
+- `onEnable`でのプラグイン起動登録
+- コード内の権限チェック
+- 関連する設定またはメッセージキー
 
-For multi-arena plugins, isolate per-game visibility, chat recipients, scoreboards, loot, and entity ownership. Do not let one arena observe or mutate another arena by accident.
+### メインスレッド境界を守る
 
-### Favor config-driven values
+- APIが明示的に許可していない限り、非同期タスクからワールド状態、エンティティ、インベントリ、スコアボード、その他大半のBukkit APIオブジェクトを操作しない。
+- 外部I/O、重い計算、データベース処理には非同期タスクを使い、ゲームプレイ変更を適用する前にメインスレッドへ戻る。
 
-When the feature includes damage, cooldowns, rewards, durations, messages, map settings, or toggles:
+### 分散したbooleanではなく状態としてゲームプレイをモデル化する
 
-- prefer config-backed values over hardcoding
-- provide sensible defaults
-- keep key names stable and readable
-- validate or sanitize missing values
+ゲームプレイプラグインでは、重複したフラグより明示的な状態オブジェクトを優先する:
 
-### Be careful with reload behavior
+- 試合またはゲームフェーズ
+- プレイヤーの役割またはクラス
+- クールダウン状態
+- チーム所属
+- アリーナ割り当て
+- 生存、脱落、観戦、キュー待ちの状態
 
-- Avoid promising safe hot reload unless the code already supports it well.
-- On config reload, ensure in-memory caches, scheduled tasks, and gameplay state are handled consistently.
+機能が試合中心のミニゲームまたは永続的な乱闘ゲームプレイに影響する場合は、症状を修正する前に隠れた状態遷移を探す。
 
-## Implementation Patterns
+複数アリーナのプラグインでは、ゲームごとの可視性、チャット受信者、スコアボード、戦利品、エンティティ所有権を分離する。あるアリーナが別のアリーナを誤って観測または変更できないようにする。
 
-### Commands
+### 設定駆動の値を優先する
 
-For new commands:
+機能にダメージ、クールダウン、報酬、期間、メッセージ、マップ設定、トグルが含まれる場合:
 
-- add the command to `plugin.yml`
-- implement executor and tab completion when needed
-- validate sender type before casting to `Player`
-- separate parsing, permission checks, and gameplay logic
-- send clear player-facing feedback for invalid usage
+- ハードコードより設定値を優先する
+- 妥当な既定値を用意する
+- キー名を安定させ、読みやすく保つ
+- 欠落値を検証またはサニタイズする
 
-Minimal registration shape:
+### reloadの挙動に注意する
+
+- コードが十分に対応していない限り、安全なホットリロードを約束しない。
+- 設定をリロードするときは、メモリ内キャッシュ、スケジュールタスク、ゲームプレイ状態を一貫して扱う。
+
+## 実装パターン
+
+### コマンド
+
+新しいコマンドでは:
+
+- `plugin.yml`にコマンドを追加する
+- 必要に応じてエグゼキューターとタブ補完を実装する
+- `Player`へキャストする前に送信者の型を検証する
+- 解析、権限チェック、ゲームプレイロジックを分離する
+- 無効な使い方には、プレイヤーに明確なフィードバックを送る
+
+最小限の登録例:
 
 ```yaml
 commands:
@@ -149,26 +149,26 @@ public void onEnable() {
 }
 ```
 
-### Listeners
+### リスナー
 
-For event listeners:
+イベントリスナーでは:
 
-- guard early and return early
-- check whether the current player, arena, or game phase should handle the event
-- avoid doing expensive work in hot events such as move, damage, or interact spam
-- centralize repeated checks where practical
+- 早い段階でガードし、早期リターンする
+- 現在のプレイヤー、アリーナ、ゲームフェーズがイベントを処理すべきか確認する
+- 移動、ダメージ、インタラクトの連続発生など高頻度イベントで重い処理を避ける
+- 可能な場合は繰り返しのチェックを集約する
 
-### Scheduled Tasks
+### スケジュールタスク
 
-For timers, rounds, countdowns, cooldowns, or periodic checks:
+タイマー、ラウンド、カウントダウン、クールダウン、定期チェックでは:
 
-- store task handles when cancellation matters
-- cancel tasks on plugin disable and when a match or arena ends
-- avoid multiple overlapping tasks for the same gameplay concern unless explicitly intended
-- prefer one authoritative game loop over many loosely coordinated repeating tasks
-- ensure countdown or refill tasks self-cancel when the game leaves the expected state
+- キャンセルが必要な場合はタスクハンドルを保存する
+- プラグイン無効化時と試合またはアリーナ終了時にタスクをキャンセルする
+- 明示的な意図がない限り、同じゲームプレイ上の関心事に複数の重複タスクを作らない
+- 緩く協調する多数の反復タスクより、1つの権威あるゲームループを優先する
+- ゲームが想定状態を離れたら、カウントダウンまたは補充タスクが自らキャンセルするようにする
 
-Main-thread handoff shape:
+メインスレッドへ戻す例:
 
 ```java
 Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
@@ -182,86 +182,86 @@ Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
 });
 ```
 
-### Player and Match State
+### プレイヤーと試合の状態
 
-For per-player or per-match state:
+プレイヤーごとまたは試合ごとの状態では:
 
-- define ownership clearly
-- clean up on quit, kick, death, match end, and plugin disable
-- avoid memory leaks from stale maps keyed by `Player`
-- prefer `UUID` for persistent tracking unless a live player object is strictly needed
+- 所有権を明確に定義する
+- 退出、キック、死亡、試合終了、プラグイン無効化時に後片付けする
+- `Player`をキーにした古いマップによるメモリリークを避ける
+- 生きたプレイヤーオブジェクトが厳密に必要でない限り、永続追跡には`UUID`を優先する
 
-### Text and Messages
+### テキストとメッセージ
 
-When the project uses Adventure or MiniMessage:
+プロジェクトがAdventureまたはMiniMessageを使う場合:
 
-- follow the existing formatting approach
-- avoid mixing legacy color codes and Adventure styles without a reason
-- keep message templates configurable when messages are gameplay-facing
+- 既存の書式設定方法に従う
+- 理由なく従来のカラーコードとAdventureスタイルを混在させない
+- ゲームプレイに表示するメッセージはテンプレートを設定可能に保つ
 
-## High-Risk Areas
+## 高リスク領域
 
-Pay extra attention when editing:
+次を編集するときは特に注意する:
 
-- damage handling and custom combat logic
-- death, respawn, spectator, and elimination flow
-- arena join and leave flow
-- scoreboard or boss bar updates
-- inventory mutation and kit distribution
-- async database or file access
-- economy, quest, perk, and profile mutation
-- custom event dispatch or extension registries
-- version-sensitive API calls
-- shutdown and cleanup in `onDisable`
-- cross-arena visibility, chat, and broadcast isolation
-- map copy, unload, and folder deletion logic
-- mob, NPC, projectile, or temporary entity ownership
-- chest or resource refill systems
+- ダメージ処理とカスタム戦闘ロジック
+- 死亡、リスポーン、観戦、脱落のフロー
+- アリーナ参加と退出のフロー
+- スコアボードまたはボスバーの更新
+- インベントリ変更とキット配布
+- 非同期データベースまたはファイルアクセス
+- 経済、クエスト、パーク、プロフィールの変更
+- カスタムイベント発生または拡張レジストリ
+- バージョン依存のAPI呼び出し
+- `onDisable`での終了処理と後片付け
+- アリーナ間の可視性、チャット、ブロードキャスト分離
+- マップのコピー、アンロード、フォルダー削除ロジック
+- Mob、NPC、投射物、一時エンティティの所有権
+- チェストまたはリソース補充システム
 
-## Output Expectations
+## 出力要件
 
-When implementing or revising plugin code:
+プラグインコードを実装または改訂するとき:
 
-- produce runnable Java code, not pseudo-code, unless the user asks for design only
-- mention any required updates to `plugin.yml`, config files, build files, or resources
-- call out version assumptions explicitly
-- point out thread-safety or API-compatibility risks when they exist
-- preserve the project's existing conventions and folder structure
+- ユーザーが設計だけを求めていない限り、擬似コードではなく実行可能なJavaコードを作る
+- `plugin.yml`、設定ファイル、ビルドファイル、リソースに必要な更新を記載する
+- バージョンの前提を明示する
+- スレッド安全性またはAPI互換性のリスクがあれば指摘する
+- プロジェクトの既存規約とフォルダー構造を維持する
 
-When the requested change touches plugin startup, async data, match flow, class systems, or rotating maps, consult the matching reference file before editing.
+要求された変更がプラグイン起動、非同期データ、試合フロー、クラスシステム、ローテーションマップに関係する場合は、編集前に対応する参照ファイルを読む。
 
-## Validation Checklist
+## 検証チェックリスト
 
-Before finishing, verify as many of these as the task allows:
+完了前に、タスクで可能な範囲で次を検証する:
 
-- the command, listener, or feature is registered correctly
-- `plugin.yml` matches the implemented behavior
-- imports and API types match the targeted server stack
-- scheduler usage is safe
-- config keys referenced in code exist or have defaults
-- state cleanup paths exist for match end, player quit, and plugin disable
-- per-arena chat, visibility, scoreboards, and broadcasts are isolated
-- temporary worlds, mobs, tasks, and generated resources are cleaned up
-- there are no obvious null, cast, or lifecycle hazards
+- コマンド、リスナー、機能が正しく登録されている
+- `plugin.yml`が実装した動作と一致している
+- importとAPI型が対象サーバースタックに一致している
+- スケジューラーの利用が安全である
+- コードで参照する設定キーが存在するか、既定値を持つ
+- 試合終了、プレイヤー退出、プラグイン無効化の状態後片付け経路がある
+- アリーナごとのチャット、可視性、スコアボード、ブロードキャストが分離されている
+- 一時ワールド、Mob、タスク、生成リソースが片付けられている
+- 明らかなnull、キャスト、ライフサイクル上の危険がない
 
-## Common Gotchas
+## よくある落とし穴
 
-- Casting `CommandSender` to `Player` without checking
-- Updating Bukkit state from async tasks
-- Forgetting to register listeners or declare commands in `plugin.yml`
-- Using `Player` objects as long-lived map keys when `UUID` is safer
-- Leaving repeating tasks alive after a round, arena, or plugin shutdown
-- Hardcoding gameplay constants that should live in config
-- Assuming Paper-only APIs in a Spigot-targeted plugin
-- Treating reload as free even though stateful plugins often break under reload
-- Broadcasting, showing players, or applying scoreboard changes across unrelated game instances
-- Loading or mutating chest/container blocks before their chunks are available
-- Forgetting to unregister spawned mobs or temporary entities from the owning game
-- Editing generated files under `target/classes` or `build/resources` instead of source files under `src/main/resources`
+- 確認せずに`CommandSender`を`Player`へキャストする
+- 非同期タスクからBukkit状態を更新する
+- リスナー登録または`plugin.yml`でのコマンド宣言を忘れる
+- `UUID`の方が安全なのに`Player`オブジェクトを長期間のマップキーにする
+- ラウンド、アリーナ、プラグイン終了後も反復タスクを残す
+- 設定に置くべきゲームプレイ定数をハードコードする
+- Spigot対象プラグインでPaper専用APIを前提にする
+- 状態を持つプラグインがリロードで壊れやすいのに、リロードを無償の操作として扱う
+- 無関係なゲームインスタンス間でブロードキャスト、プレイヤー表示、スコアボード変更を行う
+- チャンクが利用可能になる前にチェスト／コンテナブロックを読み込むまたは変更する
+- 生成したMobまたは一時エンティティを所有ゲームから登録解除し忘れる
+- `src/main/resources`のソースファイルではなく`target/classes`または`build/resources`の生成ファイルを編集する
 
-## Preferred Response Shape
+## 推奨する応答形式
 
-For substantial requests, structure work like this:
+大きな依頼では、次の構成で作業する:
 
 1. Current plugin context and assumptions
 2. Gameplay or lifecycle impact
@@ -269,4 +269,4 @@ For substantial requests, structure work like this:
 4. Required registration or config updates
 5. Validation and remaining risks
 
-For small requests, keep the answer concise but still mention any needed `plugin.yml`, config, or lifecycle updates.
+小さな依頼では回答を簡潔にするが、必要な`plugin.yml`、設定、ライフサイクル更新には触れる。

@@ -1,6 +1,6 @@
 ---
 name: mcp-create-adaptive-cards
-description: 'Skill converted from mcp-create-adaptive-cards.prompt.md'
+description: 'MCPベースAPIプラグインにAdaptive Card応答テンプレートを追加し、Microsoft 365 Copilotでデータを視覚的に提示する。'
 ---
 
 ````prompt
@@ -12,14 +12,14 @@ model: 'gpt-4.1'
 tags: [mcp, adaptive-cards, m365-copilot, api-plugin, response-templates]
 ---
 
-# Create Adaptive Cards for MCP Plugins
+# MCPプラグイン向けAdaptive Cardの作成
 
-Add Adaptive Card response templates to MCP-based API plugins to enhance how data is presented visually in Microsoft 365 Copilot.
+MCPベースのAPIプラグインへAdaptive Card応答テンプレートを追加し、Microsoft 365 Copilotでのデータの視覚的な提示を改善する。
 
-## Adaptive Card Types
+## Adaptive Cardの種類
 
-### Static Response Templates
-Use when API always returns items of the same type and format doesn't change often.
+### 静的応答テンプレート
+APIが常に同じ種類の項目を返し、形式もあまり変わらない場合に使う。
 
 Define in `response_semantics.static_template` in ai-plugin.json:
 
@@ -66,8 +66,8 @@ Define in `response_semantics.static_template` in ai-plugin.json:
 }
 ```
 
-### Dynamic Response Templates
-Use when API returns multiple types and each item needs a different template.
+### 動的応答テンプレート
+APIが複数の種類を返し、項目ごとに異なるテンプレートが必要な場合に使う。
 
 **ai-plugin.json configuration:**
 ```json
@@ -175,8 +175,8 @@ Use when API returns multiple types and each item needs a different template.
 }
 ```
 
-### Combined Static and Dynamic Templates
-Use static template as default when item doesn't have template_selector or when value doesn't resolve.
+### 静的テンプレートと動的テンプレートの組み合わせ
+項目にtemplate_selectorがない場合、または値を解決できない場合の既定値として静的テンプレートを使う。
 
 ```json
 {
@@ -203,10 +203,10 @@ Use static template as default when item doesn't have template_selector or when 
 }
 ```
 
-## Response Semantics Properties
+## 応答セマンティクスのプロパティ
 
 ### data_path
-JSONPath query indicating where data resides in API response:
+API応答内のデータ位置を示すJSONPathクエリ:
 ```json
 "data_path": "$"           // Root of response
 "data_path": "$.results"   // In results property
@@ -214,7 +214,7 @@ JSONPath query indicating where data resides in API response:
 ```
 
 ### properties
-Map response fields for Copilot citations:
+Copilotの引用用に応答フィールドをマッピングする:
 ```json
 "properties": {
   "title": "$.name",            // Citation title
@@ -224,14 +224,14 @@ Map response fields for Copilot citations:
 ```
 
 ### template_selector
-Property on each item indicating which template to use:
+各項目で使用するテンプレートを示すプロパティ:
 ```json
 "template_selector": "$.displayTemplate"
 ```
 
-## Adaptive Card Template Language
+## Adaptive Cardテンプレート言語
 
-### Conditional Rendering
+### 条件付きレンダリング
 ```json
 {
   "type": "TextBlock",
@@ -239,7 +239,7 @@ Property on each item indicating which template to use:
 }
 ```
 
-### Number Formatting
+### 数値の書式設定
 ```json
 {
   "type": "TextBlock",
@@ -247,7 +247,7 @@ Property on each item indicating which template to use:
 }
 ```
 
-### Data Binding
+### データバインディング
 ```json
 {
   "type": "Container",
@@ -256,7 +256,7 @@ Property on each item indicating which template to use:
 }
 ```
 
-### Conditional Display
+### 条件付き表示
 ```json
 {
   "type": "Image",
@@ -265,7 +265,7 @@ Property on each item indicating which template to use:
 }
 ```
 
-## Card Elements
+## カード要素
 
 ### TextBlock
 ```json
@@ -344,18 +344,18 @@ Property on each item indicating which template to use:
 }
 ```
 
-## Responsive Design Best Practices
+## レスポンシブデザインのベストプラクティス
 
-### Single-Column Layouts
-- Use single columns for narrow viewports
-- Avoid multi-column layouts when possible
-- Ensure cards work at minimum viewport width
+### 単一列レイアウト
+- 狭いビューポートでは単一列を使う
+- 可能な限り複数列レイアウトを避ける
+- 最小ビューポート幅でもカードが動作するようにする
 
-### Flexible Widths
-- Don't assign fixed widths to elements
-- Use "auto" or "stretch" for width properties
-- Allow elements to resize with viewport
-- Fixed widths OK for icons/avatars only
+### 柔軟な幅
+- 要素に固定幅を割り当てない
+- 幅プロパティには`auto`または`stretch`を使う
+- ビューポートに合わせて要素がリサイズできるようにする
+- 固定幅はアイコン／アバターだけなら可
 
 ### Text and Images
 - Avoid placing text and images in same row
@@ -370,7 +370,7 @@ Validate cards in:
 - PowerPoint
 - Various viewport widths (contract/expand UI)
 
-## Complete Example
+## 完全な例
 
 **ai-plugin.json:**
 ```json
@@ -448,7 +448,7 @@ Validate cards in:
 }
 ```
 
-## Workflow
+## ワークフロー
 
 Ask the user:
 1. What type of data does the API return?
@@ -464,14 +464,14 @@ Then generate:
 - Responsive single-column layout
 - Test scenarios for validation
 
-## Resources
+## リソース
 
 - [Adaptive Card Designer](https://adaptivecards.microsoft.com/designer) - Visual design tool
 - [Adaptive Card Schema](https://adaptivecards.io/schemas/adaptive-card.json) - Full schema reference
 - [Template Language](https://learn.microsoft.com/en-us/adaptive-cards/templating/language) - Binding syntax guide
 - [JSONPath](https://www.rfc-editor.org/rfc/rfc9535) - Path query syntax
 
-## Common Patterns
+## 一般的なパターン
 
 ### List with Images
 ```json

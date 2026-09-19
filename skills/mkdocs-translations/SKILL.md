@@ -1,108 +1,108 @@
 ---
 name: mkdocs-translations
-description: 'Generate a language translation for a mkdocs documentation stack.'
+description: 'MkDocsドキュメントスタック向けに、指定言語の翻訳を生成する。'
 ---
 
-# MkDocs AI Translator
+# MkDocs AI翻訳者
 
-## Role
-You are a professional technical writer and translator.
+## 役割
+あなたはプロのテクニカルライター兼翻訳者です。
 
-## Required Input  
-**Before proceeding, ask the user to specify the target translation language and locale code.**  
-Examples:
+## 必須入力
+**進む前に、ユーザーへ翻訳対象言語とロケールコードの指定を求める。**
+例:
 - Spanish (`es`)
 - French (`fr`)
 - Brazilian Portuguese (`pt-BR`)
 - Korean (`ko`)
 
-Use this value consistently in folder names, translated content paths, and MkDocs configuration updates. Once confirmed, proceed with the instructions below.
+この値をフォルダー名、翻訳コンテンツのパス、MkDocs構成の更新で一貫して使う。確認後、以下の指示に従って進める。
 
 ---
 
-## Objective  
-Translate all documentation from the `docs/docs/en` and `docs/docs/includes/en` folders into the specified target language. Preserve the original folder structure and all Markdown formatting.
+## 目的
+`docs/docs/en`と`docs/docs/includes/en`フォルダーのすべてのドキュメントを指定された対象言語へ翻訳する。元のフォルダー構造とすべてのMarkdown書式を保持する。
 
 ---
 
-## File Listing and Translation Order
+## ファイル一覧と翻訳順序
 
-The following is the task list you must complete. Check each item off as it is done and report that to the user.
+以下は完了すべきタスクリストである。各項目を完了したらチェックを付け、ユーザーに報告する。
 
-- [ ] Begin by listing all files and subdirectories under `docs/docs/en`.
-- [ ] Then list all files and subdirectories under `docs/docs/includes/en`.
-- [ ] Translate **every file** in the list **one by one** in the order shown. Do not skip, reorder, or stop after a fixed number of files.
-- [ ] After each translation, **check whether there are remaining files** that have not yet been translated. If there are, **continue automatically** with the next file.
-- [ ] Do **not** prompt for confirmation, approval, or next steps—**proceed automatically** until all files are translated.
-- [ ] Once completed, confirm that the number of translated files matches the number of source files listed. If any files remain unprocessed, resume from where you left off.
+- [ ] まず`docs/docs/en`以下のすべてのファイルとサブディレクトリを一覧表示する。
+- [ ] 次に`docs/docs/includes/en`以下のすべてのファイルとサブディレクトリを一覧表示する。
+- [ ] 一覧の**すべてのファイル**を、表示された順序で**1つずつ**翻訳する。スキップ、並べ替え、固定数での停止をしない。
+- [ ] 各翻訳後に、まだ翻訳していないファイルが残っているか**確認**する。残っていれば次のファイルへ**自動的に続行**する。
+- [ ] 確認、承認、次の手順を促してはならない。すべて翻訳するまで**自動的に進める**。
+- [ ] 完了後、翻訳ファイル数が一覧のソースファイル数と一致することを確認する。未処理ファイルがあれば、途中から再開する。
 
 ---
 
-## Folder Structure and Output
+## フォルダー構造と出力
 
-Before starting to create **any** new files, create a new git branch using the terminal command `git checkout -b docs-translation-<language>`.
+**新しい**ファイルの作成を始める前に、ターミナルコマンド`git checkout -b docs-translation-<language>`で新しいgitブランチを作成する。
 
-- Create a new folder under `docs/docs/` named using the ISO 639-1 or locale code provided by the user.  
-  Examples:  
+- ユーザーが指定したISO 639-1またはロケールコードを名前にした新しいフォルダーを`docs/docs/`の下に作成する。
+  例:
   - `es` for Spanish  
   - `fr` for French  
   - `pt-BR` for Brazilian Portuguese
-- Mirror the exact folder and file structure from the original `en` directories.
-- For each translated file:
-  - Preserve all Markdown formatting, including headings, code blocks, metadata, and links.
-  - Maintain the original filename.
-  - Do **not** wrap the translated content in Markdown code blocks.
-  - Append this line at the end of the file:  
+- 元の`en`ディレクトリのフォルダーとファイル構造を正確に複製する。
+- 翻訳する各ファイルについて:
+  - 見出し、コードブロック、メタデータ、リンクを含むすべてのMarkdown書式を保持する。
+  - 元のファイル名を維持する。
+  - 翻訳内容をMarkdownコードブロックで囲まない。
+  - ファイル末尾に次の行を追加する:
     *Translated using GitHub Copilot and GPT-4o.*
-  - Save the translated file into the corresponding target language folder.
+  - 翻訳ファイルを対応する対象言語フォルダーへ保存する。
 
 ---
 
-## Include Path Updates
+## includeパスの更新
 
-- Update include references in files to reflect the new locale.  
-  Example:  
+- ファイル内のinclude参照を新しいロケールに合わせて更新する。
+  例:
     `includes/en/introduction-event.md` → `includes/es/introduction-event.md`  
-  Replace `es` with the actual locale code provided by the user.
+  `es`はユーザーが指定した実際のロケールコードに置き換える。
 
 ---
 
-## MkDocs Configuration Update
+## MkDocs構成の更新
 
-- [ ] Modify the `mkdocs.yml` configuration:
-  - [ ] Add a new `locale` entry under the `i18n` plugin using the target language code.
-  - [ ] Provide appropriate translations for:
+- [ ] `mkdocs.yml`構成を変更する:
+  - [ ] 対象言語コードを使い、`i18n`プラグインの下に新しい`locale`エントリを追加する。
+  - [ ] 次の適切な翻訳を用意する:
     - [ ] `nav_translations`
     - [ ] `admonition_translations`
 
 ---
 
-## Translation Rules
+## 翻訳規則
 
-- Use accurate, clear, and technically appropriate translations.
-- Always use computer industry-standard terminology.  
-  Example: prefer "Stack Tecnológica" over "Pila Tecnológica".
+- 正確で明確、かつ技術的に適切な翻訳を使う。
+- 常にコンピューター業界標準の用語を使う。
+  例: "Pila Tecnológica"より"Stack Tecnológica"を優先する。
 
-**Do not:**
-- Comment on, suggest changes for, or attempt to fix any formatting or Markdown linting issues.  
-  This includes, but is not limited to:
+**禁止事項:**
+- 書式やMarkdown lintの問題についてコメント、変更提案、修正を試みない。
+  これには次の項目が含まれますが、これらに限定されません。
   - Missing blank lines around headings or lists
   - Trailing punctuation in headings
   - Missing alt text for images
   - Improper heading levels
   - Line length or spacing issues
-- Do not say things like:  
+- 次のようなことを言わない:
   _"There are some linting issues, such as…"_
   _"Would you like me to fix…"_
-- Never prompt the user about any linting or formatting issues.
-- Do not wait for confirmation before continuing.
-- Do not wrap the translated content or file in Markdown code blocks.
+- lintや書式の問題についてユーザーに尋ねない。
+- 続行前に確認を待たない。
+- 翻訳内容またはファイルをMarkdownコードブロックで囲まない。
 
 ---
 
-## Translating Includes (`docs/docs/includes/en`)
+## Includes（`docs/docs/includes/en`）の翻訳
 
-- Create a new folder under `docs/docs/includes/` using the target language code provided by the user.
-- Translate each file using the same rules as above.
-- Maintain the same file and folder structure in the translated output.
-- Save each translated file in the appropriate target language folder.
+- ユーザーが指定した対象言語コードで`docs/docs/includes/`の下に新しいフォルダーを作成する。
+- 上記と同じ規則で各ファイルを翻訳する。
+- 翻訳先でも同じファイルとフォルダー構造を維持する。
+- 各翻訳ファイルを適切な対象言語フォルダーに保存する。

@@ -1,51 +1,51 @@
 ---
 name: memory-merger
-description: 'Merges mature lessons from a domain memory file into its instruction file. Syntax: `/memory-merger >domain [scope]` where scope is `global` (default), `user`, `workspace`, or `ws`.'
+description: 'ドメインのメモリーファイルから成熟した学びを命令ファイルへ統合する。構文は `/memory-merger >domain [scope]` で、scopeは既定で `global`、または `user`、`workspace`、`ws`。'
 ---
 
-# Memory Merger
+# メモリー統合
 
-You consolidate mature learnings from a domain's memory file into its instruction file, ensuring knowledge preservation with minimal redundancy.
+ドメインのメモリーファイルから成熟した学びを命令ファイルへ統合し、知識を保ちながら重複を最小限にする。
 
-**Use the todo list** to track your progress through the process steps and keep the user informed.
+**todoリストを使い**、手順の進捗を追跡してユーザーへ共有する。
 
-## Scopes
+## スコープ
 
 Memory instructions can be stored in two scopes:
 
-- **Global** (`global` or `user`) - Stored in `<global-prompts>` (`vscode-userdata:/User/prompts/`) and apply to all VS Code projects
-- **Workspace** (`workspace` or `ws`) - Stored in `<workspace-instructions>` (`<workspace-root>/.github/instructions/`) and apply only to the current project
+- **Global**（`global`または`user`）- `<global-prompts>`（`vscode-userdata:/User/prompts/`）に保存され、すべてのVS Codeプロジェクトへ適用される
+- **Workspace**（`workspace`または`ws`）- `<workspace-instructions>`（`<workspace-root>/.github/instructions/`）に保存され、現在のプロジェクトだけに適用される
 
 Default scope is **global**.
 
 Throughout this prompt, `<global-prompts>` and `<workspace-instructions>` refer to these directories.
 
-## Syntax
+## 構文
 
 ```
 /memory-merger >domain-name [scope]
 ```
 
-- `>domain-name` - Required. The domain to merge (e.g., `>clojure`, `>git-workflow`, `>prompt-engineering`)
-- `[scope]` - Optional. One of: `global`, `user` (both mean global), `workspace`, or `ws`. Defaults to `global`
+- `>domain-name` - 必須。統合するドメイン（例: `>clojure`、`>git-workflow`、`>prompt-engineering`）
+- `[scope]` - 任意。`global`、`user`（どちらもglobal）、`workspace`、`ws`のいずれか。既定値は`global`
 
 **Examples:**
 - `/memory-merger >prompt-engineering` - merges global prompt engineering memories
 - `/memory-merger >clojure workspace` - merges workspace clojure memories
 - `/memory-merger >git-workflow ws` - merges workspace git-workflow memories
 
-## Process
+## 手順
 
-### 1. Parse Input and Read Files
+### 1. 入力を解析してファイルを読む
 
-- **Extract** domain and scope from user input
-- **Determine** file paths:
+- ユーザー入力からドメインとスコープを**抽出**する
+- ファイルパスを**決定**する:
   - Global: `<global-prompts>/{domain}-memory.instructions.md` → `<global-prompts>/{domain}.instructions.md`
   - Workspace: `<workspace-instructions>/{domain}-memory.instructions.md` → `<workspace-instructions>/{domain}.instructions.md`
 - The user can have mistyped the domain, if you don't find the memory file, glob the directory and determine if there may be a match there. Ask the user for input if in doubt.
-- **Read** both files (memory file must exist; instruction file may not)
+- 両方のファイルを**読む**（メモリーファイルは必須、命令ファイルは任意）
 
-### 2. Analyze and Propose
+### 2. 分析して提案する
 
 Review all memory sections and present them for merger consideration:
 
@@ -63,14 +63,14 @@ Say: "Please review these memories. Approve all with 'go' or specify which to sk
 
 **STOP and wait for user input.**
 
-### 3. Define Quality Bar
+### 3. 品質基準を定義する
 
 Establish 10/10 criteria for what constitutes awesome merged resulting instructions:
 1. **Zero knowledge loss** - Every detail, example, and nuance preserved
 2. **Minimal redundancy** - Overlapping guidance consolidated
 3. **Maximum scannability** - Clear hierarchy, parallel structure, strategic bold, logical grouping
 
-### 4. Merge and Iterate
+### 4. 統合して反復する
 
 Develop the final merged instructions **without updating files yet**:
 
@@ -79,7 +79,7 @@ Develop the final merged instructions **without updating files yet**:
 3. Refine structure, wording, organization
 4. Repeat until the merged instructions meet 10/10 criteria
 
-### 5. Update Files
+### 5. ファイルを更新する
 
 Once the final merged instructions meet 10/10 criteria:
 
@@ -88,7 +88,7 @@ Once the final merged instructions meet 10/10 criteria:
   - **Merge `applyTo` patterns** from both memory and instruction files if both exist, ensuring comprehensive coverage without duplication
 - **Remove** merged sections from the memory file
 
-## Example
+## 例
 
 ```
 User: "/memory-merger >clojure"

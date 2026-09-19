@@ -1,53 +1,53 @@
 ---
 name: msstore-cli
-description: 'Microsoft Store Developer CLI (msstore) for publishing Windows applications to the Microsoft Store. Use when asked to configure Store credentials, list Store apps, check submission status, publish submissions, manage package flights, set up CI/CD for Store publishing, or integrate with Partner Center. Supports Windows App SDK/WinUI, UWP, .NET MAUI, Flutter, Electron, React Native, and PWA applications.'
+description: 'WindowsアプリをMicrosoft Storeへ公開・管理するMicrosoft Store Developer CLI（msstore）。Store認証、アプリ一覧、提出状態、公開、package flight、CI/CD、Partner Center統合に使う。Windows App SDK/WinUI、UWP、.NET MAUI、Flutter、Electron、React Native、PWAに対応する。'
 license: MIT
 ---
 
-# Microsoft Store Developer CLI (msstore)
+# Microsoft Store Developer CLI（msstore）
 
-The Microsoft Store Developer CLI (`msstore`) is a cross-platform command-line interface for publishing and managing applications in the Microsoft Store. It integrates with Partner Center APIs and supports automated publishing workflows for various application types.
+Microsoft Store Developer CLI（`msstore`）は、Microsoft Storeでアプリを公開・管理するクロスプラットフォームのコマンドラインインターフェイスである。Partner Center APIと統合し、さまざまなアプリ種別の自動公開ワークフローをサポートする。
 
-## When to Use This Skill
+## このSkillを使う場合
 
-Use this skill when you need to:
+次の作業が必要な場合にこのSkillを使う:
 
-- Configure Store credentials for API access
-- List applications in your Store account
-- Check the status of a submission
-- Publish submissions to the Store
-- Package applications for Store submission
-- Initialize projects for Store publishing
-- Manage package flights (beta testing)
-- Set up CI/CD pipelines for automated Store publishing
-- Manage gradual rollouts of submissions
-- Update submission metadata programmatically
+- APIアクセス用のStore資格情報を構成する
+- Storeアカウントのアプリを一覧表示する
+- 提出の状態を確認する
+- 提出をStoreへ公開する
+- Store提出用にアプリをパッケージ化する
+- Store公開用にプロジェクトを初期化する
+- package flight（ベータテスト）を管理する
+- Store自動公開用のCI/CDパイプラインを構成する
+- 提出の段階的ロールアウトを管理する
+- 提出メタデータをプログラムから更新する
 
-## Prerequisites
+## 前提条件
 
-- Windows 10+, macOS, or Linux
-- .NET 9 Desktop Runtime (Windows) or .NET 9 Runtime (macOS/Linux)
-- Partner Center account with appropriate permissions
-- Azure AD app registration with Partner Center API access
-- msstore CLI installed via one of these methods:
+- Windows 10以降、macOS、またはLinux
+- .NET 9 Desktop Runtime（Windows）または.NET 9 Runtime（macOS/Linux）
+- 適切な権限を持つPartner Centerアカウント
+- Partner Center APIにアクセスできるAzure ADアプリ登録
+- 次のいずれかの方法でmsstore CLIをインストール済み:
   - **Microsoft Store**: [Download](https://www.microsoft.com/store/apps/9P53PC5S0PHJ)
   - **WinGet**: `winget install "Microsoft Store Developer CLI"`
   - **Manual**: Download from [GitHub Releases](https://aka.ms/msstoredevcli/releases)
 
-### Partner Center Setup
+### Partner Centerのセットアップ
 
-Before using msstore, you need to create an Azure AD application with Partner Center access:
+msstoreを使う前に、Partner CenterへアクセスできるAzure ADアプリケーションを作成する:
 
-1. Go to [Partner Center](https://partner.microsoft.com/dashboard)
-2. Navigate to **Account settings** > **User management** > **Azure AD applications**
-3. Create a new application and note the **Tenant ID**, **Client ID**, and **Client Secret**
-4. Grant the application appropriate permissions (Manager or Developer role)
+1. [Partner Center](https://partner.microsoft.com/dashboard)を開く
+2. **Account settings** > **User management** > **Azure AD applications**へ移動する
+3. 新しいアプリケーションを作成し、**Tenant ID**、**Client ID**、**Client Secret**を控える
+4. アプリケーションに適切な権限（ManagerまたはDeveloperロール）を付与する
 
-## Core Commands Reference
+## 基本コマンドリファレンス
 
-### info - Print Configuration
+### info — 構成を表示
 
-Display the current credential configuration.
+現在の資格情報構成を表示する。
 
 ```bash
 msstore info
@@ -55,13 +55,13 @@ msstore info
 
 **Options:**
 
-| Option | Description |
+| オプション | 説明 |
 | ------ | ----------- |
-| `-v, --verbose` | Print verbose output |
+| `-v, --verbose` | 詳細な出力を表示 |
 
-### reconfigure - Configure Credentials
+### reconfigure — 認証情報を構成
 
-Configure or update Microsoft Store API credentials.
+Microsoft Store API資格情報を構成または更新する。
 
 ```bash
 msstore reconfigure [options]
@@ -90,9 +90,9 @@ msstore reconfigure --tenantId $TENANT_ID --sellerId $SELLER_ID --clientId $CLIE
 msstore reconfigure --tenantId $TENANT_ID --sellerId $SELLER_ID --clientId $CLIENT_ID --certificateFilePath ./cert.pfx --certificatePassword MyPassword
 ```
 
-### settings - CLI Settings
+### settings — CLI設定
 
-Change settings of the Microsoft Store Developer CLI.
+Microsoft Store Developer CLIの設定を変更する。
 
 ```bash
 msstore settings [options]
@@ -110,11 +110,11 @@ msstore settings [options]
 msstore settings setpdn <publisherDisplayName>
 ```
 
-Sets the default Publisher Display Name for the `init` command.
+`init`コマンドの既定のPublisher Display Nameを設定する。
 
-### apps - Application Management
+### apps — アプリケーション管理
 
-List and retrieve application information.
+アプリケーション情報を一覧表示し、取得する。
 
 #### List Applications
 
@@ -122,7 +122,7 @@ List and retrieve application information.
 msstore apps list
 ```
 
-Lists all applications in your Partner Center account.
+Partner Centerアカウント内のすべてのアプリケーションを一覧表示する。
 
 #### Get Application Details
 
@@ -143,9 +143,9 @@ msstore apps get <productId>
 msstore apps get 9NBLGGH4R315
 ```
 
-### submission - Submission Management
+### submission — 提出管理
 
-Manage Store submissions.
+Store提出を管理する。
 
 | Sub-Command | Description |
 | ----------- | ----------- |
@@ -175,7 +175,7 @@ msstore submission get <productId>
 msstore submission updateMetadata <productId> <metadata>
 ```
 
-Where `<metadata>` is a JSON string with the updated metadata. Because JSON contains characters that shells interpret (quotes, braces, etc.), you must quote and/or escape the value appropriately:
+`<metadata>`は更新後のメタデータを含むJSON文字列である。JSONにはシェルが解釈する文字（引用符、波括弧など）が含まれるため、値を適切に引用またはエスケープする必要がある:
 
 - **Bash/Zsh**: Wrap the JSON in single quotes so the shell passes it through literally.
   ```bash
@@ -190,7 +190,7 @@ Where `<metadata>` is a JSON string with the updated metadata. Because JSON cont
   msstore submission updateMetadata 9NBLGGH4R315 "{\"description\":\"My updated app\"}"
   ```
 
-> **Tip:** For complex or multi-line metadata, save the JSON to a file and pass its contents instead to avoid quoting issues:
+> **ヒント:** 複雑なメタデータや複数行のメタデータでは、引用の問題を避けるためJSONをファイルに保存し、その内容を渡す:
 > ```bash
 > msstore submission updateMetadata 9NBLGGH4R315 "$(cat metadata.json)"
 > ```
@@ -213,7 +213,7 @@ msstore submission publish <productId>
 msstore submission poll <productId>
 ```
 
-Polls until the submission status is PUBLISHED or FAILED.
+提出状態がPUBLISHEDまたはFAILEDになるまでポーリングする。
 
 #### Delete Submission
 
@@ -227,9 +227,9 @@ msstore submission delete <productId>
 | ------ | ----------- |
 | `--no-confirm` | Skip confirmation prompt |
 
-### init - Initialize Project for Store
+### init — Store向けにプロジェクトを初期化
 
-Initialize a project for Microsoft Store publishing. Automatically detects project type and configures Store identity.
+Microsoft Store公開用にプロジェクトを初期化する。プロジェクト種別を自動検出し、Store IDを構成する。
 
 ```bash
 msstore init <pathOrUrl> [options]
@@ -277,9 +277,9 @@ msstore init https://contoso.com --output ./pwa-package
 msstore init ./my-app --publish
 ```
 
-### package - Package for Store
+### package — Store向けにパッケージ化
 
-Package an application for Microsoft Store submission.
+Microsoft Store提出用にアプリケーションをパッケージ化する。
 
 ```bash
 msstore package <pathOrUrl> [options]
@@ -312,9 +312,9 @@ msstore package ./my-app --arch x64,arm64 --output ./packages
 msstore package ./my-app --version 1.2.3.0
 ```
 
-### publish - Publish to Store
+### publish — Storeへ公開
 
-Publish an application to the Microsoft Store.
+アプリケーションをMicrosoft Storeへ公開する。
 
 ```bash
 msstore publish <pathOrUrl> [options]
@@ -352,9 +352,9 @@ msstore publish ./my-app --noCommit
 msstore publish ./my-app --packageRolloutPercentage 10
 ```
 
-### flights - Package Flight Management
+### flights — package flight管理
 
-Manage package flights (beta testing groups).
+package flight（ベータテストグループ）を管理する。
 
 | Sub-Command | Description |
 | ----------- | ----------- |
@@ -430,7 +430,7 @@ msstore flights submission rollout halt <productId> <flightId>
 msstore flights submission rollout finalize <productId> <flightId>
 ```
 
-## Common Workflows
+## 一般的なワークフロー
 
 ### Workflow 1: First-Time Store Setup
 
@@ -545,51 +545,51 @@ jobs:
         run: msstore publish ./src/MyApp
 ```
 
-## Integration with winapp CLI
+## winapp CLIとの統合
 
-The winapp CLI (v0.2.0+) integrates with msstore via the `winapp store` subcommand:
+winapp CLI（v0.2.0以降）は、`winapp store`サブコマンドでmsstoreと統合される:
 
 ```bash
-# These commands are equivalent:
+# これらのコマンドは同等:
 msstore reconfigure --tenantId xxx --clientId xxx --clientSecret xxx
 winapp store reconfigure --tenantId xxx --clientId xxx --clientSecret xxx
 
-# List apps
+# アプリを一覧表示
 msstore apps list
 winapp store apps list
 
-# Publish
+# 公開
 msstore publish ./my-app
 winapp store publish ./my-app
 ```
 
-Use `winapp store` when you want a unified CLI experience for both packaging and publishing.
+パッケージ化と公開を統合したCLI操作を行いたい場合は`winapp store`を使う。
 
-## Troubleshooting
+## トラブルシューティング
 
-| Issue | Solution |
+| 問題 | 解決策 |
 | ----- | -------- |
-| Authentication failed | Verify credentials with `msstore info`; re-run `msstore reconfigure` |
-| App not found | Ensure the product ID is correct; run `msstore apps list` to verify |
-| Insufficient permissions | Check Azure AD app role in Partner Center (needs Manager or Developer) |
-| Package validation failed | Ensure package meets Store requirements; check Partner Center for details |
-| Submission stuck | Run `msstore submission poll <productId>` to check status |
-| Flight not found | Verify flight ID with `msstore flights list <productId>` |
-| Rollout percentage invalid | Value must be between 0 and 100 |
-| Init fails for PWA | Ensure URL is publicly accessible and has valid web app manifest |
+| 認証に失敗する | `msstore info`で資格情報を確認し、`msstore reconfigure`を再実行する |
+| アプリが見つからない | product IDが正しいことを確認し、`msstore apps list`で検証する |
+| 権限が不足している | Partner CenterのAzure ADアプリロールを確認する（ManagerまたはDeveloperが必要） |
+| パッケージ検証に失敗する | パッケージがStore要件を満たすことを確認し、Partner Centerで詳細を確認する |
+| 提出が停止している | `msstore submission poll <productId>`で状態を確認する |
+| Flightが見つからない | `msstore flights list <productId>`でflight IDを確認する |
+| ロールアウト率が無効 | 値は0～100の範囲で指定する |
+| PWAの初期化に失敗する | URLが公開アクセス可能で、有効なWebアプリマニフェストを持つことを確認する |
 
-## Environment Variables
+## 環境変数
 
-The CLI supports environment variables for credentials:
+CLIは資格情報用の環境変数をサポートする:
 
-| Variable | Description |
+| 変数 | 説明 |
 | -------- | ----------- |
 | `MSSTORE_TENANT_ID` | Azure AD Tenant ID |
 | `MSSTORE_SELLER_ID` | Partner Center Seller ID |
 | `MSSTORE_CLIENT_ID` | Azure AD Application Client ID |
 | `MSSTORE_CLIENT_SECRET` | Client Secret |
 
-## References
+## 参照
 
 - [Microsoft Store Developer CLI Documentation](https://learn.microsoft.com/windows/apps/publish/msstore-dev-cli/overview)
 - [CLI Commands Reference](https://learn.microsoft.com/windows/apps/publish/msstore-dev-cli/commands)

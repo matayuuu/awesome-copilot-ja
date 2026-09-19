@@ -1,146 +1,146 @@
 ---
 name: msgraph-sdk
-description: 'Integrate Microsoft Graph SDK into any project — .NET, TypeScript/JavaScript, or Python. Covers auth patterns (client credentials, OBO, managed identity), SDK setup, calling Graph APIs, batching, delta queries, change notifications, throttling, and permission scopes. Use when accessing Microsoft 365 data (users, mail, calendar, Teams, files, SharePoint) from any application type.'
+description: 'Microsoft Graph SDK を .NET、TypeScript/JavaScript、Python の各プロジェクトへ統合する。認証パターン（クライアント資格情報、OBO、マネージド ID）、SDK のセットアップ、Graph API 呼び出し、バッチ、デルタクエリ、変更通知、スロットリング、アクセス許可スコープを扱う。任意のアプリケーションから Microsoft 365 データ（ユーザー、メール、予定表、Teams、ファイル、SharePoint）へアクセスする際に使用する。'
 ---
 
 # Microsoft Graph SDK
 
-Use this skill when integrating Microsoft Graph into an application to access Microsoft 365 data and services.
+Microsoft 365 のデータとサービスへアクセスするため、アプリケーションに Microsoft Graph を統合するときにこのスキルを使用します。
 
-Always ground implementation in the current Microsoft Graph SDK documentation and SDK version for the target language rather than relying on memory alone.
+記憶だけに頼らず、対象言語の現在の Microsoft Graph SDK ドキュメントと SDK バージョンを根拠として実装してください。
 
-## Determine the target language first
+## まず対象言語を決める
 
-1. Use the **.NET** workflow when the project contains `.cs`, `.csproj`, or `.sln` files, or when the user asks for C# guidance. Follow [references/dotnet.md](references/dotnet.md).
-2. Use the **TypeScript / JavaScript** workflow when the project contains `package.json`, `.ts`, or `.js` files, or when the user asks for Node.js / browser guidance. Follow [references/typescript.md](references/typescript.md).
-3. Use the **Python** workflow when the project contains `.py`, `pyproject.toml`, or `requirements.txt`, or when the user asks for Python guidance. Follow [references/python.md](references/python.md).
-4. If multiple languages are present, match the language of the files being edited or ask the user.
+1. プロジェクトに `.cs`、`.csproj`、`.sln` が含まれる場合、またはユーザーが C# のガイダンスを求める場合は、**.NET** ワークフローを使用します。[references/dotnet.md](references/dotnet.md) に従ってください。
+2. プロジェクトに `package.json`、`.ts`、`.js` が含まれる場合、またはユーザーが Node.js / ブラウザーのガイダンスを求める場合は、**TypeScript / JavaScript** ワークフローを使用します。[references/typescript.md](references/typescript.md) に従ってください。
+3. プロジェクトに `.py`、`pyproject.toml`、`requirements.txt` が含まれる場合、またはユーザーが Python のガイダンスを求める場合は、**Python** ワークフローを使用します。[references/python.md](references/python.md) に従ってください。
+4. 複数の言語が存在する場合は、編集するファイルの言語に合わせるか、ユーザーに確認してください。
 
-## Always consult live documentation
+## 常に最新ドキュメントを参照する
 
-- Microsoft Graph overview: <https://learn.microsoft.com/graph/overview>
-- Graph Explorer (try calls live): <https://developer.microsoft.com/graph/graph-explorer>
-- Graph permissions reference: <https://learn.microsoft.com/graph/permissions-reference>
-- Use Microsoft Docs MCP tooling when available to fetch current API shapes and SDK samples.
+- Microsoft Graph の概要: <https://learn.microsoft.com/graph/overview>
+- Graph Explorer（ライブ呼び出しを試す）: <https://developer.microsoft.com/graph/graph-explorer>
+- Graph のアクセス許可リファレンス: <https://learn.microsoft.com/graph/permissions-reference>
+- 利用可能な場合は Microsoft Docs MCP ツールを使い、現在の API 形状と SDK サンプルを取得してください。
 
-## Authentication — choose the right pattern
+## 認証 — 適切なパターンを選ぶ
 
-Selecting the wrong auth flow is the most common Graph integration mistake. Apply this decision tree before writing any auth code:
+誤った認証フローの選択は、Graph 統合で最も多い間違いです。認証コードを書く前に、この決定表を適用してください。
 
-| Scenario | Flow to use |
+| シナリオ | 使用するフロー |
 |---|---|
-| Background service / daemon with no user | **Client credentials** (app-only) |
-| Agent or API acting on behalf of a signed-in user | **On-Behalf-Of (OBO)** |
-| App running in Azure (Function, Container App, VM) | **Managed Identity** (preferred over secrets) |
-| CLI tool or local dev script | **Device code** or **interactive browser** |
-| Single-page app (browser only) | **Authorization code + PKCE** |
+| ユーザーなしで動作するバックグラウンドサービス / デーモン | **クライアント資格情報**（アプリ専用） |
+| サインイン済みユーザーの代理で動作するエージェントまたは API | **On-Behalf-Of（OBO）** |
+| Azure 上で実行されるアプリ（Function、Container App、VM） | **マネージド ID**（シークレットより優先） |
+| CLI ツールまたはローカル開発スクリプト | **デバイスコード**または**対話型ブラウザー** |
+| シングルページアプリ（ブラウザーのみ） | **認可コード + PKCE** |
 
-- Never use client credentials when a user context is required — Graph enforces this at the permission level (application vs. delegated).
-- Prefer `DefaultAzureCredential` in Azure-hosted apps; it tries managed identity first and falls back gracefully for local dev.
-- Never hardcode secrets. Use environment variables, Azure Key Vault, or the Secret Manager.
+- ユーザーコンテキストが必要な場合にクライアント資格情報を使わないでください。Graph はアクセス許可レベルでこれを強制します（アプリケーションと委任の違い）。
+- Azure ホストのアプリでは `DefaultAzureCredential` を優先してください。まずマネージド ID を試し、ローカル開発用に適切にフォールバックします。
+- シークレットをハードコードしないでください。環境変数、Azure Key Vault、または Secret Manager を使います。
 
-## Core SDK usage patterns
+## SDKの基本的な利用パターン
 
-### Building the client
+### クライアントの構築
 
-Always construct `GraphServiceClient` once and reuse it (it manages token caching internally).
+`GraphServiceClient` は必ず一度だけ構築して再利用します（トークンキャッシュは内部で管理されます）。
 
-Pass a credential from the Azure Identity library — never build raw HTTP clients manually.
+Azure Identity ライブラリの資格情報を渡します。生の HTTP クライアントを手動で構築しないでください。
 
-### Making calls
+### 呼び出し
 
-- Use the fluent builder API: `client.Users[userId].Messages.GetAsync(...)`.
-- Always `await` async calls.
-- Specify `$select` to limit returned fields — Graph returns large default payloads.
-- Use `$filter` server-side rather than filtering returned collections in memory.
-- Use `$expand` to fetch related resources in a single call when relationships are small.
+- Fluent Builder API を使用します: `client.Users[userId].Messages.GetAsync(...)`。
+- 非同期呼び出しは必ず `await` します。
+- 返すフィールドを制限するため `$select` を指定します。Graph の既定ペイロードは大きくなります。
+- 返却コレクションをメモリ上でフィルターするのではなく、サーバー側の `$filter` を使用します。
+- 関係が小さい場合は `$expand` を使い、関連リソースを 1 回の呼び出しで取得します。
 
 ### Pagination
 
-Graph paginates collections. Never assume all items arrive in one response:
-- Check for an `@odata.nextLink` on the response.
-- Use the SDK's `PageIterator` helper (available in all three SDKs) to walk pages automatically.
-- Set `$top` to control page size (max varies by resource, typically 999).
+Graph はコレクションをページ分割します。すべての項目が 1 回の応答で到着すると想定しないでください。
+- 応答に `@odata.nextLink` があるか確認します。
+- SDK の `PageIterator` ヘルパー（3 つの SDK すべてで利用可能）を使い、ページを自動走査します。
+- `$top` を設定してページサイズを制御します（上限はリソースにより異なり、通常は 999）。
 
-## Advanced patterns
+## 高度なパターン
 
-### Batch requests
+### バッチ要求
 
-Combine up to 20 independent Graph calls into a single HTTP request using the `$batch` endpoint. Use batching when:
-- Initializing data for a dashboard or agent that needs multiple resources upfront.
-- Reducing latency in high-call-count operations.
+`$batch` エンドポイントを使い、最大 20 件の独立した Graph 呼び出しを 1 つの HTTP 要求へまとめます。次の場合にバッチを使用します。
+- 複数のリソースを先に必要とするダッシュボードやエージェントのデータ初期化。
+- 呼び出し回数が多い処理の待ち時間短縮。
 
-Batch responses arrive out of order — match them by the `id` field you assigned each request.
+バッチ応答は順不同で到着します。各要求に割り当てた `id` フィールドで対応付けます。
 
-### Delta queries
+### デルタクエリ
 
-Use delta queries to sync changes incrementally instead of polling full collections:
-- First call: `GET /users/delta` returns all items + a `@odata.deltaLink`.
-- Subsequent calls: use the `deltaLink` to receive only what changed since the last sync.
-- Supported on: users, groups, messages, calendar events, Teams channels, and more.
-- Store the `deltaLink` durably (database, blob) between sync runs.
+コレクション全体をポーリングする代わりに、デルタクエリで変更を増分同期します。
+- 最初の呼び出し: `GET /users/delta` は全項目と `@odata.deltaLink` を返します。
+- 以降の呼び出し: `deltaLink` を使い、前回の同期以降に変更されたものだけを受け取ります。
+- ユーザー、グループ、メッセージ、予定表イベント、Teams チャネルなどでサポートされています。
+- 同期実行の間は、`deltaLink` をデータベースや Blob に永続的に保存します。
 
-### Change notifications (webhooks)
+### 変更通知（Webhook）
 
-Subscribe to resource changes with `POST /subscriptions`:
-- Graph delivers change events to your HTTPS notification URL.
-- Subscriptions expire — renew them before `expirationDateTime` (max varies by resource; typically 1–3 days for mail/calendar, up to 4230 minutes for users/groups).
-- Validate the subscription handshake: Graph sends a `validationToken` query parameter on creation — echo it back as plain text with HTTP 200.
-- Use lifecycle notifications (`notificationUrl` + `lifecycleNotificationUrl`) to handle missed events and reauthorization.
-- For high-volume scenarios prefer **change notifications with resource data** (requires additional encryption setup).
+`POST /subscriptions` でリソース変更をサブスクライブします。
+- Graph は変更イベントを HTTPS 通知 URL に配信します。
+- サブスクリプションには有効期限があります。`expirationDateTime` より前に更新します（上限はリソースにより異なり、メール/予定表は通常 1～3 日、ユーザー/グループは最大 4230 分）。
+- サブスクリプションのハンドシェイクを検証します。Graph は作成時に `validationToken` クエリパラメーターを送るため、HTTP 200 とともにプレーンテキストでその値を返します。
+- ライフサイクル通知（`notificationUrl` + `lifecycleNotificationUrl`）を使い、見逃したイベントと再認可を処理します。
+- 高ボリュームのシナリオでは、**リソースデータを含む変更通知**を優先します（追加の暗号化セットアップが必要です）。
 
-### Throttling
+### スロットリング
 
-Graph throttles aggressively. Always handle HTTP 429:
-- Read the `Retry-After` header — it specifies exact seconds to wait, not a fixed backoff.
-- The SDK's built-in retry middleware handles 429 automatically when configured; enable it explicitly.
-- Avoid fan-out patterns that hit Graph with hundreds of parallel requests; use batching or queuing instead.
+Graph は積極的にスロットリングを行います。HTTP 429 は必ず処理してください。
+- `Retry-After` ヘッダーを読みます。固定のバックオフではなく、待機すべき正確な秒数を示します。
+- SDK 組み込みの再試行ミドルウェアは、構成すると 429 を自動処理します。明示的に有効化してください。
+- 数百件の並列要求を Graph へ送るファンアウトパターンは避け、代わりにバッチまたはキューを使用します。
 
-## Permissions
+## 権限
 
-Get permissions right before writing auth code — wrong scopes result in 403 errors that are hard to debug later.
+認証コードを書く前にアクセス許可を正しく設定してください。誤ったスコープは後で調査しにくい 403 エラーになります。
 
-- Application permissions run without a user (daemon / service). Require admin consent.
-- Delegated permissions run in the context of a signed-in user. Some require admin consent.
-- Request the **minimum permissions** needed. Graph's permission reference lists least-privilege options for every operation.
-- Use the Graph Explorer to test which permissions a call actually requires before coding.
-- In Azure app registrations: grant API permissions → Microsoft Graph → select type (Application or Delegated) → grant admin consent where required.
+- アプリケーションのアクセス許可はユーザーなしで動作します（デーモン / サービス）。管理者の同意が必要です。
+- 委任されたアクセス許可はサインイン済みユーザーのコンテキストで動作します。一部は管理者の同意が必要です。
+- 必要な**最小限のアクセス許可**を要求します。Graph のアクセス許可リファレンスには、操作ごとの最小権限オプションが掲載されています。
+- コーディング前に Graph Explorer を使い、呼び出しが実際に必要とするアクセス許可をテストします。
+- Azure のアプリ登録では、API のアクセス許可を付与 → Microsoft Graph → 種類（Application または Delegated）を選択 → 必要に応じて管理者の同意を付与します。
 
-## Common Graph resources — quick reference
+## よく使うGraphリソース — クイックリファレンス
 
-| Goal | Resource path |
+| 目的 | リソースパス |
 |---|---|
-| Get signed-in user's profile | `GET /me` |
-| List user's mailbox messages | `GET /me/messages` |
-| Send an email | `POST /me/sendMail` |
-| List calendar events | `GET /me/events` |
-| Get user's OneDrive root | `GET /me/drive/root/children` |
-| List Teams the user is in | `GET /me/joinedTeams` |
-| Post a Teams channel message | `POST /teams/{id}/channels/{id}/messages` |
-| List SharePoint site lists | `GET /sites/{siteId}/lists` |
-| Search across M365 | `POST /search/query` |
-| List all users in tenant (app-only) | `GET /users` |
-| Get group members | `GET /groups/{id}/members` |
+| サインイン済みユーザーのプロファイルを取得 | `GET /me` |
+| ユーザーのメールボックスメッセージを一覧表示 | `GET /me/messages` |
+| メールを送信 | `POST /me/sendMail` |
+| 予定表イベントを一覧表示 | `GET /me/events` |
+| ユーザーの OneDrive ルートを取得 | `GET /me/drive/root/children` |
+| ユーザーが参加している Teams を一覧表示 | `GET /me/joinedTeams` |
+| Teams チャネルメッセージを投稿 | `POST /teams/{id}/channels/{id}/messages` |
+| SharePoint サイトのリストを一覧表示 | `GET /sites/{siteId}/lists` |
+| M365 全体を検索 | `POST /search/query` |
+| テナント内のすべてのユーザーを一覧表示（アプリ専用） | `GET /users` |
+| グループメンバーを取得 | `GET /groups/{id}/members` |
 
-In similar fashion, use the SDK's fluent API to navigate to these resources in code.
+同様に、コードでは SDK の Fluent API を使い、これらのリソースへ移動します。
 
-## Workflow
+## ワークフロー
 
-1. Determine the target language and read the matching reference file.
-2. Identify the auth scenario and choose the correct flow from the table above.
-3. Fetch current SDK docs and Graph Explorer examples before making implementation choices.
-4. Apply least-privilege permissions — confirm in the Graph permissions reference.
-5. Implement pagination from the start — don't assume single-page responses.
-6. Enable retry middleware for throttling from day one.
-7. For syncing scenarios, prefer delta queries over polling.
-8. Use the language-specific package names, auth provider setup, and code patterns from the chosen reference file.
+1. 対象言語を決定し、対応するリファレンスファイルを読む。
+2. 認証シナリオを特定し、上表から正しいフローを選ぶ。
+3. 実装を選択する前に、現在の SDK ドキュメントと Graph Explorer の例を取得する。
+4. 最小権限のアクセス許可を適用し、Graph のアクセス許可リファレンスで確認する。
+5. 最初からページネーションを実装し、1 ページの応答を想定しない。
+6. 初日からスロットリング用の再試行ミドルウェアを有効化する。
+7. 同期シナリオでは、ポーリングよりデルタクエリを優先する。
+8. 選択したリファレンスファイルにある言語固有のパッケージ名、認証プロバイダーの設定、コードパターンを使用する。
 
-## Completion criteria
+## 完了基準
 
-- Auth flow matches the scenario (not defaulting to client credentials for user-context calls).
-- `GraphServiceClient` is constructed once and reused.
-- All collection reads handle pagination.
-- Throttling (429) is handled via retry middleware or explicit `Retry-After` logic.
-- Permissions are scoped to the minimum required.
-- No secrets or credentials are hardcoded.
-- Code matches current SDK version patterns for the selected language.
+- 認証フローがシナリオに一致している（ユーザーコンテキストの呼び出しでクライアント資格情報を既定にしない）。
+- `GraphServiceClient` が一度だけ構築され、再利用されている。
+- すべてのコレクション読み取りがページネーションを処理している。
+- スロットリング（429）が再試行ミドルウェアまたは明示的な `Retry-After` ロジックで処理されている。
+- アクセス許可が必要最小限にスコープされている。
+- シークレットまたは資格情報がハードコードされていない。
+- コードが選択した言語の現在の SDK バージョンパターンに一致している。

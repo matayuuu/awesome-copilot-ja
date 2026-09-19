@@ -7,7 +7,7 @@ description: 'Oracle PL/SQLストアドプロシージャをPostgreSQL PL/pgSQL�
 
 Oracle PL/SQLストアドプロシージャおよび関数をPostgreSQL PL/pgSQLの同等物へ変換します。
 
-## Workflow
+## ワークフロー
 
 ```
 進捗:

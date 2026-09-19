@@ -1,33 +1,33 @@
 ---
 name: mcp-create-declarative-agent
-description: 'Skill converted from mcp-create-declarative-agent.prompt.md'
+description: 'MCPサーバー、認証、ツール選択、構成を統合し、Microsoft 365 Copilot向けの宣言型エージェントを作成する。'
 ---
 
 ````prompt
 ---
 mode: 'agent'
 tools: ['changes', 'search/codebase', 'edit/editFiles', 'problems']
-description: 'Create a declarative agent for Microsoft 365 Copilot by integrating an MCP server with authentication, tool selection, and configuration'
+description: 'MCPサーバーを認証、ツール選択、構成と統合し、Microsoft 365 Copilot向けの宣言型エージェントを作成する'
 model: 'gpt-4.1'
 tags: [mcp, m365-copilot, declarative-agent, model-context-protocol, api-plugin]
 ---
 
-# Create MCP-based Declarative Agent for Microsoft 365 Copilot
+# Microsoft 365 Copilot向けMCPベース宣言型エージェントの作成
 
-Create a complete declarative agent for Microsoft 365 Copilot that integrates with a Model Context Protocol (MCP) server to access external systems and data.
+外部システムとデータへアクセスするため、Model Context Protocol（MCP）サーバーと統合した完全なMicrosoft 365 Copilot宣言型エージェントを作成する。
 
-## Requirements
+## 要件
 
-Generate the following project structure using Microsoft 365 Agents Toolkit:
+Microsoft 365 Agents Toolkitを使って、次のプロジェクト構造を生成する:
 
-### Project Setup
-1. **Scaffold declarative agent** via Agents Toolkit
-2. **Add MCP action** pointing to MCP server
-3. **Select tools** to import from MCP server
-4. **Configure authentication** (OAuth 2.0 or SSO)
-5. **Review generated files** (manifest.json, ai-plugin.json, declarativeAgent.json)
+### プロジェクトのセットアップ
+1. Agents Toolkitで**宣言型エージェントをスキャフォールディング**する
+2. MCPサーバーを指す**MCPアクションを追加**する
+3. MCPサーバーからインポートする**ツールを選択**する
+4. **認証を構成**する（OAuth 2.0またはSSO）
+5. **生成されたファイルを確認**する（manifest.json、ai-plugin.json、declarativeAgent.json）
 
-### Key Files Generated
+### 生成される主なファイル
 
 **appPackage/manifest.json** - Teams app manifest with plugin reference:
 ```json
@@ -141,21 +141,21 @@ Generate the following project structure using Microsoft 365 Agents Toolkit:
 }
 ```
 
-## MCP Server Integration
+## MCPサーバー統合
 
-### Supported MCP Endpoints
-The MCP server must provide:
-- **Server metadata** endpoint
-- **Tools listing** endpoint (exposes available functions)
-- **Tool execution** endpoint (handles function calls)
+### 対応するMCPエンドポイント
+MCPサーバーは次を提供する必要がある:
+- **サーバーメタデータ**エンドポイント
+- **ツール一覧**エンドポイント（利用可能な関数を公開）
+- **ツール実行**エンドポイント（関数呼び出しを処理）
 
-### Tool Selection
-When importing from MCP:
-1. Fetch available tools from server
-2. Select specific tools to include (for security/simplicity)
-3. Tool definitions are auto-generated in ai-plugin.json
+### ツール選択
+MCPからインポートするとき:
+1. サーバーから利用可能なツールを取得する
+2. 含める特定のツールを選択する（セキュリティと簡潔さのため）
+3. ツール定義をai-plugin.jsonへ自動生成する
 
-### Authentication Types
+### 認証の種類
 
 **OAuth 2.0 (Static Registration)**
 ```json
@@ -176,10 +176,10 @@ When importing from MCP:
 }
 ```
 
-## Response Semantics
+## 応答セマンティクス
 
-### Define Data Mapping
-Use `response_semantics` to extract relevant fields from API responses:
+### データマッピングを定義する
+`response_semantics`を使ってAPI応答から関連フィールドを抽出する:
 
 ```json
 "capabilities": {
@@ -194,12 +194,12 @@ Use `response_semantics` to extract relevant fields from API responses:
 }
 ```
 
-### Add Adaptive Cards (Optional)
-See the `mcp-create-adaptive-cards` prompt for adding visual card templates.
+### Adaptive Cardsを追加する（任意）
+視覚的なカードテンプレートの追加方法は `mcp-create-adaptive-cards` promptを参照する。
 
-## Environment Configuration
+## 環境構成
 
-Create `.env.local` or `.env.dev` for credentials:
+資格情報用に`.env.local`または`.env.dev`を作成する:
 
 ```env
 OAUTH_REFERENCE_ID=your-oauth-reference-id
@@ -207,49 +207,49 @@ CLIENT_ID=your-client-id
 CLIENT_SECRET=your-client-secret
 ```
 
-## Testing & Deployment
+## テストとデプロイ
 
-### Local Testing
-1. **Provision** agent in Agents Toolkit
-2. **Start debugging** to sideload in Teams
-3. Test in Microsoft 365 Copilot at https://m365.cloud.microsoft/chat
-4. Authenticate when prompted
-5. Query the agent using natural language
+### ローカルテスト
+1. Agents Toolkitでエージェントを**プロビジョニング**する
+2. **デバッグを開始**してTeamsへサイドロードする
+3. https://m365.cloud.microsoft/chat のMicrosoft 365 Copilotでテストする
+4. 求められたら認証する
+5. 自然言語でエージェントに問い合わせる
 
-### Validation
-- Verify tool imports in ai-plugin.json
-- Check authentication configuration
-- Test each exposed function
-- Validate response data mapping
+### 検証
+- ai-plugin.jsonのツールインポートを確認する
+- 認証構成を確認する
+- 公開した各関数をテストする
+- 応答データのマッピングを検証する
 
-## Best Practices
+## ベストプラクティス
 
-### Tool Design
-- **Focused functions**: Each tool should do one thing well
-- **Clear descriptions**: Help the model understand when to use each tool
-- **Minimal scoping**: Only import tools the agent needs
-- **Descriptive names**: Use action-oriented function names
+### ツール設計
+- **焦点を絞った関数**: 各ツールは1つのことを適切に行う
+- **明確な説明**: モデルが各ツールを使う場面を理解できるようにする
+- **最小限のスコープ**: エージェントに必要なツールだけをインポートする
+- **説明的な名前**: アクション指向の関数名を使う
 
-### Security
-- **Use OAuth 2.0** for production scenarios
-- **Store secrets** in environment variables
-- **Validate inputs** on the MCP server side
-- **Limit scopes** to minimum required permissions
-- **Use reference IDs** for OAuth registration
+### セキュリティ
+- 本番シナリオでは**OAuth 2.0を使う**
+- **シークレットを環境変数に保存**する
+- **MCPサーバー側で入力を検証**する
+- **スコープを必要最小限の権限に制限**する
+- OAuth登録には**reference IDを使う**
 
-### Instructions
-- **Be specific** about the agent's purpose and capabilities
-- **Define behavior** for both successful and error scenarios
-- **Reference tools** explicitly in instructions when applicable
-- **Set expectations** for users about what the agent can/cannot do
+### 指示
+- エージェントの目的と機能を**具体的に記述**する
+- 成功時とエラー時の両方の動作を**定義**する
+- 必要に応じて指示内でツールを**明示的に参照**する
+- エージェントができること／できないことをユーザーに**明確に伝える**
 
-### Performance
-- **Cache responses** when appropriate on MCP server
-- **Batch operations** where possible
-- **Set timeouts** for long-running operations
-- **Paginate results** for large datasets
+### パフォーマンス
+- MCPサーバーで適切な場合は**応答をキャッシュ**する
+- 可能な場合は**操作をバッチ化**する
+- 長時間処理には**タイムアウトを設定**する
+- 大規模データセットでは**結果をページ分割**する
 
-## Common MCP Server Examples
+## MCPサーバーの一般的な例
 
 ### GitHub MCP Server
 ```
@@ -272,44 +272,44 @@ Tools: Custom tools exposed by your service
 Auth: OAuth 2.0 or SSO
 ```
 
-## Workflow
+## ワークフロー
 
-Ask the user:
-1. What MCP server are you integrating with (URL)?
-2. What tools should be exposed to Copilot?
-3. What authentication method does the server support?
-4. What should the agent's primary purpose be?
-5. Do you need response semantics or Adaptive Cards?
+ユーザーに確認する:
+1. どのMCPサーバー（URL）と統合するか
+2. Copilotにどのツールを公開するか
+3. サーバーがサポートする認証方式は何か
+4. エージェントの主目的は何か
+5. 応答セマンティクスまたはAdaptive Cardsが必要か
 
-Then generate:
-- Complete appPackage/ structure (manifest.json, declarativeAgent.json, ai-plugin.json)
-- mcp.json configuration
-- .env.local template
-- Provisioning and testing instructions
+その後、以下を生成する:
+- 完全なappPackage/構造（manifest.json、declarativeAgent.json、ai-plugin.json）
+- mcp.json構成
+- .env.localテンプレート
+- プロビジョニングとテストの手順
 
-## Troubleshooting
+## トラブルシューティング
 
-### MCP Server Not Responding
-- Verify server URL is correct
-- Check network connectivity
-- Validate MCP server implements required endpoints
+### MCPサーバーが応答しない
+- サーバーURLが正しいことを確認する
+- ネットワーク接続を確認する
+- MCPサーバーが必要なエンドポイントを実装していることを検証する
 
-### Authentication Fails
-- Verify OAuth credentials are correct
-- Check reference ID matches registration
-- Confirm scopes are requested properly
-- Test OAuth flow independently
+### 認証に失敗する
+- OAuth資格情報が正しいことを確認する
+- reference IDが登録内容と一致することを確認する
+- スコープが適切に要求されていることを確認する
+- OAuthフローを個別にテストする
 
-### Tools Not Appearing
-- Ensure mcp.json points to correct server
-- Verify tools were selected during import
-- Check ai-plugin.json has correct function definitions
-- Re-fetch actions from MCP if server changed
+### ツールが表示されない
+- mcp.jsonが正しいサーバーを指していることを確認する
+- インポート時にツールを選択したことを確認する
+- ai-plugin.jsonに正しい関数定義があることを確認する
+- サーバー変更後はMCPからアクションを再取得する
 
-### Agent Not Understanding Queries
-- Review instructions in declarativeAgent.json
-- Check function descriptions are clear
-- Verify response_semantics extract correct data
-- Test with more specific queries
+### エージェントがクエリを理解しない
+- declarativeAgent.jsonの指示を確認する
+- 関数の説明が明確か確認する
+- response_semanticsが正しいデータを抽出することを検証する
+- より具体的なクエリでテストする
 
 ````

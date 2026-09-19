@@ -1,15 +1,15 @@
 ---
 name: markdown-to-html
-description: 'Convert Markdown files to HTML similar to `marked.js`, `pandoc`, `gomarkdown/markdown`, or similar tools; or writing custom script to convert markdown to html and/or working on web template systems like `jekyll/jekyll`, `gohugoio/hugo`, or similar web templating systems that utilize markdown documents, converting them to html. Use when asked to "convert markdown to html", "transform md to html", "render markdown", "generate html from markdown", or when working with .md files and/or web a templating system that converts markdown to HTML output. Supports CLI and Node.js workflows with GFM, CommonMark, and standard Markdown flavors.'
+description: '`marked.js`、`pandoc`、`gomarkdown/markdown` などを使って Markdown ファイルを HTML へ変換する、または Markdown を HTML に変換するカスタムスクリプトや `jekyll/jekyll`、`gohugoio/hugo` などの Web テンプレートシステムを扱う。Markdown 文書を HTML 出力へ変換する場合に使用する。「convert markdown to html」「transform md to html」「render markdown」「generate html from markdown」の依頼、および `.md` ファイルや Markdown を HTML に変換する Web テンプレートシステムを扱う場合に使う。GFM、CommonMark、標準 Markdown フレーバーの CLI および Node.js ワークフローをサポートする。'
 ---
 
-# Markdown to HTML Conversion
+# MarkdownからHTMLへの変換
 
-Expert skill for converting Markdown documents to HTML using the marked.js library, or writing data conversion scripts; in this case scripts similar to [markedJS/marked](https://github.com/markedjs/marked) repository. For custom scripts knowledge is not confined to `marked.js`, but data conversion methods are utilized from tools like [pandoc](https://github.com/jgm/pandoc) and [gomarkdown/markdown](https://github.com/gomarkdown/markdown) for data conversion; [jekyll/jekyll](https://github.com/jekyll/jekyll) and [gohugoio/hugo](https://github.com/gohugoio/hugo) for templating systems.
+`marked.js`ライブラリを使ってMarkdown文書をHTMLへ変換したり、[markedJS/marked](https://github.com/markedjs/marked)リポジトリに似たデータ変換スクリプトを書いたりするための専門Skill。カスタムスクリプトでは`marked.js`に限定せず、データ変換に[pandoc](https://github.com/jgm/pandoc)や[gomarkdown/markdown](https://github.com/gomarkdown/markdown)を、テンプレートシステムに[jekyll/jekyll](https://github.com/jekyll/jekyll)や[gohugoio/hugo](https://github.com/gohugoio/hugo)を活用する。
 
-The conversion script or tool should handle single files, batch conversions, and advanced configurations.
+変換スクリプトまたはツールは、単一ファイル、バッチ変換、高度な構成を扱えるようにする。
 
-## When to Use This Skill
+## このSkillを使う場合
 
 - User asks to "convert markdown to html" or "transform md files"
 - User wants to "render markdown" as HTML output
@@ -19,11 +19,11 @@ The conversion script or tool should handle single files, batch conversions, and
 - User is working on a tool, widget, or custom template for an existing templating system
 - User wants to preview Markdown as rendered HTML
 
-## Converting Markdown to HTML
+## MarkdownをHTMLへ変換する
 
-### Essential Basic Conversions
+### 基本的な変換
 
-For more see [basic-markdown-to-html.md](references/basic-markdown-to-html.md)
+詳細は[ basic-markdown-to-html.md](references/basic-markdown-to-html.md)を参照。
 
 ```text
     ```markdown
@@ -100,9 +100,9 @@ For more see [basic-markdown-to-html.md](references/basic-markdown-to-html.md)
     ```
 ```
 
-### Code Block Conversions
+### コードブロックの変換
 
-For more see [code-blocks-to-html.md](references/code-blocks-to-html.md)
+詳細は[ code-blocks-to-html.md](references/code-blocks-to-html.md)を参照。
 
 ```text
 
@@ -147,9 +147,9 @@ For more see [code-blocks-to-html.md](references/code-blocks-to-html.md)
     ```
 ```
 
-### Collapsed Section Conversions
+### 折りたたみセクションの変換
 
-For more see [collapsed-sections-to-html.md](references/collapsed-sections-to-html.md)
+詳細は[ collapsed-sections-to-html.md](references/collapsed-sections-to-html.md)を参照。
 
 ```text
     ```markdown
@@ -189,9 +189,9 @@ For more see [collapsed-sections-to-html.md](references/collapsed-sections-to-ht
     ```
 ```
 
-### Mathematical Expression Conversions
+### 数式の変換
 
-For more see [writing-mathematical-expressions-to-html.md](references/writing-mathematical-expressions-to-html.md)
+詳細は[ writing-mathematical-expressions-to-html.md](references/writing-mathematical-expressions-to-html.md)を参照。
 
 ```text
     ```markdown
@@ -251,9 +251,9 @@ For more see [writing-mathematical-expressions-to-html.md](references/writing-ma
     ```
 ```
 
-### Table Conversions
+### 表の変換
 
-For more see [tables-to-html.md](references/tables-to-html.md)
+詳細は[ tables-to-html.md](references/tables-to-html.md)を参照。
 
 ```text
     ```markdown
@@ -305,27 +305,27 @@ For more see [tables-to-html.md](references/tables-to-html.md)
     ```
 ```
 
-## Working with [`markedJS/marked`](references/marked.md)
+## [`markedJS/marked`](references/marked.md)を使う
 
-### Prerequisites
+### 前提条件
 
-- Node.js installed (for CLI or programmatic usage)
-- Install marked globally for CLI: `npm install -g marked`
-- Or install locally: `npm install marked`
+- Node.jsをインストール済み（CLIまたはプログラム利用向け）
+- CLI用にmarkedをグローバルインストール: `npm install -g marked`
+- またはローカルインストール: `npm install marked`
 
-### Quick Conversion Methods
+### 簡易変換方法
 
-See [marked.md](references/marked.md) **Quick Conversion Methods**
+[marked.md](references/marked.md)の**簡易変換方法**を参照。
 
-### Step-by-Step Workflows
+### 手順別ワークフロー
 
-See [marked.md](references/marked.md) **Step-by-Step Workflows**
+[marked.md](references/marked.md)の**手順別ワークフロー**を参照。
 
-### CLI Configuration
+### CLI構成
 
-### Using Config Files
+### 構成ファイルを使う
 
-Create `~/.marked.json` for persistent options:
+永続的なオプション用に`~/.marked.json`を作成する:
 
 ```json
 {
@@ -334,25 +334,25 @@ Create `~/.marked.json` for persistent options:
 }
 ```
 
-Or use a custom config:
+またはカスタム構成を使う:
 
 ```bash
 marked -i input.md -o output.html -c config.json
 ```
 
-### CLI Options Reference
+### CLIオプションのリファレンス
 
-| Option | Description |
+| オプション | 説明 |
 |--------|-------------|
-| `-i, --input <file>` | Input Markdown file |
-| `-o, --output <file>` | Output HTML file |
-| `-s, --string <string>` | Parse string instead of file |
-| `-c, --config <file>` | Use custom config file |
-| `--gfm` | Enable GitHub Flavored Markdown |
-| `--breaks` | Convert newlines to `<br>` |
-| `--help` | Show all options |
+| `-i, --input <file>` | 入力Markdownファイル |
+| `-o, --output <file>` | 出力HTMLファイル |
+| `-s, --string <string>` | ファイルではなく文字列を解析 |
+| `-c, --config <file>` | カスタム構成ファイルを使う |
+| `--gfm` | GitHub Flavored Markdownを有効化 |
+| `--breaks` | 改行を`<br>`へ変換 |
+| `--help` | すべてのオプションを表示 |
 
-### Security Warning
+### セキュリティ警告
 
 ⚠️ **Marked does NOT sanitize output HTML.** For untrusted input, use a sanitizer:
 
@@ -364,13 +364,13 @@ const unsafeHtml = marked.parse(untrustedMarkdown);
 const safeHtml = DOMPurify.sanitize(unsafeHtml);
 ```
 
-Recommended sanitizers:
+推奨サニタイザー:
 
-- [DOMPurify](https://github.com/cure53/DOMPurify) (recommended)
+- [DOMPurify](https://github.com/cure53/DOMPurify)（推奨）
 - [sanitize-html](https://github.com/apostrophecms/sanitize-html)
 - [js-xss](https://github.com/leizongmin/js-xss)
 
-### Supported Markdown Flavors
+### サポートされるMarkdownフレーバー
 
 | Flavor | Support |
 |--------|---------|
@@ -378,7 +378,7 @@ Recommended sanitizers:
 | CommonMark 0.31 | 98% |
 | GitHub Flavored Markdown | 97% |
 
-### Troubleshooting
+### トラブルシューティング
 
 | Issue | Solution |
 |-------|----------|
@@ -388,41 +388,41 @@ Recommended sanitizers:
 | Line breaks ignored | Set `breaks: true` in options |
 | XSS vulnerability concerns | Use DOMPurify to sanitize output |
 
-## Working with [`pandoc`](references/pandoc.md)
+## [`pandoc`](references/pandoc.md)を使う
 
-### Prerequisites
+### 前提条件
 
-- Pandoc installed (download from <https://pandoc.org/installing.html>)
-- For PDF output: LaTeX installation (MacTeX on macOS, MiKTeX on Windows, texlive on Linux)
-- Terminal/command prompt access
+- Pandocをインストール済み（<https://pandoc.org/installing.html>からダウンロード）
+- PDF出力にはLaTeXをインストール（macOSはMacTeX、WindowsはMiKTeX、Linuxはtexlive）
+- ターミナル／コマンドプロンプトへアクセスできること
 
-### Quick Conversion Methods
+### 簡易変換方法
 
-#### Method 1: CLI Basic Conversion
+#### 方法1: CLIによる基本変換
 
 ```bash
-# Convert markdown to HTML
+# MarkdownをHTMLへ変換
 pandoc input.md -o output.html
 
-# Convert with standalone document (includes header/footer)
+# スタンドアロン文書へ変換（ヘッダー／フッターを含む）
 pandoc input.md -s -o output.html
 
-# Explicit format specification
+# 形式を明示
 pandoc input.md -f markdown -t html -s -o output.html
 ```
 
-#### Method 2: Filter Mode (Interactive)
+#### 方法2: フィルターモード（対話型）
 
 ```bash
-# Start pandoc as a filter
+# pandocをフィルターとして開始
 pandoc
 
-# Type markdown, then Ctrl-D (Linux/macOS) or Ctrl-Z+Enter (Windows)
+# Markdownを入力し、Ctrl-D（Linux/macOS）またはCtrl-Z+Enter（Windows）を押す
 Hello *pandoc*!
 # Output: <p>Hello <em>pandoc</em>!</p>
 ```
 
-#### Method 3: Format Conversion
+#### 方法3: 形式変換
 
 ```bash
 # HTML to Markdown
@@ -438,7 +438,7 @@ pandoc input.md -s -o output.pdf
 pandoc input.md -s -o output.docx
 ```
 
-### CLI Configuration
+### CLI構成
 
 | Option | Description |
 |--------|-------------|
@@ -452,7 +452,7 @@ pandoc input.md -s -o output.docx
 | `--template <file>` | Use custom template |
 | `--help` | Show all options |
 
-### Security Warning
+### セキュリティ警告
 
 ⚠️ **Pandoc processes input faithfully.** When converting untrusted markdown:
 
@@ -465,7 +465,7 @@ pandoc input.md -s -o output.docx
 pandoc --sandbox input.md -o output.html
 ```
 
-### Supported Markdown Flavors
+### サポートされるMarkdownフレーバー
 
 | Flavor | Support |
 |--------|---------|
@@ -474,7 +474,7 @@ pandoc --sandbox input.md -o output.html
 | GitHub Flavored Markdown | Full (use `-f gfm`) |
 | MultiMarkdown | Partial |
 
-### Troubleshooting
+### トラブルシューティング
 
 | Issue | Solution |
 |-------|----------|
@@ -484,17 +484,17 @@ pandoc --sandbox input.md -o output.html
 | Math not rendering | Use `--mathml` or `--mathjax` option |
 | Tables not rendering | Ensure proper table syntax with pipes and dashes |
 
-## Working with [`gomarkdown/markdown`](references/gomarkdown.md)
+## [`gomarkdown/markdown`](references/gomarkdown.md)を使う
 
-### Prerequisites
+### 前提条件
 
 - Go 1.18 or higher installed
 - Install the library: `go get github.com/gomarkdown/markdown`
 - For CLI tool: `go install github.com/gomarkdown/mdtohtml@latest`
 
-### Quick Conversion Methods
+### 簡易変換方法
 
-#### Method 1: Simple Conversion (Go)
+#### 方法1: 単純変換（Go）
 
 ```go
 package main
@@ -511,7 +511,7 @@ func main() {
 }
 ```
 
-#### Method 2: CLI Tool
+#### 方法2: CLIツール
 
 ```bash
 # Install mdtohtml
@@ -524,7 +524,7 @@ mdtohtml input.md output.html
 mdtohtml input.md
 ```
 
-#### Method 3: Custom Parser and Renderer
+#### 方法3: カスタムパーサーとレンダラー
 
 ```go
 package main
@@ -550,7 +550,7 @@ func mdToHTML(md []byte) []byte {
 }
 ```
 
-### CLI Configuration
+### CLI構成
 
 The `mdtohtml` CLI tool has minimal options:
 
@@ -574,7 +574,7 @@ For advanced configuration, use the Go library programmatically with parser and 
 | `html.CompletePage` | Generate complete HTML page |
 | `html.UseXHTML` | Generate XHTML output |
 
-### Security Warning
+### セキュリティ警告
 
 ⚠️ **gomarkdown does NOT sanitize output HTML.** For untrusted input, use Bluemonday:
 
@@ -590,7 +590,7 @@ html := bluemonday.UGCPolicy().SanitizeBytes(maybeUnsafeHTML)
 
 Recommended sanitizer: [Bluemonday](https://github.com/microcosm-cc/bluemonday)
 
-### Supported Markdown Flavors
+### サポートされるMarkdownフレーバー
 
 | Flavor | Support |
 |--------|---------|
@@ -600,7 +600,7 @@ Recommended sanitizer: [Bluemonday](https://github.com/microcosm-cc/bluemonday)
 | MathJax/LaTeX Math | Supported via extension |
 | Mmark | Supported |
 
-### Troubleshooting
+### トラブルシューティング
 
 | Issue | Solution |
 |-------|----------|
@@ -610,18 +610,18 @@ Recommended sanitizer: [Bluemonday](https://github.com/microcosm-cc/bluemonday)
 | Math not rendering | Enable `parser.MathJax` extension |
 | XSS vulnerabilities | Use Bluemonday to sanitize output |
 
-## Working with [`jekyll`](references/jekyll.md)
+## [`jekyll`](references/jekyll.md)を使う
 
-### Prerequisites
+### 前提条件
 
 - Ruby version 2.7.0 or higher
 - RubyGems
 - GCC and Make (for native extensions)
 - Install Jekyll and Bundler: `gem install jekyll bundler`
 
-### Quick Conversion Methods
+### 簡易変換方法
 
-#### Method 1: Create New Site
+#### 方法1: 新しいサイトを作成
 
 ```bash
 # Create a new Jekyll site
@@ -636,7 +636,7 @@ bundle exec jekyll serve
 # Access at http://localhost:4000
 ```
 
-#### Method 2: Build Static Site
+#### 方法2: 静的サイトをビルド
 
 ```bash
 # Build site to _site directory
@@ -646,7 +646,7 @@ bundle exec jekyll build
 JEKYLL_ENV=production bundle exec jekyll build
 ```
 
-#### Method 3: Live Reload Development
+#### 方法3: ライブリロード開発
 
 ```bash
 # Serve with live reload
@@ -656,7 +656,7 @@ bundle exec jekyll serve --livereload
 bundle exec jekyll serve --drafts
 ```
 
-### CLI Configuration
+### CLI構成
 
 | Command | Description |
 |---------|-------------|
@@ -674,7 +674,7 @@ bundle exec jekyll serve --drafts
 | `--host <host>` | Set server host (default: localhost) |
 | `--baseurl <url>` | Set base URL |
 
-### Security Warning
+### セキュリティ警告
 
 ⚠️ **Jekyll security considerations:**
 
@@ -692,7 +692,7 @@ exclude:
   - vendor
 ```
 
-### Supported Markdown Flavors
+### サポートされるMarkdownフレーバー
 
 | Flavor | Support |
 |--------|---------|
@@ -710,7 +710,7 @@ kramdown:
   syntax_highlighter: rouge
 ```
 
-### Troubleshooting
+### トラブルシューティング
 
 | Issue | Solution |
 |-------|----------|
@@ -720,7 +720,7 @@ kramdown:
 | Liquid syntax errors | Check for unescaped `{` in content |
 | Plugin not loading | Add to `_config.yml` plugins list |
 
-## Working with [`hugo`](references/hugo.md)
+## [`hugo`](references/hugo.md)を使う
 
 ### Prerequisites
 
@@ -728,9 +728,9 @@ kramdown:
 - Git (recommended for themes and modules)
 - Go (optional, for Hugo Modules)
 
-### Quick Conversion Methods
+### 簡易変換方法
 
-#### Method 1: Create New Site
+#### 方法1: 新しいサイトを作成
 
 ```bash
 # Create a new Hugo site
@@ -751,7 +751,7 @@ hugo new content posts/my-first-post.md
 hugo server -D
 ```
 
-#### Method 2: Build Static Site
+#### 方法2: 静的サイトをビルド
 
 ```bash
 # Build site to public directory
@@ -764,7 +764,7 @@ hugo --minify
 hugo --environment production
 ```
 
-#### Method 3: Development Server
+#### 方法3: 開発サーバー
 
 ```bash
 # Start server with drafts
@@ -777,7 +777,7 @@ hugo server --bind 0.0.0.0 --baseURL http://localhost:1313/
 hugo server --port 8080
 ```
 
-### CLI Configuration
+### CLI構成
 
 | Command | Description |
 |---------|-------------|
@@ -804,7 +804,7 @@ hugo server --port 8080
 | `--disableLiveReload` | Disable live reload |
 | `--navigateToChanged` | Navigate to changed content |
 
-### Security Warning
+### セキュリティ警告
 
 ⚠️ **Hugo security considerations:**
 
@@ -825,7 +825,7 @@ hugo server --port 8080
     urls = ['.*']
 ```
 
-### Supported Markdown Flavors
+### サポートされるMarkdownフレーバー
 
 | Flavor | Support |
 |--------|---------|
@@ -850,7 +850,7 @@ Configure markdown in `hugo.toml`:
       unsafe = false  # Set true to allow raw HTML
 ```
 
-### Troubleshooting
+### トラブルシューティング
 
 | Issue | Solution |
 |-------|----------|
@@ -861,9 +861,9 @@ Configure markdown in `hugo.toml`:
 | Images not loading | Check `static/` folder structure |
 | Module errors | Run `hugo mod tidy` |
 
-## References
+## 参照
 
-### Writing and Styling Markdown
+### Markdownの記述とスタイル
 
 - [basic-markdown.md](references/basic-markdown.md)
 - [code-blocks.md](references/code-blocks.md)
@@ -875,10 +875,10 @@ Configure markdown in `hugo.toml`:
 
 ### [`markedJS/marked`](references/marked.md)
 
-- Official documentation: <https://marked.js.org/>
-- Advanced options: <https://marked.js.org/using_advanced>
-- Extensibility: <https://marked.js.org/using_pro>
-- GitHub repository: <https://github.com/markedjs/marked>
+- 公式ドキュメント: <https://marked.js.org/>
+- 高度なオプション: <https://marked.js.org/using_advanced>
+- 拡張性: <https://marked.js.org/using_pro>
+- GitHubリポジトリ: <https://github.com/markedjs/marked>
 
 ### [`pandoc`](references/pandoc.md)
 

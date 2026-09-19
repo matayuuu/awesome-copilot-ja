@@ -1,18 +1,18 @@
 ---
 name: issue-fields-migration
-description: 'Bulk-migrate metadata to GitHub issue fields from two sources: repo labels (e.g. priority labels to a Priority field) and Project V2 fields. Use when users say "migrate my labels to issue fields", "migrate project fields to issue fields", "convert labels to issue fields", "copy project field values to issue fields", or ask about adopting issue fields. Issue fields are org-level typed metadata (single select, text, number, date) that replace label-based workarounds with structured, searchable, cross-repo fields.'
+description: '2つのソースからGitHub issue fieldsへメタデータを一括移行する。対象はリポジトリラベル（例: priorityラベルをPriorityフィールドへ）とProject V2フィールド。ラベルやプロジェクトフィールドの移行、issue fieldsへの変換、プロジェクトフィールド値のコピー、issue fields導入について依頼されたときに使う。Issue fieldsは組織レベルの型付きメタデータ（single select、text、number、date）で、ラベルによる回避策を構造化・検索可能なリポジトリ横断フィールドに置き換える。'
 ---
 
-# Issue Fields Migration
+# Issue Fieldsの移行
 
 [Issue fields](https://github.blog/changelog/2026-03-12-issue-fields-structured-issue-metadata-is-in-public-preview/) are org-level typed metadata (single select, text, number, date) that replace label-based workarounds with structured, searchable, cross-repo fields. Every organization gets `Priority`, `Effort`, `Start date`, and `Target date` preconfigured, with support for up to 25 custom fields.
 
-This skill bulk-migrates existing metadata into issue fields from two sources:
+このSkillは、2つのソースから既存メタデータをissue fieldsへ一括移行する。
 
-- **Repo labels**: Convert labels like `p0`, `p1`, `priority/high` into structured issue field values (e.g. the Priority field). Supports migrating multiple labels at once and optionally removing them after migration.
-- **Project V2 fields**: Copy field values (single select, text, number, date, iteration) from a GitHub Project into the equivalent org-level issue fields.
+- **リポジトリラベル**: `p0`、`p1`、`priority/high` などのラベルを構造化されたissue field値（例: Priorityフィールド）へ変換する。複数ラベルの同時移行と、移行後の任意の削除をサポートする。
+- **Project V2フィールド**: GitHub Projectのフィールド値（single select、text、number、date、iteration）を対応する組織レベルのissue fieldsへコピーする。
 
-## When to Use
+## 使用する場面
 
 - User added org-level issue fields that overlap with existing project fields
 - User wants to copy values from project fields to issue fields before deleting the old project fields
@@ -20,7 +20,7 @@ This skill bulk-migrates existing metadata into issue fields from two sources:
 - User wants to convert repo labels (e.g., p0, p1, p2, p3) into issue field values (e.g., Priority field)
 - User asks about replacing labels with issue fields or cleaning up labels after adopting issue fields
 
-## Prerequisites
+## 前提条件
 
 - The target org must have issue fields enabled
 - The issue fields must already exist at the org level
@@ -29,9 +29,9 @@ This skill bulk-migrates existing metadata into issue fields from two sources:
 - The user must have write access to the repos (and project, if migrating project fields)
 - `gh` CLI must be authenticated with appropriate scopes
 
-## Available Tools
+## 利用可能なツール
 
-### MCP Tools (read operations)
+### MCPツール（読み取り操作）
 
 | Tool | Purpose |
 |------|---------|
@@ -52,15 +52,15 @@ This skill bulk-migrates existing metadata into issue fields from two sources:
 
 See [references/issue-fields-api.md](references/issue-fields-api.md), [references/projects-api.md](references/projects-api.md), and [references/labels-api.md](references/labels-api.md) for full API details.
 
-## Workflow
+## ワークフロー
 
-### Step 0: Migration Source
+### 手順0: 移行元
 
-Ask the user what they are migrating:
+ユーザーに移行対象を尋ねる。
 
-1. **"Are you migrating labels or project fields?"**
-   - **Labels**: proceed to the [Label Migration Flow](#label-migration-flow) below.
-   - **Project fields**: proceed to the [Project Field Migration Flow](#project-field-migration-flow) below.
+1. **「ラベルとプロジェクトフィールドのどちらを移行しますか？」**
+   - **ラベル**: 下記の[ラベル移行フロー](#label-migration-flow)へ進む。
+   - **プロジェクトフィールド**: 下記の[プロジェクトフィールド移行フロー](#project-field-migration-flow)へ進む。
 
 2. If the user says **labels**:
    - Ask: "Which org and repo(s) contain the labels?"
@@ -72,11 +72,11 @@ Ask the user what they are migrating:
 
 ---
 
-### Label Migration Flow
+### ラベル移行フロー
 
-Use this flow when the user wants to convert repo labels into issue field values. Labels can only map to `single_select` issue fields (each label name maps to one option value).
+リポジトリラベルをissue field値へ変換したい場合にこのフローを使う。ラベルは `single_select` issue fieldsにのみ対応付けられる（各ラベル名は1つのオプション値に対応する）。
 
-#### Phase L1: Input & Label Discovery
+#### フェーズL1: 入力とラベル探索
 
 1. Ask the user for: **org name** and **repo(s)** to migrate.
 2. Fetch labels from each repo:
@@ -132,7 +132,7 @@ Suggested mappings:
 Confirm, adjust, or add more mappings?
 ```
 
-#### Phase L2: Conflict Detection
+#### フェーズL2: 競合検出
 
 After finalizing the label-to-option mappings, check for conflicts. A conflict occurs when an issue has multiple labels that map to the **same** issue field (since single_select fields can hold only one value).
 
@@ -155,7 +155,7 @@ Options:
   3. I'll decide case by case
 ```
 
-#### Phase L3: Pre-flight Checks & Data Scan
+#### フェーズL3: 事前チェックとデータスキャン
 
 1. For each repo, verify write access and cache the `repository_id`:
 
@@ -184,7 +184,7 @@ gh issue list -R {owner}/{repo} --label "{label_name}" --state all \
    - Apply the conflict resolution strategy chosen in Phase L2.
    - Classify: **migrate**, **skip (already set)**, **skip (conflict)**, or **skip (no matching label)**.
 
-#### Phase L4: Preview / Dry-Run
+#### フェーズL4: プレビュー / ドライラン
 
 Present a summary before any writes.
 
@@ -223,7 +223,7 @@ Estimated time: ~24s (156 API calls at 0.15s each)
 Proceed?
 ```
 
-#### Phase L5: Execution
+#### フェーズL5: 実行
 
 1. For each issue to migrate, write the issue field value (same endpoint as project field migration):
 
@@ -269,13 +269,13 @@ Failed items:
 
 ---
 
-### Project Field Migration Flow
+### プロジェクトフィールド移行フロー
 
-Use this flow when the user wants to copy values from a GitHub Project V2 field to the corresponding org-level issue field.
+GitHub Project V2フィールドの値を対応する組織レベルのissue fieldへコピーしたい場合にこのフローを使う。
 
 Follow these six phases in order. Always preview before executing.
 
-#### Phase P1: Input & Discovery
+#### フェーズP1: 入力と探索
 
 1. Ask the user for: **org name** and **project number** (or project URL).
 2. Fetch project fields:
@@ -321,7 +321,7 @@ Found 3 potential field mappings:
 Proceed with fields 1 and 2? You can also add manual mappings.
 ```
 
-#### Phase P2: Option Mapping (single-select fields only)
+#### フェーズP2: オプション対応付け（single-selectフィールドのみ）
 
 For each matched single-select pair:
 
@@ -351,7 +351,7 @@ Available issue field options not yet mapped: "Internal", "Sunset", "Beta Testin
 Please provide mappings for all 4 options above (e.g., "1→Internal, 2→Sunset, 3→Beta Testing, 4→skip").
 ```
 
-#### Phase P3: Pre-flight Checks
+#### フェーズP3: 事前チェック
 
 Before scanning items, verify write access to each repository that may be touched:
 
@@ -369,7 +369,7 @@ gh api /repos/{owner}/{repo} --jq '{full_name, permissions: .permissions}'
 gh api /repos/{owner}/{repo} --jq .id
 ```
 
-#### Phase P4: Data Scan
+#### フェーズP4: データスキャン
 
 1. Fetch all project items using MCP. **Important**: for projects with more than ~200 items, `gh api graphql --paginate` is unreliable (it concatenates JSON responses without proper separators and can time out). Use the MCP tool which handles pagination internally, or use explicit cursor-based pagination:
 
@@ -403,7 +403,7 @@ gh api /repos/{owner}/{repo}/issues/{number}/issue-field-values \
    - **Skip (draft)**: item is a draft, not a real issue
    - **Skip (unmapped option)**: single-select value was not mapped
 
-#### Phase P5: Preview / Dry-Run
+#### フェーズP5: プレビュー / ドライラン
 
 Present a summary before any writes.
 
@@ -438,7 +438,7 @@ Estimated time: ~127s (847 API calls at 0.15s each)
 Proceed with migration? This will update 847 issues across 3 repositories.
 ```
 
-#### Phase P6: Execution
+#### フェーズP6: 実行
 
 1. Use the `repository_id` values cached in Phase 3.
 
@@ -474,7 +474,7 @@ Failed items:
   ...
 ```
 
-## Important Notes
+## 重要な注意事項
 
 - **Write endpoint quirk**: the REST API for writing issue field values uses `repository_id` (integer), not `owner/repo`. Always look up the repo ID first with `gh api /repos/{owner}/{repo} --jq .id`.
 - **Single-select values**: the REST API accepts option **names** as strings (not option IDs). This makes mapping straightforward for both project fields and labels.
@@ -494,39 +494,39 @@ Failed items:
 - **macOS bash version**: macOS ships with bash 3.x, which does not support `declare -A` (associative arrays). Generated scripts should use POSIX-compatible constructs or note the incompatibility and suggest `brew install bash`.
 - **Issues vs PRs**: `gh issue list` returns both issues and pull requests. If the migration should only target issues, include `type` in `--json` output and filter for `type == "Issue"`.
 
-## Examples
+## 例
 
-### Example 1: Full Migration
+### 例1: 完全移行
 
 **User**: "I need to migrate Priority values from our project to the new org Priority issue field"
 
 **Action**: Follow Phases P1-P6. Discover fields, map options, check permissions, scan items, preview, execute.
 
-### Example 2: Dry-Run Only
+### 例2: ドライランのみ
 
 **User**: "Show me what would happen if I migrated fields from project #42, but don't actually do it"
 
 **Action**: Follow Phases P1-P5 only. Present the full dry-run report with every item listed. Do not execute.
 
-### Example 3: Multiple Fields
+### 例3: 複数フィールド
 
 **User**: "Migrate Priority and Due Date from project #15 to issue fields"
 
 **Action**: Same workflow, but process both fields in a single pass. During the data scan, collect values for all mapped fields per item. Write all field values in a single API call per issue.
 
-### Example 4: Single Label to Issue Field
+### 例4: 1つのラベルからIssue Fieldへ
 
 **User**: "I want to migrate the 'bug' label to the Type issue field"
 
 **Action**: Route to Label Migration Flow. Ask for org/repo, list labels, confirm mapping: label "bug" → Type field "Bug" option. Scan issues with that label, preview, execute. Ask whether to remove the label after migration.
 
-### Example 5: Multiple Labels to One Field (Bulk)
+### 例5: 複数ラベルから1つのフィールドへ（一括）
 
 **User**: "We have p0, p1, p2, p3 labels and want to convert them to the Priority issue field"
 
 **Action**: Route to Label Migration Flow. Map all four labels to Priority field options (p0→P0, p1→P1, p2→P2, p3→P3). Check for conflicts (issues with multiple priority labels). Preview all changes in one summary. Execute in one pass. Optionally remove all four labels from migrated issues.
 
-### Example 6: Cross-Repo Label Migration with Label Removal
+### 例6: ラベル削除を伴うリポジトリ横断ラベル移行
 
 **User**: "Migrate the 'frontend' and 'backend' labels to the Team issue field across github/issues, github/memex, and github/mobile, then remove the old labels"
 

@@ -1,19 +1,19 @@
 ---
 name: microsoft-skill-creator
-description: Create agent skills for Microsoft technologies using Learn MCP tools. Use when users want to create a skill that teaches agents about any Microsoft technology, library, framework, or service (Azure, .NET, M365, VS Code, Bicep, etc.). Investigates topics deeply, then generates a hybrid skill storing essential knowledge locally while enabling dynamic deeper investigation.
+description: Learn MCP ツールを使って Microsoft テクノロジー向けの Agent Skill を作成する。Azure、.NET、M365、VS Code、Bicep などの技術、ライブラリ、フレームワーク、サービスを教える Skill の作成に使う。深く調査し、基本知識をローカルに保存しつつ動的な追加調査も可能なハイブリッド Skill を生成する。
 context: fork
 compatibility: Works best with Microsoft Learn MCP Server (https://learn.microsoft.com/api/mcp). Can also use the mslearn CLI as a fallback.
 ---
 
-# Microsoft Skill Creator
+# Microsoft Skill作成者
 
-Create hybrid skills for Microsoft technologies that store essential knowledge locally while enabling dynamic Learn MCP lookups for deeper details.
+必須知識をローカルに保存しつつ、詳細について動的なLearn MCP検索も可能にするMicrosoftテクノロジー向けハイブリッドSkillを作成する。
 
-## About Skills
+## Skillについて
 
-Skills are modular packages that extend agent capabilities with specialized knowledge and workflows. A skill transforms a general-purpose agent into a specialized one for a specific domain.
+Skillは、専門知識とワークフローでエージェントの能力を拡張するモジュール式パッケージである。Skillにより、汎用エージェントを特定分野向けの専門エージェントへ変える。
 
-### Skill Structure
+### Skillの構造
 
 ```
 skill-name/
@@ -23,23 +23,23 @@ skill-name/
 └── assets/                 # Files used in output (templates, etc.)
 ```
 
-### Key Principles
+### 基本原則
 
 - **Frontmatter is critical**: `name` and `description` determine when the skill triggers—be clear and comprehensive
 - **Concise is key**: Only include what agents don't already know; context window is shared
 - **No duplication**: Information lives in SKILL.md OR reference files, not both
 
-## Learn MCP Tools
+## Learn MCPツール
 
-| Tool | Purpose | When to Use |
+| ツール | 目的 | 使用時 |
 |------|---------|-------------|
 | `microsoft_docs_search` | Search official docs | First pass discovery, finding topics |
 | `microsoft_docs_fetch` | Get full page content | Deep dive into important pages |
 | `microsoft_code_sample_search` | Find code examples | Get implementation patterns |
 
-### CLI Alternative
+### CLIの代替手段
 
-If the Learn MCP server is not available, use the `mslearn` CLI from a terminal or shell (for example, Bash, PowerShell, or cmd) instead:
+Learn MCPサーバーが利用できない場合は、代わりにターミナルまたはシェル（Bash、PowerShell、cmdなど）から`mslearn` CLIを使う:
 
 ```bash
 # Run directly (no install needed)
@@ -56,28 +56,28 @@ mslearn search "semantic kernel overview"
 | `microsoft_code_sample_search(query: "...", language: "...")` | `mslearn code-search "..." --language ...` |
 | `microsoft_docs_fetch(url: "...")` | `mslearn fetch "..."` |
 
-Generated skills should include this same CLI fallback table so agents can use either path.
+生成するSkillには、エージェントがどちらの経路も使えるよう、同じCLIフォールバック表を含める。
 
-## Creation Process
+## 作成プロセス
 
-### Step 1: Investigate the Topic
+### Step 1：トピックを調査する
 
-Build deep understanding using Learn MCP tools in three phases:
+Learn MCPツールを3段階で使い、深い理解を構築する:
 
-**Phase 1 - Scope Discovery:**
+**フェーズ1 - 範囲の発見:**
 ```
 microsoft_docs_search(query="{technology} overview what is")
 microsoft_docs_search(query="{technology} concepts architecture")
 microsoft_docs_search(query="{technology} getting started tutorial")
 ```
 
-**Phase 2 - Core Content:**
+**フェーズ2 - 中核コンテンツ:**
 ```
 microsoft_docs_fetch(url="...")  # Fetch pages from Phase 1
 microsoft_code_sample_search(query="{technology}", language="{lang}")
 ```
 
-**Phase 3 - Depth:**
+**フェーズ3 - 深掘り:**
 ```
 microsoft_docs_search(query="{technology} best practices")
 microsoft_docs_search(query="{technology} troubleshooting errors")
@@ -85,21 +85,21 @@ microsoft_docs_search(query="{technology} troubleshooting errors")
 
 #### Investigation Checklist
 
-After investigating, verify:
+調査後に次を確認する:
 - [ ] Can explain what the technology does in one paragraph
 - [ ] Identified 3-5 key concepts
 - [ ] Have working code for basic usage
 - [ ] Know the most common API patterns
 - [ ] Have search queries for deeper topics
 
-### Step 2: Clarify with User
+### Step 2：ユーザーと確認する
 
-Present findings and ask:
-1. "I found these key areas: [list]. Which are most important?"
-2. "What tasks will agents primarily perform with this skill?"
-3. "Which programming language should code samples prioritize?"
+調査結果を示し、次を尋ねる:
+1. 「次の重要領域を見つけました: [一覧]。どれを最も重視しますか？」
+2. 「エージェントはこのSkillで主にどのようなタスクを行いますか？」
+3. 「コードサンプルで優先するプログラミング言語は何ですか？」
 
-### Step 3: Generate the Skill
+### Step 3：Skillを生成する
 
 Use the appropriate template from [skill-templates.md](references/skill-templates.md):
 
@@ -121,15 +121,15 @@ Use the appropriate template from [skill-templates.md](references/skill-template
     └── common-patterns/
 ```
 
-### Step 4: Balance Local vs Dynamic Content
+### Step 4：ローカル情報と動的情報のバランス
 
-**Store locally when:**
+**ローカルに保存するもの:**
 - Foundational (needed for any task)
 - Frequently accessed
 - Stable (won't change)
 - Hard to find via search
 
-**Keep dynamic when:**
+**動的に保つもの:**
 - Exhaustive reference (too large)
 - Version-specific
 - Situational (specific tasks only)
@@ -147,13 +147,13 @@ Use the appropriate template from [skill-templates.md](references/skill-template
 | Troubleshooting | | Search queries |
 | Full API reference | | Doc links |
 
-### Step 5: Validate
+### Step 5：検証する
 
-1. Review: Is local content sufficient for common tasks?
-2. Test: Do suggested search queries return useful results?
-3. Verify: Do code samples run without errors?
+1. レビュー: ローカルコンテンツは一般的なタスクに十分か。
+2. テスト: 提案した検索クエリは有用な結果を返すか。
+3. 検証: コードサンプルはエラーなく実行できるか。
 
-## Common Investigation Patterns
+## 一般的な調査パターン
 
 ### For SDKs/Libraries
 ```
@@ -181,7 +181,7 @@ Use the appropriate template from [skill-templates.md](references/skill-template
 "{framework} configuration options" → customization
 ```
 
-## Example: Creating a "Semantic Kernel" Skill
+## 例：「Semantic Kernel」Skillの作成
 
 ### Investigation
 

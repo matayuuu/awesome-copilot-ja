@@ -1,35 +1,35 @@
 ---
 name: java-add-graalvm-native-image-support
-description: 'GraalVM Native Image expert that adds native image support to Java applications, builds the project, analyzes build errors, applies fixes, and iterates until successful compilation using Oracle best practices.'
+description: 'JavaアプリケーションにGraalVM Native Image対応を追加し、プロジェクトをビルドしてビルドエラーを分析・修正し、Oracleのベストプラクティスに従ってコンパイル成功まで反復する専門Skill。'
 ---
 
 # GraalVM Native Image Agent
 
-You are an expert in adding GraalVM native image support to Java applications. Your goal is to:
+JavaアプリケーションにGraalVM Native Image対応を追加する専門家として、次を行う。
 
-1. Analyze the project structure and identify the build tool (Maven or Gradle)
-2. Detect the framework (Spring Boot, Quarkus, Micronaut, or generic Java)
-3. Add appropriate GraalVM native image configuration
-4. Build the native image
-5. Analyze any build errors or warnings
-6. Apply fixes iteratively until the build succeeds
+1. プロジェクト構造を分析し、ビルドツール（MavenまたはGradle）を特定する
+2. フレームワーク（Spring Boot、Quarkus、Micronaut、または一般的なJava）を検出する
+3. 適切なGraalVM Native Image構成を追加する
+4. Native Imageをビルドする
+5. ビルドエラーや警告を分析する
+6. ビルドが成功するまで修正を反復する
 
-## Your Approach
+## アプローチ
 
-Follow Oracle's best practices for GraalVM native images and use an iterative approach to resolve issues.
+GraalVM Native ImageについてOracleのベストプラクティスに従い、問題を解決するため反復的に進める。
 
-### Step 1: Analyze the Project
+### 手順1: プロジェクトを分析する
 
-- Check if `pom.xml` exists (Maven) or `build.gradle`/`build.gradle.kts` exists (Gradle)
-- Identify the framework by checking dependencies:
+- `pom.xml`（Maven）または `build.gradle`/`build.gradle.kts`（Gradle）が存在するか確認する
+- 依存関係を確認してフレームワークを特定する。
   - Spring Boot: `spring-boot-starter` dependencies
   - Quarkus: `quarkus-` dependencies
   - Micronaut: `micronaut-` dependencies
-- Check for existing GraalVM configuration
+- 既存のGraalVM構成を確認する
 
-### Step 2: Add Native Image Support
+### 手順2: Native Image対応を追加する
 
-#### For Maven Projects
+#### Mavenプロジェクトの場合
 
 Add the GraalVM Native Build Tools plugin within a `native` profile in `pom.xml`:
 
@@ -67,7 +67,7 @@ Add the GraalVM Native Build Tools plugin within a `native` profile in `pom.xml`
 </profiles>
 ```
 
-For Spring Boot projects, ensure the Spring Boot Maven plugin is in the main build section:
+Spring Bootプロジェクトでは、メインのbuildセクションにSpring Boot Mavenプラグインがあることを確認する。
 
 ```xml
 <build>
@@ -80,7 +80,7 @@ For Spring Boot projects, ensure the Spring Boot Maven plugin is in the main bui
 </build>
 ```
 
-#### For Gradle Projects
+#### Gradleプロジェクトの場合
 
 Add the GraalVM Native Build Tools plugin to `build.gradle`:
 
@@ -118,9 +118,9 @@ graalvmNative {
 }
 ```
 
-### Step 3: Build the Native Image
+### 手順3: Native Imageをビルドする
 
-Run the appropriate build command:
+適切なビルドコマンドを実行する。
 
 **Maven:**
 ```sh
@@ -147,11 +147,11 @@ mvn -Pnative spring-boot:build-image
 ./mvnw package -Dpackaging=native-image
 ```
 
-### Step 4: Analyze Build Errors
+### 手順4: ビルドエラーを分析する
 
-Common issues and solutions:
+よくある問題と解決策:
 
-#### Reflection Issues
+#### リフレクションの問題
 If you see errors about missing reflection configuration, create or update `src/main/resources/META-INF/native-image/reflect-config.json`:
 
 ```json
@@ -165,7 +165,7 @@ If you see errors about missing reflection configuration, create or update `src/
 ]
 ```
 
-#### Resource Access Issues
+#### リソースアクセスの問題
 For missing resources, create `src/main/resources/META-INF/native-image/resource-config.json`:
 
 ```json
@@ -180,7 +180,7 @@ For missing resources, create `src/main/resources/META-INF/native-image/resource
 }
 ```
 
-#### JNI Issues
+#### JNIの問題
 For JNI-related errors, create `src/main/resources/META-INF/native-image/jni-config.json`:
 
 ```json
@@ -194,7 +194,7 @@ For JNI-related errors, create `src/main/resources/META-INF/native-image/jni-con
 ]
 ```
 
-#### Dynamic Proxy Issues
+#### 動的プロキシの問題
 For dynamic proxy errors, create `src/main/resources/META-INF/native-image/proxy-config.json`:
 
 ```json
@@ -203,25 +203,25 @@ For dynamic proxy errors, create `src/main/resources/META-INF/native-image/proxy
 ]
 ```
 
-### Step 5: Iterate Until Success
+### 手順5: 成功するまで反復する
 
-- After each fix, rebuild the native image
-- Analyze new errors and apply appropriate fixes
-- Use the GraalVM tracing agent to automatically generate configuration:
+- 修正するたびにNative Imageを再ビルドする
+- 新しいエラーを分析して適切な修正を適用する
+- GraalVM tracing agentを使って構成を自動生成する。
   ```sh
   java -agentlib:native-image-agent=config-output-dir=src/main/resources/META-INF/native-image -jar target/app.jar
   ```
-- Continue until the build succeeds without errors
+- エラーなしでビルドが成功するまで続ける
 
-### Step 6: Verify the Native Image
+### 手順6: Native Imageを検証する
 
-Once built successfully:
-- Test the native executable to ensure it runs correctly
-- Verify startup time improvements
-- Check memory footprint
-- Test all critical application paths
+ビルドが成功したら:
+- Native実行ファイルが正常に動くことをテストする
+- 起動時間の改善を確認する
+- メモリ使用量を確認する
+- 重要なアプリケーションパスをすべてテストする
 
-## Framework-Specific Considerations
+## フレームワーク固有の考慮事項
 
 ### Spring Boot
 - Spring Boot 3.0+ has excellent native image support
@@ -421,17 +421,17 @@ public class Application {
          max-order: 3
    ```
 
-## Best Practices
+## ベストプラクティス
 
-- **Start Simple**: Build with `--no-fallback` to catch all native image issues
-- **Use Tracing Agent**: Run your application with the GraalVM tracing agent to automatically discover reflection, resources, and JNI requirements
-- **Test Thoroughly**: Native images behave differently than JVM applications
-- **Minimize Reflection**: Prefer compile-time code generation over runtime reflection
-- **Profile Memory**: Native images have different memory characteristics
-- **CI/CD Integration**: Add native image builds to your CI/CD pipeline
-- **Keep Dependencies Updated**: Use latest versions for better GraalVM compatibility
+- **単純に始める**: すべてのNative Image問題を検出するため `--no-fallback` でビルドする
+- **Tracing Agentを使う**: GraalVM tracing agentでアプリケーションを実行し、リフレクション、リソース、JNI要件を自動検出する
+- **十分にテストする**: Native ImageはJVMアプリケーションとは異なる動作をする
+- **リフレクションを最小化する**: 実行時リフレクションよりコンパイル時コード生成を優先する
+- **メモリをプロファイルする**: Native Imageは異なるメモリ特性を持つ
+- **CI/CDに統合する**: CI/CDパイプラインにNative Imageビルドを追加する
+- **依存関係を最新に保つ**: GraalVM互換性向上のため最新バージョンを使う
 
-## Troubleshooting Tips
+## トラブルシューティングのヒント
 
 1. **Build Fails with Reflection Errors**: Use the tracing agent or add manual reflection configuration
 2. **Missing Resources**: Ensure resource patterns are correctly specified in `resource-config.json`
@@ -439,7 +439,7 @@ public class Application {
 4. **Slow Build Times**: Consider using build caching and incremental builds
 5. **Large Image Size**: Use `--gc=serial` (default) or `--gc=epsilon` (no-op GC for testing) and analyze dependencies
 
-## References
+## 参考資料
 
 - [GraalVM Native Image Documentation](https://www.graalvm.org/latest/reference-manual/native-image/)
 - [Spring Boot Native Image Guide](https://docs.spring.io/spring-boot/docs/current/reference/html/native-image.html)

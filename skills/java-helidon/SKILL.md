@@ -1,17 +1,16 @@
 ---
 name: java-helidon
-description: 'Get best practices for developing applications with Helidon 4 (SE and MP). Use when working with Helidon SE or Helidon MP, HttpService routing, Helidon DB Client, MicroProfile Config, Helidon Security, or Helidon testing in Java 21+ projects.'
+description: 'Helidon 4（SEおよびMP）アプリケーション開発のベストプラクティスを提供する。Helidon SE/MP、HttpServiceルーティング、Helidon DB Client、MicroProfile Config、Helidon Security、Java 21以降のHelidonテストを扱うときに使う。'
 ---
 
-# Helidon Best Practices
+# Helidonのベストプラクティス
 
-Your goal is to help me write high-quality Helidon applications by following established best practices.
+確立されたベストプラクティスに従い、高品質なHelidonアプリケーションの作成を支援する。
 
-## Helidon 3 → 4 API changes
+## Helidon 3 → 4のAPI変更
 
 Helidon 4 renamed or resignatured APIs that appear widely in their Helidon 3 form.
-The left column does not compile on Helidon 4. Check generated code against this table
-before returning it.
+左列はHelidon 4ではコンパイルできない。生成コードを返す前にこの表と照合する。
 
 | Do not use (Helidon 3)                                     | Use (Helidon 4)                                                    |
 | ---------------------------------------------------------- | ------------------------------------------------------------------ |
@@ -24,24 +23,23 @@ before returning it.
 | `javax.*`                                                  | `jakarta.*`                                                        |
 | `helidon-microprofile-tests-junit5`                        | `helidon-microprofile-testing-junit5`                              |
 
-`Value.as(Class)` in Helidon 4 returns `OptionalValue<T>`, not `T`. This is the single
-most common Helidon 4 compile error in generated code.
+Helidon 4の `Value.as(Class)` は `T` ではなく `OptionalValue<T>` を返す。これは生成コードで最もよくあるHelidon 4のコンパイルエラー。
 
-## Project Setup & Structure
+## プロジェクト設定と構造
 
-- **Programming Model:** Determine whether the project uses Helidon SE or Helidon MP before generating code. Do not mix the two programming models unless explicitly required.
-- **Java Version:** Use Java 21 or later for Helidon 4 applications.
-- **Build Tool:** Use Maven (`pom.xml`) or Gradle (`build.gradle`) for dependency management.
-- **Dependency Management:** Use the Helidon BOM or platform to keep Helidon module versions aligned.
-- **Package Structure:** Organize code by feature or domain, such as `com.example.app.order` and `com.example.app.customer`, rather than only by technical layer.
+- **プログラミングモデル:** コード生成前にHelidon SEとHelidon MPのどちらを使うか特定する。明示的に必要でない限り、2つのモデルを混在させない。
+- **Javaバージョン:** Helidon 4アプリケーションにはJava 21以降を使う。
+- **ビルドツール:** 依存関係管理にはMaven（`pom.xml`）またはGradle（`build.gradle`）を使う。
+- **依存関係管理:** Helidon BOMまたはプラットフォームを使い、Helidonモジュールのバージョンを揃える。
+- **パッケージ構造:** 技術レイヤーだけでなく、`com.example.app.order` や `com.example.app.customer` のように機能またはドメイン単位でコードを整理する。
 
 ## Helidon SE
 
-- **Explicit Composition:** Construct services and dependencies explicitly in the application bootstrap layer.
-- **Constructor Injection:** Pass required dependencies through constructors and declare dependency fields as `private final`.
-- **HTTP Services:** Group related routes in focused `HttpService` implementations.
-- **Business Logic:** Keep business logic outside route handlers.
-- **Virtual Threads:** Prefer straightforward blocking code with Helidon 4 virtual-thread-based request handling. Do not introduce reactive complexity without a clear reason. Helidon 4 is not reactive; do not generate `Single`, `Multi`, or `CompletionStage` chains.
+- **明示的な構成:** アプリケーションのブートストラップ層でサービスと依存関係を明示的に構築する。
+- **コンストラクターインジェクション:** 必要な依存関係をコンストラクターで渡し、依存フィールドを `private final` と宣言する。
+- **HTTPサービス:** 関連するルートを目的に沿った `HttpService` 実装へまとめる。
+- **ビジネスロジック:** ビジネスロジックをルートハンドラーの外に置く。
+- **仮想スレッド:** Helidon 4の仮想スレッドベースのリクエスト処理では、単純なブロッキングコードを優先する。明確な理由なくリアクティブな複雑性を導入しない。Helidon 4はリアクティブではないため、`Single`、`Multi`、`CompletionStage` のチェーンを生成しない。
 
 ## Helidon MP
 
@@ -52,7 +50,7 @@ most common Helidon 4 compile error in generated code.
 - **Business Logic:** Keep Jakarta REST resource classes thin and delegate business operations to service classes.
 - **Portability:** Prefer portable Jakarta and MicroProfile APIs over Helidon-specific APIs when portability is important.
 
-## Configuration
+## 構成
 
 - **Externalized Configuration:** Store non-secret configuration in `application.yaml` or `application.properties`.
 - **Helidon SE Configuration:** Use Helidon Config and pass configuration values or typed configuration objects to components.
@@ -60,7 +58,7 @@ most common Helidon 4 compile error in generated code.
 - **Environment Overrides:** Use environment variables or deployment-specific configuration sources for environment-dependent values.
 - **Secrets Management:** Never hardcode credentials, API keys, tokens, or private certificates.
 
-## Web Layer
+## Web層
 
 - **DTOs:** Use dedicated request and response models. Do not expose persistence entities directly through APIs.
 - **Validation:** Validate path parameters, query parameters, headers, and request bodies before invoking business logic.
@@ -68,7 +66,7 @@ most common Helidon 4 compile error in generated code.
 - **Error Handling:** Use centralized error handling in Helidon SE and Jakarta REST `ExceptionMapper` implementations in Helidon MP.
 - **Sensitive Information:** Do not expose stack traces, database details, filesystem paths, or internal exception messages to clients.
 
-### Helidon SE Example
+### Helidon SEの例
 
 Use an `HttpService` to register routes programmatically. Keep request handlers small and delegate business logic to a service.
 
@@ -115,7 +113,7 @@ WebServer server = WebServer.builder()
         .start();
 ```
 
-### Helidon MP Example
+### Helidon MPの例
 
 Use Jakarta REST annotations for endpoints and CDI for dependency injection.
 
@@ -155,7 +153,7 @@ public class CustomerResource {
 }
 ```
 
-## Service Layer
+## サービス層
 
 - **Transactions:** Define transaction boundaries around complete business operations.
 - **Entity Mapping:** Map persistence entities to API models at the service boundary so that service method signatures expose only API models. A service returning `Optional<CustomerEntity>` where the caller expects `Optional<Customer>` is a common generated-code compile error.
@@ -249,7 +247,7 @@ public class CustomerService {
 }
 ```
 
-## Data Layer
+## データ層
 
 - **Database Access:** Use Helidon DB Client, Jakarta Persistence, or another persistence mechanism already established by the project.
 - **Parameterized Queries:** Always use parameter binding or prepared statements. Never concatenate untrusted input into SQL.
@@ -404,19 +402,19 @@ public record Customer(String id, String name) {
 }
 ```
 
-## Observability
+## 可観測性
 
 - **Health:** Use Helidon Health in SE or MicroProfile Health in MP for liveness and readiness checks.
 - **Metrics:** Use Helidon Metrics or MicroProfile Metrics for operational and business measurements.
 - **Tracing:** Propagate tracing context across inbound and outbound service calls.
 - **Cardinality:** Avoid user IDs, request IDs, email addresses, and raw URLs as metric tags.
 
-## Logging
+## ロギング
 
 - **Logging API:** Use the logging API and implementation configured by the project.
 - **Sensitive Information:** Never log passwords, access tokens, authorization headers, cookies, or complete sensitive request bodies. Do not place secrets or personal information in metrics or trace attributes either.
 
-## Testing
+## テスト
 
 - **Unit Tests:** Write unit tests for business services using JUnit 5.
 - **Helidon SE Tests:** Use `helidon-webserver-testing-junit5` with `@ServerTest` for full server tests and `@RoutingTest` for routing-only tests. These start the server on a dynamically selected port and inject a `Http1Client` bound to it. Never hardcode a port.
@@ -424,7 +422,7 @@ public record Customer(String id, String name) {
 - **Testcontainers:** Consider Testcontainers for integration tests using real databases, message brokers, or other infrastructure.
 - **Failure Paths:** Test validation failures, missing resources, external-service failures, and authorization failures.
 
-## Security
+## セキュリティ
 
 - **Helidon Security:** Use Helidon Security or supported Jakarta and MicroProfile security APIs for authentication and authorization.
 - **Authorization:** Enforce permissions at a clear application boundary and deny protected operations by default.

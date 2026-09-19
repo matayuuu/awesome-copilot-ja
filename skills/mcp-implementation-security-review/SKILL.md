@@ -1,139 +1,139 @@
 ---
 name: mcp-implementation-security-review
 description: |
-  Review the implementation source code of MCP (Model Context Protocol) servers, clients, and tool handlers against a security baseline — authentication, sessions, rate limiting, input-schema validation, official-SDK usage, RCE vectors, and the OWASP MCP Top 10 — producing a report with file/line evidence. Use this skill when:
-  - Reviewing an MCP server implementation for security before release
-  - Checking a server against the baseline controls (MCP-01 to MCP-05) and the OWASP MCP Top 10
-  - Auditing tools for RCE vectors (command/code injection, unsafe deserialization, path traversal, SSTI, dependency hijacking, SSRF)
-  - Verifying auth, session, rate-limiting, and input-validation controls on a network-exposed server
-  - Reviewing MCP client code that handles untrusted server responses and session IDs
-  - Requests like "review this MCP server for security" or "is my MCP server implementation secure?"
+  MCP（Model Context Protocol）のサーバー、クライアント、ツールハンドラーの実装ソースを、認証、セッション、レート制限、入力スキーマ検証、公式SDK利用、RCEベクトル、OWASP MCP Top 10のセキュリティ基準に照らしてレビューし、ファイル・行の根拠を含む報告書を作成する。次の場合に使う。
+  - リリース前にMCPサーバー実装のセキュリティをレビューする
+  - 基準コントロール（MCP-01～MCP-05）およびOWASP MCP Top 10に照らしてサーバーを確認する
+  - RCEベクトル（コマンド／コードインジェクション、安全でないデシリアライゼーション、パストラバーサル、SSTI、依存関係ハイジャック、SSRF）を監査する
+  - ネットワーク公開サーバーの認証、セッション、レート制限、入力検証を確認する
+  - 信頼できないサーバー応答とセッションIDを扱うMCPクライアントコードをレビューする
+  - 「このMCPサーバーをセキュリティレビューして」「MCPサーバー実装は安全か」のような依頼
 ---
 
-# MCP Implementation Security Review
+# MCP実装セキュリティレビュー
 
-## Process
+## 手順
 
-### Step 1 — Classify the target
-- Check **MCP protocol version [2025-03-26](https://modelcontextprotocol.io/specification/2025-03-26) or later** (current: [2025-11-25](https://modelcontextprotocol.io/specification/2025-11-25)). Flag older versions as a finding but continue the review.
-- Determine whether the target is a **server** or **client**.
-- Classify transport as **network-exposed** or **local-only** using the transport reference below.
-- Record transport, protocol version, and whether sessions exist.
+### Step 1 — 対象を分類する
+- **MCP protocol version [2025-03-26](https://modelcontextprotocol.io/specification/2025-03-26)以降**（現行: [2025-11-25](https://modelcontextprotocol.io/specification/2025-11-25)）か確認する。古いバージョンは指摘事項として記録し、レビューは継続する。
+- 対象が**サーバー**か**クライアント**かを判定する。
+- 下記のトランスポート参照を使い、トランスポートを**ネットワーク公開**または**ローカル限定**に分類する。
+- トランスポート、プロトコルバージョン、セッションの有無を記録する。
 
-**Completion criterion:** Target type, protocol status, and transport are identified.
+**完了条件:** 対象種別、プロトコル状態、トランスポートが特定されている。
 
-### Step 2 — Filter false positives
-- Apply the **False Positive Filters** before opening findings.
-- Keep docs only when they describe the repo's own server behavior, deployment, transport, or auth posture.
-- For framework/SDK repositories, scope findings to the **default configuration** and **public API surface**.
+### Step 2 — 誤検知を除外する
+- 指摘を作成する前に**誤検知フィルター**を適用する。
+- リポジトリ自身のサーバー動作、デプロイ、トランスポート、認証態勢を説明する文書だけを対象に残す。
+- フレームワーク／SDKリポジトリでは、指摘範囲を**既定構成**と**公開APIサーフェス**に限定する。
 
-**Completion criterion:** Remaining evidence is in-scope code, repo-owned docs, or public API behavior.
+**完了条件:** 残った証拠が対象範囲内のコード、リポジトリ所有の文書、または公開APIの挙動である。
 
-### Step 3 — Check baseline controls
-- For **network-exposed servers**, check **MCP-01** through **MCP-05**.
-- For **local/STDIO servers**, do not mark baseline controls PASS/FAIL; give best-practice notes and continue to RCE review.
-- For **clients**, only review token/session handling explicitly visible in client code; do not apply the server baseline unless the user asks for client-side risk review.
+### Step 3 — 基準コントロールを確認する
+- **ネットワーク公開サーバー**では**MCP-01**から**MCP-05**までを確認する。
+- **ローカル／STDIOサーバー**では基準コントロールをPASS／FAILと判定せず、ベストプラクティスの注記を示してRCEレビューを続行する。
+- **クライアント**ではクライアントコードから明確に確認できるトークン／セッション処理だけをレビューする。ユーザーがクライアント側リスクレビューを求めない限り、サーバー基準は適用しない。
 
-**Completion criterion:** Each applicable control has a supported status.
+**完了条件:** 適用可能な各コントロールに根拠のある状態が付いている。
 
-### Step 4 — Check RCE vectors
-- Review all 7 RCE vectors.
-- Mark each vector **SAFE**, **AT RISK**, or **N/A**.
-- Prefer direct evidence over inference; the RCE Vectors table below enumerates the patterns to look for.
+### Step 4 — RCEベクトルを確認する
+- 7つのRCEベクトルをすべてレビューする。
+- 各ベクトルを**SAFE**、**AT RISK**、または**N/A**と判定する。
+- 推測より直接的な証拠を優先する。下記のRCEベクトル表に確認対象のパターンを示す。
 
-**Completion criterion:** Every relevant tool has an RCE result or explicit N/A.
+**完了条件:** 関連する各ツールにRCE結果または明示的なN/Aが付いている。
 
-### Step 5 — Check OWASP MCP Top 10
-- Evaluate all 10 OWASP risks below.
-- If a control from Step 3 already fully covers an OWASP risk, reference that result rather than re-checking.
-- For local/STDIO servers, mark network-dependent OWASP risks (MCP07, MCP09) as N/A.
-- Mark each risk PASS, FAIL, or NEEDS INVESTIGATION.
+### Step 5 — OWASP MCP Top 10を確認する
+- 下記のOWASPリスク10項目をすべて評価する。
+- Step 3のコントロールでOWASPリスクを十分にカバーできる場合は、再確認せずその結果を参照する。
+- ローカル／STDIOサーバーでは、ネットワーク依存のOWASPリスク（MCP07、MCP09）をN/Aとする。
+- 各リスクをPASS、FAIL、またはNEEDS INVESTIGATIONと判定する。
 
-**Completion criterion:** All 10 OWASP risks have outcomes supported by observable evidence or referenced from Step 3.
+**完了条件:** OWASPリスク10項目すべてに、観測可能な証拠またはStep 3の参照に基づく結果がある。
 
-### Step 6 — Report
-- Use the **Compliance Output Format** below.
-- Include file/line references in every justification.
-- Separate code findings from manual follow-ups.
-- If evidence is incomplete, use **NEEDS INVESTIGATION** and name the missing artifact.
+### Step 6 — 報告する
+- 下記の**コンプライアンス出力形式**を使用する。
+- すべての根拠にファイル／行参照を含める。
+- コード上の指摘と手動フォローアップを分ける。
+- 根拠が不十分な場合は**NEEDS INVESTIGATION**とし、不足している成果物を示す。
 
-**Completion criterion:** The report includes controls, RCE, optional OWASP, and actions.
+**完了条件:** 報告書にコントロール、RCE、任意のOWASP評価、対応策が含まれている。
 
-## Reference
+## リファレンス
 
-### Decision rules
-- **Network-exposed server:** Apply **all 5 controls**, then run RCE and requested OWASP checks.
-- **Local/STDIO server:** Give **best-practice guidance only** for the 5 controls; still run RCE because tool input can execute locally.
-- **Client:** Review received-token handling and refusal to trust server-provided session IDs; do not force server controls unless asked.
-- **Reverse proxy or container exposure:** If traffic can reach the server over a network, treat it as **network-exposed** even if inner binding is localhost.
-- **Unclear evidence:** Do not guess. Mark **NEEDS INVESTIGATION** and say what must be verified manually.
-- **Ambiguous auth coverage:** Auth middleware exists but it is unclear whether it covers MCP endpoints → mark **NEEDS INVESTIGATION**.
-- **Undeterminable transport:** If transport cannot be established from code, flag for manual review and do **not** assume STDIO — defaulting to STDIO would wrongly skip the server controls.
+### 判定規則
+- **ネットワーク公開サーバー:** **5つのコントロールすべて**を適用し、その後RCEと要求されたOWASP確認を行う。
+- **ローカル／STDIOサーバー:** 5つのコントロールについて**ベストプラクティスの案内だけ**を示す。それでも、ツール入力がローカルで実行される可能性があるためRCEは確認する。
+- **クライアント:** 受信トークンの処理と、サーバー提供のセッションIDを信頼しないことをレビューする。依頼されない限りサーバーコントロールを強制しない。
+- **リバースプロキシまたはコンテナー公開:** ネットワーク経由でサーバーへ到達できる場合、内部バインドがlocalhostでも**ネットワーク公開**として扱う。
+- **証拠が不明確:** 推測せず、**NEEDS INVESTIGATION**とし、手動で確認すべき内容を示す。
+- **認証範囲があいまい:** 認証ミドルウェアが存在してもMCPエンドポイントを対象にするか不明なら、**NEEDS INVESTIGATION**とする。
+- **トランスポートを判定できない:** コードからトランスポートを確定できない場合は手動レビューとして記録し、**STDIOと仮定しない**。STDIOを既定にするとサーバーコントロールを誤って省略する。
 
-### Transport classification
+### トランスポートの分類
 
-**Network-exposed (enforce all controls):**
+**ネットワーク公開（すべてのコントロールを適用）:**
 
-| Pattern | Transport |
+| パターン | トランスポート |
 |---|---|
-| `transport="http"` or `transport="sse"` | HTTP/SSE |
+| `transport="http"` または `transport="sse"` | HTTP/SSE |
 | `StreamableHttpServerTransport` | HTTP (TS/JS) |
 | `SSEServerTransport` | SSE (TS/JS) |
 | `WithHttpTransport()` | HTTP (C#) |
-| `host="0.0.0.0"` | All-interfaces binding |
-| Express `.listen(port)` with MCP routes | HTTP (default `0.0.0.0`) |
-| `EXPOSE` in Dockerfile + MCP server | Network-exposed |
+| `host="0.0.0.0"` | 全インターフェイスへのバインド |
+| MCPルートを持つExpressの `.listen(port)` | HTTP（既定値 `0.0.0.0`） |
+| `EXPOSE` in Dockerfile + MCP server | ネットワーク公開 |
 
-**Local-only (best practices only):**
+**ローカル限定（ベストプラクティスのみ）:**
 
-| Pattern | Transport |
+| パターン | トランスポート |
 |---|---|
 | `StdioServerTransport` | STDIO (TS/JS) |
 | `WithStdioServerTransport()` | STDIO (C#) |
 | `transport="stdio"` | STDIO |
-| `mcp.run()` with no args (Python FastMCP) | STDIO default |
-| `.vscode/mcp.json` with `command` key and no URL | STDIO child process |
+| 引数なしの `mcp.run()`（Python FastMCP） | STDIOの既定値 |
+| URLなしで `command` キーを持つ `.vscode/mcp.json` | STDIO子プロセス |
 
 **Host binding gotchas:**
 
-| Binding | Actual exposure |
+| バインド | 実際の公開範囲 |
 |---|---|
-| `host="0.0.0.0"` | 🔴 Network-exposed |
-| `host="127.0.0.1"` or `localhost` | 🟢 Local-only |
-| No explicit host (Express/Node) | 🔴 Defaults to `0.0.0.0` |
-| No explicit host (Python FastMCP) | 🟡 Depends on transport — verify |
-| Docker `ports: "8000:8000"` | 🔴 Network-exposed even if the process binds `127.0.0.1` inside the container |
+| `host="0.0.0.0"` | 🔴 ネットワーク公開 |
+| `host="127.0.0.1"` または `localhost` | 🟢 ローカル限定 |
+| 明示的なホスト指定なし（Express/Node） | 🔴 `0.0.0.0` が既定値 |
+| 明示的なホスト指定なし（Python FastMCP） | 🟡 トランスポートに依存するため確認が必要 |
+| Docker `ports: "8000:8000"` | 🔴 コンテナー内のプロセスが `127.0.0.1` にバインドしていてもネットワーク公開 |
 
-### False Positive Filters
+### 誤検知フィルター
 
-| FP pattern | How to detect |
+| 誤検知パターン | 検出方法 |
 |---|---|
-| `.github/skills/` templates | Path contains `.github/skills/` — skill template, not server code |
-| Vendored SDK / OSS copies | File defines `class FastMCP`, `class McpServer`, or path is in `node_modules/`, `vendor/` |
-| MCP client configs | `.vscode/mcp.json` with `inputs`/`servers` but no server code |
-| Documentation / tutorials | `.md`, `.rst` with code fences unrelated to the repo's own server |
-| Outbound-only auth libraries | `DefaultAzureCredential`, service account JSON, or similar used only for outbound auth |
+| `.github/skills/` テンプレート | パスに `.github/skills/` を含む — サーバーコードではなくSkillテンプレート |
+| ベンダー提供SDK／OSSのコピー | ファイルが `class FastMCP`、`class McpServer` を定義する、またはパスが `node_modules/`、`vendor/` にある |
+| MCPクライアント設定 | サーバーコードを含まず `inputs`／`servers` を持つ `.vscode/mcp.json` |
+| ドキュメント／チュートリアル | リポジトリ自身のサーバーと無関係なコードフェンスを含む `.md`、`.rst` |
+| 外向き通信専用の認証ライブラリ | `DefaultAzureCredential`、サービスアカウントJSONなどを外向き認証だけに使うもの |
 
-Docs describing the repo's **own** server behavior, transport, auth posture, or deployment are **not** false positives.
+リポジトリ**自身**のサーバー動作、トランスポート、認証態勢、デプロイを説明するドキュメントは**誤検知ではない**。
 
-## Controls Reference
+## コントロールのリファレンス
 
-### MCP-01 — Identity isolation
-**Scope:** Remote MCP servers
+### MCP-01 — ID分離
+**対象:** リモートMCPサーバー
 
-**Condition**
-- Authenticate every inbound request with a trusted identity provider and enforce authorization at the server boundary; do not infer auth from session IDs, prior requests, or network location.
-- Use a **unique server-specific application identity** and audience/resource identifier; outbound calls use independently scoped service credentials or on-behalf-of flow where required, never the inbound token.
-- Unauthenticated discovery endpoints are allowed only for metadata-only OAuth/MCP bootstrapping: `/.well-known/oauth-protected-resource`, `/.well-known/oauth-authorization-server`, `/.well-known/openid-configuration`.
+**条件**
+- 信頼できるIDプロバイダーで受信リクエストをすべて認証し、サーバー境界で認可する。セッションID、過去のリクエスト、ネットワーク位置から認証済みと推測しない。
+- **サーバー固有の一意なアプリケーションID**とaudience/resource識別子を使う。外向き呼び出しでは独立したスコープのサービス資格情報または必要に応じてon-behalf-ofフローを使い、受信トークンを使わない。
+- 未認証の検出エンドポイントは、メタデータのみのOAuth/MCPブートストラップに限り許可する: `/.well-known/oauth-protected-resource`、`/.well-known/oauth-authorization-server`、`/.well-known/openid-configuration`。
 
-**What to check**
-- Token validation and authorization middleware run on every MCP route; authorization distinguishes tool invoke, read-only, and admin operations if present.
-- Identity config shows a dedicated application/client/resource ID and audience; outbound clients acquire their own tokens and never copy inbound `Authorization`.
-- Discovery endpoints return metadata only and cannot execute tools or expose protected data.
+**確認対象**
+- トークン検証と認可ミドルウェアがすべてのMCPルートで動作し、存在する場合はツール実行、読み取り専用、管理操作を区別する。
+- ID設定に専用のapplication/client/resource IDとaudienceが示され、外向きクライアントは独自トークンを取得し、受信した `Authorization` をコピーしない。
+- 検出エンドポイントはメタデータだけを返し、ツール実行や保護データの公開ができない。
 
-**Key pitfall:** Shared application identities or forwarded caller tokens break identity isolation and create confused-deputy paths.
+**主な落とし穴:** 共有アプリケーションIDや転送された呼び出し元トークンはID分離を壊し、混乱した代理人経路を生む。
 
-### MCP-02 — Sessions
+### MCP-02 — セッション
 **Scope:** Remote MCP servers that support sessions
 
 **Applicability**
@@ -153,7 +153,7 @@ Docs describing the repo's **own** server behavior, transport, auth posture, or 
 
 **Key pitfall:** Treating a session ID as a bearer credential turns a correlation token into authentication.
 
-### MCP-03 — Rate limits
+### MCP-03 — レート制限
 **Scope:** MCP servers and tools
 
 **Condition**
@@ -177,7 +177,7 @@ Docs describing the repo's **own** server behavior, transport, auth posture, or 
 
 **Key pitfall:** Gateway-only throttling or one flat bucket leaves bypasses and under-protects expensive tools.
 
-### MCP-04 — Schema validation
+### MCP-04 — スキーマ検証
 **Scope:** MCP servers exposing tools with structured arguments
 
 **Condition**
@@ -192,7 +192,7 @@ Docs describing the repo's **own** server behavior, transport, auth posture, or 
 
 **Key pitfall:** Allowing extra properties or client-only validation creates hidden attack surface and scope creep.
 
-### MCP-05 — SDK-first
+### MCP-05 — SDK優先
 **Scope:** Remote MCP servers
 
 **Condition**
@@ -209,7 +209,7 @@ Docs describing the repo's **own** server behavior, transport, auth posture, or 
 
 **Key pitfall:** Hand-rolled servers often miss one "small" primitive—per-request auth, throttling, or validation—and the gaps compound.
 
-## RCE Vectors
+## RCEベクトル
 
 | Vector | Dangerous code | Safe alternative | Test payload | CWE |
 |---|---|---|---|---|
@@ -224,32 +224,32 @@ Docs describing the repo's **own** server behavior, transport, auth posture, or 
 ## OWASP MCP Top 10
 
 **MCP01:2025 — Token Mismanagement & Secret Exposure**
-Test: Search for hardcoded secrets and token logging; verify secrets come from env vars or a secrets manager; verify short-lived/rotated tokens.
-Pass: No hardcoded secrets, sensitive fields redacted, short-lived/rotated tokens. Fail: Hardcoded secrets, token logging, or long-lived tokens without rotation.
+テスト: ハードコードされたシークレットとトークンのログ出力を検索し、シークレットが環境変数またはシークレットマネージャー由来であること、短命またはローテーションされるトークンであることを確認する。
+合格: ハードコードされたシークレットがなく、機密フィールドがマスキングされ、短命またはローテーションされるトークンである。不合格: ハードコードされたシークレット、トークンのログ出力、またはローテーションのない長寿命トークン。
 
 **MCP02:2025 — Privilege Escalation via Scope Creep**
-Test: Review scopes/roles; confirm least privilege and per-request authorization; reject wildcard admin scopes unless justified; check for runtime capability expansion.
-Pass: Least-privilege scopes, per-request authorization, no runtime capability expansion. Fail: Broad scopes, one-time auth only, or self-escalating tools.
+テスト: スコープ／ロールを確認し、最小権限とリクエストごとの認可を確認する。正当な理由のないワイルドカード管理者スコープを拒否し、実行時の機能拡張を確認する。
+合格: 最小権限スコープ、リクエストごとの認可、実行時の機能拡張なし。不合格: 広すぎるスコープ、一度だけの認証、自己昇格するツール。
 
 **MCP03:2025 — Tool Poisoning**
-Test: Check whether tool definitions are static and server-controlled, whether tools can alter metadata, and whether outputs contain LLM-parseable instructions.
-Pass: Static server-controlled definitions and data-only outputs. Fail: External metadata sources or outputs with embedded instructions.
+テスト: ツール定義が静的でサーバー管理下にあるか、ツールがメタデータを変更できるか、出力にLLMが解釈可能な命令が含まれるかを確認する。
+合格: 静的なサーバー管理定義とデータのみの出力。不合格: 外部メタデータソースまたは命令を埋め込んだ出力。
 
 **MCP04:2025 — Supply Chain Attacks & Dependency Tampering**
-Test: Check for lock files, exact pinning, suspicious `postinstall` scripts, dependency audit results, and trusted registries.
-Pass: Pinned deps, committed lock file, no known vulnerabilities, no suspicious post-install scripts. Fail: Unpinned deps, no lock file, unpatched CVEs, or untrusted registries.
+テスト: ロックファイル、厳密なバージョン固定、不審な`postinstall`スクリプト、依存関係監査結果、信頼できるレジストリを確認する。
+合格: 固定された依存関係、コミット済みロックファイル、既知の脆弱性なし、不審なpost-installスクリプトなし。不合格: 固定されていない依存関係、ロックファイルなし、未修正CVE、信頼できないレジストリ。
 
 **MCP05:2025 — Command Injection & Execution**
-Test: Search for shell execution APIs and string-built commands; trace whether tool input reaches shell execution; test `; ls`, `$(whoami)`, `| cat /etc/passwd`.
-Pass: No shell execution from untrusted input, or only parameterized allowlisted execution. Fail: User input reaches shell commands, `shell=True` with formatted strings, or unsafe concatenation.
+テスト: シェル実行APIと文字列組み立てコマンドを検索し、ツール入力がシェル実行へ到達するか追跡する。`; ls`、`$(whoami)`、`| cat /etc/passwd`をテストする。
+合格: 信頼できない入力からのシェル実行がない、またはパラメーター化された許可リスト実行だけ。不合格: ユーザー入力がシェルコマンドへ到達する、書式付き文字列で`shell=True`を使う、安全でない連結。
 
 **MCP06:2025 — Prompt Injection via Contextual Payloads**
 Test: Check whether tool output goes back to the LLM, whether external content is sanitized/truncated/sandboxed, and whether chained tool calls are guarded; test adversarial instruction-bearing output.
 Pass: Tool outputs are data, untrusted content is sanitized/truncated/sandboxed, and chaining has guardrails. Fail: Raw external content returns to the model and there are no chaining limits.
 
 **MCP07:2025 — Insufficient Authentication & Authorization**
-Test: Send requests without auth and with expired/invalid tokens; verify per-tool authorization; confirm auth is enforced in the server, not only at the gateway.
-Pass: All endpoints require valid auth, per-tool authorization exists, and enforcement happens server-side. Fail: Any unauthenticated access, missing per-tool auth, or gateway-only enforcement.
+テスト: 認証なし、期限切れ、無効なトークンでリクエストを送り、ツールごとの認可を検証する。認証がゲートウェイだけでなくサーバーで強制されることを確認する。
+合格: すべてのエンドポイントが有効な認証を要求し、ツールごとの認可があり、サーバー側で強制される。不合格: 未認証アクセス、ツールごとの認可不足、ゲートウェイだけの強制。
 
 **MCP08:2025 — Lack of Audit and Telemetry**
 Test: Invoke a tool and confirm logs capture caller identity, tool name, and timestamp; trigger an error and confirm useful context; verify centralized logging and alerting.
@@ -263,37 +263,37 @@ Pass: All servers are inventoried, isolated appropriately, and owned. Fail: Undo
 Test: Inspect tool responses for data minimization; check for PII or full objects when only subsets are needed; verify context isolation.
 Pass: Minimal data is returned, sensitive fields are masked/excluded, and context is isolated. Fail: Full objects are returned unnecessarily, PII is exposed, or context is shared across users.
 
-## Compliance Output Format
+## コンプライアンス出力形式
 
-In every summary table below, the **Justification** cell must cite specific file/line evidence for the status.
+以下の各概要表では、**根拠**セルに状態を裏付ける具体的なファイル／行の証拠を必ず記載する。
 
-### Control summary
+### コントロール概要
 
-| Control | Name | Status | Justification |
+| コントロール | 名称 | 状態 | 根拠 |
 |---|---|---|---|
-| MCP-01 | Auth & Identity isolation | ✅ PASS / ❌ FAIL / ⚠️ NEEDS INVESTIGATION / N/A | … |
-| MCP-02 | Secure Session Management | … | … |
-| MCP-03 | Rate limiting & abuse protection | … | … |
-| MCP-04 | Input schema validation | … | … |
-| MCP-05 | Production SDK usage | … | … |
+| MCP-01 | 認証とID分離 | ✅ PASS / ❌ FAIL / ⚠️ NEEDS INVESTIGATION / N/A | … |
+| MCP-02 | セキュアなセッション管理 | … | … |
+| MCP-03 | レート制限と不正利用対策 | … | … |
+| MCP-04 | 入力スキーマ検証 | … | … |
+| MCP-05 | 本番SDK利用 | … | … |
 
-Use **PASS** only when the code clearly satisfies the control. Use **FAIL** when the violation is observable. Use **NEEDS INVESTIGATION** when compliance depends on deployment config, identity-provider state, logs, or other evidence not visible in source.
+コードがコントロールを明確に満たす場合だけ**PASS**を使う。違反が観測できる場合は**FAIL**を使う。デプロイ構成、IDプロバイダーの状態、ログ、その他ソースに見えない証拠に依存する場合は**NEEDS INVESTIGATION**を使う。
 
-### RCE summary
+### RCE概要
 
-| Vector | Status | Justification |
+| ベクトル | 状態 | 根拠 |
 |---|---|---|
-| Command injection | SAFE / AT RISK / N/A | … |
-| Dynamic code evaluation | … | … |
-| Unsafe deserialization | … | … |
-| Path traversal | … | … |
+| コマンドインジェクション | SAFE / AT RISK / N/A | … |
+| 動的コード評価 | … | … |
+| 安全でないデシリアライゼーション | … | … |
+| パストラバーサル | … | … |
 | SSTI | … | … |
-| Dependency hijacking | … | … |
+| 依存関係ハイジャック | … | … |
 | SSRF | … | … |
 
-### OWASP summary
+### OWASP概要
 
-| Risk | Status | Justification |
+| リスク | 状態 | 根拠 |
 |---|---|---|
 | MCP01:2025 | ✅ PASS / ❌ FAIL / ⚠️ NEEDS INVESTIGATION | … |
 | MCP02:2025 | … | … |
@@ -306,10 +306,10 @@ Use **PASS** only when the code clearly satisfies the control. Use **FAIL** when
 | MCP09:2025 | … | … |
 | MCP10:2025 | … | … |
 
-### Manual follow-ups
-List every check that could not be fully resolved from source code, specifying what artifact or access is needed to verify it.
+### 手動フォローアップ
+ソースコードだけでは完全に解決できなかった確認をすべて列挙し、検証に必要な成果物またはアクセス権を明記する。
 
-## Exception process
+## 例外処理
 - **Document the gap:** Identify the unmet control, the exact deviation, residual risk, and any compensating controls.
 - **Get explicit approval:** Route the exception through security/release approval with an owner and an expiration or review date.
 - **Track and re-evaluate:** Record the approved exception with compliance results and revisit it on expiry or whenever the server, tools, traffic profile, or exposure changes.

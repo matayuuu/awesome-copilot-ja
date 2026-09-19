@@ -120,24 +120,22 @@ az resource show --ids <resource-id-1> <resource-id-2> ... -o json
 - **Terraform Pattern Modules**: `https://raw.githubusercontent.com/Azure/Azure-Verified-Modules/refs/heads/main/docs/static/module-indexes/TerraformPatternModules.csv`
 - **Terraform Utility Modules**: `https://raw.githubusercontent.com/Azure/Azure-Verified-Modules/refs/heads/main/docs/static/module-indexes/TerraformUtilityModules.csv`
 
-### Individual Module information
+### 個別モジュールの情報
 
-Use the `web` tool or another suitable MCP method to get module information if not available locally in the `.terraform` folder.
+`.terraform`フォルダーに情報がない場合は、`web`ツールまたは適切なMCPメソッドでモジュール情報を取得する。
 
 Use AVM sources:
 
 - Registry: `https://registry.terraform.io/modules/Azure/<module>/azurerm/latest`
 - GitHub: `https://github.com/Azure/terraform-azurerm-avm-res-<service>-<resource>`
 
-Prefer AVM modules over handwritten `azurerm_*` resources when an AVM module exists.
+AVMモジュールが存在する場合は、手書きの `azurerm_*` リソースよりAVMモジュールを優先する。
 
 When fetching module information from GitHub repositories, the README.md file in the root of the repository typically contains all detailed information about the module, for example: https://raw.githubusercontent.com/Azure/terraform-azurerm-avm-res-<service>-<resource>/refs/heads/main/README.md
 
-### 5a) Read the Module README Before Writing Any Code (Mandatory)
+### 5a) コードを書く前にモジュールREADMEを読む（必須）
 
-**This step is not optional.** Before writing a single line of HCL for a module, fetch and
-read the full README for that module. Do not rely on knowledge of the raw `azurerm` provider
-or prior experience with other AVM modules.
+**この手順は省略できない。** モジュールのHCLを1行でも書く前に、そのモジュールのREADME全体を取得して読む。raw `azurerm` プロバイダーの知識や、他のAVMモジュールでの経験に頼らない。
 
 For each selected AVM module, fetch its README:
 
@@ -151,16 +149,11 @@ Or if the module is already downloaded after `terraform init`:
 cat .terraform/modules/<module_key>/README.md
 ```
 
-From the README, extract and record **before writing code**:
+コードを書く**前に**READMEから次を抽出して記録する。
 
-1. **Required Inputs** — every input the module requires. Any child resource listed here
-	 (NICs, extensions, subnets, public IPs) is managed **inside** the module. Do **not**
-	 create standalone module blocks for those resources.
-2. **Optional Inputs** — the exact Terraform variable names and their declared `type`.
-	 Do not assume they match the raw `azurerm` provider argument names or block shapes.
-3. **Usage examples** — check what resource group identifier is used (`parent_id` vs
-	 `resource_group_name`), how child resources are expressed (inline map vs separate module),
-	 and what syntax each input expects.
+1. **Required Inputs** — モジュールが必要とするすべての入力。ここに記載された子リソース（NIC、拡張機能、サブネット、パブリックIP）はモジュール**内部で**管理される。これらのリソース用に独立したモジュールブロックを**作成しない**。
+2. **Optional Inputs** — 正確なTerraform変数名と宣言された `type`。raw `azurerm` プロバイダーの引数名やブロック形状と一致すると仮定しない。
+3. **Usage examples** — 使用するリソースグループ識別子（`parent_id` と `resource_group_name` のどちらか）、子リソースの表現方法（インラインマップか別モジュールか）、各入力が期待する構文を確認する。
 
 #### Apply module rules as patterns, not assumptions
 
@@ -194,51 +187,43 @@ Generalized takeaway for all AVM modules:
 - Determine identifier style and input shape from README usage examples.
 - Do not infer argument names from raw `azurerm_*` resources.
 
-### 6) Generate Terraform Files
+### 6) Terraformファイルを生成する
 
-### Before Writing Import Blocks — Inspect Module Source (Mandatory)
+### インポートブロックを書く前にモジュールソースを調べる（必須）
 
-After `terraform init` downloads the modules, inspect each module's source files to determine
-the exact Terraform resource addresses before writing any `import {}` blocks. Never write
-import addresses from memory.
+`terraform init`でモジュールがダウンロードされたら、各モジュールのソースファイルを調べて正確なTerraformリソースアドレスを特定してから `import {}` ブロックを書く。記憶だけでインポートアドレスを書かない。
 
-#### Step A — Identify the provider and resource label
+#### 手順A — プロバイダーとリソースラベルを特定する
 
 ```bash
 grep "^resource" .terraform/modules/<module_key>/main*.tf
 ```
 
-This reveals whether the module uses `azurerm_*` or `azapi_resource` labels. For example,
-`avm-res-network-virtualnetwork` exposes `azapi_resource "vnet"`, not
-`azurerm_virtual_network "this"`.
+これにより、モジュールが `azurerm_*` と `azapi_resource` のどちらのラベルを使うか分かる。たとえば `avm-res-network-virtualnetwork` は `azurerm_virtual_network "this"` ではなく `azapi_resource "vnet"` を公開する。
 
-#### Step B — Identify child modules and nested paths
+#### 手順B — 子モジュールとネストしたパスを特定する
 
 ```bash
 grep "^module" .terraform/modules/<module_key>/main*.tf
 ```
 
-If child resources are managed in a sub-module (subnets, extensions, etc.), the import
-address must include every intermediate module label:
+子リソース（サブネット、拡張機能など）がサブモジュールで管理される場合、インポートアドレスにはすべての中間モジュールラベルを含める。
 
 ```text
 module.<root_module_key>.module.<child_module_key>["<map_key>"].<resource_type>.<label>[<index>]
 ```
 
-#### Step C — Check for `count` vs `for_each`
+#### 手順C — `count` と `for_each` を確認する
 
 ```bash
 grep -n "count\|for_each" .terraform/modules/<module_key>/main*.tf
 ```
 
-Any resource using `count` requires an index in the import address. When `count = 1` (e.g.,
-conditional Linux vs Windows selection), the address must end with `[0]`. Resources using
-`for_each` use string keys, not numeric indexes.
+`count` を使うリソースにはインポートアドレスのインデックスが必要。`count = 1`（例: LinuxとWindowsの条件付き選択）の場合、アドレスは `[0]` で終わる。`for_each` を使うリソースでは数値インデックスではなく文字列キーを使う。
 
-#### Known import address patterns (examples from lessons learned)
+#### 既知のインポートアドレスパターン（学習結果の例）
 
-These are examples only. Use them as templates for reasoning, then derive the exact addresses
-from the downloaded source code for the modules in your current import.
+これはあくまで例。推論のテンプレートとして使い、現在のインポートで使うモジュールのダウンロード済みソースコードから正確なアドレスを導出する。
 
 | Resource | Correct import `to` address pattern |
 |---|---|
@@ -258,12 +243,9 @@ Produce:
 - `outputs.tf` for key IDs and endpoints
 - `terraform.tfvars.example` with placeholder values
 
-### Diff Live Properties Against Module Defaults (Mandatory)
+### 稼働中のプロパティをモジュールの既定値と比較する（必須）
 
-After writing the initial configuration, compare every non-zero property of each discovered
-live resource against the default value declared in the corresponding AVM module's
-`variables.tf`. Any property where the live value differs from the module default must be
-set explicitly in the Terraform configuration.
+初期構成を書いた後、探索した各稼働中リソースのすべての非ゼロプロパティを、対応するAVMモジュールの `variables.tf` に宣言された既定値と比較する。稼働中の値がモジュールの既定値と異なるプロパティは、Terraform構成で明示的に設定する。
 
 Pay particular attention to the following property categories, which are common sources
 of silent configuration drift:
@@ -294,7 +276,7 @@ module "example" {
 }
 ```
 
-### 7) Validate Generated Code
+### 7) 生成コードを検証する
 
 Run:
 
@@ -305,11 +287,11 @@ terraform validate
 terraform plan
 ```
 
-Expected output: no syntax errors, no validation errors, and a plan that matches discovered infrastructure intent.
+期待される出力: 構文エラーと検証エラーがなく、探索したインフラの意図に一致するプラン。
 
-## Troubleshooting
+## トラブルシューティング
 
-| Problem | Likely Cause | Action |
+| 問題 | 考えられる原因 | 対処 |
 |---|---|---|
 | `az` command fails with authorization errors | Wrong tenant/subscription or missing RBAC role | Re-run `az login`, verify subscription context, confirm required permissions |
 | Discovery output is empty | Incorrect scope or no resources in scope | Re-check scope input and run scoped list/show command again |
@@ -322,9 +304,9 @@ Expected output: no syntax errors, no validation errors, and a plan that matches
 | Nested child resource import fails with "resource not found" | Missing intermediate module path, wrong map key, or missing index | Inspect module blocks and `count`/`for_each` in source; build full nested import address including all module segments and required key/index |
 | Tool tries to read ARM resource ID as file path or asks repeated scope questions | Resource ID not treated as `--ids` input, or agent did not trust already-provided scope | Treat ARM IDs strictly as cloud identifiers, use `az ... --ids ...`, and stop re-prompting once one valid scope is present |
 
-## Response Contract
+## 応答の契約
 
-When returning results, provide:
+結果を返すときは次を示す。
 
 1. Scope used (subscription, resource group, or resource IDs)
 2. Discovery files created
@@ -334,12 +316,12 @@ When returning results, provide:
 6. Validation command results
 7. Open gaps requiring user input (if any)
 
-## Execution Rules for the Agent
+## Agentの実行ルール
 
-- Do not continue if scope is missing.
-- Do not claim successful import without listing discovered files and validation output.
-- Do not skip dependency mapping before generating Terraform.
-- Prefer AVM modules first; justify each non-AVM fallback explicitly.
+- 範囲が不足している場合は続行しない。
+- 探索したファイルと検証出力を列挙せずにインポート成功と主張しない。
+- Terraform生成前の依存関係対応付けを省略しない。
+- まずAVMモジュールを優先し、各非AVMフォールバックを明示的に正当化する。
 - **Read the README for every AVM module before writing code.** Required Inputs identify
 	which child resources the module owns. Optional Inputs document exact variable names and
 	types. Usage examples show provider-specific conventions (`parent_id` vs
@@ -361,7 +343,7 @@ When returning results, provide:
 	unwanted changes.** Telemetry `+ create` resources are acceptable. Any `~ update` or
 	`- destroy` on real infrastructure resources must be resolved.
 
-## References
+## 参考資料
 
 - [Azure Verified Modules index (Terraform)](https://github.com/Azure/Azure-Verified-Modules/tree/main/docs/static/module-indexes)
 - [Terraform AVM Registry namespace](https://registry.terraform.io/namespaces/Azure)

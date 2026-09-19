@@ -1,40 +1,40 @@
 ---
 name: mini-context-graph
 description: |
-  A persistent, compounding knowledge base combining Karpathy's LLM Wiki pattern
-  with a structured knowledge graph. Ingest documents once — the LLM writes wiki
-  pages, extracts entities/relations into the graph, and stores raw content for
-  evidence retrieval. Knowledge accumulates and cross-references; it is never
-  re-derived from scratch.
+  KarpathyのLLM Wikiパターンと構造化知識グラフを組み合わせた、永続的に蓄積する知識ベース。
+  構造化されたナレッジグラフを組み合わせた、永続的に蓄積する知識ベース。
+  ドキュメントを一度取り込むと、LLM が wiki ページを作成し、エンティティと関係を
+  グラフへ抽出し、根拠を検索できるよう生のコンテンツを保存する。知識は蓄積・相互参照
+  され、毎回ゼロから再導出されることはない。
 ---
 
-# Mini Context Graph Skill
+# Mini Context Graph スキル
 
-## The Core Idea
+## 中核となる考え方
 
-Standard RAG re-discovers knowledge from scratch on every query. This skill is different:
+標準的な RAG はクエリごとに知識をゼロから再発見します。このスキルは異なります。
 
-1. **Wiki layer** — The LLM writes and maintains persistent markdown pages (summaries, entity pages, topic syntheses). Cross-references are already there. The wiki gets richer with every ingest.
-2. **Graph layer** — Entities and relations are extracted once and stored as a navigable knowledge graph. BFS traversal answers structural queries without re-reading sources.
-3. **Raw source layer** — Original documents are stored immutably with chunks. Provenance links tie every graph node and edge back to the exact text that supports it.
+1. **Wiki レイヤー** — LLM が永続的な Markdown ページ（要約、エンティティページ、トピックの統合）を作成・保守します。相互参照はすでに存在し、取り込みのたびに wiki が充実します。
+2. **グラフレイヤー** — エンティティと関係を一度だけ抽出し、探索可能なナレッジグラフとして保存します。BFS トラバーサルは、ソースを再読せずに構造的な質問へ回答します。
+3. **生ソースレイヤー** — 元のドキュメントをチャンク付きで不変に保存します。出所リンクにより、すべてのグラフノードとエッジが根拠となる正確なテキストへ結び付けられます。
 
-> The LLM writes; the Python tools handle all bookkeeping.
+> LLM が記述し、Python ツールがすべての管理処理を担います。
 
 ---
 
-## Three Layers
+## 3つの層
 
-| Layer | Where | What the LLM does | What Python does |
+| レイヤー | 場所 | LLM が行うこと | Python が行うこと |
 |-------|-------|-------------------|-----------------|
-| **Raw Sources** | `data/documents.json` | Reads (never modifies) | Stores chunks + metadata |
-| **Wiki** | `wiki/` (markdown) | Writes/updates pages | Manages index.md + log.md |
-| **Graph** | `data/graph.json` | Extracts entities + relations | Persists, deduplicates, traverses |
+| **生ソース** | `data/documents.json` | 読み取る（変更しない） | チャンクとメタデータを保存する |
+| **Wiki** | `wiki/`（Markdown） | ページを作成・更新する | index.md と log.md を管理する |
+| **グラフ** | `data/graph.json` | エンティティと関係を抽出する | 永続化、重複排除、トラバーサルを行う |
 
 ---
 
-## ⚡ Quick Start for Agents
+## ⚡ Agent向けクイックスタート
 
-A complete runnable version of this workflow is in `scripts/template_agent_workflow.py` — copy and adapt it.
+このワークフローの完全に実行可能な版は `scripts/template_agent_workflow.py` にあります。コピーして調整してください。
 
 ```python
 from scripts.contextgraph import ContextGraphSkill
@@ -101,34 +101,34 @@ pages = wiki_store.search_wiki("memory leak")
 
 ---
 
-## Operations
+## 操作
 
-### Ingest
+### 取り込み
 
-When a user provides a new document:
+ユーザーが新しいドキュメントを提供した場合:
 
-1. Read `references/ingestion.md` — entity/relation extraction rules.
-2. Read `references/ontology.md` — type normalization rules.
-3. Extract entities and relations using your LLM reasoning.
-4. Call `skill.ingest_with_content(...)` — stores raw content + chunks + graph nodes + provenance.
-5. **Write a wiki summary page** using `wiki_store.write_page(category="summary", ...)`.
-6. **Update entity pages** — for each new/updated entity, write or update `wiki_store.write_page(category="entity", ...)`.
-7. **Update topic pages** if the document touches an existing synthesis topic.
-8. A single document ingest will typically touch 3–10 wiki pages.
+1. `references/ingestion.md` を読む — エンティティと関係の抽出規則。
+2. `references/ontology.md` を読む — 型の正規化規則。
+3. LLM の推論を使ってエンティティと関係を抽出する。
+4. `skill.ingest_with_content(...)` を呼び出す — 生コンテンツ、チャンク、グラフノード、出所を保存する。
+5. `wiki_store.write_page(category="summary", ...)` を使って **wiki の要約ページを作成する**。
+6. **エンティティページを更新する** — 新規または更新されたエンティティごとに、`wiki_store.write_page(category="entity", ...)` を作成または更新する。
+7. ドキュメントが既存の統合トピックに触れる場合は、**トピックページを更新する**。
+8. 1 つのドキュメントの取り込みでは、通常 3～10 個の wiki ページを扱う。
 
-### Query
+### クエリ
 
-When a user asks a question:
+ユーザーが質問した場合:
 
-1. **Check the wiki first** — `wiki_store.search_wiki(query)` to find relevant pages. Read them.
-2. If the wiki has a good answer, synthesize from wiki pages (fast path).
-3. If deeper graph traversal is needed, call `skill.query_with_evidence(query)`.
-4. Return the answer with evidence citations from `supporting_documents`.
-5. If the answer is valuable, file it back as a new wiki topic page.
+1. **まず wiki を確認する** — `wiki_store.search_wiki(query)` で関連ページを探して読む。
+2. wiki に十分な回答があれば、wiki ページから統合して回答する（高速パス）。
+3. より深いグラフトラバーサルが必要な場合は、`skill.query_with_evidence(query)` を呼び出す。
+4. `supporting_documents` の根拠を引用して回答を返す。
+5. 回答に価値があれば、新しい wiki トピックページとして保存する。
 
 ### Lint
 
-Periodically health-check the wiki:
+定期的に wiki の健全性を確認します。
 
 ```python
 from scripts.tools import wiki_store
@@ -136,61 +136,60 @@ issues = wiki_store.lint_wiki()
 # Returns: {orphan_pages, missing_pages, broken_wikilinks, isolated_pages}
 ```
 
-Ask the LLM to review and fix: broken links, orphan pages, stale claims, missing cross-references. See `references/lint.md` for full lint workflow.
+LLM に、壊れたリンク、孤立ページ、古い主張、欠落した相互参照をレビューして修正させます。完全な lint ワークフローは `references/lint.md` を参照してください。
 
 ---
 
-## Ingestion Constraints
+## 取り込みの制約
 
-- ❌ Do NOT hallucinate entities not present in the text
-- ❌ Do NOT add relations without explicit textual evidence
-- ❌ Do NOT add edges with confidence < 0.6
-- ✅ Provide `supporting_text` for every entity and relation — this enables provenance
-- ✅ Write a wiki summary page for every ingested document
-- ✅ Update existing entity pages when new information arrives
-- ✅ Flag contradictions in wiki pages when new data conflicts with old claims
-
----
-
-## Retrieval Constraints
-
-- 🔒 Traversal depth MUST NOT exceed 2 (config: MAX_GRAPH_DEPTH)
-- 🔒 Only edges with confidence ≥ 0.6 (config: MIN_CONFIDENCE)
-- 🔒 Maximum 50 nodes returned (config: MAX_NODES)
-- ❌ Do NOT fabricate nodes or edges not in the graph
+- ❌ テキストに存在しないエンティティを幻覚しない
+- ❌ 明示的なテキスト上の根拠なしに関係を追加しない
+- ❌ 信頼度が 0.6 未満のエッジを追加しない
+- ✅ すべてのエンティティと関係に `supporting_text` を指定する。これにより出所追跡が可能になる
+- ✅ 取り込んだドキュメントごとに wiki の要約ページを作成する
+- ✅ 新しい情報が到着したら既存のエンティティページを更新する
+- ✅ 新しいデータが古い主張と矛盾する場合は、wiki ページで矛盾を明示する
 
 ---
 
-## Full Python API Reference
+## 取得の制約
 
-| Method | Purpose | When to Use |
+- 🔒 トラバーサル深度は 2 を超えてはならない（設定: `MAX_GRAPH_DEPTH`）
+- 🔒 信頼度が 0.6 以上のエッジだけを対象とする（設定: `MIN_CONFIDENCE`）
+- 🔒 返すノードは最大 50 件（設定: `MAX_NODES`）
+- ❌ グラフに存在しないノードやエッジを作り出さない
+
+---
+
+## Python API 完全リファレンス
+
+| メソッド | 目的 | 使用する場面 |
 |--------|---------|-------------|
-| `skill.ingest_with_content(doc_id, title, source, raw_content, entities, relations)` | Full RAG ingest: raw docs + graph + provenance | Every new document |
-| `skill.add_node(name, node_type)` | Add single entity (no provenance) | Quick additions without a source doc |
-| `skill.add_edge(source_name, target_name, relation, confidence)` | Add single relation | Quick additions without a source doc |
-| `skill.query(query)` | Graph-only retrieval → subgraph | Structural queries |
-| `skill.query_with_evidence(query)` | Graph + provenance → subgraph + source chunks | Queries requiring citations |
-| `wiki_store.write_page(category, title, content, summary)` | Write/update a wiki page | After every ingest; after answering queries |
-| `wiki_store.read_page(category, title)` | Read a wiki page | Before answering; for cross-referencing |
-| `wiki_store.search_wiki(query)` | Keyword search across wiki | Fast path before graph traversal |
-| `wiki_store.list_pages(category)` | List all wiki pages | Getting an overview |
-| `wiki_store.get_log(last_n)` | Read recent operations | Understanding wiki history |
-| `wiki_store.lint_wiki()` | Health check | Periodic maintenance |
-| `documents_store.list_documents()` | List all ingested raw sources | Audit / provenance checking |
-| `documents_store.search_chunks(query)` | Chunk-level search | Finding specific evidence |
+| `skill.ingest_with_content(doc_id, title, source, raw_content, entities, relations)` | 完全な RAG 取り込み: 生ドキュメント、グラフ、出所 | 新規ドキュメントごと |
+| `skill.add_node(name, node_type)` | 単一のエンティティを追加（出所なし） | ソースドキュメントなしの迅速な追加 |
+| `skill.add_edge(source_name, target_name, relation, confidence)` | 単一の関係を追加 | ソースドキュメントなしの迅速な追加 |
+| `skill.query(query)` | グラフのみの取得 → サブグラフ | 構造的な質問 |
+| `skill.query_with_evidence(query)` | グラフと出所 → サブグラフとソースチャンク | 引用が必要な質問 |
+| `wiki_store.write_page(category, title, content, summary)` | wiki ページを作成・更新 | 取り込み後および質問への回答後 |
+| `wiki_store.read_page(category, title)` | wiki ページを読む | 回答前および相互参照時 |
+| `wiki_store.search_wiki(query)` | wiki 全体をキーワード検索 | グラフトラバーサル前の高速パス |
+| `wiki_store.list_pages(category)` | すべての wiki ページを一覧表示 | 概要の把握 |
+| `wiki_store.get_log(last_n)` | 最近の操作を読む | wiki 履歴の理解 |
+| `wiki_store.lint_wiki()` | 健全性確認 | 定期メンテナンス |
+| `documents_store.list_documents()` | 取り込んだすべての生ソースを一覧表示 | 監査・出所確認 |
+| `documents_store.search_chunks(query)` | チャンク単位で検索 | 特定の根拠を探す |
 
 ---
 
-## Design Philosophy
+## 設計思想
 
 > "The wiki is a persistent, compounding artifact. The cross-references are already there. The synthesis already reflects everything you've read." — Karpathy
 
-| Layer | What Happens | Who Owns It |
+| レイヤー | 行われること | 担当 |
 |-------|-----------|-------------|
-| **LLM Reasoning** | Extraction, synthesis, writing wiki pages | Agent (.md guidance files) |
-| **Wiki Persistence** | Index, log, file I/O | `wiki_store.py` |
-| **Graph Persistence** | Dedup, index, BFS traverse | `graph_store.py`, `retrieval_engine.py` |
-| **Raw Source Storage** | Immutable docs + chunks + provenance | `documents_store.py` |
+| **LLM の推論** | 抽出、統合、wiki ページの作成 | エージェント（`.md` ガイダンスファイル） |
+| **Wiki の永続化** | インデックス、ログ、ファイル I/O | `wiki_store.py` |
+| **グラフの永続化** | 重複排除、インデックス、BFS トラバーサル | `graph_store.py`、`retrieval_engine.py` |
+| **生ソースの保存** | 不変ドキュメント、チャンク、出所 | `documents_store.py` |
 
-The human curates sources and asks questions. The LLM writes the wiki, extracts the graph, and answers with citations. Python handles all bookkeeping.
-
+人間がソースを選定して質問します。LLM が wiki を作成し、グラフを抽出し、引用付きで回答します。Python がすべての管理処理を担います。

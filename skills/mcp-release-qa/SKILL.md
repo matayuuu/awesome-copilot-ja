@@ -1,50 +1,41 @@
 ---
 name: mcp-release-qa
-description: 'Verify an MCP server before release by exercising a real protocol session, comparing runtime capabilities with source and documentation, testing failure paths, and recording reproducible evidence. Use when shipping or reviewing an MCP server, tool, resource, prompt, catalog, or install path.'
+description: '実際のプロトコルセッションを実行し、実行時機能をソースと文書と比較し、失敗経路をテストして再現可能な証拠を記録することで、リリース前のMCPサーバーを検証する。'
 ---
 
-# MCP Release QA
+# MCPリリースQA
 
-Test the server that users will run. A schema review or a passing unit test is
-not runtime evidence.
+ユーザーが実際に実行するサーバーをテストする。スキーマレビューや単体テストの成功だけでは、実行時の証拠にならない。
 
-This skill complements security review. It focuses on protocol behavior,
-published-contract drift, transport correctness, and reproducible release
-evidence.
+このスキルはセキュリティレビューを補完する。プロトコルの挙動、公開コントラクトとの乖離、
+トランスポートの正しさ、再現可能なリリース証拠に焦点を当てる。
 
-## Rules
+## 規則
 
-- Run checks against a fresh server process built from the candidate revision.
-- Keep `initialize`, `notifications/initialized`, discovery, and invocation in
-  the same session. A new process is a new STDIO session.
-- Treat source registrations as implementation truth and public documentation
-  as a contract that must match it.
-- Record exact commands and raw responses. Do not replace missing evidence with
-  "looks correct."
-- Do not invoke mutation-capable tools against production data. Use fixtures, a
-  sandbox, or stop and name the missing safe test environment.
-- Derive the expected capability inventory from the candidate source on every
-  run.
+- 候補リビジョンからビルドした新しいサーバープロセスに対して確認を実行する。
+- `initialize`、`notifications/initialized`、検出、呼び出しを同じセッションで行う。新しいプロセスは新しいSTDIOセッションである。
+- ソースの登録内容を実装上の真実とし、公開ドキュメントはそれと一致すべきコントラクトとして扱う。
+- 正確なコマンドと生の応答を記録する。不足している証拠を「正しそう」で置き換えない。
+- 本番データに対して変更可能なツールを呼び出さない。フィクスチャ、サンドボックスを使うか、安全なテスト環境がないことを明記して停止する。
+- 実行ごとに候補ソースから期待される機能インベントリを導出する。
 
-## 1. Establish the release surface
+## 1. リリース対象の把握
 
-Identify:
+次を特定する:
 
-- candidate commit and build command;
-- server entry point and transport: STDIO, Streamable HTTP, or SSE;
-- supported MCP protocol versions;
-- source files that register tools, resources, resource templates, and prompts;
-- generated catalogs, manifests, README tables, and install instructions;
-- existing protocol, integration, and smoke-test commands.
+- 候補コミットとビルドコマンド
+- サーバーのエントリポイントとトランスポート（STDIO、Streamable HTTP、SSE）
+- サポート対象のMCPプロトコルバージョン
+- ツール、リソース、リソーステンプレート、プロンプトを登録するソースファイル
+- 生成済みカタログ、マニフェスト、READMEの表、インストール手順
+- 既存のプロトコル、統合、スモークテスト用コマンド
 
-Prefer repository-native commands. Inspect `package.json`, `pyproject.toml`,
-`Makefile`, CI workflows, and contributor instructions before inventing a test
-harness.
+リポジトリ固有のコマンドを優先する。テストハーネスを新たに作る前に、
+`package.json`、`pyproject.toml`、`Makefile`、CIワークフロー、コントリビューター向け指示を確認する。
 
-## 2. Start a clean server
+## 2. クリーンなサーバーを起動
 
-Build the candidate and start the documented entry point with test-safe
-configuration. Capture:
+候補をビルドし、テストに安全な構成で文書化されたエントリポイントを起動する。次を記録する:
 
 - the exact command;
 - commit SHA;
@@ -52,17 +43,14 @@ configuration. Capture:
 - stdout, stderr, and exit status;
 - the endpoint or child-process transport used by the client.
 
-For STDIO, stdout is protocol-only. Logs, banners, and stack traces belong on
-stderr. For HTTP transports, record the status, relevant MCP headers, and
-session identifier handling without printing credentials.
+STDIOではstdoutをプロトコル専用にする。ログ、バナー、スタックトレースはstderrへ出す。
+HTTPトランスポートでは資格情報を出力せず、ステータス、関連するMCPヘッダー、セッション識別子の処理を記録する。
 
-If the server cannot start from its documented instructions, report that as a
-release failure and preserve the startup error verbatim.
+文書化された手順でサーバーを起動できない場合はリリース失敗として報告し、起動エラーをそのまま保存する。
 
-## 3. Exercise one complete session
+## 3. 完全なセッションを1つ実行
 
-Run this sequence through a real MCP client or the repository's integration
-harness:
+実際のMCPクライアントまたはリポジトリの統合ハーネスで、次の手順を実行する:
 
 1. `initialize` with a protocol version the server claims to support.
 2. Confirm the negotiated version and advertised capabilities.
@@ -77,13 +65,12 @@ harness:
    capability class.
 7. Follow pagination until no cursor remains when a list method is paginated.
 
-Do not send post-initialization requests through separate one-shot processes.
-That accidentally tests several incomplete sessions instead of one valid
-session.
+初期化後のリクエストを別々のワンショットプロセスから送らない。そうすると、1つの有効なセッションではなく、
+複数の未完了セッションを誤ってテストすることになる。
 
-## 4. Prove inventory parity
+## 4. インベントリの一致を証明
 
-Build four inventories from current evidence:
+現在の証拠から4種類のインベントリを作成する:
 
 | Surface | Evidence |
 |---|---|
@@ -92,19 +79,18 @@ Build four inventories from current evidence:
 | Generated metadata | Catalogs, manifests, or generated indexes |
 | Documentation | README, reference pages, and install output |
 
-Compare by stable identifier. Report:
+安定した識別子で比較し、次を報告する:
 
 - source entries missing at runtime;
 - runtime entries absent from metadata or documentation;
 - stale names, descriptions, arguments, URIs, or prompt parameters;
 - documented install commands that do not start the candidate server.
 
-Regenerate derived files with the repository's own build command, then fail if
-the working tree still contains unexplained generated changes.
+派生ファイルをリポジトリ固有のビルドコマンドで再生成し、ワークツリーに説明できない生成差分が残る場合は失敗とする。
 
-## 5. Check published contracts
+## 5. 公開コントラクトを確認
 
-For every discovered item, verify the runtime definition against its source:
+検出した各項目について、実行時定義をソースと照合する:
 
 ### Tools
 
@@ -129,9 +115,9 @@ For every discovered item, verify the runtime definition against its source:
 - `prompts/get` returns usable messages for valid arguments.
 - Missing required arguments and unknown prompt names fail explicitly.
 
-## 6. Test failure paths
+## 6. 失敗経路をテスト
 
-At minimum, probe:
+最低限、次を確認する:
 
 - a request before initialization completes;
 - malformed JSON or an invalid JSON-RPC envelope;
@@ -148,9 +134,9 @@ and no successful side effect. For STDIO, also confirm every stdout line is a
 complete protocol message and a healthy session leaves stderr clean unless the
 server explicitly documents diagnostic output.
 
-## 7. Smoke-test installation
+## 7. インストールをスモークテスト
 
-When the project publishes an install command:
+プロジェクトがインストールコマンドを公開している場合:
 
 1. Create a temporary destination outside the source checkout.
 2. Run the public install command exactly as documented.
@@ -160,9 +146,9 @@ When the project publishes an install command:
 
 An install string that was only inspected is unverified.
 
-## 8. Report the evidence
+## 8. 証拠を報告
 
-Use this format:
+次の形式を使用する:
 
 ```markdown
 # MCP Release QA

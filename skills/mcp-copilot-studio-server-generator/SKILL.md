@@ -1,33 +1,33 @@
 ---
 name: mcp-copilot-studio-server-generator
-description: 'Generate a complete MCP server implementation optimized for Copilot Studio integration with proper schema constraints and streamable HTTP support'
+description: '適切なスキーマ制約とstreamable HTTP対応を備え、Copilot Studio統合に最適化した完全なMCPサーバー実装を生成する。'
 ---
 
-# Power Platform MCP Connector Generator
+# Power Platform MCPコネクター生成器
 
-Generate a complete Power Platform custom connector with Model Context Protocol (MCP) integration for Microsoft Copilot Studio. This prompt creates all necessary files following Power Platform connector standards with MCP streamable HTTP support.
+Microsoft Copilot Studio向けに、Model Context Protocol（MCP）統合を備えたPower Platformカスタムコネクターを生成する。Power Platformコネクター標準に従い、MCP streamable HTTP対応に必要なファイルをすべて作成する。
 
-## Instructions
+## 手順
 
-Create a complete MCP server implementation that:
+次の要件を満たす完全なMCPサーバー実装を作成する。
 
 1. **Uses Copilot Studio MCP Pattern:**
-   - Implement `x-ms-agentic-protocol: mcp-streamable-1.0`
-   - Support JSON-RPC 2.0 communication protocol
-   - Provide streamable HTTP endpoint at `/mcp`
-   - Follow Power Platform connector structure
+   - `x-ms-agentic-protocol: mcp-streamable-1.0`を実装する
+   - JSON-RPC 2.0通信プロトコルをサポートする
+   - `/mcp`にstreamable HTTPエンドポイントを提供する
+   - Power Platformコネクターの構造に従う
 
 2. **Schema Compliance Requirements:**
-   - **NO reference types** in tool inputs/outputs (filtered by Copilot Studio)
-   - **Single type values only** (not arrays of multiple types)
-   - **Avoid enum inputs** (interpreted as string, not enum)
-   - Use primitive types: string, number, integer, boolean, array, object
-   - Ensure all endpoints return full URIs
+   - ツールの入力／出力に**reference typeを使わない**（Copilot Studioで除外される）
+   - **単一の型値だけ**を使う（複数型の配列にしない）
+   - **enum入力を避ける**（enumではなく文字列として解釈される）
+   - string、number、integer、boolean、array、objectのプリミティブ型を使う
+   - すべてのエンドポイントが完全なURIを返すようにする
 
 3. **MCP Components to Include:**
-   - **Tools**: Functions for the language model to call (✅ Supported in Copilot Studio)
-   - **Resources**: File-like data outputs from tools (✅ Supported in Copilot Studio - must be tool outputs to be accessible)
-   - **Prompts**: Predefined templates for specific tasks (❌ Not yet supported in Copilot Studio)
+   - **Tools**: 言語モデルが呼び出す関数（✅ Copilot Studioでサポート）
+   - **Resources**: ツールからのファイル形式のデータ出力（✅ Copilot Studioでサポート。アクセス可能にするにはツール出力である必要がある）
+   - **Prompts**: 特定タスク向けの定義済みテンプレート（❌ Copilot Studioでは未サポート）
 
 4. **Implementation Structure:**
    ```
@@ -39,16 +39,16 @@ Create a complete MCP server implementation that:
    /resources/                 (MCP resource handlers)
    ```
 
-## Context Variables
+## コンテキスト変数
 
-- **Server Purpose**: [Describe what the MCP server should accomplish]
-- **Tools Needed**: [List of specific tools to implement]  
-- **Resources**: [Types of resources to provide]
-- **Authentication**: [Auth method: none, api-key, oauth2]
-- **Host Environment**: [Azure Function, Express.js, FastAPI, etc.]
-- **Target APIs**: [External APIs to integrate with]
+- **Server Purpose**: [MCPサーバーが実現する内容を記述]
+- **Tools Needed**: [実装する具体的なツールを一覧表示]
+- **Resources**: [提供するリソースの種類]
+- **Authentication**: [認証方式: none、api-key、oauth2]
+- **Host Environment**: [Azure Function、Express.js、FastAPIなど]
+- **Target APIs**: [統合する外部API]
 
-## Expected Output
+## 期待する出力
 
 Generate:
 
@@ -87,7 +87,7 @@ Generate:
    - Copilot Studio agent integration
    - Testing and validation
 
-## Validation Checklist
+## 検証チェックリスト
 
 Ensure generated code:
 - [ ] No reference types in schemas
@@ -101,7 +101,7 @@ Ensure generated code:
 - [ ] Clear tool descriptions for Copilot Studio
 - [ ] Generative Orchestration compatible
 
-## Example Usage
+## 使用例
 
 ```yaml
 Server Purpose: Customer data management and analysis

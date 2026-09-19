@@ -1,48 +1,48 @@
 ---
 name: mcp-security-audit
 description: |
-  Audit MCP (Model Context Protocol) server configurations for security issues. Use this skill when:
-  - Reviewing .mcp.json files for security risks
-  - Checking MCP server args for hardcoded secrets or shell injection patterns
-  - Validating that MCP servers use pinned versions (not @latest)
-  - Detecting unpinned dependencies in MCP server configurations
-  - Auditing which MCP servers a project registers and whether they're on an approved list
-  - Checking for environment variable usage vs. hardcoded credentials in MCP configs
-  - Any request like "is my MCP config secure?", "audit my MCP servers", or "check .mcp.json"
+  MCP（Model Context Protocol）サーバー構成のセキュリティ問題を監査する。次の場合にこのスキルを使用する。
+  - `.mcp.json` ファイルのセキュリティリスクをレビューする場合
+  - MCP サーバーの引数にハードコードされたシークレットまたはシェルインジェクションパターンがないか確認する場合
+  - MCP サーバーが固定バージョン（`@latest` ではない）を使用していることを検証する場合
+  - MCP サーバー構成で固定されていない依存関係を検出する場合
+  - プロジェクトが登録する MCP サーバーと、承認済み一覧に含まれるかどうかを監査する場合
+  - MCP 構成での環境変数利用とハードコードされた資格情報を確認する場合
+  - 「MCP 構成は安全か」「MCP サーバーを監査して」「`.mcp.json` を確認して」のような依頼
   keywords: [mcp, security, audit, secrets, shell-injection, supply-chain, governance]
 ---
 
-# MCP Security Audit
+# MCPセキュリティ監査
 
-Audit MCP server configurations for security issues — secrets exposure, shell injection, unpinned dependencies, and unapproved servers.
+MCP サーバー構成について、シークレットの露出、シェルインジェクション、固定されていない依存関係、未承認サーバーを監査します。
 
-## Overview
+## 概要
 
-MCP servers give agents direct tool access to external systems. A misconfigured `.mcp.json` can expose credentials, allow shell injection, or connect to untrusted servers. This skill catches those issues before they reach production.
+MCP サーバーはエージェントへ外部システムへの直接的なツールアクセスを与えます。誤構成の `.mcp.json` は資格情報を露出させ、シェルインジェクションを許したり、信頼できないサーバーへ接続したりする可能性があります。このスキルは、本番に到達する前にその問題を検出します。
 
 ```
-.mcp.json → Parse Servers → Check Each Server:
-  1. Secrets in args/env?
-  2. Shell injection patterns?
-  3. Unpinned versions (@latest)?
-  4. Dangerous commands (eval, bash -c)?
-  5. Server on approved list?
-→ Generate Report
+.mcp.json → サーバーを解析 → 各サーバーを確認:
+  1. 引数 / 環境変数にシークレットはあるか?
+  2. シェルインジェクションパターンはあるか?
+  3. バージョンは固定されていないか（`@latest`）?
+  4. 危険なコマンド（`eval`、`bash -c`）はあるか?
+  5. サーバーは承認済み一覧にあるか?
+→ レポートを生成
 ```
 
-## When to Use
+## 使用する場合
 
-- Reviewing any `.mcp.json` file in a project
-- Onboarding a new MCP server to a project
-- Auditing all MCP servers in a monorepo or plugin marketplace
-- Pre-commit checks for MCP configuration changes
-- Security review of agent tool configurations
+- プロジェクト内の任意の `.mcp.json` ファイルをレビューするとき
+- プロジェクトへ新しい MCP サーバーを導入するとき
+- モノレポまたはプラグインマーケットプレイス内のすべての MCP サーバーを監査するとき
+- MCP 構成変更に対するコミット前チェックを行うとき
+- エージェントツール構成のセキュリティレビューを行うとき
 
 ---
 
-## Audit Check 1: Hardcoded Secrets
+## 監査チェック1：ハードコードされたシークレット
 
-Scan MCP server args and env values for hardcoded credentials.
+MCP サーバーの引数と環境変数値から、ハードコードされた資格情報を検索します。
 
 ```python
 import json
@@ -75,7 +75,7 @@ def check_secrets(mcp_config: dict) -> list[dict]:
     return findings
 ```
 
-**Good practice — use env var references:**
+**推奨事項 — 環境変数参照を使用する:**
 ```json
 {
   "mcpServers": {
@@ -91,7 +91,7 @@ def check_secrets(mcp_config: dict) -> list[dict]:
 }
 ```
 
-**Bad — hardcoded credentials:**
+**悪い例 — ハードコードされた資格情報:**
 ```json
 {
   "mcpServers": {
@@ -108,9 +108,9 @@ def check_secrets(mcp_config: dict) -> list[dict]:
 
 ---
 
-## Audit Check 2: Shell Injection Patterns
+## 監査チェック2：シェルインジェクションパターン
 
-Detect dangerous command patterns in MCP server args.
+MCP サーバーの引数から危険なコマンドパターンを検出します。
 
 ```python
 import json
@@ -147,9 +147,9 @@ def check_shell_injection(server_config: dict) -> list[dict]:
 
 ---
 
-## Audit Check 3: Unpinned Dependencies
+## 監査チェック3：固定されていない依存関係
 
-Flag MCP servers using `@latest` in their package references.
+パッケージ参照に `@latest` を使用している MCP サーバーを検出します。
 
 ```python
 def check_pinned_versions(server_config: dict) -> list[dict]:
@@ -180,21 +180,21 @@ def check_pinned_versions(server_config: dict) -> list[dict]:
     return findings
 ```
 
-**Good — pinned version:**
+**良い例 — バージョンを固定:**
 ```json
 { "args": ["-y", "my-mcp-server@2.1.0"] }
 ```
 
-**Bad — unpinned:**
+**悪い例 — 未固定:**
 ```json
 { "args": ["-y", "my-mcp-server@latest"] }
 ```
 
 ---
 
-## Audit Check 4: Full Audit Runner
+## 監査チェック4：完全な監査ランナー
 
-Combine all checks into a single audit.
+すべてのチェックを単一の監査にまとめます。
 
 ```python
 def audit_mcp_config(mcp_path: str) -> dict:
@@ -239,7 +239,7 @@ def audit_mcp_config(mcp_path: str) -> dict:
     return results
 ```
 
-**Usage:**
+**使用方法:**
 ```python
 results = audit_mcp_config(".mcp.json")
 if not results["summary"]["passed"]:
@@ -251,7 +251,7 @@ if not results["summary"]["passed"]:
 
 ---
 
-## Output Format
+## 出力形式
 
 ```
 MCP Security Audit — .mcp.json
@@ -271,8 +271,8 @@ Findings: 3 (1 CRITICAL, 1 HIGH, 1 MEDIUM)
 
 ---
 
-## Related Resources
+## 関連リソース
 
-- [MCP Specification](https://modelcontextprotocol.io/)
-- [Agent Governance Toolkit](https://github.com/microsoft/agent-governance-toolkit) — Full governance framework with MCP trust proxy
-- [OWASP ASI-02: Insecure Tool Use](https://owasp.org/www-project-agentic-ai-threats/)
+- [MCP 仕様](https://modelcontextprotocol.io/)
+- [Agent Governance Toolkit](https://github.com/microsoft/agent-governance-toolkit) — MCP トラストプロキシを含む完全なガバナンスフレームワーク
+- [OWASP ASI-02: 安全でないツール利用](https://owasp.org/www-project-agentic-ai-threats/)
