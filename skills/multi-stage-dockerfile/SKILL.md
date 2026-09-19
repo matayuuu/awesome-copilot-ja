@@ -1,46 +1,46 @@
 ---
 name: multi-stage-dockerfile
-description: 'Create optimized multi-stage Dockerfiles for any language or framework'
+description: 'あらゆる言語またはフレームワーク向けに最適化されたマルチステージ Dockerfiles を作成する'
 ---
 
-Your goal is to help me create efficient multi-stage Dockerfiles that follow best practices, resulting in smaller, more secure container images.
+目標は、ベストプラクティスに従い、より小さく安全なコンテナーイメージを実現する効率的なマルチステージ Dockerfiles の作成を支援することです。
 
-## Multi-Stage Structure
+## マルチステージ構造
 
-- Use a builder stage for compilation, dependency installation, and other build-time operations
-- Use a separate runtime stage that only includes what's needed to run the application
-- Copy only the necessary artifacts from the builder stage to the runtime stage
-- Use meaningful stage names with the `AS` keyword (e.g., `FROM node:18 AS builder`)
-- Place stages in logical order: dependencies → build → test → runtime
+- コンパイル、依存関係のインストール、その他のビルド時操作には builder ステージを使用する
+- アプリケーションの実行に必要なものだけを含む、独立した runtime ステージを使用する
+- builder ステージから runtime ステージへ必要な成果物だけをコピーする
+- `AS` キーワードを使用して意味のあるステージ名を付ける（例: `FROM node:18 AS builder`）
+- ステージを論理的な順序で配置する: dependencies → build → test → runtime
 
-## Base Images
+## ベースイメージ
 
-- Start with official, minimal base images when possible
-- Specify exact version tags to ensure reproducible builds (e.g., `python:3.11-slim` not just `python`)
-- Consider distroless images for runtime stages where appropriate
-- Use Alpine-based images for smaller footprints when compatible with your application
-- Ensure the runtime image has the minimal necessary dependencies
+- 可能な場合は、公式の最小限なベースイメージから開始する
+- 再現可能なビルドを確保するため、正確なバージョンタグを指定する（`python` だけではなく、例えば `python:3.11-slim`）
+- 適切な場合は、runtime ステージに distroless イメージを検討する
+- アプリケーションと互換性がある場合は、より小さなフットプリントのために Alpine ベースのイメージを使用する
+- runtime イメージに必要最小限の依存関係が含まれるようにする
 
-## Layer Optimization
+## レイヤーの最適化
 
-- Organize commands to maximize layer caching
-- Place commands that change frequently (like code changes) after commands that change less frequently (like dependency installation)
-- Use `.dockerignore` to prevent unnecessary files from being included in the build context
-- Combine related RUN commands with `&&` to reduce layer count
-- Consider using COPY --chown to set permissions in one step
+- レイヤーキャッシュを最大限に活用できるようにコマンドを整理する
+- 頻繁に変更されるコマンド（コード変更など）は、変更頻度の低いコマンド（依存関係のインストールなど）の後に配置する
+- 不要なファイルがビルドコンテキストに含まれないよう、`.dockerignore` を使用する
+- 関連する RUN コマンドを `&&` で結合してレイヤー数を削減する
+- 1 ステップでアクセス許可を設定するために COPY --chown の使用を検討する
 
-## Security Practices
+## セキュリティの実践
 
-- Avoid running containers as root - use `USER` instruction to specify a non-root user
-- Remove build tools and unnecessary packages from the final image
-- Scan the final image for vulnerabilities
-- Set restrictive file permissions
-- Use multi-stage builds to avoid including build secrets in the final image
+- コンテナーを root として実行しないようにする - `USER` 命令を使用して非 root ユーザーを指定する
+- 最終イメージからビルドツールと不要なパッケージを削除する
+- 最終イメージを脆弱性についてスキャンする
+- 制限的なファイルアクセス許可を設定する
+- 最終イメージにビルドシークレットが含まれないよう、マルチステージビルドを使用する
 
-## Performance Considerations
+## パフォーマンスに関する考慮事項
 
-- Use build arguments for configuration that might change between environments
-- Leverage build cache efficiently by ordering layers from least to most frequently changing
-- Consider parallelization in build steps when possible
-- Set appropriate environment variables like NODE_ENV=production to optimize runtime behavior
-- Use appropriate healthchecks for the application type with the HEALTHCHECK instruction
+- 環境間で変更される可能性がある構成にはビルド引数を使用する
+- 変更頻度が低いものから高いものへレイヤーを並べることで、ビルドキャッシュを効率的に活用する
+- 可能な場合はビルドステップの並列化を検討する
+- runtime の動作を最適化するため、NODE_ENV=production のような適切な環境変数を設定する
+- HEALTHCHECK 命令を使用して、アプリケーションの種類に適したヘルスチェックを設定する

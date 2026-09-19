@@ -1,58 +1,58 @@
 ---
 name: github-issues
-description: 'Create, update, and manage GitHub issues using MCP tools. Use this skill when users want to create bug reports, feature requests, or task issues, update existing issues, add labels/assignees/milestones, manage repository labels, set issue fields (dates, priority, custom fields), set issue types, manage issue workflows, link issues, add dependencies, or track blocked-by/blocking relationships. Triggers on requests like "create an issue", "file a bug", "request a feature", "update issue X", "set the priority", "set the start date", "create a label", "rename a label", "list repo labels", "link issues", "add dependency", "blocked by", "blocking", or any GitHub issue management task.'
+description: MCPツールを使ってGitHub issueを作成、更新、管理する。バグ報告、機能要求、タスクissueの作成、既存issueの更新、ラベル／担当者／マイルストーンの追加、リポジトリラベルの管理、issueフィールド（日付、優先度、カスタムフィールド）の設定、issueタイプの設定、issueワークフローの管理、issueのリンク、依存関係の追加、blocked-by／blocking関係の追跡をユーザーが求める場合に使用する。「issueを作成して」「バグを登録して」「issue Xを更新して」「優先度を設定して」「開始日を設定して」「ラベルを作成して」「ラベル名を変更して」「リポジトリのラベルを一覧表示して」「issueをリンクして」「依存関係を追加して」「blocked by」「blocking」などの依頼が対象となる。
 ---
 
 # GitHub Issues
 
-Manage GitHub issues using the `@modelcontextprotocol/server-github` MCP server.
+`@modelcontextprotocol/server-github` MCPサーバーを使ってGitHub issueを管理する。
 
-## Available Tools
+## 利用可能なツール
 
-### MCP Tools (read operations)
+### MCPツール（読み取り操作）
 
-| Tool | Purpose |
-|------|---------|
-| `mcp__github__issue_read` | Read issue details, sub-issues, comments, labels (methods: get, get_comments, get_sub_issues, get_labels) |
-| `mcp__github__list_issues` | List and filter repository issues by state, labels, date |
-| `mcp__github__search_issues` | Search issues across repos using GitHub search syntax |
-| `mcp__github__projects_list` | List projects, project fields, project items, status updates |
-| `mcp__github__projects_get` | Get details of a project, field, item, or status update |
-| `mcp__github__projects_write` | Add/update/delete project items, create status updates |
+| ツール | 用途 |
+|---------|------|
+| `mcp__github__issue_read` | issueの詳細、サブissue、コメント、ラベルを読む（メソッド：get、get_comments、get_sub_issues、get_labels） |
+| `mcp__github__list_issues` | リポジトリのissueを状態、ラベル、日付で一覧・絞り込みする |
+| `mcp__github__search_issues` | GitHub検索構文を使ってリポジトリ横断でissueを検索する |
+| `mcp__github__projects_list` | プロジェクト、プロジェクトフィールド、プロジェクト項目、状態更新を一覧表示する |
+| `mcp__github__projects_get` | プロジェクト、フィールド、項目、状態更新の詳細を取得する |
+| `mcp__github__projects_write` | プロジェクト項目の追加／更新／削除、状態更新の作成を行う |
 
-### MCP Tools (write operations)
+### MCPツール（書き込み操作）
 
-| Tool | Purpose |
-|------|---------|
-| `mcp__github__issue_write` | Create or update an issue (methods: create, update). Supports title, body, type, labels, assignees, milestone, and issue fields |
-| `mcp__github__add_issue_comment` | Add a comment or a reaction to an issue |
-| `mcp__github__sub_issue_write` | Add, remove, or reprioritize a sub-issue |
+| ツール | 用途 |
+|---------|------|
+| `mcp__github__issue_write` | issueを作成または更新する（メソッド：create、update）。タイトル、本文、タイプ、ラベル、担当者、マイルストーン、issueフィールドをサポートする |
+| `mcp__github__add_issue_comment` | issueへコメントまたはリアクションを追加する |
+| `mcp__github__sub_issue_write` | サブissueの追加、削除、優先順位変更を行う |
 
-### CLI / REST API (write operations)
+### CLI / REST API（書き込み操作）
 
-`gh api` performs the same writes and is the form used in the examples below. Reach for it when the MCP server is not connected, or when you need a REST field the MCP tools do not expose.
+MCPツールが接続されていない場合、またはMCPツールが公開していないRESTフィールドが必要な場合は、以下の例のように`gh api`を使用する。
 
-| Operation | Command |
+| 操作 | コマンド |
 |-----------|---------|
-| Create issue | `gh api repos/{owner}/{repo}/issues -X POST -f title=... -f body=...` |
-| Update issue | `gh api repos/{owner}/{repo}/issues/{number} -X PATCH -f title=... -f state=...` |
-| Add comment | `gh api repos/{owner}/{repo}/issues/{number}/comments -X POST -f body=...` |
-| Close issue | `gh api repos/{owner}/{repo}/issues/{number} -X PATCH -f state=closed` |
-| Set issue type | Include `-f type=Bug` in the create call (REST API only, not supported by `gh issue create` CLI) |
+| issueを作成 | `gh api repos/{owner}/{repo}/issues -X POST -f title=... -f body=...` |
+| issueを更新 | `gh api repos/{owner}/{repo}/issues/{number} -X PATCH -f title=... -f state=...` |
+| コメントを追加 | `gh api repos/{owner}/{repo}/issues/{number}/comments -X POST -f body=...` |
+| issueをクローズ | `gh api repos/{owner}/{repo}/issues/{number} -X PATCH -f state=closed` |
+| issueタイプを設定 | 作成呼び出しに`-f type=Bug`を含める（REST APIのみ。`gh issue create` CLIは非対応） |
 
-**Note:** `gh issue create` works for basic issue creation but does **not** support the `--type` flag. Use `gh api` when you need to set issue types.
+**注：** `gh issue create`は基本的なissue作成には使えるが、`--type`フラグには対応していない。issueタイプを設定する必要がある場合は`gh api`を使う。
 
-## Workflow
+## ワークフロー
 
-1. **Determine action**: Create, update, or query?
-2. **Gather context**: Get repo info, existing labels, milestones if needed
-3. **Structure content**: Use appropriate template from [references/templates.md](references/templates.md)
-4. **Execute**: Use MCP tools for reads, `gh api` for writes
-5. **Confirm**: Report the issue URL to user
+1. **操作を判断する：** 作成、更新、または照会か？
+2. **コンテキストを集める：** 必要に応じてリポジトリ、既存ラベル、マイルストーンを取得する
+3. **内容を構成する：** [references/templates.md](references/templates.md)の適切なテンプレートを使う
+4. **実行する：** 読み取りにはMCPツール、書き込みには`gh api`を使う
+5. **確認する：** issueのURLをユーザーへ報告する
 
-## Creating Issues
+## issueの作成
 
-Use `gh api` to create issues. This supports all parameters including issue types.
+issueの作成には`gh api`を使う。これはissueタイプを含むすべてのパラメーターに対応する。
 
 ```bash
 gh api repos/{owner}/{repo}/issues \
@@ -63,9 +63,9 @@ gh api repos/{owner}/{repo}/issues \
   --jq '{number, html_url}'
 ```
 
-### Optional Parameters
+### 任意のパラメーター
 
-Add any of these flags to the `gh api` call:
+必要に応じて次のフラグを追加する。
 
 ```
 -f type="Bug"                    # Issue type (Bug, Feature, Task, Epic, etc.)
@@ -74,43 +74,41 @@ Add any of these flags to the `gh api` call:
 -f milestone=1                   # Milestone number
 ```
 
-**Quote the whole `name[]=value` pair.** `[]` is a glob pattern in zsh, the default shell
-on macOS, so an unquoted `-f labels[]=bug` never reaches `gh`:
+**`name[]=value`のペア全体を引用する。** macOSのデフォルトシェルであるzshでは`[]`がglobパターンなので、引用しない`-f labels[]=bug`は`gh`に渡らない。
 
 ```
 zsh: no matches found: labels[]=bug
 ```
 
-**Issue types** are organization-level metadata. To discover available types, use:
 ```bash
 gh api graphql -f query='{ organization(login: "ORG") { issueTypes(first: 10) { nodes { name } } } }' --jq '.data.organization.issueTypes.nodes[].name'
 ```
 
-**Prefer issue types over labels for categorization.** When issue types are available (e.g., Bug, Feature, Task), use the `type` parameter instead of applying equivalent labels like `bug` or `enhancement`. Issue types are the canonical way to categorize issues on GitHub. Only fall back to labels when the org has no issue types configured.
+**分類にはラベルよりissueタイプを優先する。** issueタイプ（Bug、Feature、Taskなど）が利用できる場合は、同等の`bug`や`enhancement`ラベルではなく`type`パラメーターを使う。issueタイプが設定されていない組織の場合だけラベルに切り替える。
 
-### Title Guidelines
+### タイトルの指針
 
-- Be specific and actionable
-- Keep under 72 characters
-- When issue types are set, don't add redundant prefixes like `[Bug]`
-- Examples:
-  - `Login fails with SSO enabled` (with type=Bug)
-  - `Add dark mode support` (with type=Feature)
-  - `Add unit tests for auth module` (with type=Task)
+- 具体的で実行可能なタイトルにする
+- 72文字未満にする
+- issueタイプを設定した場合は、`[Bug]`のような重複する接頭辞を付けない
+- 例：
+  - `Login fails with SSO`（type=Bugの場合）
+  - `Add dark mode support`（type=Featureの場合）
+  - `Add unit tests for auth module`（type=Taskの場合）
 
-### Body Structure
+### 本文の構造
 
-Always use the templates in [references/templates.md](references/templates.md). Choose based on issue type:
+必ず[references/templates.md](references/templates.md)のテンプレートを使う。issueタイプに応じて選択する。
 
-| User Request | Template |
-|--------------|----------|
-| Bug, error, broken, not working | Bug Report |
-| Feature, enhancement, add, new | Feature Request |
-| Task, chore, refactor, update | Task |
+| ユーザーの依頼 | テンプレート |
+|----------|----------|
+| バグ、エラー、壊れている、動かない | バグ報告 |
+| 機能、改善、追加、新規 | 機能要求 |
+| タスク、雑務、リファクタリング、更新 | タスク |
 
-## Updating Issues
+## issueの更新
 
-Use `gh api` with PATCH:
+PATCHで`gh api`を使う。
 
 ```bash
 gh api repos/{owner}/{repo}/issues/{number} \
@@ -120,15 +118,15 @@ gh api repos/{owner}/{repo}/issues/{number} \
   --jq '{number, html_url}'
 ```
 
-Only include fields you want to change. Available fields: `title`, `body`, `state` (open/closed), `labels`, `assignees`, `milestone`.
+変更したいフィールドだけを含める。使用可能なフィールドは`title`、`body`、`state`（open/closed）、`labels`、`assignees`、`milestone`。
 
-## Examples
+## 例
 
-### Example 1: Bug Report
+### 例1：バグ報告
 
-**User**: "Create a bug issue - the login page crashes when using SSO"
+**ユーザー：**「バグissueを作成して - SSO使用時にログインページがクラッシュする」
 
-**Action**: 
+**操作：**
 ```bash
 gh api repos/github/awesome-copilot/issues \
   -X POST \
@@ -150,11 +148,11 @@ Page becomes unresponsive and displays error." \
   --jq '{number, html_url}'
 ```
 
-### Example 2: Feature Request
+### 例2：機能要求
 
-**User**: "Create a feature request for dark mode with high priority"
+**ユーザー：**「優先度を高くしてダークモードの機能要求を作成して」
 
-**Action**:
+**操作：**
 ```bash
 gh api repos/github/awesome-copilot/issues \
   -X POST \
@@ -178,41 +176,41 @@ Implement theme toggle with system preference detection.
   --jq '{number, html_url}'
 ```
 
-## Common Labels
+## 一般的なラベル
 
-Use these standard labels when applicable:
+該当する場合は次の標準ラベルを使う。
 
-| Label | Use For |
+| ラベル | 用途 |
 |-------|---------|
-| `bug` | Something isn't working |
-| `enhancement` | New feature or improvement |
-| `documentation` | Documentation updates |
-| `good first issue` | Good for newcomers |
-| `help wanted` | Extra attention needed |
-| `question` | Further information requested |
-| `wontfix` | Will not be addressed |
-| `duplicate` | Already exists |
-| `high-priority` | Urgent issues |
+| `bug` | 動作していないもの |
+| `enhancement` | 新機能または改善 |
+| `documentation` | ドキュメント更新 |
+| `good first issue` | 初心者に適したもの |
+| `help wanted` | 追加の支援が必要なもの |
+| `question` | さらなる情報が必要なもの |
+| `wontfix` | 対応しないもの |
+| `duplicate` | 既存の重複 |
+| `high-priority` | 緊急のissue |
 
-## Tips
+## ヒント
 
-- Always confirm the repository context before creating issues
-- Ask for missing critical information rather than guessing
-- Link related issues when known: `Related to #123`
-- For updates, fetch current issue first to preserve unchanged fields
+- issueを作成する前に、必ずリポジトリのコンテキストを確認する
+- 重要な情報が不足している場合は、推測せずに尋ねる
+- 分かっている関連issueをリンクする：`Related to #123`
+- 更新時は、変更しないフィールドを保持するため、先に現在のissueを取得する
 
-## Extended Capabilities
+## 拡張機能
 
-The following features require REST or GraphQL APIs beyond the basic MCP tools. Each is documented in its own reference file so the agent only loads the knowledge it needs.
+次の機能には、基本的なMCPツール以外のRESTまたはGraphQL APIが必要である。それぞれの詳細は、必要な知識だけを読み込めるよう、専用の参照ファイルに記載している。
 
-| Capability | When to use | Reference |
-|------------|-------------|-----------|
-| Advanced search | Complex queries with boolean logic, date ranges, cross-repo search, issue field filters (`field.name:value`) | [references/search.md](references/search.md) |
-| Sub-issues & parent issues | Breaking work into hierarchical tasks | [references/sub-issues.md](references/sub-issues.md) |
-| Milestones | Create, read, update, close, reopen, delete milestones and manage milestone issues | [references/milestones.md](references/milestones.md) |
-| Labels | Discover, create, rename, recolor, and delete repository labels; add or replace labels on an issue | [references/labels.md](references/labels.md) |
-| Issue dependencies | Tracking blocked-by / blocking relationships | [references/dependencies.md](references/dependencies.md) |
-| Issue types (advanced) | GraphQL operations beyond MCP `list_issue_types` / `type` param | [references/issue-types.md](references/issue-types.md) |
-| Projects V2 | Project boards, progress reports, field management | [references/projects.md](references/projects.md) |
-| Issue fields | Custom metadata: dates, priority, text, numbers (private preview) | [references/issue-fields.md](references/issue-fields.md) |
-| Images in issues | Embedding images in issue bodies and comments via CLI | [references/images.md](references/images.md) |
+| 機能 | 使用する場面 | 参照 |
+|-----------|-----------|-----------|
+| 高度な検索 | 複雑な論理式、日付範囲、リポジトリ横断検索、issueフィールドフィルター（`field.name:value`） | [references/search.md](references/search.md) |
+| サブissueと親issue | 作業を階層的なタスクへ分割する | [references/sub-issues.md](references/sub-issues.md) |
+| マイルストーン | マイルストーンの作成、読み取り、更新、クローズ、再オープン、削除、issueの管理 | [references/milestones.md](references/milestones.md) |
+| ラベル | リポジトリラベルの取得、作成、名前変更、色変更、削除；issueのラベル追加または置換 | [references/labels.md](references/labels.md) |
+| issueの依存関係 | blocked-by / blocking関係の追跡 | [references/dependencies.md](references/dependencies.md) |
+| issueタイプ（高度） | MCPの`list_issue_types` / `type`パラメーターを超えるGraphQL操作 | [references/issue-types.md](references/issue-types.md) |
+| Projects V2 | プロジェクトボード、進捗レポート、フィールド管理 | [references/projects.md](references/projects.md) |
+| issueフィールド | カスタムメタデータ：日付、優先度、テキスト、数値（プライベートプレビュー） | [references/issue-fields.md](references/issue-fields.md) |
+| issue内の画像 | CLIを使ってissue本文やコメントへ画像を埋め込む | [references/images.md](references/images.md) |

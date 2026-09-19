@@ -1,33 +1,33 @@
 ---
 name: entra-agent-user
-description: 'Create Agent Users in Microsoft Entra ID from Agent Identities, enabling AI agents to act as digital workers with user identity capabilities in Microsoft 365 and Azure environments.'
+description: 'Agent Identity から Microsoft Entra ID の Agent User を作成し、AI エージェントが Microsoft 365 と Azure 環境でユーザー ID の機能を持つデジタルワーカーとして動作できるようにします。'
 ---
 
-# SKILL: Creating Agent Users in Microsoft Entra Agent ID
+# スキル: Microsoft Entra Agent ID でエージェント ユーザーを作成する
 
-## Overview
+## 概要
 
-An **agent user** is a specialized user identity in Microsoft Entra ID that enables AI agents to act as digital workers. It allows agents to access APIs and services that strictly require user identities (e.g., Exchange mailboxes, Teams, org charts), while maintaining appropriate security boundaries.
+**エージェント ユーザー**は、AI エージェントがデジタル ワーカーとして動作できるようにする、Microsoft Entra ID の特殊なユーザー ID です。適切なセキュリティ境界を維持しながら、ユーザー ID を厳密に必要とする API やサービス（例: Exchange メールボックス、Teams、組織図）へエージェントがアクセスできるようにします。
 
-Agent users receive tokens with `idtyp=user`, unlike regular agent identities which receive `idtyp=app`.
+エージェント ユーザーは、`idtyp=app` を受け取る通常のエージェント ID とは異なり、`idtyp=user` を含むトークンを受け取ります。
 
 ---
 
-## Prerequisites
+## 前提条件
 
-- A **Microsoft Entra tenant** with Agent ID capabilities
-- An **agent identity** (service principal of type `ServiceIdentity`) created from an **agent identity blueprint**
-- One of the following **permissions**:
-  - `AgentIdUser.ReadWrite.IdentityParentedBy` (least privileged)
+- Agent ID 機能を備えた **Microsoft Entra テナント**
+- **エージェント ID ブループリント**から作成された **エージェント ID**（`ServiceIdentity` 型のサービス プリンシパル）
+- 次のいずれかの **アクセス許可**:
+  - `AgentIdUser.ReadWrite.IdentityParentedBy`（最小権限）
   - `AgentIdUser.ReadWrite.All`
   - `User.ReadWrite.All`
-- The caller must have at minimum the **Agent ID Administrator** role (in delegated scenarios)
+- 呼び出し元は、少なくとも **Agent ID Administrator** ロールを持っている必要があります（委任シナリオの場合）
 
-> **Important:** The `identityParentId` must reference a true agent identity (created via an agent identity blueprint), NOT a regular application service principal. You can verify by checking that the service principal has `@odata.type: #microsoft.graph.agentIdentity` and `servicePrincipalType: ServiceIdentity`.
+> **重要:** `identityParentId` は、通常のアプリケーション サービス プリンシパルではなく、真のエージェント ID（エージェント ID ブループリント経由で作成されたもの）を参照している必要があります。サービス プリンシパルに `@odata.type: #microsoft.graph.agentIdentity` と `servicePrincipalType: ServiceIdentity` があることを確認することで検証できます。
 
 ---
 
-## Architecture
+## アーキテクチャ
 
 ```
 Agent Identity Blueprint (application template)
@@ -39,23 +39,23 @@ Agent Identity Blueprint (application template)
     └── Agent Identity Blueprint Principal (service principal in tenant)
 ```
 
-| Component | Type | Token Claim | Purpose |
+| コンポーネント | 種類 | トークン クレーム | 目的 |
 |---|---|---|---|
-| Agent Identity | Service Principal | `idtyp=app` | Backend/API operations |
-| Agent User | User (`agentUser`) | `idtyp=user` | Act as a digital worker in M365 |
+| エージェント ID | サービス プリンシパル | `idtyp=app` | バックエンド/API 操作 |
+| エージェント ユーザー | ユーザー（`agentUser`） | `idtyp=user` | M365 のデジタル ワーカーとして動作 |
 
 ---
 
-## Step 1: Verify the Agent Identity Exists
+## 手順 1: エージェント ID が存在することを確認する
 
-Before creating an agent user, confirm the agent identity is a proper `agentIdentity` type:
+エージェント ユーザーを作成する前に、エージェント ID が適切な `agentIdentity` 型であることを確認します。
 
 ```http
 GET https://graph.microsoft.com/beta/servicePrincipals/{agent-identity-id}
 Authorization: Bearer <token>
 ```
 
-Verify the response contains:
+レスポンスに次が含まれていることを確認します。
 ```json
 {
   "@odata.type": "#microsoft.graph.agentIdentity",
@@ -72,13 +72,13 @@ Invoke-MgGraphRequest -Method GET `
   -Uri "https://graph.microsoft.com/beta/servicePrincipals/<agent-identity-id>" | ConvertTo-Json -Depth 3
 ```
 
-> **Common mistake:** Using an app registration's `appId` or a regular application service principal's `id` will fail. Only agent identities created from blueprints work.
+> **よくある間違い:** アプリ登録の `appId` や通常のアプリケーション サービス プリンシパルの `id` を使用すると失敗します。ブループリントから作成されたエージェント ID のみが動作します。
 
 ---
 
-## Step 2: Create the Agent User
+## 手順 2: エージェント ユーザーを作成する
 
-### HTTP Request
+### HTTP リクエスト
 
 ```http
 POST https://graph.microsoft.com/beta/users/microsoft.graph.agentUser
@@ -94,15 +94,15 @@ Authorization: Bearer <token>
 }
 ```
 
-### Required Properties
+### 必須プロパティ
 
-| Property | Type | Description |
+| プロパティ | 種類 | 説明 |
 |---|---|---|
-| `accountEnabled` | Boolean | `true` to enable the account |
-| `displayName` | String | Human-friendly name |
-| `mailNickname` | String | Mail alias (no spaces/special chars) |
-| `userPrincipalName` | String | UPN — must be unique in the tenant (`alias@verified-domain`) |
-| `identityParentId` | String | Object ID of the parent agent identity |
+| `accountEnabled` | Boolean | アカウントを有効にするには `true` |
+| `displayName` | String | 人が読みやすい名前 |
+| `mailNickname` | String | メール エイリアス（スペース/特殊文字なし） |
+| `userPrincipalName` | String | UPN — テナント内で一意である必要があります（`alias@verified-domain`） |
+| `identityParentId` | String | 親エージェント ID のオブジェクト ID |
 
 ### PowerShell
 
@@ -122,17 +122,17 @@ Invoke-MgGraphRequest -Method POST `
   -Body $body -ContentType "application/json" | ConvertTo-Json -Depth 3
 ```
 
-### Key Notes
+### 重要なメモ
 
-- **No password** — agent users cannot have passwords. They authenticate via their parent agent identity's credentials.
-- **1:1 relationship** — each agent identity can have at most one agent user. Attempting to create a second returns `400 Bad Request`.
-- The `userPrincipalName` must be unique. Don't reuse an existing user's UPN.
+- **パスワードなし** — エージェント ユーザーはパスワードを持つことができません。親エージェント ID の資格情報を介して認証します。
+- **1:1 の関係** — 各エージェント ID が持てるエージェント ユーザーは最大 1 つです。2 つ目を作成しようとすると `400 Bad Request` が返されます。
+- `userPrincipalName` は一意である必要があります。既存ユーザーの UPN を再利用しないでください。
 
 ---
 
-## Step 3: Assign a Manager (Optional)
+## 手順 3: マネージャーを割り当てる（任意）
 
-Assigning a manager allows the agent user to appear in org charts (e.g., Teams).
+マネージャーを割り当てると、エージェント ユーザーが組織図（例: Teams）に表示されるようになります。
 
 ```http
 PUT https://graph.microsoft.com/beta/users/{agent-user-id}/manager/$ref
@@ -155,11 +155,11 @@ Invoke-MgGraphRequest -Method PUT `
 
 ---
 
-## Step 4: Set Usage Location and Assign Licenses (Optional)
+## 手順 4: 使用場所を設定してライセンスを割り当てる（任意）
 
-A license is needed for the agent user to have a mailbox, Teams presence, etc. Usage location must be set first.
+エージェント ユーザーがメールボックスや Teams プレゼンスなどを持つにはライセンスが必要です。使用場所を先に設定する必要があります。
 
-### Set Usage Location
+### 使用場所を設定する
 
 ```http
 PATCH https://graph.microsoft.com/beta/users/{agent-user-id}
@@ -171,16 +171,16 @@ Authorization: Bearer <token>
 }
 ```
 
-### List Available Licenses
+### 使用可能なライセンスを一覧表示する
 
 ```http
 GET https://graph.microsoft.com/beta/subscribedSkus?$select=skuPartNumber,skuId,consumedUnits,prepaidUnits
 Authorization: Bearer <token>
 ```
 
-Requires `Organization.Read.All` permission.
+`Organization.Read.All` アクセス許可が必要です。
 
-### Assign a License
+### ライセンスを割り当てる
 
 ```http
 POST https://graph.microsoft.com/beta/users/{agent-user-id}/assignLicense
@@ -195,7 +195,7 @@ Authorization: Bearer <token>
 }
 ```
 
-### PowerShell (all in one)
+### PowerShell（一括）
 
 ```powershell
 Connect-MgGraph -Scopes "User.ReadWrite.All","Organization.Read.All" -TenantId "<tenant>" -NoWelcome
@@ -212,59 +212,59 @@ Invoke-MgGraphRequest -Method POST `
   -Body $licenseBody -ContentType "application/json"
 ```
 
-> **Tip:** You can also assign licenses via the **Entra admin center** under Identity → Users → All users → select the agent user → Licenses and apps.
+> **ヒント:** **Entra 管理センター**の Identity → Users → All users → 対象の agent user → Licenses and apps からライセンスを割り当てることもできます。
 
 ---
 
-## Provisioning Times
+## プロビジョニング時間
 
-| Service | Estimated Time |
+| サービス | 推定時間 |
 |---|---|
-| Exchange mailbox | 5–30 minutes |
-| Teams availability | 15 min – 24 hours |
-| Org chart / People search | Up to 24–48 hours |
-| SharePoint / OneDrive | 5–30 minutes |
-| Global Address List | Up to 24 hours |
+| Exchange メールボックス | 5～30 分 |
+| Teams の利用可能化 | 15 分～24 時間 |
+| 組織図 / People 検索 | 最大 24～48 時間 |
+| SharePoint / OneDrive | 5～30 分 |
+| Global Address List | 最大 24 時間 |
 
 ---
 
-## Agent User Capabilities
+## Agent User の機能
 
-- ✅ Added to Microsoft Entra groups (including dynamic groups)
-- ✅ Access user-only APIs (`idtyp=user` tokens)
-- ✅ Own a mailbox, calendar, and contacts
-- ✅ Participate in Teams chats and channels
-- ✅ Appear in org charts and People search
-- ✅ Added to administrative units
-- ✅ Assigned licenses
+- ✅ Microsoft Entra グループ（動的グループを含む）への追加
+- ✅ ユーザー専用 API へのアクセス（`idtyp=user` トークン）
+- ✅ メールボックス、カレンダー、連絡先の所有
+- ✅ Teams のチャットとチャネルへの参加
+- ✅ 組織図と People 検索への表示
+- ✅ 管理単位への追加
+- ✅ ライセンスの割り当て
 
-## Agent User Security Constraints
+## Agent User のセキュリティ制約
 
-- ❌ Cannot have passwords, passkeys, or interactive sign-in
-- ❌ Cannot be assigned privileged admin roles
-- ❌ Cannot be added to role-assignable groups
-- ❌ Permissions similar to guest users by default
-- ❌ Custom role assignment not available
+- ❌ パスワード、パスキー、対話型サインインは使用不可
+- ❌ 特権管理者ロールは割り当て不可
+- ❌ ロール割り当て可能グループには追加不可
+- ❌ 既定ではゲスト ユーザーと同等のアクセス許可
+- ❌ カスタム ロールの割り当ては利用不可
 
 ---
 
-## Troubleshooting
+## トラブルシューティング
 
-| Error | Cause | Fix |
+| エラー | 原因 | 修正方法 |
 |---|---|---|
-| `Agent user IdentityParent does not exist` | `identityParentId` points to a non-existent or non-agent-identity object | Verify the ID is an `agentIdentity` service principal, not a regular app |
-| `400 Bad Request` (identityParentId already linked) | The agent identity already has an agent user | Each agent identity supports only one agent user |
-| `409 Conflict` on UPN | The `userPrincipalName` is already taken | Use a unique UPN |
-| License assignment fails | Usage location not set | Set `usageLocation` before assigning licenses |
+| `Agent user IdentityParent does not exist` | `identityParentId` が存在しないオブジェクト、または agent identity ではないオブジェクトを参照している | ID が通常のアプリではなく `agentIdentity` サービス プリンシパルであることを確認する |
+| `400 Bad Request`（identityParentId がすでにリンク済み） | agent identity に agent user がすでに存在する | 各 agent identity がサポートする agent user は 1 つだけです |
+| UPN で `409 Conflict` | `userPrincipalName` がすでに使用されている | 一意の UPN を使用する |
+| ライセンスの割り当てに失敗する | 使用場所が設定されていない | ライセンスを割り当てる前に `usageLocation` を設定する |
 
 ---
 
-## References
+## 参考資料
 
 - [Agent identities](https://learn.microsoft.com/en-us/entra/agent-id/identity-platform/agent-identities)
 - [Agent users](https://learn.microsoft.com/en-us/entra/agent-id/identity-platform/agent-users)
 - [Agent service principals](https://learn.microsoft.com/en-us/entra/agent-id/identity-platform/agent-service-principals)
-- [Create agent identity blueprint](https://learn.microsoft.com/en-us/entra/agent-id/identity-platform/create-blueprint)
-- [Create agent identities](https://learn.microsoft.com/en-us/entra/agent-id/identity-platform/create-delete-agent-identities)
-- [agentUser resource type (Graph API)](https://learn.microsoft.com/en-us/graph/api/resources/agentuser?view=graph-rest-beta)
-- [Create agentUser (Graph API)](https://learn.microsoft.com/en-us/graph/api/agentuser-post?view=graph-rest-beta)
+- [Agent identity blueprint を作成する](https://learn.microsoft.com/en-us/entra/agent-id/identity-platform/create-blueprint)
+- [Agent identities を作成する](https://learn.microsoft.com/en-us/entra/agent-id/identity-platform/create-delete-agent-identities)
+- [agentUser リソース型 (Graph API)](https://learn.microsoft.com/en-us/graph/api/resources/agentuser?view=graph-rest-beta)
+- [agentUser を作成する (Graph API)](https://learn.microsoft.com/en-us/graph/api/agentuser-post?view=graph-rest-beta)

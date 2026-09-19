@@ -3,114 +3,114 @@ name: dotnet-upgrade
 description: 'Ready-to-use prompts for comprehensive .NET framework upgrade analysis and execution'
 ---
 
-# Project Discovery & Assessment
-  - name: "Project Classification Analysis"
-    prompt: "Identify all projects in the solution and classify them by type (`.NET Framework`, `.NET Core`, `.NET Standard`). Analyze each `.csproj` for its current `TargetFramework` and SDK usage."
+# プロジェクトの検出と評価
+  - name: "プロジェクト分類分析"
+    prompt: "ソリューション内のすべてのプロジェクトを特定し、種類別に分類します（`.NET Framework`、`.NET Core`、`.NET Standard`）。各 `.csproj` の現在の `TargetFramework` と SDK の使用状況を分析します。"
 
-  - name: "Dependency Compatibility Review"
-    prompt: "Review external and internal dependencies for framework compatibility. Determine the upgrade complexity based on dependency graph depth."
+  - name: "依存関係の互換性レビュー"
+    prompt: "外部および内部の依存関係についてフレームワーク互換性をレビューします。依存関係グラフの深さに基づいてアップグレードの複雑性を判断します。"
 
-  - name: "Legacy Package Detection"
-    prompt: "Identify legacy `packages.config` projects needing migration to `PackageReference` format."
+  - name: "レガシー パッケージの検出"
+    prompt: "`PackageReference` 形式への移行が必要なレガシー `packages.config` プロジェクトを特定します。"
 
-  # Upgrade Strategy & Sequencing
-  - name: "Project Upgrade Ordering"
-    prompt: "Recommend a project upgrade order from least to most dependent components. Suggest how to isolate class library upgrades before API or Azure Function migrations."
+  # アップグレード戦略と順序付け
+  - name: "プロジェクトのアップグレード順序"
+    prompt: "依存関係が最も少ないコンポーネントから最も多いコンポーネントまでのプロジェクト アップグレード順序を推奨します。API または Azure Function の移行前に、クラス ライブラリのアップグレードを分離する方法を提案します。"
 
-  - name: "Incremental Strategy Planning"
-    prompt: "Propose an incremental upgrade strategy with rollback checkpoints. Evaluate the use of **Upgrade Assistant** or **manual upgrades** based on project structure."
+  - name: "段階的戦略の計画"
+    prompt: "ロールバック チェックポイントを含む段階的なアップグレード戦略を提案します。プロジェクト構造に基づき、**Upgrade Assistant** または **手動アップグレード** の使用を評価します。"
 
-  - name: "Progress Tracking Setup"
-    prompt: "Generate an upgrade checklist for tracking build, test, and deployment readiness across all projects."
+  - name: "進捗追跡の設定"
+    prompt: "すべてのプロジェクトにわたるビルド、テスト、デプロイの準備状況を追跡するためのアップグレード チェックリストを生成します。"
 
-  # Framework Targeting & Code Adjustments
-  - name: "Target Framework Selection"
-    prompt: "Suggest the correct `TargetFramework` for each project (e.g., `net8.0`). Review and update deprecated SDK or build configurations."
+  # フレームワークのターゲット設定とコード調整
+  - name: "ターゲット フレームワークの選択"
+    prompt: "各プロジェクトに適した `TargetFramework` を提案します（例: `net8.0`）。非推奨の SDK またはビルド構成をレビューして更新します。"
 
-  - name: "Code Modernization Analysis"
-    prompt: "Identify code patterns needing modernization (e.g., `WebHostBuilder` → `HostBuilder`). Suggest replacements for deprecated .NET APIs and third-party libraries."
+  - name: "コードのモダナイゼーション分析"
+    prompt: "モダナイゼーションが必要なコード パターンを特定します（例: `WebHostBuilder` → `HostBuilder`）。非推奨の .NET API およびサードパーティ ライブラリの代替案を提案します。"
 
-  - name: "Async Pattern Conversion"
-    prompt: "Recommend conversion of synchronous calls to async where appropriate for improved performance and scalability."
+  - name: "非同期パターンへの変換"
+    prompt: "パフォーマンスとスケーラビリティを向上させるため、適切な箇所で同期呼び出しを非同期に変換することを推奨します。"
 
-  # NuGet & Dependency Management
-  - name: "Package Compatibility Analysis"
-    prompt: "Analyze outdated or incompatible NuGet packages and suggest compatible versions. Identify third-party libraries that lack .NET 8 support and provide migration paths."
+  # NuGet と依存関係の管理
+  - name: "パッケージ互換性分析"
+    prompt: "古い、または互換性のない NuGet パッケージを分析し、互換性のあるバージョンを提案します。.NET 8 をサポートしていないサードパーティ ライブラリを特定し、移行パスを提示します。"
 
-  - name: "Shared Dependency Strategy"
-    prompt: "Recommend strategies for handling shared dependency upgrades across projects. Evaluate usage of legacy packages and suggest alternatives in Microsoft-supported namespaces."
+  - name: "共有依存関係戦略"
+    prompt: "プロジェクト間で共有される依存関係のアップグレードを処理するための戦略を推奨します。レガシー パッケージの使用を評価し、Microsoft がサポートする名前空間における代替案を提案します。"
 
-  - name: "Transitive Dependency Review"
-    prompt: "Review transitive dependencies and potential version conflicts after upgrade. Suggest resolution strategies for dependency conflicts."
+  - name: "推移的依存関係のレビュー"
+    prompt: "アップグレード後の推移的依存関係と潜在的なバージョン競合をレビューします。依存関係の競合を解決するための戦略を提案します。"
 
-  # CI/CD & Build Pipeline Updates
-  - name: "Pipeline Configuration Analysis"
-    prompt: "Analyze YAML build definitions for SDK version pinning and recommend updates. Suggest modifications for `UseDotNet@2` and `NuGetToolInstaller` tasks."
+  # CI/CD とビルド パイプラインの更新
+  - name: "パイプライン構成分析"
+    prompt: "SDK バージョンの固定について YAML ビルド定義を分析し、更新を推奨します。`UseDotNet@2` および `NuGetToolInstaller` タスクに対する変更を提案します。"
 
-  - name: "Build Pipeline Modernization"
-    prompt: "Generate updated build pipeline snippets for .NET 8 migration. Recommend validation builds on feature branches before merging to main."
+  - name: "ビルド パイプラインのモダナイゼーション"
+    prompt: ".NET 8 移行向けに更新されたビルド パイプラインのスニペットを生成します。main へのマージ前に、機能ブランチで検証ビルドを実行することを推奨します。"
 
-  - name: "CI Automation Enhancement"
-    prompt: "Identify opportunities to automate test and build verification in CI pipelines. Suggest strategies for continuous integration validation."
+  - name: "CI 自動化の強化"
+    prompt: "CI パイプラインでテストおよびビルドの検証を自動化する機会を特定します。継続的インテグレーションの検証に向けた戦略を提案します。"
 
-  # Testing & Validation
-  - name: "Build Validation Strategy"
-    prompt: "Propose validation checks to ensure the upgraded solution builds and runs successfully. Recommend automated test execution for unit and integration suites post-upgrade."
+  # テストと検証
+  - name: "ビルド検証戦略"
+    prompt: "アップグレードされたソリューションが正常にビルドおよび実行されることを確認するための検証チェックを提案します。アップグレード後に単体テストおよび統合テスト スイートを自動実行することを推奨します。"
 
-  - name: "Service Integration Verification"
-    prompt: "Generate validation steps to verify logging, telemetry, and service connectivity. Suggest strategies for verifying backward compatibility and runtime behavior."
+  - name: "サービス統合の検証"
+    prompt: "ログ、テレメトリ、およびサービス接続を検証するための手順を生成します。後方互換性およびランタイム動作を検証するための戦略を提案します。"
 
-  - name: "Deployment Readiness Check"
-    prompt: "Recommend UAT deployment verification steps before production rollout. Create comprehensive testing scenarios for upgraded components."
+  - name: "デプロイ準備状況チェック"
+    prompt: "本番展開前の UAT デプロイ検証手順を推奨します。アップグレードされたコンポーネントに対する包括的なテスト シナリオを作成します。"
 
-  # Breaking Change Analysis
-  - name: "API Deprecation Detection"
-    prompt: "Identify deprecated APIs or removed namespaces between target versions. Suggest automated scanning using `.NET Upgrade Assistant` and API Analyzer."
+  # 破壊的変更の分析
+  - name: "API 非推奨化の検出"
+    prompt: "ターゲット バージョン間で非推奨となった API または削除された名前空間を特定します。`.NET Upgrade Assistant` および API Analyzer を使用した自動スキャンを提案します。"
 
-  - name: "API Replacement Strategy"
-    prompt: "Recommend replacement APIs or libraries for known breaking areas. Review configuration changes such as `Startup.cs` → `Program.cs` refactoring."
+  - name: "API 置換戦略"
+    prompt: "既知の破壊的変更領域に対する代替 API またはライブラリを推奨します。`Startup.cs` → `Program.cs` のリファクタリングなどの構成変更をレビューします。"
 
-  - name: "Regression Testing Focus"
-    prompt: "Suggest regression testing scenarios focused on upgraded API endpoints or services. Create test plans for critical functionality validation."
+  - name: "回帰テストの重点領域"
+    prompt: "アップグレードされた API エンドポイントまたはサービスに焦点を当てた回帰テスト シナリオを提案します。重要な機能の検証に向けたテスト計画を作成します。"
 
-  # Version Control & Commit Strategy
-  - name: "Branching Strategy Planning"
-    prompt: "Recommend branching strategy for safe upgrade with rollback capability. Generate commit templates for partial and complete project upgrades."
+  # バージョン管理とコミット戦略
+  - name: "ブランチ戦略の計画"
+    prompt: "ロールバック機能を備えた安全なアップグレードのためのブランチ戦略を推奨します。部分的および完全なプロジェクト アップグレード向けのコミット テンプレートを生成します。"
 
-  - name: "PR Structure Optimization"
-    prompt: "Suggest best practices for creating structured PRs (`Upgrade to .NET [Version]`). Identify tagging strategies for PRs involving breaking changes."
+  - name: "PR 構造の最適化"
+    prompt: "構造化された PR を作成するためのベスト プラクティスを提案します（`Upgrade to .NET [Version]`）。破壊的変更を含む PR のタグ付け戦略を特定します。"
 
-  - name: "Code Review Guidelines"
-    prompt: "Recommend peer review focus areas (build, test, and dependency validation). Create checklists for effective upgrade reviews."
+  - name: "コード レビュー ガイドライン"
+    prompt: "ピア レビューの重点領域（ビルド、テスト、依存関係の検証）を推奨します。効果的なアップグレード レビューのためのチェックリストを作成します。"
 
-  # Documentation & Communication
-  - name: "Upgrade Documentation Strategy"
-    prompt: "Suggest how to document each project's framework change in the PR. Propose automated release note generation summarizing upgrades and test results."
+  # ドキュメントとコミュニケーション
+  - name: "アップグレード ドキュメント戦略"
+    prompt: "各プロジェクトのフレームワーク変更を PR で文書化する方法を提案します。アップグレードとテスト結果を要約するリリース ノートの自動生成を提案します。"
 
-  - name: "Stakeholder Communication"
-    prompt: "Recommend communicating version upgrades and migration timelines to consumers. Generate documentation templates for dependency updates and validation results."
+  - name: "ステークホルダーとのコミュニケーション"
+    prompt: "バージョン アップグレードと移行タイムラインを利用者に伝える方法を推奨します。依存関係の更新と検証結果のためのドキュメント テンプレートを生成します。"
 
-  - name: "Progress Tracking Systems"
-    prompt: "Suggest maintaining an upgrade summary dashboard or markdown checklist. Create templates for tracking upgrade progress across multiple projects."
+  - name: "進捗追跡システム"
+    prompt: "アップグレード概要ダッシュボードまたは Markdown チェックリストを維持することを提案します。複数プロジェクトにわたるアップグレード進捗を追跡するためのテンプレートを作成します。"
 
-  # Tools & Automation
-  - name: "Upgrade Tool Selection"
-    prompt: "Recommend when and how to use: `.NET Upgrade Assistant`, `dotnet list package --outdated`, `dotnet migrate`, and `graph.json` dependency visualization."
+  # ツールと自動化
+  - name: "アップグレード ツールの選定"
+    prompt: "次のツールをいつ、どのように使用するかを推奨します: `.NET Upgrade Assistant`、`dotnet list package --outdated`、`dotnet migrate`、および `graph.json` の依存関係可視化。"
 
-  - name: "Analysis Script Generation"
-    prompt: "Generate scripts or prompts for analyzing dependency graphs before upgrading. Propose AI-assisted prompts for Copilot to identify upgrade issues automatically."
+  - name: "分析スクリプトの生成"
+    prompt: "アップグレード前に依存関係グラフを分析するためのスクリプトまたはプロンプトを生成します。アップグレードの問題を Copilot が自動的に特定するための AI 支援プロンプトを提案します。"
 
-  - name: "Multi-Repository Validation"
-    prompt: "Suggest how to validate automation output across multiple repositories. Create standardized validation workflows for enterprise-scale upgrades."
+  - name: "複数リポジトリの検証"
+    prompt: "複数のリポジトリにわたって自動化の出力を検証する方法を提案します。エンタープライズ規模のアップグレード向けに標準化された検証ワークフローを作成します。"
 
-  # Final Validation & Delivery
-  - name: "Final Solution Validation"
-    prompt: "Generate validation steps to confirm the final upgraded solution passes all validation checks. Suggest production deployment verification steps post-upgrade."
+  # 最終検証とデリバリー
+  - name: "最終ソリューション検証"
+    prompt: "最終的にアップグレードされたソリューションがすべての検証チェックに合格することを確認するための検証手順を生成します。アップグレード後の本番デプロイ検証手順を提案します。"
 
-  - name: "Deployment Readiness Confirmation"
-    prompt: "Recommend generating final test results and build artifacts. Create a checklist summarizing completion across projects (builds/tests/deployment)."
+  - name: "デプロイ準備状況の確認"
+    prompt: "最終テスト結果およびビルド成果物を生成することを推奨します。プロジェクト全体（ビルド/テスト/デプロイ）の完了状況を要約するチェックリストを作成します。"
 
-  - name: "Release Documentation"
-    prompt: "Generate a release note summarizing framework changes and CI/CD updates. Create comprehensive upgrade summary documentation."
+  - name: "リリース ドキュメント"
+    prompt: "フレームワークの変更と CI/CD の更新を要約するリリース ノートを生成します。包括的なアップグレード概要ドキュメントを作成します。"
 
 ---

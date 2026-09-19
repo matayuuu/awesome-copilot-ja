@@ -1,65 +1,65 @@
 ---
 name: microsoft-agent-framework
-description: 'Create, update, refactor, explain, or review Microsoft Agent Framework solutions using shared guidance plus language-specific references for .NET and Python.'
+description: '共有ガイドラインと .NET / Python 向けの言語別リファレンスを用いて、Microsoft Agent Framework のソリューションを作成、更新、リファクタリング、説明、またはレビューする。'
 ---
 
 # Microsoft Agent Framework
 
-Use this skill when working with applications, agents, workflows, or migrations built on Microsoft Agent Framework.
+Microsoft Agent Framework を使ったアプリケーション、エージェント、ワークフロー、または移行作業に取り組むときに、このスキルを使用します。
 
-Microsoft Agent Framework is the unified successor to Semantic Kernel and AutoGen, combining their strengths with new capabilities. Because it is still in public preview and changes quickly, always ground implementation advice in the latest official documentation and samples rather than relying on stale knowledge.
+Microsoft Agent Framework は Semantic Kernel と AutoGen の統合後継であり、それらの強みと新しい機能を組み合わせたものです。まだパブリック プレビュー段階であり、変更が速いため、古い知識に依存するのではなく、常に最新の公式ドキュメントとサンプルを根拠として実装のアドバイスを行ってください。
 
-## Determine the target language first
+## まず対象言語を決定する
 
-Choose the language workflow before making recommendations or code changes:
+推奨事項やコード変更を行う前に、対象の言語ワークフローを選択してください。
 
-1. Use the **.NET** workflow when the repository contains `.cs`, `.csproj`, `.sln`, `.slnx`, or other .NET project files, or when the user explicitly asks for C# or .NET guidance. Follow [references/dotnet.md](references/dotnet.md).
-2. Use the **Python** workflow when the repository contains `.py`, `pyproject.toml`, `requirements.txt`, or the user explicitly asks for Python guidance. Follow [references/python.md](references/python.md).
-3. If the repository contains both ecosystems, match the language used by the files being edited or the user's stated target.
-4. If the language is ambiguous, inspect the current workspace first and then choose the closest language-specific reference.
+1. リポジトリに `.cs`、`.csproj`、`.sln`、`.slnx`、またはその他の .NET プロジェクト ファイルが含まれている場合、またはユーザーが明示的に C# または .NET のガイダンスを求めている場合は、**.NET** ワークフローを使用します。[references/dotnet.md](references/dotnet.md) に従ってください。
+2. リポジトリに `.py`、`pyproject.toml`、`requirements.txt` が含まれている場合、またはユーザーが明示的に Python のガイダンスを求めている場合は、**Python** ワークフローを使用します。[references/python.md](references/python.md) に従ってください。
+3. リポジトリに両方のエコシステムが含まれている場合は、編集対象のファイルで使われている言語、またはユーザーが指定した対象言語に合わせてください。
+4. 言語が曖昧な場合は、まず現在のワークスペースを確認してから、最も近い言語別のリファレンスを選択してください。
 
-## Always consult live documentation
+## 常に最新のドキュメントを参照する
 
-- Read the Microsoft Agent Framework overview first: <https://learn.microsoft.com/agent-framework/overview/agent-framework-overview>
-- Prefer official docs and samples for the current API surface.
-- Use the Microsoft Docs MCP tooling when available to fetch up-to-date framework guidance and examples.
-- Treat older Semantic Kernel or AutoGen patterns as migration inputs, not as the default implementation model.
+- まず Microsoft Agent Framework の概要を確認してください: <https://learn.microsoft.com/agent-framework/overview/agent-framework-overview>
+- 現在の API 面に対しては、公式ドキュメントとサンプルを優先してください。
+- 利用可能な場合は Microsoft Docs MCP ツールを使って、最新のフレームワーク ガイダンスと例を取得してください。
+- 古い Semantic Kernel または AutoGen のパターンは、デフォルトの実装モデルではなく、移行の入力として扱ってください。
 
-## Shared guidance
+## 共通ガイダンス
 
-When working with Microsoft Agent Framework in any language:
+どの言語でも Microsoft Agent Framework を扱うときは、次を守ってください。
 
-- Use async patterns for agent and workflow operations.
-- Implement explicit error handling and logging.
-- Prefer strong typing, clear interfaces, and maintainable composition patterns.
-- Use `DefaultAzureCredential` when Azure authentication is appropriate.
-- Use agents for autonomous decision-making, ad hoc planning, conversation flows, tool usage, and MCP server interactions.
-- Use workflows for multi-step orchestration, predefined execution graphs, long-running tasks, and human-in-the-loop scenarios.
-- Support model providers such as Azure AI Foundry, Azure OpenAI, OpenAI, and others, but prefer Azure AI Foundry services for new projects when that matches user needs.
-- Use thread-based or equivalent state handling, context providers, middleware, checkpointing, routing, and orchestration patterns when they fit the problem.
+- エージェントとワークフローの操作には非同期パターンを使用します。
+- 明示的なエラー処理とログを実装します。
+- 強い型付け、明確なインターフェイス、保守しやすい構成パターンを優先します。
+- Azure 認証が適切な場合は `DefaultAzureCredential` を使用します。
+- 自律的な意思決定、臨機応変な計画立案、会話フロー、ツールの利用、MCP サーバーとの対話にはエージェントを使用します。
+- 複数ステップのオーケストレーション、事前定義された実行グラフ、長時間実行タスク、人間参加型のシナリオにはワークフローを使用します。
+- Azure AI Foundry、Azure OpenAI、OpenAI などのモデル プロバイダーをサポートしますが、ユーザーのニーズに合う場合は新規プロジェクトでは Azure AI Foundry サービスを優先してください。
+- 問題に適合する場合は、スレッド ベースまたは同等の状態管理、コンテキスト プロバイダー、ミドルウェア、チェックポイント、ルーティング、オーケストレーション パターンを使用します。
 
-## Migration guidance
+## 移行ガイダンス
 
-- If migrating from Semantic Kernel, use the official migration guide: <https://learn.microsoft.com/agent-framework/migration-guide/from-semantic-kernel/>
-- If migrating from AutoGen, use the official migration guide: <https://learn.microsoft.com/agent-framework/migration-guide/from-autogen/>
-- Preserve behavior first, then adopt native Agent Framework patterns incrementally.
+- Semantic Kernel から移行する場合は、公式の移行ガイドを使用してください: <https://learn.microsoft.com/agent-framework/migration-guide/from-semantic-kernel/>
+- AutoGen から移行する場合は、公式の移行ガイドを使用してください: <https://learn.microsoft.com/agent-framework/migration-guide/from-autogen/>
+- まず既存の動作を維持し、その後にネイティブな Agent Framework パターンを段階的に採用してください。
 
-## Workflow
+## ワークフロー
 
-1. Determine the target language and read the matching reference file.
-2. Fetch the latest official docs and samples before making implementation choices.
-3. Apply the shared agent and workflow guidance from this skill.
-4. Use the language-specific package, repository, sample paths, and coding practices from the chosen reference.
-5. When examples in the repo differ from current docs, explain the difference and follow the current supported pattern.
+1. 対象言語を特定し、対応するリファレンス ファイルを読みます。
+2. 実装の選択を行う前に、最新の公式ドキュメントとサンプルを取得します。
+3. このスキルに含まれる共通のエージェントとワークフローのガイダンスを適用します。
+4. 選択したリファレンスに含まれる言語固有のパッケージ、リポジトリ、サンプル パス、コーディング実践を使用します。
+5. リポジトリ内の例が現在のドキュメントと異なる場合は、その違いを説明したうえで、現在サポートされているパターンに従ってください。
 
-## References
+## リファレンス
 
-- [.NET reference](references/dotnet.md)
-- [Python reference](references/python.md)
+- [.NET リファレンス](references/dotnet.md)
+- [Python リファレンス](references/python.md)
 
-## Completion criteria
+## 完了条件
 
-- Recommendations match the target language.
-- Package names, repository paths, and sample locations match the selected ecosystem.
-- Guidance reflects current Microsoft Agent Framework documentation rather than legacy assumptions.
-- Migration advice calls out Semantic Kernel and AutoGen only when relevant.
+- 推奨事項が対象言語と一致していること。
+- パッケージ名、リポジトリ パス、サンプルの場所が選択したエコシステムと一致していること。
+- ガイダンスが、レガシーな前提ではなく、現在の Microsoft Agent Framework のドキュメントを反映していること。
+- 移行のアドバイスで Semantic Kernel と AutoGen を言及するのは、関連がある場合のみであること。

@@ -1,6 +1,6 @@
 ---
-name: Relevance Summary
-description: "Manually triggered workflow that summarizes all open issues and PRs with a /relevance-check response into a single issue"
+name: 関連性サマリー
+description: "/relevance-check の応答があるすべてのオープンIssueとPRを1件のIssueにまとめる手動実行ワークフロー"
 on:
   workflow_dispatch:
 engine:
@@ -19,14 +19,14 @@ safe-outputs:
     close-older-issues: true
 ---
 
-# Relevance Check Summary Report
+# 関連性チェックのサマリーレポート
 
-You are a report generator for the **${{ github.repository }}** repository.
-Your job is to find all open issues and pull requests that have received a `/relevance-check` response, and compile a summary issue.
+あなたは **${{ github.repository }}** リポジトリのレポート作成担当です。
+`/relevance-check` の応答を受けたすべてのオープンIssueとプルリクエストを見つけ、サマリーIssueにまとめます。
 
 ## Instructions
 
-### 1. Find Relevant Items
+### 1. 対象項目を検索
 
 Search all **open** issues and pull requests in this repository.
 For each one, read its comments and look for a comment that contains a **"Relevance Assessment"** section — this is the output of the `/relevance-check` slash command.
@@ -35,7 +35,7 @@ A relevance-check response contains these markers:
 - A heading or bold text with **"Relevance Assessment:"** followed by one of: `Still Relevant`, `Likely Outdated`, or `Needs Discussion`
 - A **Recommendation** section with one of: ✅ **Keep open**, 🗄️ **Consider closing**, or 💬 **Needs maintainer input**
 
-### 2. Extract Information
+### 2. 情報を抽出
 
 For each issue or PR that has a relevance-check response, extract:
 - The issue/PR number and title
@@ -43,7 +43,7 @@ For each issue or PR that has a relevance-check response, extract:
 - The relevance assessment verdict (Still Relevant / Likely Outdated / Needs Discussion)
 - The recommended action (Keep open / Consider closing / Needs maintainer input)
 
-### 3. Create the Summary Issue
+### 3. サマリーIssueを作成
 
 Create a single issue with a table summarizing all findings. Use this structure:
 
@@ -65,7 +65,7 @@ Summary of all open issues and pull requests that have been evaluated with `/rel
 - Needs Discussion: N
 ```
 
-### 4. Guidelines
+### 4. ガイドライン
 
 - If no open issues or PRs have a relevance-check response, create the issue stating that no items were found.
 - Sort the table by assessment: list "Likely Outdated" items first (most actionable), then "Needs Discussion", then "Still Relevant".

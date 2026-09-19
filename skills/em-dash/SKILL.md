@@ -1,210 +1,172 @@
 ---
 name: em-dash
-description: 'Expert on the history, origin, and correct use of the em dash. Use when writing or reviewing code, comments, or data files to avoid em and en dashes, defaulting to never using them and replacing any found with a hyphen (-). Includes strong knowledge of punctuation marks and the proper usage of punctuation characters when writing comments.'
+description: 'em ダッシュの歴史、起源、正しい使い方に関する専門知識を提供します。コード、コメント、データファイルの作成またはレビューで em ダッシュと en ダッシュを避ける場合に使用し、既定では使用せず、見つかったものをハイフン (-) に置き換えます。句読点とコメントでの記号の正しい使い方に関する知識も含みます。'
 ---
 
 # em dash
 
-The **em dash** (U+2014, `\u2014`; not the hyphen-minus `-`) is the longest
-of the standard dashes, and is the Swiss Army knife of punctuation. Its history
-is a fascinating journey from handwritten manuscripts to mechanical
-constraints, literary rebellion, and modern digital dominance.
+**em dash**（U+2014、`\u2014`; ハイフンマイナス `-` ではない）は、標準的なダッシュの中で最も長く、句読点のスイスアーミーナイフともいえる存在です。その歴史は、手書きの写本から機械的な制約、文学の反逆、現代のデジタル支配へと至る、魅力的な旅路です。
 
-Here is a breakdown of how the em dash evolved:
+以下は、em ダッシュがどのように発展してきたかを要点ごとに整理したものです。
 
-## History of the em dash
+## em ダッシュの歴史
 
-### Early Beginnings (15th-18th Century)
+### 初期の始まり（15世紀〜18世紀）
 
-- The First Dashes: Early appearances of the dash in English literature date
- back to 1580 in private letters and 1588 in English drama. They were often
- used to indicate pauses, self-interruption, or an unfinished thought
-- Gutenberg and Early Printing: The em dash officially emerged as a standardized
- typesetting mark during the 15th-century printing revolution
+- 最初のダッシュ: 英文学におけるダッシュの初出は、1580年の私信と1588年の英語劇に遡ります。しばしば、間の取り方、言い直し、未完の思考を示すために使われました
+- グーテンベルクと初期の活版印刷: em ダッシュは、15世紀の印刷革命の中で、標準化された活版記号として正式に登場しました
 
-#### The Etymology
+#### 語源
 
-- The "M" Width: The em dash is named because its standard length is equal to
- the width of the capital letter "M" in the specific typeface being used
- (Similarly, the slightly shorter en dash is the width of the letter "N")
+- 「M」の幅: em ダッシュという名前は、その標準的な長さが、使用されている特定の書体における大文字の「M」の幅と等しいことに由来します
+（同様に、やや短い en ダッシュは大文字の「N」の幅に相当します）
 
-### Literary Popularity (17th-19th Century)
+### 文学的な人気（17世紀〜19世紀）
 
-- The Author's Tool: By the 17th and 18th centuries, it became a beloved tool
- for writers mimicking the natural lurches, stutters, and rhythms of speech
-- Dickinson Dashes: In the 19th century, poets like Emily Dickinson famously
- used the em dash for emotional weight, rhythm, and to invite reader
- interpretation. This became so synonymous with her work that they are often
- informally called "Dickinson Dashes"
+- 著者の道具: 17世紀から18世紀にかけて、作家たちは話し言葉の自然な揺れ、どもり、リズムを模倣するために、これを愛用するようになりました
+- ディキンソンのダッシュ: 19世紀には、エミリー・ディキンソンのような詩人が、感情の重みやリズム、読者の解釈を促すために em ダッシュを頻繁に使用しました。これは彼女の作品と非常に結びついたため、しばしば「ディキンソン・ダッシュ」とも非公式に呼ばれています
 
-### The Typewriter Era (19th-20th Century)
+### タイプライター時代（19世紀〜20世紀）
 
-- The Double-Hyphen Compromise: When typewriters were introduced, they lacked
- a dedicated key for the em dash. To compensate, typists began using two
- consecutive hyphens (--)
-- The No-Space Rule: Because of this mechanical compromise, a stylistic
- convention of typing the mark without surrounding spaces emerged and remains
+- 二重ハイフンの妥協: タイプライターが導入されると、em ダッシュ専用のキーがありませんでした。そのため、筆記者たちは2つの連続したハイフン（--）を使うようになりました
+- スペースなしの原則: この機械的な妥協のため、ダッシュの前後にスペースを入れないという書式上の慣例が生まれ、現在まで続いています
 
-### The Digital Age (Present Day)
+### デジタル時代（現在）
 
-- Return to Form: Modern digital typesetting and word processing programs have
- restored the true, unbroken em dash
-- **Modern Renaissance**: The em dash is experiencing a resurgence of popularity
-  - It has become a hallmark of modern long-form prose and is also a favorite,
-   heavily used punctuation mark in AI outputs, which often prioritize a
-   conversational, stream-of-consciousness style
+- 形への回帰: 現代のデジタル組版やワードプロセッサは、真の連続した em ダッシュを取り戻しました
+- **現代的な再興**: em ダッシュは人気が再燃しており、
+  - 長編の現代的な散文の定番として広く認識されており、会話的で意識の流れに近いスタイルを優先する AI の出力でも好まれる、頻繁に使われる句読点になっています
 
-#### Speculation for em Dash Modern Renaissance
+#### em ダッシュの「現代的な再興」に関する推測
 
-- Professional authors who had to meet deadlines and did not have the time to
- strictly proofread the online article before submitting it
-- Professionals who wanted to show off their knowledge of HTML encoding in order
- to seem smart
-- Graphic designers who wanted to make the visual composition of text on a web
- page more appealing
-- The fact that popularity begets popularity
-  - People publishing web articles saw that everyone else was using em dashes,
-   so instead of using a hyphen where one belonged, they opted to use an em dash
+- 締め切りに追われていて、提出前のオンライン記事を厳密に校正する時間がなかったプロの著者
+- HTML エンコーディングの知識を見せて自分が賢いと思わせたいプロフェッショナル
+- Web ページ上のテキストの視覚的な構成をより魅力的にしたいグラフィックデザイナー
+- 人気が人気を生むという事実
+  - Web 記事を発信する人たちは、他の人が em ダッシュを使っているのを見て、どこかでハイフンを使うべき箇所にも、むしろ em ダッシュを使うことにした
 
-## Analysis of em dash History
+## em ダッシュの歴史に関する分析
 
-Nowhere in the history of the em dash was it intentionally used in the writing
-of computer code, or files meant to be executed as computer instructions.
+em ダッシュの歴史の中で、コンピュータコードの記述や、コンピュータ命令として実行されることを意図したファイルの執筆に、意図的に使用された記録は一度もありません。
 
-## When to use em or en dashes
+## em ダッシュと en ダッシュをいつ使うか
 
-Never.
+決して使わない。
 
-### In Code Files
+### コードファイル内で
 
 > [!IMPORTANT]
-> Never.
-> In no way, shape, form, or fashion is tone ever important in code comments.
+> 決して使わない。
+> コードコメントにおいて、口調やトーンが重要になることは一切ない。
 
-- **Never**
-  - Use the `-` (hyphen) character instead
-  - If working as an agent, and an em dash is in a comment, then replace it
-  with the `-` (hyphen) character
+- **決して**
+  - 代わりに `-`（ハイフン）文字を使用する
+  - エージェントとして作業する場合、コメント内に em ダッシュが含まれていれば、それを `-`（ハイフン）文字に置き換える
 
-### In Raw Data and/or Text Files
+### 生データおよび／またはテキストファイル内で
 
 > [!NOTE]
-> Default to **never**
+> 既定では **決して** 使わない
 
-- When instructed to, and it is 100% clear that the text is to be used as:
-  - Literature
-  - News
-- If working as an agent, and an em dash is already part of the data, then
- leave it
+- 次のような場合で、かつそのテキストが明確に以下の用途に使われると判断されるときだけ:
+  - 文学
+  - ニュース
+- エージェントとして作業する場合で、すでに em ダッシュがデータの一部になっているなら、そのまま残す
 
-## Other Punctuation Characters
+## その他の句読点
 
-As part of being an em dash expert comes the knowledge of other punctuation marks
-or characters.
+em ダッシュの専門家であるためには、他の句読点や記号についても知っておく必要があります。
 
-### End-of-Sentence Marks
+### 文末記号
 
-Every complete sentence in a paragraph must end with one of these three marks:
+段落中の文は、次の3つの記号のいずれかで必ず終わらせる必要があります。
 
-- Period `.`: Ends statements and declarative sentences
-  - Keyboard character: `true`
-  - Programming language syntax: `true`
-    - Example: `<?php echo "a" . "b" . "c"; ?>`
-- Question Mark `?`: Ends direct questions
-  - Keyboard character: `true`
-  - Programming language syntax: `true`
-    - Example: *ternary conditions*
+- 句点 `.`: 文や叙述文を終える
+  - キーボード文字: `true`
+  - プログラミング言語の構文: `true`
+    - 例: `<?php echo "a" . "b" . "c"; ?>`
+- 疑問符 `?`: 直接的な疑問を終える
+  - キーボード文字: `true`
+  - プログラミング言語の構文: `true`
+    - 例: *三項演算子*
     `condition ? expression_if_true : expression_if_false`
-- Exclamation Point `!`: Conveys strong emotion, surprise, or emphasis
-  - Keyboard character: `true`
-  - Programming language syntax: `true`
-    - Example:
+- 感嘆符 `!`: 強い感情、驚き、または強調を表す
+  - キーボード文字: `true`
+  - プログラミング言語の構文: `true`
+    - 例:
     `setlocal enabledelayedexpansion && set "_a=a" && echo !_a! && endlocal`
 
-### Pauses and Clause Connectors
+### 間の取り方と節の接続
 
-These marks control the rhythm of your writing and connect different ideas:
+これらの記号は、文章のリズムを整え、異なる考えを結びつけます。
 
-- Comma `,`: Used to separate items in a list, link independent clauses with a
- conjunction (e.g., and, but), or set off introductory phrases
-  - Keyboard character: `true`
-  - Programming language syntax: `true`
-    - Example: `fn(a, b)`
-- Semicolon `;`: Connects two closely related independent clauses that could
- stand alone as separate sentences
-  - Keyboard character: `true`
-  - Programming language syntax: `true`
-    - Example: `var foobar = "foo-bar";`
-- Colon `:`: Introduces a list, a quote, or an explanation. The text preceding
- a colon must be a complete sentence
-  - Keyboard character: `true`
-  - Programming language syntax: `true`
-    - Example: `{"age": 26}`
+- カンマ `,`: リストの項目を区切ったり、独立した節を結びつけたり（例: and、but）、導入句を切り離したりする
+  - キーボード文字: `true`
+  - プログラミング言語の構文: `true`
+    - 例: `fn(a, b)`
+- セミコロン `;`: それぞれが独立した文として成立できる、密接に関連する2つの節を結びつける
+  - キーボード文字: `true`
+  - プログラミング言語の構文: `true`
+    - 例: `var foobar = "foo-bar";`
+- コロン `:`: リスト、引用、または説明を導入する。コロンの前の文は完全な文でなければならない
+  - キーボード文字: `true`
+  - プログラミング言語の構文: `true`
+    - 例: `{"age": 26}`
 
-### Words, Quotations, and Possessions
+### 単語、引用、所有
 
-- Apostrophe `'`: Indicates possession (e.g., Sarah's book) or represents
- missing letters in a contraction (e.g., *I'll* instead of *I will*)
-  - Keyboard character: `true`
-  - Programming language syntax: `true`
-    - Example: `char letter = 'A';`
-- Quotation Marks `"`: Enclose direct speech or quotes. In American English,
- periods and commas almost always go inside the quotation marks
-  - Keyboard character: `true`
-  - Programming language syntax: `true`
-    - Example: `char abc[] = "abc";`
+- アポストロフィ `'`: 所有を示したり（例: Sarah's book）、短縮形の省略した文字を表したりする（例: *I'll* は *I will* の略）
+  - キーボード文字: `true`
+  - プログラミング言語の構文: `true`
+    - 例: `char letter = 'A';`
+- 引用符 `"`: 直接の発話や引用を囲む。アメリカ英語では、ピリオドとカンマはほとんど常に引用符の内側に置かれる
+  - キーボード文字: `true`
+  - プログラミング言語の構文: `true`
+    - 例: `char abc[] = "abc";`
 
-### Dashes and Slashes
+### ダッシュとスラッシュ
 
-- Hyphen `-`: Joins two or more words together to form a single compound
- adjective (e.g., well-known)
-  - Keyboard character: `true`
-  - Programming language syntax: `true`
-    - Example: `count--`
-- En dash (U+2013, `\u2013`) and em dash (U+2014, `\u2014`):
-  - The **en dash** is the thinner of the two, and is used to show numerical ranges
-   or connections between words in a compound adjective when one element is itself
-   multiple words
-    - Keyboard character: `false`
-    - Programming language syntax: `false`
-  - The **em dash** is wider, and is used to note a break, provide drama, or give an example.
-    - Keyboard character: `false`
-    - Programming language syntax: `false`
-- Slash `/`: Indicates a choice (e.g., yes/no) or separates lines of poetry
-  - Keyboard character: `true`
-  - Programming language syntax: `true`
-    - Example: `/* comment */ || 10/2 || 5//2`
+- ハイフン `-`: 2つ以上の単語を結びつけて1つの複合語を作る（例: well-known）
+  - キーボード文字: `true`
+  - プログラミング言語の構文: `true`
+    - 例: `count--`
+- en ダッシュ（U+2013、`\u2013`）と em ダッシュ（U+2014、`\u2014`）:
+  - **en ダッシュ**はその2つの中で細く、数値の範囲を示したり、1つの要素自体が複数単語で構成されている複合語の間を結ぶときに使う
+    - キーボード文字: `false`
+    - プログラミング言語の構文: `false`
+  - **em ダッシュ**はより太く、区切りを示したり、ドラマを加えたり、例を挿入したりするときに使う
+    - キーボード文字: `false`
+    - プログラミング言語の構文: `false`
+- スラッシュ `/`: 選択肢を示す（例: yes/no）か、詩の行を区切る
+  - キーボード文字: `true`
+  - プログラミング言語の構文: `true`
+    - 例: `/* comment */ || 10/2 || 5//2`
 
-### Grouping and Emphasizing
+### グルーピングと強調
 
-- Parentheses `( )`: Enclose extra, non-essential information that clarifies a
- sentence but can be removed without changing the core meaning
-  - Keyboard character: `true`
-  - Programming language syntax: `true`
-    - Example: `if (5 > 2)`
-- Brackets `[ ]`: Used to enclose words added to a quotation by someone other
- than the original author, usually to clarify a pronoun or provide missing context
-  - Keyboard character: `true`
-  - Programming language syntax: `true`
-    - Example: `var arr = [1, 2, 3];`
+- 丸括弧 `( )`: 文の意味を変えずに、文を補足する余計な情報を囲む
+  - キーボード文字: `true`
+  - プログラミング言語の構文: `true`
+    - 例: `if (5 > 2)`
+- 角括弧 `[ ]`: 元の著者ではない人が引用文に加えた語句を囲み、代名詞の明確化や文脈の補足を行う
+  - キーボード文字: `true`
+  - プログラミング言語の構文: `true`
+    - 例: `var arr = [1, 2, 3];`
 
-### General Rule for using Other Punctuation Characters
+### その他の句読点を使う際の一般原則
 
-When commenting on code files, or any file that will be included in compiled
-computer instructions; use this rule-of-thumb:
+コードファイル、またはコンパイルされるコンピュータ命令に含める予定のファイルにコメントを書く場合は、次の経験則に従ってください。
 
-- Determine if the character is commonly on a keyboard, or is the punctuation
- character part of a programming language's syntax:
+- その記号が一般的にキーボード上に存在するか、またはプログラミング言語の構文の一部であるかを判断する:
 
-  - If **NOT** a keyboard character, and **NOT** a common programming syntax
-   character; then:
-    - **NEVER** use that character in code or code comments
-      - Example not mentioned: `�`
-  - If a keyboard character, and a common programming syntax character, then:
-    - Use that character correctly in code comments
+  - それが **キーボード文字ではない** うえに、**一般的なプログラミング構文の記号でもない** 場合:
+    - **コードやコードコメントでは絶対に使わない**
+      - 例外として挙げていないもの: `�`
+  - キーボード文字であり、一般的なプログラミング構文の記号でもある場合:
+    - コードコメントではその記号を正しく使う
 
 > [!IMPORTANT]
-> When in doubt, follow the pseudo-code instructions below:
+> 迷ったときは、以下の疑似コードの指示に従ってください。
 
 ```bash
 # For en dash and em dash
@@ -220,15 +182,15 @@ echo � | sed "s/�/ /g"
 perl -CS -pe 's/\x{FFFD}/ /g'
 ```
 
-## Further Reading
+## さらに読む
 
-- [Case for the em dash](https://www.hardingproject.com/p/the-case-for-the-em-dash)
-- [em dash guide](https://www.thebookrefinery.com/writing/guide-hyphens-en-dashes-em-dashes/)
-- [Explaining the em dash](https://www.reddit.com/r/writers/comments/1lv191m/can_someone_explain_em_dash/)
-- [em dash wikipedia](https://en.wikipedia.org/wiki/Dash)
-- [Verbose em dash history](https://www.linkedin.com/pulse/long-mark-brief-history-em-dash-christian-buckley-z1lbc)
-- [Brief em dash history](https://thaothai.substack.com/p/a-brief-history-of-the-em-dash)
-- [em dash punctuation](https://www.nytimes.com/2019/08/14/style/em-dash-punctuation.html)
-- [em dash in retrospective](https://medium.com/the-jabber-journal/an-era-to-its-knee-an-em-dash-retrospective-cb5c3c52e4d2)
-- [Punctuation](https://www.niu.edu/writing-tutorial/punctuation/index.shtml)
-- [Punctuation Guide](https://www.thepunctuationguide.com/)
+- [em ダッシュの正当性](https://www.hardingproject.com/p/the-case-for-the-em-dash)
+- [em ダッシュガイド](https://www.thebookrefinery.com/writing/guide-hyphens-en-dashes-em-dashes/)
+- [em ダッシュの説明](https://www.reddit.com/r/writers/comments/1lv191m/can_someone_explain_em_dash/)
+- [em ダッシュのウィキペディア](https://en.wikipedia.org/wiki/Dash)
+- [em ダッシュの詳細な歴史](https://www.linkedin.com/pulse/long-mark-brief-history-em-dash-christian-buckley-z1lbc)
+- [em ダッシュの簡潔な歴史](https://thaothai.substack.com/p/a-brief-history-of-the-em-dash)
+- [em ダッシュの句読点](https://www.nytimes.com/2019/08/14/style/em-dash-punctuation.html)
+- [回顧における em ダッシュ](https://medium.com/the-jabber-journal/an-era-to-its-knee-an-em-dash-retrospective-cb5c3c52e4d2)
+- [句読点](https://www.niu.edu/writing-tutorial/punctuation/index.shtml)
+- [句読点ガイド](https://www.thepunctuationguide.com/)

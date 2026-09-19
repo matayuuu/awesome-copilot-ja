@@ -1,8 +1,8 @@
 # Structured Autonomy Plugin
 
-Premium planning, thrifty implementation
+高品質な計画と、無駄のない実装
 
-## Installation
+## インストール
 
 ```bash
 # Using Copilot CLI

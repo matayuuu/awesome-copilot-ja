@@ -1,121 +1,121 @@
 ---
 name: eyeball
-description: 'Document analysis with inline source screenshots. When you ask Copilot to analyze a document, Eyeball generates a Word doc where every factual claim includes a highlighted screenshot from the source material so you can verify it with your own eyes.'
+description: 'ソースのスクリーンショットをインラインで含む文書分析を行います。Copilot に文書分析を依頼すると、Eyeball はすべての事実に基づく主張へソース資料の強調表示付きスクリーンショットを含めた Word 文書を生成し、自分の目で検証できるようにします。'
 ---
 
 # Eyeball
 
-Analyze documents with visual proof. When activated, Eyeball produces a Word document on the user's Desktop where every factual assertion includes an inline screenshot from the source material with the cited text highlighted in yellow.
+文書を視覚的な根拠付きで分析します。起動すると、Eyeball はユーザーのデスクトップに Word 文書を生成し、各事実的な主張にはソース資料からのインラインスクリーンショットが付き、引用テキストが黄色で強調表示されます。
 
-## Activation
+## 起動
 
-When the user invokes this skill (e.g., "use eyeball", "run eyeball on this", "eyeball this document"), respond with:
+ユーザーがこのスキルを呼び出したとき（例: "use eyeball"、"run eyeball on this"、"eyeball this document"）には、次のように応答します:
 
-> **Eyeball is active.** I'll analyze the document and produce a Word doc with inline source screenshots so you can verify every claim with your own eyes.
+> **Eyeball はアクティブです。** 文書を分析し、各主張を自分の目で確認できるように、ソースのスクリーンショットがインラインで含まれた Word 文書を作成します。
 
-Then follow the workflow below.
+その後、以下のワークフローに従います。
 
-## Supported Sources
+## 対応ソース
 
-- **Local files:** Word documents (.docx, .doc), PDFs (.pdf), RTF files
-- **Web URLs:** Any publicly accessible web page
+- **ローカルファイル:** Word 文書 (.docx, .doc), PDF (.pdf), RTF ファイル
+- **Web URL:** 公開アクセス可能な任意の Web ページ
 
-## Tool Location
+## ツールの配置
 
-The Eyeball Python utility is located at:
+Eyeball Python ユーティリティは次の場所にあります:
 ```
 <plugin_dir>/skills/eyeball/tools/eyeball.py
 ```
 
-To find the actual path, run:
+実際のパスを確認するには、次を実行します:
 ```bash
 find ~/.copilot/installed-plugins -name "eyeball.py" -path "*/eyeball/*" 2>/dev/null
 ```
 
-If not found there, check the project directory or the user's home directory for the eyeball repo.
+そこに見つからない場合は、プロジェクト ディレクトリまたはユーザーのホーム ディレクトリで eyeball リポジトリを確認します。
 
-## First-Run Setup
+## 初回セットアップ
 
-Before first use, check that dependencies are installed:
+初回使用の前に、依存関係がインストールされていることを確認します:
 
 ```bash
 python3 <path-to>/eyeball.py setup-check
 ```
 
-If anything is missing, install the required dependencies:
+何か不足している場合は、必要な依存関係をインストールします:
 ```bash
 pip3 install pymupdf pillow python-docx playwright
 python3 -m playwright install chromium
 ```
 
-On Windows, also install pywin32 for Word automation:
+Windows では、Word 自動化のために pywin32 もインストールします:
 ```bash
 pip install pywin32
 ```
 
-## Workflow
+## ワークフロー
 
-Follow these steps exactly. The order matters.
+以下の手順を正確に実行してください。順番が重要です。
 
-### Step 1: Read the source text
+### Step 1: ソース テキストを読み取る
 
-Before writing any analysis, extract and read the full text of the source document:
+分析を書き始める前に、ソース文書の全文を抽出して読みます:
 
 ```bash
 python3 <path-to>/eyeball.py extract-text --source "<path-or-url>"
 ```
 
-Read the output carefully. Identify actual section numbers, headings, page numbers, and key language.
+出力を注意深く確認してください。実際のセクション番号、見出し、ページ番号、主要な表現を特定します。
 
-**CRITICAL:** Do not skip this step. Do not write analysis based on assumptions about how the document is structured. Read the actual text.
+**重要:** この手順をスキップしないでください。文書の構成を推測して分析を書いてはいけません。実際のテキストを読みます。
 
-### Step 2: Write analysis with exact citations
+### Step 2: 正確な引用を付けて分析を書く
 
-For each point in your analysis, you must:
+分析の各ポイントについて、次を満たす必要があります:
 
-1. **Reference the correct section number as it appears in the document** (e.g., "Section 9" not "Section 8" because you assumed the numbering).
-2. **Reference the correct page number** where the section appears in the extracted text.
-3. **Select anchors that are verbatim phrases from the source** that directly support your claim.
+1. **文書に記載されている正しいセクション番号を参照する**（例: 「Section 8」ではなく「Section 9」など、番号を推測してはいけません）
+2. **そのセクションが抽出テキスト内で記載されている正しいページ番号を参照する**
+3. **主張を直接裏付けるソースの逐語的なフレーズをアンカーとして選ぶ**
 
-### Step 3: Select anchors correctly
+### Step 3: アンカーを正しく選ぶ
 
-This is the most important step. Anchors determine what gets highlighted in the screenshots.
+これは最も重要なステップです。アンカーはスクリーンショットでハイライトされる内容を決定します。
 
-**DO:**
-- Use verbatim phrases from the source text that directly support your assertion
-- Use multiple anchors to span the full range of text the reader should see
-- Use specific, uncommon phrases that appear only where you intend
+**実行すべきこと:**
+- 主張を直接裏付けるソース テキストの逐語的なフレーズを使う
+- 読者に見せるべきテキストの範囲全体をカバーする複数のアンカーを使う
+- 意図した箇所にのみ現れる、具体的で珍しいフレーズを使う
 
-**DO NOT:**
-- Use generic topic labels (e.g., "Confidentiality") that appear throughout the document
-- Use section titles alone when they appear as cross-references elsewhere
-- Use single common words that match in many places
+**避けるべきこと:**
+- 文書全体に繰り返し出てくる一般的なトピック ラベル（例: "Confidentiality"）
+- 以前のページにある相互参照として登場するセクション タイトルだけを使う
+- 多くの箇所で一致する単一の一般的な語を使う
 
-**Examples:**
+**例:**
 
-WRONG -- uses a generic topic label that matches everywhere:
+誤り -- 一般的なトピック ラベルを使っており、どこでも一致してしまう:
 ```json
 {"anchors": ["User-Generated Content"], "target_page": 8}
 ```
 
-RIGHT -- uses the specific language that supports the claim:
+正しい -- 主張を裏付ける具体的な表現を使っている:
 ```json
 {"anchors": ["retain ownership", "Ownership of Content, Right to Post"], "target_page": 8}
 ```
 
-WRONG -- section title appears as a cross-reference on earlier pages:
+誤り -- セクション タイトルが前のページにある相互参照として登場している:
 ```json
 {"anchors": ["LIMITATION OF LIABILITY"]}
 ```
 
-RIGHT -- includes the section number for precision, targets the correct page:
+正しい -- セクション番号を含めて正確にし、正しいページを対象にしている:
 ```json
 {"anchors": ["12. LIMITATION OF LIABILITY", "INDIRECT", "CONSEQUENTIAL"], "target_page": 13}
 ```
 
-### Step 4: Build the analysis document
+### Step 4: 分析ドキュメントを作成する
 
-Construct a JSON array of sections and call the build command:
+セクションの JSON 配列を構築し、ビルド コマンドを呼び出します:
 
 ```bash
 python3 <path-to>/eyeball.py build \
@@ -141,30 +141,30 @@ python3 <path-to>/eyeball.py build \
   ]'
 ```
 
-Section object fields:
-- `heading` (required): Section heading in the output document
-- `analysis` (required): Your analysis text
-- `anchors` (required): List of verbatim phrases from the source to search for and highlight
-- `target_page` (optional): Single page number (1-indexed) to search on
-- `target_pages` (optional): List of page numbers to search across (screenshots stitched vertically)
-- `context_padding` (optional): Padding in PDF points above/below the anchor region (default: 40). Increase for more context.
+セクション オブジェクトのフィールド:
+- `heading` （必須）: 出力文書のセクション見出し
+- `analysis` （必須）: 分析テキスト
+- `anchors` （必須）: ソースから検索して強調表示する逐語的なフレーズの一覧
+- `target_page` （任意）: 検索対象の単一ページ番号（1 始まり）
+- `target_pages` （任意）: 検索対象の複数ページ番号の一覧（スクリーンショットを縦方向に連結）
+- `context_padding` （任意）: アンカー領域の上下の余白（PDF ポイント、既定値: 40）。より多くの文脈を見せたい場合は増やす。
 
-### Step 5: Deliver the output
+### Step 5: 出力を提供する
 
-Save the output to the user's Desktop. Tell the user the filename and that they can open it to verify each claim against the highlighted source screenshots.
+出力をユーザーのデスクトップに保存し、ファイル名を伝え、強調表示されたソース スクリーンショットと照らし合わせて各主張を確認できることを案内します。
 
-## Self-Check Before Delivery
+## 配達前のセルフチェック
 
-Before saving the final document, mentally verify:
+最終文書を保存する前に、頭の中で次を確認します:
 
-1. Does each section's analysis text reference the correct section number from the source?
-2. Are the anchors verbatim phrases that appear on the target page?
-3. Does each anchor directly support the claim in the analysis, not just relate to the same topic?
-4. If the screenshot doesn't match the analysis, is the analysis wrong or is the anchor wrong? Fix whichever is incorrect.
+1. 各セクションの分析テキストが、ソースからの正しいセクション番号を参照しているか?
+2. アンカーが対象ページに実際に存在する逐語的なフレーズになっているか?
+3. 各アンカーが、分析で述べている内容を直接支えるもので、同じ話題に関連しているだけではないか?
+4. スクリーンショットが分析と一致しない場合、分析が間違っているのか、アンカーが間違っているのか? どちらかが誤りなら修正する。
 
-## Notes
+## 注記
 
-- The output document includes highlighted screenshots that are dynamically sized. If you provide multiple anchors, the screenshot expands to cover all of them.
-- When a search term is not found, the output document will note this. If this happens, the anchor was likely not verbatim enough. Adjust and rebuild.
-- For web pages, Playwright renders the page to PDF first. The resulting page numbers may differ from what you see in a browser. Use the extracted text output (step 1) to determine correct page numbers.
-- If the user has already provided the source text or you have already read it in the current conversation, you can skip step 1. But always verify section numbers and page references against the actual text before writing analysis.
+- 出力文書には、動的にサイズが決まるハイライト付きスクリーンショットが含まれます。複数のアンカーを指定すると、スクリーンショットはそれらをすべて含むように広がります。
+- 検索語が見つからない場合、出力文書にはその旨が記載されます。これが起きた場合、アンカーが逐語的でなかった可能性が高いです。調整して再構築してください。
+- Web ページの場合、Playwright がまずページを PDF にレンダリングします。その結果、ブラウザーで見えているページ番号と異なる場合があります。正しいページ番号を判断するには、抽出テキスト出力（Step 1）を使用してください。
+- すでにソース テキストがユーザーから与えられている、または現在の会話ですでに読み取った場合は、Step 1 を省略できます。ただし、分析を書く前に、セクション番号とページ参照が実際のテキストと一致していることを必ず確認してください。

@@ -1,6 +1,6 @@
 ---
 name: markstream-install
-description: 'Install and configure Markstream streaming Markdown renderers for Vue, React, Svelte, Angular, Nuxt, and Vue 2 applications. Use for package selection, minimal peer dependencies, CSS order, SSR boundaries, streaming mode, and renderer setup.'
+description: 'Markstream のストリーミング Markdown レンダラーを Vue、React、Svelte、Angular、Nuxt、Vue 2 アプリケーションにインストールして構成する。パッケージ選択、最小限の peer dependencies、CSS の順序、SSR の境界、ストリーミングモード、レンダラー設定に使用する。'
 license: MIT
 compatibility: 'JavaScript or TypeScript frontend project using Vue 3, Nuxt 3/4, Vue 2.6/2.7, React 18+, Next.js, Angular 20+, or Svelte 5.'
 metadata:
@@ -8,41 +8,41 @@ metadata:
   documentation: https://markstream.simonhe.me/
 ---
 
-# Markstream Install
+# Markstream をインストール
 
-Integrate the appropriate [Markstream](https://github.com/Simon-He95/markstream-vue) package into an existing application without installing unnecessary optional dependencies or weakening its security defaults.
+[Markstream](https://github.com/Simon-He95/markstream-vue) の適切なパッケージを既存アプリケーションに組み込み、不必要なオプション依存関係を導入したり、セキュリティ上の既定値を弱めたりしないようにする。
 
-Read [references/scenarios.md](references/scenarios.md) before choosing packages or peers.
+パッケージや peer を選ぶ前に [references/scenarios.md](references/scenarios.md) を確認する。
 
-## When to Use
+## いつ使うか
 
-Use this skill when the user asks to:
+次のような依頼があったときにこのスキルを使う:
 
-- add streaming Markdown rendering to an AI chat or document interface;
-- install Markstream in Vue, Nuxt, React, Next.js, Svelte, Angular, or Vue 2;
-- repair a broken Markstream installation, missing styles, or SSR failure;
-- replace another Markdown renderer with Markstream;
-- choose between static, smooth-streaming, and externally parsed AST input.
+- AI チャットやドキュメントインターフェイスにストリーミング Markdown レンダリングを追加する;
+- Vue、Nuxt、React、Next.js、Svelte、Angular、Vue 2 に Markstream をインストールする;
+- 壊れた Markstream の導入、スタイル不足、SSR の失敗を修復する;
+- 別の Markdown レンダラーを Markstream に置き換える;
+- static、smooth-streaming、外部解析 AST 入力のいずれを選ぶか決める。
 
-## Workflow
+## ワークフロー
 
-### 1. Inspect the host application
+### 1. ホストアプリケーションを確認する
 
-Before changing dependencies, inspect:
+依存関係を変更する前に、次を確認する:
 
-- the framework and version in `package.json`;
-- the package manager lockfile;
-- whether the application uses SSR;
-- reset, Tailwind, UnoCSS, or design-system styles;
-- required optional features: code highlighting, enhanced File/Diff surfaces, Monaco, Mermaid, D2, infographic blocks, or KaTeX.
+- `package.json` のフレームワークとバージョン;
+- パッケージマネージャのロックファイル;
+- アプリケーションが SSR を使うかどうか;
+- reset、Tailwind、UnoCSS、デザインシステムのスタイル;
+- 必要なオプション機能: コードハイライト、強化された File/Diff サーフェイス、Monaco、Mermaid、D2、インフォグラフィックブロック、KaTeX。
 
-Do not assume the Vue package is correct merely because the source repository is named `markstream-vue`. Select the framework-specific package from the scenario table.
+ソースリポジトリの名前が `markstream-vue` だからといって、Vue 向けパッケージが正しいと決めつけない。シナリオ表からフレームワーク固有のパッケージを選ぶ。
 
-### 2. Install the smallest dependency set
+### 2. 最小限の依存関係をインストールする
 
-Install exactly one framework package. Add optional peers only when the requested UI uses their feature.
+フレームワーク向けパッケージを 1 つだけインストールする。依頼された UI がその機能を使う場合にのみ、任意の peer を追加する。
 
-Examples:
+例:
 
 ```bash
 npm install markstream-vue
@@ -52,35 +52,35 @@ npm install markstream-angular
 npm install markstream-vue2
 ```
 
-Preserve the repository's existing package manager. Do not install every optional peer preemptively.
+既存のパッケージマネージャを維持する。不要なオプション peer を前もって一括で入れない。
 
-### 3. Wire styles in the correct order
+### 3. CSS を正しい順序で読み込む
 
-Import application resets before Markstream styles. Import package CSS explicitly; do not rely on component imports to inject it.
+Markstream のスタイルより先にアプリケーションの reset をインポートする。パッケージの CSS は明示的にインポートし、コンポーネントの import によって自動注入されることに依存しない。
 
-For Tailwind or UnoCSS, use the relevant package subpath in a component layer:
+Tailwind または UnoCSS を使う場合は、コンポーネントレイヤーで該当するパッケージのサブパスを使う:
 
 ```css
 @import 'markstream-vue/index.css' layer(components);
 ```
 
-Use the matching package name for React, Svelte, Angular, or Vue 2. If math rendering is enabled, also import:
+React、Svelte、Angular、Vue 2 には対応するパッケージ名を使う。数式レンダリングを有効にする場合は、次もインポートする:
 
 ```css
 @import 'katex/dist/katex.min.css';
 ```
 
-Vue CLI 4 and other Webpack 4-based Vue 2 applications cannot resolve package export maps. In those projects, import the published file directly:
+Vue CLI 4 や他の Webpack 4 ベースの Vue 2 アプリケーションでは、パッケージの export map を解決できない。そのようなプロジェクトでは、公開済みファイルを直接 import する:
 
 ```ts
 import 'markstream-vue2/dist/index.css'
 ```
 
-### 4. Add the smallest working renderer
+### 4. 最小限で動作するレンダラーを追加する
 
-Prefer `content` for static documents and most streaming chat interfaces. Markstream's built-in smooth streaming can pace irregular token delivery without requiring the host to maintain an AST.
+静的ドキュメントやほとんどのストリーミングチャットインターフェイスでは `content` を優先する。Markstream の組み込み smooth streaming は、ホスト側が AST を維持しなくても、不規則なトークン配信のペースを調整できる。
 
-For Vue 3 chat surfaces, start with:
+Vue 3 のチャット画面では、まず次から始める:
 
 ```vue
 <MarkdownRender
@@ -93,7 +93,7 @@ For Vue 3 chat surfaces, start with:
 />
 ```
 
-For completed chat history, keep the same renderer mode and switch pacing off:
+完了したチャット履歴では、同じレンダラーモードを維持したまま、ペーシングをオフにする:
 
 ```vue
 <MarkdownRender
@@ -106,36 +106,36 @@ For completed chat history, keep the same renderer mode and switch pacing off:
 />
 ```
 
-In React, Svelte, and Angular, use the equivalent camelCase or framework binding syntax. Keep `smoothStreaming="auto"`, `fade=false`, and `typewriter=true` while streaming; use `smoothStreaming=false` and `typewriter=false` for completed history.
+React、Svelte、Angular では、同等の camelCase やフレームワークのバインディング構文を使う。ストリーミング中は `smoothStreaming="auto"`、`fade=false`、`typewriter=true` を維持し、完了した履歴では `smoothStreaming=false` と `typewriter=false` を使う。
 
-Use `nodes` plus `final` only when a worker, shared AST store, custom transform, or another application layer already owns parsing.
+`nodes` と `final` を使うのは、ワーカー、共有 AST ストア、カスタム変換、別のアプリケーション層がすでに解析を担当している場合だけに限定する。
 
-### 5. Handle framework-specific boundaries
+### 5. フレームワーク固有の境界を扱う
 
-- In Nuxt, keep browser-only optional peers behind client boundaries.
-- In Next.js, use the root `markstream-react` entry inside a `'use client'` component for live SSE or WebSocket streams. Use `markstream-react/next` for SSR-first HTML with hydration, or `markstream-react/server` for server-only rendering.
-- Use `markstream-svelte` only with Svelte 5.
-- Confirm the Angular application meets the current `markstream-angular` version requirement.
-- In Vue 3, use `mode="chat"` for AI chat, `mode="docs"` for rich documents, and `mode="minimal"` for lightweight non-chat surfaces.
-- For long Vue 3 conversations or an existing message virtualizer, consult the Markstream performance guide before adding a second virtualizer.
+- Nuxt では、ブラウザ専用の任意 peer を client の境界の内側に置く。
+- Next.js では、ライブ SSE や WebSocket ストリームに対して `'use client'` コンポーネント内でルートの `markstream-react` を使う。SSR を前提とした HTML と hydration には `markstream-react/next`、サーバー専用レンダリングには `markstream-react/server` を使う。
+- `markstream-svelte` は Svelte 5 のときだけ使う。
+- Angular アプリケーションが現在の `markstream-angular` バージョン要件を満たしていることを確認する。
+- Vue 3 では、AI チャットには `mode="chat"`、リッチドキュメントには `mode="docs"`、軽量な非チャット画面には `mode="minimal"` を使う。
+- 長い Vue 3 会話や既存のメッセージ virtualizer がある場合は、2 つ目の virtualizer を追加する前に Markstream のパフォーマンスガイドを確認する。
 
-### 6. Preserve safe defaults
+### 6. 安全な既定値を保つ
 
-HTML policy defaults to `safe`, and Mermaid uses strict mode. Do not broaden either setting unless the user explicitly identifies a trusted legacy surface that requires it. Scope any exception to that surface.
+HTML ポリシーは既定で `safe` であり、Mermaid は strict mode を使う。ユーザーがその設定が必要な信頼できる従来の画面を明示しない限り、どちらも広げない。例外はその画面にのみ限定する。
 
-### 7. Validate
+### 7. 検証する
 
-Run the smallest relevant build, typecheck, or test command. Confirm:
+最小限の関連する build、typecheck、test コマンドを実行する。次を確認する:
 
-1. the selected package matches the framework;
-2. only requested optional peers were added;
-3. styles load after resets;
-4. SSR pages do not evaluate browser-only peers on the server;
-5. static content and at least one incremental update render correctly.
+1. 選択したパッケージがフレームワークに一致している;
+2. 追加したオプション peer が依頼されたものだけである;
+3. スタイルが reset の後に読み込まれている;
+4. SSR ページでブラウザ専用 peer がサーバー上で評価されない;
+5. 静的コンテンツと少なくとも 1 回の増分更新が正しくレンダリングされる。
 
-Report the selected package, added peers, CSS location, streaming input choice, and validation command.
+選択したパッケージ、追加した peer、CSS の配置場所、ストリーミング入力の選択、検証コマンドを報告する。
 
-## Official References
+## 公式リファレンス
 
 - [Installation](https://markstream.simonhe.me/guide/installation)
 - [AI chat and streaming](https://markstream.simonhe.me/guide/ai-chat-streaming)

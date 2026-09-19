@@ -1,55 +1,54 @@
 ---
 name: image-manipulation-image-magick
-description: Process and manipulate images using ImageMagick. Supports resizing, format conversion, batch processing, and retrieving image metadata. Use when working with images, creating thumbnails, resizing wallpapers, or performing batch image operations.
-compatibility: Requires ImageMagick installed and available as `magick` on PATH. Cross-platform examples provided for PowerShell (Windows) and Bash (Linux/macOS).
+description: 'ImageMagickを使用して画像を処理・操作する。サイズ変更、形式変換、バッチ処理、画像メタデータの取得に対応する。画像の操作、サムネイル作成、壁紙のサイズ変更、バッチ画像処理で使用する。'
+compatibility: ImageMagickがインストールされ、PATH上で `magick` として利用できること。PowerShell（Windows）とBash（Linux/macOS）のクロスプラットフォーム例を含む。
 ---
 
-# Image Manipulation with ImageMagick
+# ImageMagickによる画像操作
 
-This skill enables image processing and manipulation tasks using ImageMagick
-across Windows, Linux, and macOS systems.
+このSkillは、Windows、Linux、macOSでImageMagickを使った画像処理・操作を行う。
 
-## When to Use This Skill
+## このSkillを使う場面
 
-Use this skill when you need to:
+次の作業が必要なときに使用する。
 
-- Resize images (single or batch)
-- Get image dimensions and metadata
-- Convert between image formats
-- Create thumbnails
-- Process wallpapers for different screen sizes
-- Batch process multiple images with specific criteria
+- 画像をサイズ変更する（単一またはバッチ）
+- 画像の寸法とメタデータを取得する
+- 画像形式を変換する
+- サムネイルを作成する
+- 画面サイズごとに壁紙を処理する
+- 特定の条件で画像をバッチ処理する
 
-## Prerequisites
+## 前提条件
 
-- ImageMagick installed on the system
-- **Windows**: PowerShell with ImageMagick available as `magick` (or at `C:\Program Files\ImageMagick-*\magick.exe`)
-- **Linux/macOS**: Bash with ImageMagick installed via package manager (`apt`, `brew`, etc.)
+- システムにImageMagickがインストールされていること
+- **Windows**: `magick` として利用できるPowerShell（または `C:\Program Files\ImageMagick-*\magick.exe`）
+- **Linux/macOS**: パッケージマネージャー（`apt`、`brew`など）でImageMagickをインストールしたBash
 
-## Core Capabilities
+## 主な機能
 
-### 1. Image Information
+### 1. 画像情報
 
-- Get image dimensions (width x height)
-- Retrieve detailed metadata (format, color space, etc.)
-- Identify image format
+- 画像の寸法（幅 x 高さ）を取得する
+- 詳細なメタデータ（形式、色空間など）を取得する
+- 画像形式を識別する
 
-### 2. Image Resizing
+### 2. 画像のサイズ変更
 
-- Resize single images
-- Batch resize multiple images
-- Create thumbnails with specific dimensions
-- Maintain aspect ratios
+- 単一画像のサイズを変更する
+- 複数画像をバッチでサイズ変更する
+- 指定寸法のサムネイルを作成する
+- アスペクト比を維持する
 
-### 3. Batch Processing
+### 3. バッチ処理
 
-- Process images based on dimensions
-- Filter and process specific file types
-- Apply transformations to multiple files
+- 寸法に基づいて画像を処理する
+- 特定のファイル形式を絞り込み処理する
+- 複数ファイルに変換を適用する
 
-## Usage Examples
+## 使用例
 
-### Example 0: Resolve `magick` executable
+### 例0: `magick` 実行ファイルを解決する
 
 **PowerShell (Windows):**
 ```powershell
@@ -78,7 +77,7 @@ if ! command -v magick &> /dev/null; then
 fi
 ```
 
-### Example 1: Get Image Dimensions
+### 例1: 画像の寸法を取得する
 
 **PowerShell (Windows):**
 ```powershell
@@ -103,7 +102,7 @@ for img in path/to/images/*; do
 done
 ```
 
-### Example 2: Resize Images
+### 例2: 画像のサイズを変更する
 
 **PowerShell (Windows):**
 ```powershell
@@ -128,7 +127,7 @@ for img in path/to/images/*; do
 done
 ```
 
-### Example 3: Get Detailed Image Information
+### 例3: 詳細な画像情報を取得する
 
 **PowerShell (Windows):**
 ```powershell
@@ -142,7 +141,7 @@ done
 magick identify -verbose path/to/image.jpg
 ```
 
-### Example 4: Process Images Based on Dimensions
+### 例4: 寸法に基づいて画像を処理する
 
 **PowerShell (Windows):**
 ```powershell
@@ -174,33 +173,33 @@ for img in path/to/images/*; do
 done
 ```
 
-## Guidelines
+## ガイドライン
 
-1. **Always quote file paths** - Use quotes around file paths that might contain spaces
-2. **Use the `&` operator (PowerShell)** - Invoke the magick executable using `&` in PowerShell
-3. **Store the path in a variable (PowerShell)** - Assign the ImageMagick path to `$magick` for cleaner code
-4. **Wrap in loops** - When processing multiple files, use `ForEach-Object` (PowerShell) or `for` loops (Bash)
-5. **Verify dimensions first** - Check image dimensions before processing to avoid unnecessary operations
-6. **Use appropriate resize flags** - Consider using `!` to force exact dimensions or `^` for minimum dimensions
+1. **ファイルパスは常に引用符で囲む** - 空白を含む可能性があるファイルパスを引用符で囲む。
+2. **`&` 演算子を使う（PowerShell）** - PowerShellでは `&` を使ってmagick実行ファイルを呼び出す。
+3. **パスを変数に格納する（PowerShell）** - コードを明確にするため、ImageMagickのパスを `$magick` に代入する。
+4. **ループで囲む** - 複数ファイルを処理するときは、PowerShellでは `ForEach-Object`、Bashでは `for` ループを使う。
+5. **最初に寸法を検証する** - 不要な処理を避けるため、処理前に画像の寸法を確認する。
+6. **適切なサイズ変更フラグを使う** - 正確な寸法を強制する `!` や最小寸法を指定する `^` の使用を検討する。
 
-## Common Patterns
+## よく使うパターン
 
-### PowerShell Patterns
+### PowerShellのパターン
 
-#### Pattern: Store ImageMagick Path
+#### パターン: ImageMagickのパスを格納する
 
 ```powershell
 $magick = (Get-Command magick).Source
 ```
 
-#### Pattern: Get Dimensions as Variables
+#### パターン: 寸法を変数として取得する
 
 ```powershell
 $dimensions = & $magick identify -format "%w,%h" $_.FullName
 $width,$height = $dimensions -split ','
 ```
 
-#### Pattern: Conditional Processing
+#### パターン: 条件付き処理
 
 ```powershell
 if ([int]$width -gt 1920) {
@@ -208,21 +207,21 @@ if ([int]$width -gt 1920) {
 }
 ```
 
-#### Pattern: Create Thumbnails
+#### パターン: サムネイルを作成する
 
 ```powershell
 & $magick $_.FullName -resize 427x240 "thumbnails/thumb_$($_.Name)"
 ```
 
-### Bash Patterns
+### Bashのパターン
 
-#### Pattern: Check ImageMagick Installation
+#### パターン: ImageMagickのインストールを確認する
 
 ```bash
 command -v magick &> /dev/null || { echo "ImageMagick required"; exit 1; }
 ```
 
-#### Pattern: Get Dimensions as Variables
+#### パターン: 寸法を変数として取得する
 
 ```bash
 dimensions=$(magick identify -format "%w,%h" "$img")
@@ -230,7 +229,7 @@ width=$(echo "$dimensions" | cut -d',' -f1)
 height=$(echo "$dimensions" | cut -d',' -f2)
 ```
 
-#### Pattern: Conditional Processing
+#### パターン: 条件付き処理
 
 ```bash
 if [[ "$width" -gt 1920 ]]; then
@@ -238,15 +237,15 @@ if [[ "$width" -gt 1920 ]]; then
 fi
 ```
 
-#### Pattern: Create Thumbnails
+#### パターン: サムネイルを作成する
 
 ```bash
 filename=$(basename "$img")
 magick "$img" -resize 427x240 "thumbnails/thumb_$filename"
 ```
 
-## Limitations
+## 制限事項
 
-- Large batch operations may be memory-intensive
-- Some complex operations may require additional ImageMagick delegates
-- On older Linux systems, use `convert` instead of `magick` (ImageMagick 6.x vs 7.x)
+- 大規模なバッチ処理は多くのメモリを消費する場合がある。
+- 複雑な処理には追加のImageMagick delegateが必要な場合がある。
+- 古いLinuxシステムでは `magick` の代わりに `convert` を使う（ImageMagick 6.xと7.xの違い）。

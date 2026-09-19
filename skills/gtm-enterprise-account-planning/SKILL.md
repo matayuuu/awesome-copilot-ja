@@ -1,44 +1,44 @@
 ---
 name: gtm-enterprise-account-planning
-description: Strategic account planning and execution for enterprise deals. Use when planning complex sales cycles, managing multiple stakeholders, applying MEDDICC qualification, tracking deal health, or building mutual action plans. Includes the "stale MAP equals dead deal" pattern.
+エンタープライズ案件の戦略的なアカウント計画と実行。複雑な販売サイクルの計画、複数の関係者の管理、MEDDICC による評価、案件健全性の追跡、Mutual Action Plan の作成に使う。「古い MAP は死んだ案件と同じ」というパターンを含む。
 license: MIT
 metadata:
   author: Smit Patel (https://linkedin.com/in/smitkpatel)
   source: https://github.com/beingsmit/technical-product-gtm
 ---
 
-# Enterprise Account Planning
+# エンタープライズアカウント計画
 
 Strategic account planning and execution for enterprise deals. Turn complex sales cycles into systematic wins — or at least know when they're dying before you waste months.
 
-## When to Use
+## 使用する場面
 
-**Triggers:**
-- "How do I plan this enterprise deal?"
-- "This deal has been in motion 3 months, why isn't it closing?"
-- "Should I create a full account plan or simplified version?"
-- "How do I know if this deal is actually moving?"
-- "MEDDICC qualification"
-- "Building a mutual action plan"
+**トリガー:**
+- 「このエンタープライズ案件をどう計画するか」
+- 「3 か月進んでいるのに、なぜ成約しないのか」
+- 「完全なアカウント計画と簡易版のどちらを作るべきか」
+- 「この案件が本当に進んでいるかどう判断するか」
+- 「MEDDICC による評価」
+- 「Mutual Action Plan の作成」
 
-**Context:**
-- Strategic deals above your average ACV
-- Multiple stakeholders involved
-- Sales cycle exceeds 60 days
-- Complex buying process (legal, procurement, security)
-- Enterprise or mid-market accounts
+**コンテキスト:**
+- 平均 ACV を上回る戦略的案件
+- 複数の関係者が関与する案件
+- 60 日を超える販売サイクル
+- 複雑な購買プロセス（法務、調達、セキュリティ）
+- エンタープライズまたはミッドマーケットのアカウント
 
 ---
 
-## Core Frameworks
+## 中核フレームワーク
 
-### 1. If Your MAP Hasn't Been Updated in 3 Weeks, That Deal Is Dead
+### 1. MAP が 3 週間更新されなければ、その案件は死んでいる
 
-**The Pattern I've Seen:**
+**実際に見てきたパターン:**
 
 The Mutual Action Plan (MAP) is the single best indicator of deal health. Not pipeline stage. Not verbal commitments. Not "they love the product."
 
-**The MAP tells you everything:**
+**MAP はすべてを示す:**
 
 **Healthy deal:**
 - MAP updated weekly
@@ -54,17 +54,17 @@ The Mutual Action Plan (MAP) is the single best indicator of deal health. Not pi
 - No new stakeholders engaged
 - All dates in the past
 
-**Why This Happens:**
+**こうなる理由:**
 
 When a deal is real, the customer wants it to happen. They're doing work. They're involving stakeholders. They're moving through their process.
 
 When a deal is dying, you're doing all the work. They're "too busy." They'll "get back to you next week." The economic buyer is "traveling."
 
-**The 3-Week Rule:**
+**3 週間ルール:**
 
 If your MAP hasn't been updated in 3 weeks, the deal is dead — you just don't know it yet. **I've never seen a deal close with a stale MAP. Not once in 11 years.**
 
-**What to Do:**
+**行うこと:**
 
 **Week 1 of silence:** Send MAP update: "Here's what we've completed. What's your status on [specific customer action]?"
 
@@ -72,21 +72,21 @@ If your MAP hasn't been updated in 3 weeks, the deal is dead — you just don't 
 
 **Week 3 of silence:** Qualify out or reset: "It seems like timing might not be right. Should we pause and reconnect in [timeframe], or is there a blocker I can help with?"
 
-**Common Mistake:**
+**よくある失敗:**
 
 Keeping deals in pipeline because "they said they want it." Verbal interest ≠ action. If they're not doing work, they're not buying.
 
 ---
 
-### 2. The EB Discovery Problem (And Why Deals Die at Week 8)
+### 2. EB 発見の問題（8 週目に案件が死ぬ理由）
 
-**The Pattern:**
+**パターン:**
 
 You're 8 weeks into a deal. POC went great. Champion loves you. Technical validation complete. You send the proposal.
 
 Then: radio silence.
 
-**What happened?** You never met the Economic Buyer.
+**何が起きたのか:** You never met the Economic Buyer.
 
 **The Economic Buyer (EB) is the person who:**
 - Controls budget allocation
@@ -98,7 +98,7 @@ Then: radio silence.
 - The technical lead (they validate, don't buy)
 - The VP who attended one demo (they advise, don't sign)
 
-**Why Deals Die Without EB Access:**
+**EB にアクセスできないと案件が死ぬ理由:**
 
 You built the business case with your champion's assumptions. But the EB has different priorities:
 - Champion cares about: solving their team's pain
@@ -111,7 +111,7 @@ When you send proposal to EB through the champion, EB sees:
 
 **Result:** Deal stalls or dies.
 
-**The Framework: EB Validation Checklist**
+**フレームワーク: EB 検証チェックリスト**
 
 Before sending proposal, validate:
 
@@ -124,7 +124,7 @@ Before sending proposal, validate:
 
 **If you answered "no" to any, don't send the proposal yet.**
 
-**How to Get EB Access:**
+**EB にアクセスする方法:**
 
 **Ask your champion:**
 "Before we finalize pricing, I'd love 15 minutes with [EB name] to make sure we're aligned on outcomes and timeline. Can you intro us?"
@@ -141,7 +141,7 @@ Treating EB meeting as "nice to have." It's mandatory for any deal >$50K. No EB 
 
 ---
 
-### 3. Personal Win Mapping (People Buy for Themselves)
+### 3. 個人の勝ち筋をマッピングする（人は自分のために買う）
 
 **The Pattern:**
 
@@ -213,7 +213,7 @@ Selling only to the business problem. "This saves money. This improves efficienc
 
 ---
 
-### 4. Enterprise Account Plan Structure (Four Components)
+### 4. エンタープライズアカウント計画の構造（4 要素）
 
 A complete account plan has four interconnected pieces. Each feeds the others.
 
@@ -261,7 +261,7 @@ Full account plans worth investment for top 10-20% of accounts by potential deal
 
 ---
 
-### 5. LinkedIn Keyword Analysis for Account Intelligence
+### 5. アカウントインテリジェンスのための LinkedIn キーワード分析
 
 Before engaging strategic account, quantify their investment in your domain via LinkedIn.
 
@@ -298,7 +298,7 @@ Searching "[Company] + SRE":
 
 ---
 
-### 6. The Unified Sales Process (Stage Gates)
+### 6. 統合営業プロセス（ステージゲート）
 
 Enterprise sales follows defined stages with clear exit criteria. Don't advance stages without meeting criteria.
 
@@ -322,9 +322,9 @@ Advancing stages based on activity, not criteria. "We demoed, so we're in Stage 
 
 ---
 
-## Decision Trees
+## 判断ツリー
 
-### Do I Need a Full Account Plan?
+### 完全なアカウント計画が必要か
 
 ```
 Is deal size above average ACV?
@@ -336,7 +336,7 @@ Is deal size above average ACV?
     └─ No → Simplified plan
 ```
 
-### Is This Deal Actually Moving?
+### この案件は本当に進んでいるか
 
 ```
 Is MAP being updated weekly?
@@ -348,7 +348,7 @@ Is MAP being updated weekly?
     └─ No → At risk (escalate to champion)
 ```
 
-### Should I Send the Proposal?
+### 提案書を送るべきか
 
 ```
 Have you met the Economic Buyer?
@@ -362,7 +362,7 @@ Have you met the Economic Buyer?
 
 ---
 
-## Common Mistakes
+## よくある失敗
 
 **1. Creating account plan too late**
    - Build before first engagement, not after deal is in motion
@@ -387,7 +387,7 @@ Have you met the Economic Buyer?
 
 ---
 
-## Quick Reference
+## クイックリファレンス
 
 **MAP Health Check:**
 - Green: Updated weekly, both sides have actions, customer completing tasks
@@ -418,7 +418,7 @@ Have you met the Economic Buyer?
 
 ---
 
-## Related Skills
+## 関連 Skill
 
 - **enterprise-onboarding**: Post-close customer implementation
 - **partnership-architecture**: Deals involving partner relationships

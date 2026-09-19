@@ -1,6 +1,6 @@
 ---
 name: qdrant-clients-sdk
-description: "Qdrant provides client SDKs for various programming languages, allowing easy integration with Qdrant deployments."
+description: 'qdrant-clients-sdk に関する作業を支援する Skill です。対象のファイルや設定を確認し、必要な手順、検証方法、注意点を案内します。対象技術の調査、実装、運用、トラブルシューティングに使用します。'
 allowed-tools:
   - Read
   - Grep

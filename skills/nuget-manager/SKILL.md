@@ -1,15 +1,15 @@
 ---
 name: nuget-manager
-description: 'Manage NuGet packages in .NET projects/solutions. Use this skill when adding, removing, or updating NuGet package versions. It enforces using `dotnet` CLI for package management and provides strict procedures for direct file edits only when updating versions.'
+description: 'nuget-manager に関する作業を支援する Skill です。対象のファイルや設定を確認し、必要な手順、検証方法、注意点を案内します。対象技術の調査、実装、運用、トラブルシューティングに使用します。'
 ---
 
 # NuGet Manager
 
-## Overview
+## 概要
 
 This skill ensures consistent and safe management of NuGet packages across .NET projects. It prioritizes using the `dotnet` CLI to maintain project integrity and enforces a strict verification and restoration workflow for version updates.
 
-## Prerequisites
+## 前提条件
 
 - .NET SDK installed (typically .NET 8.0 SDK or later, or a version compatible with the target solution).
 - `dotnet` CLI available on your `PATH`.
@@ -39,12 +39,12 @@ Example: `dotnet remove src/MyProject/MyProject.csproj package Newtonsoft.Json`
 When updating a version, follow these steps:
 
 1.  **Verify Version Existence**:
-    Check if the version exists using the `dotnet package search` command with exact match and JSON formatting. 
+    Check if the version exists using the `dotnet package search` command with exact match and JSON formatting.
     Using `jq`:
     `dotnet package search <PACKAGE_NAME> --exact-match --format json | jq -e '.searchResult[].packages[] | select(.version == "<VERSION>")'`
     Using PowerShell:
     `(dotnet package search <PACKAGE_NAME> --exact-match --format json | ConvertFrom-Json).searchResult.packages | Where-Object { $_.version -eq "<VERSION>" }`
-    
+
 2.  **Determine Version Management**:
     - Search for `Directory.Packages.props` in the solution root. If present, versions should be managed there via `<PackageVersion Include="Package.Name" Version="1.2.3" />`.
     - If absent, check individual `.csproj` files for `<PackageReference Include="Package.Name" Version="1.2.3" />`.
@@ -55,7 +55,7 @@ When updating a version, follow these steps:
 4.  **Verify Stability**:
     Run `dotnet restore` on the project or solution. If errors occur, revert the change and investigate.
 
-## Examples
+## 例
 
 ### User: "Add Serilog to the WebApi project"
 **Action**: Execute `dotnet add src/WebApi/WebApi.csproj package Serilog`.

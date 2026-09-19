@@ -1,18 +1,17 @@
 ---
 name: harness-engineering
-description: 'Adopt repository-level harness engineering for coding agents. Use when a user wants to prevent repeated AI coding-agent mistakes by turning failures into durable instructions, drift checks, regression tests, failure memory, and adoption reports tailored to the target repository.'
+description: 'コーディングエージェント向けにリポジトリレベルのハーネスエンジニアリングを導入する。失敗を永続的な指示、ドリフトチェック、回帰テスト、失敗メモリ、導入レポートへ変換し、AIコーディングエージェントの同じ失敗を防ぎたいときに使う。'
 ---
 
-# Harness Engineering
+# ハーネスエンジニアリング
 
-Harness engineering turns repeated coding-agent mistakes into durable
-repository artifacts:
+ハーネスエンジニアリングは、コーディングエージェントの繰り返しの失敗を、永続的なリポジトリアーティファクトへ変換する。
 
 ```text
 Harness = Instructions + Constraints + Feedback + Memory + Evaluation + Governance
 ```
 
-Use this skill when the user asks to:
+ユーザーが次を求めたときにこのSkillを使う。
 
 - make a repository more reliable for GitHub Copilot or other coding agents
 - add durable agent instructions, repository rules, or guardrails
@@ -21,10 +20,9 @@ Use this skill when the user asks to:
 - add lightweight drift checks for project rules
 - review, refresh, or update an existing agent harness
 
-Do not use this skill for ordinary feature implementation unless the user asks
-to improve the repository's agent operating environment.
+ユーザーがリポジトリのエージェント実行環境の改善を求めていない限り、通常の機能実装にはこのSkillを使わない。
 
-## Core Principles
+## 中核原則
 
 - Treat the target repository as the source of truth.
 - Inspect before editing. Preserve the existing stack, package manager, CI,
@@ -39,7 +37,7 @@ to improve the repository's agent operating environment.
 - Do not copy generic templates blindly. Adapt every artifact to real evidence
   in the target repository.
 
-## Discovery
+## 調査
 
 Before proposing or making harness changes, inspect the repository for existing
 rules and evidence.
@@ -66,7 +64,7 @@ Then summarize:
 - known failures, incidents, flaky paths, or repeated review comments
 - gaps where project rules are not enforced
 
-## Adoption Workflow
+## 導入ワークフロー
 
 Follow this sequence:
 
@@ -77,7 +75,7 @@ Follow this sequence:
 5. Add drift checks for guidance that can silently become stale.
 6. Report the adoption with evidence, assumptions, and follow-up.
 
-### 1. Choose the Harness Surface
+### 1. ハーネスの対象面を選ぶ
 
 Pick only the surfaces that fit the target repository:
 
@@ -94,7 +92,7 @@ Pick only the surfaces that fit the target repository:
 If the repository already has an equivalent location, update it instead of
 creating a parallel system.
 
-### 2. Write Agent Instructions
+### 2. エージェント指示を書く
 
 Agent instructions should be concrete and operational. Include:
 
@@ -109,7 +107,7 @@ Agent instructions should be concrete and operational. Include:
 Avoid broad personality guidance, generic best practices, and rules that cannot
 be checked or reviewed.
 
-### 3. Add Enforceable Checks
+### 3. 強制可能なチェックを追加する
 
 Convert high-value rules into checks. Good harness checks are:
 
@@ -131,7 +129,7 @@ Rule: Profile docs and templates must stay aligned.
 Check: test compares profile README files to expected template files.
 ```
 
-### 4. Record Failure Memory
+### 4. 失敗メモリを記録する
 
 Record failures when they are user-visible, high-risk, or likely to recur.
 Use a new file under `docs/failures/` unless an existing note already covers
@@ -163,7 +161,7 @@ Links to issue, PR, test, log, command output, or file paths.
 If no automated check is practical, record the manual review point and why
 automation would be unsafe or misleading.
 
-### 5. Add Drift Checks
+### 5. ドリフトチェックを追加する
 
 Use drift checks for guidance that can silently become stale. Common examples:
 
@@ -177,7 +175,7 @@ Prefer small scripts using the repository's existing language. If the repo has
 no scripting convention, Python with only the standard library is a portable
 default.
 
-### 6. Report the Adoption
+### 6. 導入を報告する
 
 Finish substantial harness work with an adoption report that includes:
 
@@ -189,7 +187,7 @@ Finish substantial harness work with an adoption report that includes:
 - failure memory created or intentionally skipped
 - how effectiveness will be measured
 
-## Review Workflow
+## レビューワークフロー
 
 When asked to review a harness change, take an opposing perspective. Look for:
 
@@ -206,7 +204,7 @@ Report findings first, ordered by severity, with file and line references when
 available. Do not modify files during a review unless the user explicitly asks
 for fixes.
 
-## Output Contract
+## 出力契約
 
 Before finishing harness adoption work, verify:
 
@@ -218,7 +216,7 @@ Before finishing harness adoption work, verify:
 - generated docs or indexes are refreshed
 - the final report names every command run and its result
 
-## Optional Reference
+## 任意の参考資料
 
 The prompt-first workflow in
 `https://github.com/baskduf/harness-starter-kit` is a reference implementation

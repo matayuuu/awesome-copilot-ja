@@ -1,69 +1,68 @@
 ---
 name: update-implementation-plan
-description: 'Update an existing implementation plan file with new or update requirements to provide new features, refactoring existing code or upgrading packages, design, architecture or infrastructure.'
+description: '新機能、既存コードのリファクタリング、パッケージのアップグレード、設計、アーキテクチャ、インフラストラクチャに関する新規または更新要件を反映して、既存の実装計画ファイルを更新する。'
 ---
+# 実装計画を更新
 
-# Update Implementation Plan
+## 基本指示
 
-## Primary Directive
+あなたは、新規または更新された要件に基づいて実装計画ファイル `${file}` を更新する AI エージェントである。出力は、他の AI システムまたは人間が自律的に実行できるよう、機械可読で決定的かつ構造化されていなければならない。
 
-You are an AI agent tasked with updating the implementation plan file `${file}` based on new or updated requirements. Your output must be machine-readable, deterministic, and structured for autonomous execution by other AI systems or humans.
+## 実行コンテキスト
 
-## Execution Context
+このプロンプトは AI 間の通信と自動処理のために設計されている。すべての指示は、人間による解釈や確認なしに、字義どおり体系的に実行しなければならない。
 
-This prompt is designed for AI-to-AI communication and automated processing. All instructions must be interpreted literally and executed systematically without human interpretation or clarification.
+## 中核要件
 
-## Core Requirements
+- AI エージェントまたは人間が完全に実行できる実装計画を生成する。
+- 曖昧さのない決定的な言語を使う。
+- すべての内容を自動解析・実行できるよう構造化する。
+- 理解に外部依存が生じない、完全に自己完結した内容にする。
 
-- Generate implementation plans that are fully executable by AI agents or humans
-- Use deterministic language with zero ambiguity
-- Structure all content for automated parsing and execution
-- Ensure complete self-containment with no external dependencies for understanding
+## 計画構造の要件
 
-## Plan Structure Requirements
+計画は、実行可能なタスクを含む個別のアトミックなフェーズで構成する。明示的に宣言した場合を除き、各フェーズはフェーズ間の依存関係なしに AI エージェントまたは人間が独立して処理できなければならない。
 
-Plans must consist of discrete, atomic phases containing executable tasks. Each phase must be independently processable by AI agents or humans without cross-phase dependencies unless explicitly declared.
+## フェーズの構成
 
-## Phase Architecture
+- 各フェーズに測定可能な完了基準を設ける。
+- 依存関係を指定しない限り、フェーズ内のタスクは並列実行できなければならない。
+- すべてのタスクの説明に、具体的なファイルパス、関数名、正確な実装詳細を含める。
+- 人間による解釈や意思決定を必要とするタスクを作らない。
 
-- Each phase must have measurable completion criteria
-- Tasks within phases must be executable in parallel unless dependencies are specified
-- All task descriptions must include specific file paths, function names, and exact implementation details
-- No task should require human interpretation or decision-making
+## AI 向け実装標準
 
-## AI-Optimized Implementation Standards
+- 解釈を必要としない、明示的で曖昧さのない言語を使う。
+- すべての内容を機械解析可能な形式（表、リスト、構造化データ）にする。
+- 該当する場合は具体的なファイルパス、行番号、正確なコード参照を含める。
+- すべての変数、定数、構成値を明示的に定義する。
+- 各タスクの説明に完全なコンテキストを含める。
+- すべての識別子に標準化された接頭辞（REQ-、TASK- など）を使う。
+- 自動検証できる検証基準を含める。
 
-- Use explicit, unambiguous language with zero interpretation required
-- Structure all content as machine-parseable formats (tables, lists, structured data)
-- Include specific file paths, line numbers, and exact code references where applicable
-- Define all variables, constants, and configuration values explicitly
-- Provide complete context within each task description
-- Use standardized prefixes for all identifiers (REQ-, TASK-, etc.)
-- Include validation criteria that can be automatically verified
+## 出力ファイルの仕様
 
-## Output File Specifications
+- 実装計画ファイルを `/plan/` ディレクトリに保存する。
+- 命名規則は `[purpose]-[component]-[version].md` とする。
+- 目的の接頭辞は `upgrade|refactor|feature|data|infrastructure|process|architecture|design` とする。
+- 例: `upgrade-system-command-4.md`、`feature-auth-module-1.md`
+- ファイルは、正しい front matter 構造を持つ有効な Markdown でなければならない。
 
-- Save implementation plan files in `/plan/` directory
-- Use naming convention: `[purpose]-[component]-[version].md`
-- Purpose prefixes: `upgrade|refactor|feature|data|infrastructure|process|architecture|design`
-- Example: `upgrade-system-command-4.md`, `feature-auth-module-1.md`
-- File must be valid Markdown with proper front matter structure
+## 必須テンプレート構造
 
-## Mandatory Template Structure
+すべての実装計画は、次のテンプレートに厳密に従う。各セクションは必須であり、具体的で実行可能な内容を記載する。AI エージェントは実行前にテンプレートへの準拠を検証しなければならない。
 
-All implementation plans must strictly adhere to the following template. Each section is required and must be populated with specific, actionable content. AI agents must validate template compliance before execution.
+## テンプレート検証規則
 
-## Template Validation Rules
+- front matter のすべてのフィールドが存在し、正しく書式設定されていること。
+- すべてのセクション見出しが完全一致（大文字と小文字を区別）していること。
+- すべての識別子の接頭辞が指定形式に従っていること。
+- 表に必要な列がすべて含まれていること。
+- 最終出力にプレースホルダーの文章を残さないこと。
 
-- All front matter fields must be present and properly formatted
-- All section headers must match exactly (case-sensitive)
-- All identifier prefixes must follow the specified format
-- Tables must include all required columns
-- No placeholder text may remain in the final output
+## 状態
 
-## Status
-
-The status of the implementation plan must be clearly defined in the front matter and must reflect the current state of the plan. The status can be one of the following (status_color in brackets): `Completed` (bright green badge), `In progress` (yellow badge), `Planned` (blue badge), `Deprecated` (red badge), or `On Hold` (orange badge). It should also be displayed as a badge in the introduction section.
+実装計画の状態は front matter で明確に定義し、計画の現在の状態を反映しなければならない。状態には、次のいずれか（括弧内は status_color）を使う: `Completed`（明るい緑のバッジ）、`In progress`（黄色のバッジ）、`Planned`（青いバッジ）、`Deprecated`（赤いバッジ）、`On Hold`（オレンジのバッジ）。導入セクションにもバッジとして表示する。
 
 ```md
 ---

@@ -1,21 +1,21 @@
 ---
 name: desk-open
-description: 'Create and open a new desk in the workshop. Sets up the folder structure, initial journal, and desk identity so the next session that sits down finds the trail.'
+description: 'ワークショップに新しいデスクを作成して開く。フォルダー構造、初期ジャーナル、デスクの識別情報を用意し、次のセッションが作業の軌跡をたどれるようにする。'
 ---
 
-# Open a Desk
+# デスクを開く
 
-Create a new desk in the workshop with the standard structure.
+標準構造でワークショップに新しいデスクを作成します。
 
-## When to use
+## 使用する場面
 
-- The operator wants to start a new workstream
-- Work arrives that doesn't belong to any existing desk
-- A topic needs its own frame (its own history, its own priors)
+- オペレーターが新しい作業ストリームを始めたい
+- 既存のどのデスクにも属さない作業が発生した
+- トピックに独自の枠組み（独自の履歴と事前知識）が必要
 
-## What it creates
+## 作成されるもの
 
-Given a workshop directory and a desk name, create:
+ワークショップディレクトリとデスク名を受け取り、次を作成します。
 
 ```
 desks/<desk-name>/
@@ -23,52 +23,40 @@ desks/<desk-name>/
   .signals/        # structured signal output (JSON) — dashboard reads this
 ```
 
-## How to use
+## 使用方法
 
-1. **Choose a name.** Short, descriptive, kebab-case. The name is
-   how the operator and other desks refer to this desk.
-   Examples: `security-scan`, `api-review`, `ops`, `cloud-workshop`
+1. **名前を選ぶ。** 短く説明的な kebab-case にします。この名前を使って、オペレーターやほかのデスクがこのデスクを参照します。
+   例: `security-scan`、`api-review`、`ops`、`cloud-workshop`
 
-2. **Check if it already exists.** If `desks/<desk-name>/` already
-   has a `journal.md`, the desk is live — **do not overwrite it.**
-   Instead, resume it: read the journal and continue from where it
-   left off. If the operator explicitly wants a fresh start, they
-   must rename or archive the existing desk first.
+2. **既に存在するか確認する。** `desks/<desk-name>/` に `journal.md` が既にある場合、そのデスクは稼働中です。**上書きしないでください。**
+   代わりにジャーナルを読み、前回の続きから再開します。オペレーターが明示的に新規開始を望む場合は、先に既存デスクの名前を変更するかアーカイブする必要があります。
 
-3. **Create the structure.** Make the directory, initial journal,
-   and signals folder:
+3. **構造を作成する。** ディレクトリ、初期ジャーナル、signals フォルダーを作成します。
 
    ```
    desks/<desk-name>/journal.md
    desks/<desk-name>/.signals/
    ```
 
-4. **Write the first journal entry.** The journal starts with:
-   - What this desk is for (its focus/purpose)
-   - What repos or work it covers (if applicable)
-   - Any initial context the first session needs
+4. **最初のジャーナルエントリを書く。** ジャーナルには最初に次を記録します。
+   - このデスクの用途（焦点/目的）
+   - 対象とするリポジトリや作業（該当する場合）
+   - 最初のセッションに必要な初期コンテキスト
 
-5. **Announce it.** Tell the operator what was created and what
-   the desk's focus is.
+5. **作成を知らせる。** 作成したものとデスクの焦点をオペレーターに伝えます。
 
-## Session orientation
+## セッションの開始方法
 
-This skill initializes storage — it does not launch a session.
-A desk becomes active when a Copilot session references its
-directory. The session workflow:
+この Skill はストレージを初期化しますが、セッションは起動しません。Copilot セッションがデスクのディレクトリを参照すると、そのデスクがアクティブになります。セッションのワークフローは次のとおりです。
 
-1. The operator (or TA) starts a session and says "sit at the
-   `<desk-name>` desk"
-2. The session reads `desks/<desk-name>/journal.md` to load priors
-3. Work happens — the session uses `signal-write` to emit signals
-   and `desk-journal` to persist state at the end
-4. The next session repeats from step 2
+1. オペレーター（または TA）がセッションを開始し、「`<desk-name>` デスクに着席して」と指示する
+2. セッションが `desks/<desk-name>/journal.md` を読み、事前情報を読み込む
+3. 作業を行い、セッションは `signal-write` でシグナルを出力し、終了時に `desk-journal` で状態を永続化する
+4. 次のセッションは手順 2 から繰り返す
 
-The desk identity comes from which journal is read, not from a
-persistent process. Desks are long-running in *state* (the journal
-carries forward), not in *runtime* (each session is independent).
+デスクの識別情報は永続プロセスではなく、どのジャーナルを読むかによって決まります。デスクが長期間継続するのは*状態*（ジャーナルが引き継がれる）であり、*実行時*ではありません（各セッションは独立しています）。
 
-## Journal format
+## ジャーナル形式
 
 ```markdown
 # <Desk Name> — Journal
@@ -79,12 +67,8 @@ carries forward), not in *runtime* (each session is independent).
 - **Next step:** <what the first session should do>
 ```
 
-## Principles
+## 原則
 
-- A desk is a peer, not a sub-agent. It has equal standing to
-  disagree with other desks.
-- The journal is the memory. Without it, the next session starts
-  blind. Write enough that someone starting from zero finds the way.
-- One desk, one focus. If the scope is too broad, open two desks.
-  Each desk's value comes from its specific frame — dilute the
-  frame and you lose the value.
+- デスクはサブエージェントではなく対等な存在です。ほかのデスクに異議を唱える同等の立場があります。
+- ジャーナルが記憶です。ジャーナルがなければ、次のセッションは何も分からない状態で始まります。ゼロから始める人が道を見つけられるだけの情報を書きます。
+- 1 つのデスクに 1 つの焦点を持たせます。範囲が広すぎる場合は、デスクを 2 つ開きます。各デスクの価値は固有の枠組みにあるため、焦点を薄めると価値も失われます。

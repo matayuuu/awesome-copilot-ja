@@ -1,6 +1,6 @@
 ---
 name: rhino3d-scripts
-description: 'Authoring and debugging scripts for Rhinoceros 3D (Rhino 8 and later). Use when asked to write RhinoScript (VBScript / .rvb / .vbs), RhinoPython, or RhinoCommon-based scripts; automate Rhino modeling tasks; build command macros; manipulate Rhino geometry, layers, blocks, or document objects; pick objects from the viewport; control redraw and undo; or load and run scripts from the Rhino Script Editor. Covers `rhinoscriptsyntax`, `scriptcontext`, the `Rhino.*` RhinoCommon namespaces (`Rhino.Geometry`, `Rhino.DocObjects`, `Rhino.Input`, `Rhino.UI`, `Rhino.Display`, `Rhino.FileIO`), and the Rhino 8 unified Script Editor.'
+description: 'rhino3d-scripts に関する作業を支援する Skill です。対象のファイルや設定を確認し、必要な手順、検証方法、注意点を案内します。対象技術の調査、実装、運用、トラブルシューティングに使用します。'
 ---
 
 # Rhino 3D Scripting Skill
@@ -29,7 +29,7 @@ Pick the surface based on the task, not preference. Recommend Python by default 
 
 A macro is **not** a script — it is a string of command-line input (e.g. `! _-Line 0,0,0 10,0,0 _Enter`). Use a script the moment you need a variable, loop, or conditional.
 
-## Prerequisites
+## 前提条件
 
 - Rhino 7 or later (Rhino 8 strongly recommended — unified Script Editor supports Python 3, VB, and C# in one window).
 - Script Editor: type `_ScriptEditor` (Rhino 8) or `_EditPythonScript` / `_EditScript` (older).
@@ -144,7 +144,7 @@ else:
 - **Never name a script after a Python standard-library module** (e.g. `random.py`, `math.py`, `os.py`). IronPython 2.7 (`_-RunPythonScript`) resolves the script directory before stdlib, so any `import random` inside the stdlib (e.g. `tempfile` imports `random` internally) will find your file instead and fail with `Cannot import name <X>`. CPython 3 (`rhinocode`) is unaffected because it resolves stdlib first. Rename the script or avoid importing modules that pull in the shadowed name.
 - **Em dashes and other non-ASCII characters silently break `_-RunPythonScript` (IronPython 2.7).** `rhinocode script` uses CPython 3 (UTF-8 by default) so the same file works there, making the failure non-obvious. IronPython 2.7 raises `SyntaxError: Non-ASCII character '\xe2'` at the first offending byte. The most common culprit is the **em dash** (`--` auto-converted to `--` by many editors). Add `# -*- coding: utf-8 -*-` as line 1 of every script that must run under both runtimes, and replace typographic characters with ASCII equivalents: em dash `--`, arrow `->`, multiplication `x`.
 
-## Troubleshooting
+## トラブルシューティング
 
 | Symptom | Fix |
 |---|---|
@@ -161,7 +161,7 @@ else:
 | `Cannot import name <X>` inside stdlib (e.g. `tempfile`, `os`) when using `_-RunPythonScript` | Script filename shadows a stdlib module (e.g. `random.py` shadows `random`). IronPython 2.7 searches the script directory before stdlib. Rename the script, or remove the `import` that pulls in the shadowed module and replace it with a direct alternative (e.g. read `%TEMP%` via `os.environ` instead of `import tempfile`). |
 | `SyntaxError: Non-ASCII character '\xe2' ... but no encoding declared` | IronPython 2.7 (`_-RunPythonScript`) hit an em dash or similar character. Add `# -*- coding: utf-8 -*-` as line 1, or replace the character: em dash `--`, arrow `->`. The same file runs fine under `rhinocode` (CPython 3), which hides the problem. |
 
-## References
+## 参考資料
 
 - [references/rhinoscriptsyntax-cheatsheet.md](references/rhinoscriptsyntax-cheatsheet.md) — most-used `rs.*` functions by category.
 - [references/rhinocommon-map.md](references/rhinocommon-map.md) — which namespace to import for which task.

@@ -1,6 +1,6 @@
 ---
 name: optimize-simplicite-logs
-description: capability to parse Simplicité logs from a raw `.txt` file, filter fields to reduce noise, and output the result as structured JSON.
+description: 'optimize-simplicite-logs に関する作業を支援する Skill です。対象のファイルや設定を確認し、必要な手順、検証方法、注意点を案内します。対象技術の調査、実装、運用、トラブルシューティングに使用します。'
 ---
 
 # Optimize Simplicite Logs
@@ -16,7 +16,7 @@ Use this skill when you need to:
 
 **IMPORTANT:** Instead of directly reading a raw `.txt` log file provided by the user using file read tools, you **must** use one of the log converter scripts (PowerShell or Python) to parse the file into a JSON format first, optionally extracting only the fields needed.
 
-## Prerequisites
+## 前提条件
 
 - Access to either the PowerShell script (`/scripts/SimpliciteLog2Json.ps1`) or the Python script (`/scripts/simplicite-log2json.py`).
 
@@ -69,6 +69,6 @@ python /absolute/path/to/skills/optimize-simplicite-logs/scripts/simplicite-log2
 # 2. Then read logs_minified.json to understand the context.
 ```
 
-## Limitations
+## 制限事項
 
 - The parser depends on a fixed regex pattern that matches the standard Simplicité log output. If the log format has been heavily customized, parsing might fail or degrade.

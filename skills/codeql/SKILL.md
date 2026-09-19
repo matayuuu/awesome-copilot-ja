@@ -1,30 +1,30 @@
 ---
 name: codeql
-description: Comprehensive guide for setting up and configuring CodeQL code scanning via GitHub Actions workflows and the CodeQL CLI. This skill should be used when users need help with code scanning configuration, CodeQL workflow files, CodeQL CLI commands, SARIF output, security analysis setup, or troubleshooting CodeQL analysis.
+description: 'GitHub ActionsワークフローとCodeQL CLIを使用してCodeQLコードスキャンをセットアップ、構成するための包括的なガイド。コードスキャン構成、CodeQLワークフローファイル、CodeQL CLIコマンド、SARIF出力、セキュリティ分析のセットアップ、CodeQL分析のトラブルシューティングを支援するときに使用する。'
 ---
 
-# CodeQL Code Scanning
+# CodeQLコードスキャン
 
-This skill provides procedural guidance for configuring and running CodeQL code scanning — both through GitHub Actions workflows and the standalone CodeQL CLI.
+このSkillは、GitHub ActionsワークフローとスタンドアロンのCodeQL CLIの両方を使用して、CodeQLコードスキャンを構成、実行する手順を案内します。
 
-## When to Use This Skill
+## このSkillを使用する場面
 
-Use this skill when the request involves:
+次の依頼でこのSkillを使用します:
 
-- Creating or customizing a `codeql.yml` GitHub Actions workflow
-- Choosing between default setup and advanced setup for code scanning
-- Configuring CodeQL language matrix, build modes, or query suites
-- Running CodeQL CLI locally (`codeql database create`, `database analyze`, `github upload-results`)
-- Understanding or interpreting SARIF output from CodeQL
-- Troubleshooting CodeQL analysis failures (build modes, compiled languages, runner requirements)
-- Setting up CodeQL for monorepos with per-component scanning
-- Configuring dependency caching, custom query packs, or model packs
+- `codeql.yml` GitHub Actionsワークフローの作成またはカスタマイズ
+- コードスキャンのdefault setupとadvanced setupの選択
+- CodeQLの言語マトリックス、build mode、query suiteの構成
+- CodeQL CLIのローカル実行（`codeql database create`、`database analyze`、`github upload-results`）
+- CodeQLのSARIF出力の理解または解釈
+- CodeQL分析失敗のトラブルシューティング（build mode、コンパイル言語、runner要件）
+- コンポーネントごとにスキャンするmonorepo向けCodeQLのセットアップ
+- 依存関係キャッシュ、カスタムquery pack、model packの構成
 
-## Supported Languages
+## 対応言語
 
-CodeQL supports the following language identifiers:
+CodeQLは次の言語識別子に対応しています:
 
-| Language | Identifier | Alternatives |
+| 言語 | 識別子 | 代替 |
 |---|---|---|
 | C/C++ | `c-cpp` | `c`, `cpp` |
 | C# | `csharp` | — |
@@ -37,20 +37,20 @@ CodeQL supports the following language identifiers:
 | Swift | `swift` | — |
 | GitHub Actions | `actions` | — |
 
-> Alternative identifiers are equivalent to the standard identifier (e.g., `javascript` does not exclude TypeScript analysis).
+> 代替識別子は標準識別子と同等です（例: `javascript`を指定してもTypeScriptの分析は除外されません）。
 
-## Core Workflow — GitHub Actions
+## 基本ワークフロー — GitHub Actions
 
-### Step 1: Choose Setup Type
+### ステップ1: セットアップの種類を選ぶ
 
-- **Default setup** — Enable from repository Settings → Advanced Security → CodeQL analysis. Best for getting started quickly. Uses `none` build mode for most languages.
-- **Advanced setup** — Create a `.github/workflows/codeql.yml` file for full control over triggers, build modes, query suites, and matrix strategies.
+- **Default setup** — RepositoryのSettings → Advanced Security → CodeQL analysisから有効にします。すぐに始める場合に最適です。多くの言語で`none` build modeを使用します。
+- **Advanced setup** — `.github/workflows/codeql.yml`ファイルを作成し、トリガー、build mode、query suite、マトリックス戦略を完全に制御します。
 
-To switch from default to advanced: disable default setup first, then commit the workflow file.
+defaultからadvancedへ切り替えるには、最初にdefault setupを無効化してから、ワークフローファイルをコミットします。
 
-### Step 2: Configure Workflow Triggers
+### ステップ2: ワークフローのトリガーを構成する
 
-Define when scanning runs:
+スキャンを実行するタイミングを定義します:
 
 ```yaml
 on:
@@ -62,12 +62,12 @@ on:
     - cron: '30 6 * * 1'  # Weekly Monday 6:30 UTC
 ```
 
-- `push` — scans on every push to specified branches; results appear in Security tab
-- `pull_request` — scans PR merge commits; results appear as PR check annotations
-- `schedule` — periodic scans of the default branch (cron must exist on default branch)
-- `merge_group` — add if repository uses merge queues
+- `push` — 指定したブランチへのpushごとにスキャンし、結果はSecurityタブに表示される
+- `pull_request` — PRのマージコミットをスキャンし、結果はPRチェックのannotationとして表示される
+- `schedule` — default branchを定期的にスキャンする（cronはdefault branchに存在する必要がある）
+- `merge_group` — Repositoryでmerge queueを使用する場合に追加する
 
-To skip scans for documentation-only PRs:
+ドキュメントだけを変更するPRのスキャンを省略するには:
 
 ```yaml
 on:
@@ -77,11 +77,11 @@ on:
       - '**/*.txt'
 ```
 
-> `paths-ignore` controls whether the workflow runs, not which files are analyzed.
+> `paths-ignore`はワークフローを実行するかどうかを制御するもので、分析するファイルを制御するものではありません。
 
-### Step 3: Configure Permissions
+### ステップ3: 権限を構成する
 
-Set least-privilege permissions:
+最小権限を設定します:
 
 ```yaml
 permissions:
@@ -90,9 +90,9 @@ permissions:
   actions: read             # Required for private repos using codeql-action
 ```
 
-### Step 4: Configure Language Matrix
+### ステップ4: 言語マトリックスを構成する
 
-Use a matrix strategy to analyze each language in parallel:
+マトリックス戦略を使用して各言語を並列に分析します:
 
 ```yaml
 jobs:
@@ -109,14 +109,14 @@ jobs:
             build-mode: none
 ```
 
-For compiled languages, set the appropriate `build-mode`:
-- `none` — no build required (supported for C/C++, C#, Java, Rust)
-- `autobuild` — automatic build detection
-- `manual` — custom build commands (advanced setup only)
+コンパイル言語では、適切な`build-mode`を設定します:
+- `none` — ビルド不要（C/C++、C#、Java、Rustに対応）
+- `autobuild` — ビルドを自動検出
+- `manual` — カスタムビルドコマンド（advanced setupのみ）
 
-> For detailed per-language autobuild behavior and runner requirements, search `references/compiled-languages.md`.
+> 言語ごとのautobuildの詳細動作とrunner要件については、`references/compiled-languages.md`を検索してください。
 
-### Step 5: Configure CodeQL Init and Analysis
+### ステップ5: CodeQLの初期化と分析を構成する
 
 ```yaml
 steps:
@@ -137,24 +137,24 @@ steps:
       category: "/language:${{ matrix.language }}"
 ```
 
-**Query suite options:**
-- `security-extended` — default security queries plus additional coverage
-- `security-and-quality` — security plus code quality queries
-- Custom query packs via `packs:` input (e.g., `codeql/javascript-queries:AlertSuppression.ql`)
+**Query suiteの選択肢:**
+- `security-extended` — 既定のセキュリティクエリと追加のカバレッジ
+- `security-and-quality` — セキュリティクエリとコード品質クエリ
+- `packs:`入力によるカスタムquery pack（例: `codeql/javascript-queries:AlertSuppression.ql`）
 
-**Dependency caching:** Set `dependency-caching: true` on the `init` action to cache restored dependencies across runs.
+**依存関係のキャッシュ:** 復元した依存関係を実行間でキャッシュするには、`init`アクションに`dependency-caching: true`を設定します。
 
-**Analysis category:** Use `category` to distinguish SARIF results in monorepos (e.g., per-language, per-component).
+**分析カテゴリ:** monorepoのSARIF結果を区別するには`category`を使用します（例: 言語別、コンポーネント別）。
 
-### Step 6: Monorepo Configuration
+### ステップ6: Monorepoの構成
 
-For monorepos with multiple components, use the `category` parameter to separate SARIF results:
+複数のコンポーネントを持つmonorepoでは、`category`パラメーターを使用してSARIF結果を分離します:
 
 ```yaml
 category: "/language:${{ matrix.language }}/component:frontend"
 ```
 
-To restrict analysis to specific directories, use a CodeQL configuration file (`.github/codeql/codeql-config.yml`):
+分析を特定のディレクトリに限定するには、CodeQL構成ファイル（`.github/codeql/codeql-config.yml`）を使用します:
 
 ```yaml
 paths:
@@ -165,7 +165,7 @@ paths-ignore:
   - '**/test/**'
 ```
 
-Reference it in the workflow:
+ワークフローから参照します:
 
 ```yaml
 - uses: github/codeql-action/init@v4
@@ -173,16 +173,16 @@ Reference it in the workflow:
     config-file: .github/codeql/codeql-config.yml
 ```
 
-### Step 7: Manual Build Steps (Compiled Languages)
+### ステップ7: 手動ビルド手順（コンパイル言語）
 
-If `autobuild` fails or custom build commands are needed:
+`autobuild`が失敗する場合、またはカスタムビルドコマンドが必要な場合:
 
 ```yaml
 - language: c-cpp
   build-mode: manual
 ```
 
-Then add explicit build steps between `init` and `analyze`:
+次に、`init`と`analyze`の間へ明示的なビルド手順を追加します:
 
 ```yaml
 - if: matrix.build-mode == 'manual'
@@ -192,11 +192,11 @@ Then add explicit build steps between `init` and `analyze`:
     make release
 ```
 
-## Core Workflow — CodeQL CLI
+## 基本ワークフロー — CodeQL CLI
 
-### Step 1: Install the CodeQL CLI
+### ステップ1: CodeQL CLIをインストールする
 
-Download the CodeQL bundle (includes CLI + precompiled queries):
+CodeQL bundle（CLIと事前コンパイル済みクエリを含む）をダウンロードします:
 
 ```bash
 # Download from https://github.com/github/codeql-action/releases
@@ -208,9 +208,9 @@ codeql resolve packs
 codeql resolve languages
 ```
 
-> Always use the CodeQL bundle, not a standalone CLI download. The bundle ensures query compatibility and provides precompiled queries for better performance.
+> スタンドアロンのCLIダウンロードではなく、常にCodeQL bundleを使用してください。bundleはクエリの互換性を保証し、パフォーマンス向上のための事前コンパイル済みクエリを提供します。
 
-### Step 2: Create a CodeQL Database
+### ステップ2: CodeQLデータベースを作成する
 
 ```bash
 # Single language
@@ -226,9 +226,9 @@ codeql database create codeql-dbs \
   --source-root=src
 ```
 
-For compiled languages, provide the build command via `--command`.
+コンパイル言語では、`--command`でビルドコマンドを指定します。
 
-### Step 3: Analyze the Database
+### ステップ3: データベースを分析する
 
 ```bash
 codeql database analyze codeql-db \
@@ -238,9 +238,9 @@ codeql database analyze codeql-db \
   --output=results.sarif
 ```
 
-Common query suites: `<language>-code-scanning.qls`, `<language>-security-extended.qls`, `<language>-security-and-quality.qls`.
+一般的なquery suite: `<language>-code-scanning.qls`、`<language>-security-extended.qls`、`<language>-security-and-quality.qls`。
 
-### Step 4: Upload Results to GitHub
+### ステップ4: 結果をGitHubへアップロードする
 
 ```bash
 codeql github upload-results \
@@ -250,42 +250,42 @@ codeql github upload-results \
   --sarif=results.sarif
 ```
 
-Requires `GITHUB_TOKEN` environment variable with `security-events: write` permission.
+`security-events: write`権限を持つ`GITHUB_TOKEN`環境変数が必要です。
 
-### CLI Server Mode
+### CLI Serverモード
 
-To avoid repeated JVM initialization when running multiple commands:
+複数のコマンドを実行するときにJVMの初期化が繰り返されるのを避けるには:
 
 ```bash
 codeql execute cli-server
 ```
 
-> For detailed CLI command reference, search `references/cli-commands.md`.
+> CLIコマンドの詳細なリファレンスについては、`references/cli-commands.md`を検索してください。
 
-## Alert Management
+## アラート管理
 
-### Severity Levels
+### 重大度レベル
 
-Alerts have two severity dimensions:
-- **Standard severity:** `Error`, `Warning`, `Note`
-- **Security severity:** `Critical`, `High`, `Medium`, `Low` (derived from CVSS scores; takes display precedence)
+アラートには2種類の重大度があります:
+- **標準の重大度:** `Error`、`Warning`、`Note`
+- **セキュリティ重大度:** `Critical`、`High`、`Medium`、`Low`（CVSSスコアから算出され、表示上はこちらが優先される）
 
 ### Copilot Autofix
 
-GitHub Copilot Autofix generates fix suggestions for CodeQL alerts in pull requests automatically — no Copilot subscription required. Review suggestions carefully before committing.
+GitHub Copilot Autofixは、Pull Request内のCodeQLアラートに対する修正候補を自動生成します。Copilotサブスクリプションは不要です。コミット前に候補を慎重にレビューしてください。
 
-### Alert Triage in PRs
+### PRでのアラートトリアージ
 
-- Alerts appear as check annotations on changed lines
-- Check fails by default for `error`/`critical`/`high` severity alerts
-- Configure merge protection rulesets to customize the threshold
-- Dismiss false positives with a documented reason for audit trail
+- アラートは変更行のチェックannotationとして表示される
+- 重大度が`error`／`critical`／`high`のアラートでは、既定でチェックが失敗する
+- しきい値をカスタマイズするには、merge protection rulesetを構成する
+- 誤検知を却下する場合は、監査証跡のため理由を記録する
 
-> For detailed alert management guidance, search `references/alert-management.md`.
+> アラート管理の詳しいガイダンスについては、`references/alert-management.md`を検索してください。
 
-## Custom Queries and Packs
+## カスタムクエリとPack
 
-### Using Custom Query Packs
+### カスタムQuery Packを使用する
 
 ```yaml
 - uses: github/codeql-action/init@v4
@@ -295,9 +295,9 @@ GitHub Copilot Autofix generates fix suggestions for CodeQL alerts in pull reque
       codeql/javascript-queries:AlertSuppression.ql
 ```
 
-### Creating Custom Query Packs
+### カスタムQuery Packを作成する
 
-Use the CodeQL CLI to create and publish packs:
+CodeQL CLIを使用してPackを作成、公開します:
 
 ```bash
 # Initialize a new pack
@@ -310,9 +310,9 @@ codeql pack install
 codeql pack publish
 ```
 
-### CodeQL Configuration File
+### CodeQL構成ファイル
 
-For advanced query and path configuration, create `.github/codeql/codeql-config.yml`:
+高度なクエリとパスの構成には、`.github/codeql/codeql-config.yml`を作成します:
 
 ```yaml
 paths:
@@ -328,56 +328,56 @@ packs:
     - my-org/my-custom-queries
 ```
 
-## Code Scanning Logs
+## コードスキャンのログ
 
-### Summary Metrics
+### 概要メトリクス
 
-Workflow logs include key metrics:
-- **Lines of code in codebase** — baseline before extraction
-- **Lines extracted** — including external libraries and auto-generated files
-- **Extraction errors/warnings** — files that failed or produced warnings during extraction
+ワークフローログには主要なメトリクスが含まれます:
+- **コードベースのコード行数** — 抽出前の基準値
+- **抽出された行数** — 外部ライブラリと自動生成ファイルを含む
+- **抽出エラー／警告** — 抽出に失敗した、または警告が発生したファイル
 
-### Debug Logging
+### デバッグログ
 
-To enable detailed diagnostics:
-- **GitHub Actions:** re-run the workflow with "Enable debug logging" checked
-- **CodeQL CLI:** use `--verbosity=progress++` and `--logdir=codeql-logs`
+詳細な診断を有効にするには:
+- **GitHub Actions:** "Enable debug logging"を選択してワークフローを再実行する
+- **CodeQL CLI:** `--verbosity=progress++`と`--logdir=codeql-logs`を使用する
 
-## Troubleshooting
+## トラブルシューティング
 
-### Common Issues
+### 一般的な問題
 
-| Problem | Solution |
+| 問題 | 解決策 |
 |---|---|
-| Workflow not triggering | Verify `on:` triggers match event; check `paths`/`branches` filters; ensure workflow exists on target branch |
-| `Resource not accessible` error | Add `security-events: write` and `contents: read` permissions |
-| Autobuild failure | Switch to `build-mode: manual` and add explicit build commands |
-| No source code seen | Verify `--source-root`, build command, and language identifier |
-| C# compiler failure | Check for `/p:EmitCompilerGeneratedFiles=true` conflicts with `.sqlproj` or legacy projects |
-| Fewer lines scanned than expected | Switch from `none` to `autobuild`/`manual`; verify build compiles all source |
-| Kotlin in no-build mode | Disable and re-enable default setup to switch to `autobuild` |
-| Cache miss every run | Verify `dependency-caching: true` on `init` action |
-| Out of disk/memory | Use larger runners; reduce analysis scope via `paths` config; use `build-mode: none` |
-| SARIF upload fails | Ensure token has `security-events: write`; check 10 MB file size limit |
-| SARIF results exceed limits | Split across multiple uploads with different `--sarif-category`; reduce query scope |
-| Two CodeQL workflows | Disable default setup if using advanced setup, or remove old workflow file |
-| Slow analysis | Enable dependency caching; use `--threads=0`; reduce query suite scope |
+| ワークフローが起動しない | `on:`トリガーがイベントと一致することを確認し、`paths`／`branches`フィルターを調べ、ワークフローが対象ブランチに存在することを確認する |
+| `Resource not accessible`エラー | `security-events: write`と`contents: read`権限を追加する |
+| Autobuildの失敗 | `build-mode: manual`へ切り替え、明示的なビルドコマンドを追加する |
+| ソースコードが認識されない | `--source-root`、ビルドコマンド、言語識別子を確認する |
+| C#コンパイラの失敗 | `/p:EmitCompilerGeneratedFiles=true`と`.sqlproj`またはレガシープロジェクトの競合を確認する |
+| スキャン行数が予想より少ない | `none`から`autobuild`／`manual`へ切り替え、ビルドですべてのソースがコンパイルされることを確認する |
+| Kotlinがno-build modeになっている | default setupを無効化して再度有効化し、`autobuild`へ切り替える |
+| 毎回キャッシュミスになる | `init`アクションの`dependency-caching: true`を確認する |
+| ディスク／メモリ不足 | より大きなrunnerを使用し、`paths`構成で分析範囲を減らし、`build-mode: none`を使用する |
+| SARIFアップロードの失敗 | tokenに`security-events: write`があることを確認し、10 MBのファイルサイズ上限を確認する |
+| SARIF結果が上限を超える | 異なる`--sarif-category`で複数のアップロードへ分割し、クエリ範囲を減らす |
+| CodeQLワークフローが2つある | advanced setupを使用する場合はdefault setupを無効化するか、古いワークフローファイルを削除する |
+| 分析が遅い | 依存関係キャッシュを有効化し、`--threads=0`を使用し、query suiteの範囲を減らす |
 
-> For comprehensive troubleshooting with detailed solutions, search `references/troubleshooting.md`.
+> 詳細な解決策を含む包括的なトラブルシューティングについては、`references/troubleshooting.md`を検索してください。
 
-### Hardware Requirements (Self-Hosted Runners)
+### ハードウェア要件（Self-hosted runner）
 
-| Codebase Size | RAM | CPU |
+| コードベースの規模 | RAM | CPU |
 |---|---|---|
-| Small (<100K LOC) | 8 GB+ | 2 cores |
-| Medium (100K–1M LOC) | 16 GB+ | 4–8 cores |
-| Large (>1M LOC) | 64 GB+ | 8 cores |
+| 小（100K LOC未満） | 8 GB以上 | 2コア |
+| 中（100K～1M LOC） | 16 GB以上 | 4～8コア |
+| 大（1M LOC超） | 64 GB以上 | 8コア |
 
-All sizes: SSD with ≥14 GB free disk space.
+すべての規模: 空きディスク容量14 GB以上のSSD。
 
-### Action Versioning
+### Actionのバージョン管理
 
-Pin CodeQL actions to a specific major version:
+CodeQL actionを特定のmajor versionに固定します:
 
 ```yaml
 uses: github/codeql-action/init@v4      # Recommended
@@ -385,21 +385,21 @@ uses: github/codeql-action/autobuild@v4
 uses: github/codeql-action/analyze@v4
 ```
 
-For maximum security, pin to a full commit SHA instead of a version tag.
+最大限のセキュリティを確保するには、version tagではなく完全なcommit SHAへ固定します。
 
-## Reference Files
+## 参考ファイル
 
-For detailed documentation, load the following reference files as needed:
+詳しいドキュメントが必要な場合は、次の参考ファイルを読み込みます:
 
-- `references/workflow-configuration.md` — Full workflow trigger, runner, and configuration options
-  - Search patterns: `trigger`, `schedule`, `paths-ignore`, `db-location`, `model packs`, `alert severity`, `merge protection`, `concurrency`, `config file`
-- `references/cli-commands.md` — Complete CodeQL CLI command reference
-  - Search patterns: `database create`, `database analyze`, `upload-results`, `resolve packs`, `cli-server`, `installation`, `CI integration`
-- `references/sarif-output.md` — SARIF v2.1.0 object model, upload limits, and third-party support
-  - Search patterns: `sarifLog`, `result`, `location`, `region`, `codeFlow`, `fingerprint`, `suppression`, `upload limits`, `third-party`, `precision`, `security-severity`
-- `references/compiled-languages.md` — Build modes and autobuild behavior per language
-  - Search patterns: `C/C++`, `C#`, `Java`, `Go`, `Rust`, `Swift`, `autobuild`, `build-mode`, `hardware`, `dependency caching`
-- `references/troubleshooting.md` — Comprehensive error diagnosis and resolution
-  - Search patterns: `no source code`, `out of disk`, `out of memory`, `403`, `C# compiler`, `analysis too long`, `fewer lines`, `Kotlin`, `extraction errors`, `debug logging`, `SARIF upload`, `SARIF limits`
-- `references/alert-management.md` — Alert severity, triage, Copilot Autofix, and dismissal
-  - Search patterns: `severity`, `security severity`, `CVSS`, `Copilot Autofix`, `dismiss`, `triage`, `PR alerts`, `data flow`, `merge protection`, `REST API`
+- `references/workflow-configuration.md` — ワークフローのトリガー、runner、構成オプションの完全な説明
+  - 検索パターン: `trigger`、`schedule`、`paths-ignore`、`db-location`、`model packs`、`alert severity`、`merge protection`、`concurrency`、`config file`
+- `references/cli-commands.md` — 完全なCodeQL CLIコマンドリファレンス
+  - 検索パターン: `database create`、`database analyze`、`upload-results`、`resolve packs`、`cli-server`、`installation`、`CI integration`
+- `references/sarif-output.md` — SARIF v2.1.0のオブジェクトモデル、アップロード上限、第三者対応
+  - 検索パターン: `sarifLog`、`result`、`location`、`region`、`codeFlow`、`fingerprint`、`suppression`、`upload limits`、`third-party`、`precision`、`security-severity`
+- `references/compiled-languages.md` — 言語ごとのbuild modeとautobuild動作
+  - 検索パターン: `C/C++`、`C#`、`Java`、`Go`、`Rust`、`Swift`、`autobuild`、`build-mode`、`hardware`、`dependency caching`
+- `references/troubleshooting.md` — 包括的なエラー診断と解決策
+  - 検索パターン: `no source code`、`out of disk`、`out of memory`、`403`、`C# compiler`、`analysis too long`、`fewer lines`、`Kotlin`、`extraction errors`、`debug logging`、`SARIF upload`、`SARIF limits`
+- `references/alert-management.md` — アラートの重大度、トリアージ、Copilot Autofix、却下
+  - 検索パターン: `severity`、`security severity`、`CVSS`、`Copilot Autofix`、`dismiss`、`triage`、`PR alerts`、`data flow`、`merge protection`、`REST API`

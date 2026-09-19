@@ -1,8 +1,8 @@
 # Power BI Development Plugin
 
-Comprehensive Power BI development resources including data modeling, DAX optimization, performance tuning, visualization design, security best practices, and DevOps/ALM guidance for building enterprise-grade Power BI solutions.
+エンタープライズ対応のPower BIソリューションを構築するための総合リソースです。データモデリング、DAX最適化、パフォーマンスチューニング、可視化設計、セキュリティのベストプラクティス、DevOps/ALMのガイダンスを含みます。
 
-## Installation
+## インストール
 
 ```bash
 # Using Copilot CLI

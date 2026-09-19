@@ -1,38 +1,37 @@
 ---
 name: update-avm-modules-in-bicep
-description: 'Update Azure Verified Modules (AVM) to latest versions in Bicep files.'
+description: 'Bicep ファイル内の Azure Verified Modules (AVM) を最新バージョンへ更新する。'
 ---
+# Bicep ファイル内の Azure Verified Modules を更新
 
-# Update Azure Verified Modules in Bicep Files
+Bicep ファイル `${file}` を最新の Azure Verified Module (AVM) バージョンを使うよう更新する。進捗更新は破壊的変更がない場合に限る。最終出力の表と概要以外の情報は出力しない。
 
-Update Bicep file `${file}` to use latest Azure Verified Module (AVM) versions. Limit progress updates to non-breaking changes. Don't output information other than the final output table and summary.
+## 手順
 
-## Process
+1. **スキャン**: `${file}` から AVM モジュールと現在のバージョンを抽出する。
+1. **特定**: `#search` ツールで `avm/res/{service}/{resource}` に一致する、使用中の一意な AVM モジュールをすべて列挙する。
+1. **確認**: MCR から各 AVM モジュールの最新バージョンを取得するために `#fetch` ツールを使う: `https://mcr.microsoft.com/v2/bicep/avm/res/{service}/{resource}/tags/list`
+1. **比較**: セマンティックバージョンを解析し、更新が必要な AVM モジュールを特定する。
+1. **レビュー**: 破壊的変更については、`#fetch` ツールで次のドキュメントを取得する: `https://github.com/Azure/bicep-registry-modules/tree/main/avm/res/{service}/{resource}`
+1. **更新**: `#editFiles` ツールでバージョン更新とパラメーター変更を適用する。
+1. **検証**: `#runCommands` ツールで `bicep lint` と `bicep build` を実行し、準拠を確認する。
+1. **出力**: 変更を表形式で要約し、その下に更新概要を記載する。
 
-1. **Scan**: Extract AVM modules and current versions from `${file}`
-1. **Identify**: List all unique AVM modules used by matching `avm/res/{service}/{resource}` using `#search` tool
-1. **Check**: Use `#fetch` tool to get latest version of each AVM module from MCR: `https://mcr.microsoft.com/v2/bicep/avm/res/{service}/{resource}/tags/list`
-1. **Compare**: Parse semantic versions to identify AVM modules needing update
-1. **Review**: For breaking changes, use `#fetch` tool to get docs from: `https://github.com/Azure/bicep-registry-modules/tree/main/avm/res/{service}/{resource}`
-1. **Update**: Apply version updates and parameter changes using `#editFiles` tool
-1. **Validate**: Run `bicep lint` and `bicep build` using `#runCommands` tool to ensure compliance.
-1. **Output**: Summarize changes in a table format with summary of updates below.
+## ツールの使用
 
-## Tool Usage
+利用可能な場合は常に `#search`、`#searchResults`、`#fetch`、`#editFiles`、`#runCommands`、`#todos` ツールを使う。作業を実行するためのコードは書かない。
 
-Always use tools `#search`, `#searchResults`,`#fetch`, `#editFiles`, `#runCommands`, `#todos` if available. Avoid writing code to perform tasks.
+## 破壊的変更の方針
 
-## Breaking Change Policy
+⚠️ 更新に次の内容が含まれる場合は、**承認を得るために停止する**:
 
-⚠️ **PAUSE for approval** if updates involve:
+- 互換性のないパラメーター変更
+- セキュリティまたはコンプライアンスの変更
+- 動作の変更
 
-- Incompatible parameter changes
-- Security/compliance modifications
-- Behavioral changes
+## 出力形式
 
-## Output Format
-
-Only display results in table with icons:
+結果はアイコン付きの表だけを表示する:
 
 ```markdown
 | Module | Current | Latest | Status | Action | Docs |
@@ -45,16 +44,16 @@ Only display results in table with icons:
 Describe updates made, any manual reviews needed or issues encountered.
 ```
 
-## Icons
+## アイコン
 
-- 🔄 Updated
-- ✅ Current
-- ⚠️ Manual review required
-- ❌ Failed
-- 📖 Documentation
+- 🔄 更新済み
+- ✅ 最新
+- ⚠️ 手動レビューが必要
+- ❌ 失敗
+- 📖 ドキュメント
 
-## Requirements
+## 要件
 
-- Use MCR tags API only for version discovery
-- Parse JSON tags array and sort by semantic versioning
-- Maintain Bicep file validity and linting compliance
+- バージョンの検出には MCR tags API のみを使う。
+- JSON の tags 配列を解析し、セマンティックバージョニングで並べ替える。
+- Bicep ファイルの有効性と lint 準拠を維持する。

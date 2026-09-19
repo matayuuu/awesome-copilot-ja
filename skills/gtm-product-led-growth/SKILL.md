@@ -1,19 +1,19 @@
 ---
 name: gtm-product-led-growth
-description: Build self-serve acquisition and expansion motions. Use when deciding PLG vs sales-led, optimizing activation, driving freemium conversion, building growth equations, or recognizing when product complexity demands human touch. Includes the parallel test where sales-led won 10x on revenue.
+description: セルフサービス型の獲得と拡大の動きを構築する。PLGと営業主導の判断、アクティベーション最適化、フリーミアム転換、成長方程式の構築、または製品の複雑さによって人の支援が必要になる時期の判断に使う。営業主導が収益で10倍勝った並行テストを含む。
 license: MIT
 metadata:
   author: Smit Patel (https://linkedin.com/in/smitkpatel)
   source: https://github.com/beingsmit/technical-product-gtm
 ---
 
-# Product-Led Growth
+# プロダクト主導成長
 
 Build self-serve acquisition and expansion motions. But first, figure out if PLG is even the right motion for your product.
 
-## When to Use
+## 使う場面
 
-**Triggers:**
+**トリガー:**
 - "Should we build PLG or sales-led?"
 - "How do we drive self-serve adoption?"
 - "Freemium to paid conversion isn't working"
@@ -21,7 +21,7 @@ Build self-serve acquisition and expansion motions. But first, figure out if PLG
 - "Which growth channels should we invest in?"
 - "How do I know if PLG will work?"
 
-**Context:**
+**コンテキスト:**
 - Developer tools and platforms
 - B2B SaaS with self-serve potential
 - Products where value is obvious without demo
@@ -30,9 +30,9 @@ Build self-serve acquisition and expansion motions. But first, figure out if PLG
 
 ---
 
-## Core Frameworks
+## 中核フレームワーク
 
-### 1. The PLG Reality Check (Test Before You Commit)
+### 1. PLGの現実確認（コミットする前に検証）
 
 **What I Learned Running Both Motions in Parallel:**
 
@@ -62,7 +62,7 @@ PLG: High volume, low ACV (~$5K), fast time-to-revenue, higher churn. Sales-led:
 
 ---
 
-### 2. The Growth Equation (Map Inputs to Outputs)
+### 2. 成長方程式（入力を出力に対応付ける）
 
 **The Pattern:**
 
@@ -95,7 +95,7 @@ Guessing at conversion rates without testing. Assuming all users from the same c
 
 ---
 
-### 3. Channel Economics (Kill Losers, Double Down on Winners)
+### 3. チャネル経済性（敗者をやめ、勝者に集中する）
 
 **The Pattern:**
 
@@ -130,7 +130,7 @@ Tracking CAC without retention. A cheap channel that churns users costs more tha
 
 ---
 
-### 4. Time to First Value (The Only Activation Metric)
+### 4. 初回価値到達時間（唯一のアクティベーション指標）
 
 **The Pattern:**
 
@@ -162,7 +162,7 @@ Assuming users will read documentation. They won't. They'll click around for 5 m
 
 ---
 
-### 5. The $5K → $50K Inflection (When PLG Breaks)
+### 5. $5K → $50Kの転換点（PLGが壊れる時期）
 
 **The Pattern:**
 
@@ -193,7 +193,7 @@ Sales engaging too early on <$5K deals. Kills PLG motion, scares users. Let them
 
 ---
 
-### 6. Growth Forecasting (Plan for Uncertainty)
+### 6. 成長予測（不確実性に備える）
 
 **The Pattern:**
 
@@ -232,7 +232,7 @@ Overly optimistic forecasts that assume everything works. Not updating monthly. 
 
 ---
 
-### 7. The Playbook Documentation Habit
+### 7. プレイブックを文書化する習慣
 
 **The Pattern:**
 
@@ -262,7 +262,7 @@ Running experiments without documenting learnings. Scaling before you understand
 
 ---
 
-## Decision Trees
+## 判断ツリー
 
 ### Should We Build PLG or Sales-Led?
 
@@ -288,7 +288,7 @@ CAC < (LTV × margin)?
 
 ---
 
-## Common Mistakes
+## よくある失敗
 
 **1. Assuming PLG always works**
 Product complexity + buyer seniority = sales-led wins. Test before committing.
@@ -310,7 +310,7 @@ Document every successful experiment as a playbook.
 
 ---
 
-## Quick Reference
+## クイックリファレンス
 
 **PLG readiness:** Value in <10 min + self-serve implementation + buyer = user
 
@@ -328,7 +328,7 @@ Document every successful experiment as a playbook.
 
 ---
 
-## Related Skills
+## 関連Skill
 
 - **technical-product-pricing**: Freemium thresholds and pricing gates
 - **developer-ecosystem**: Developer-specific adoption programs

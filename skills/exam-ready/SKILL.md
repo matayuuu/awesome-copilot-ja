@@ -1,100 +1,96 @@
 ---
 name: exam-ready
-description: >
-  Activate this skill when a student provides study material (PDF or pasted notes)
-  and a syllabus, and wants to prepare for an exam. Extracts key definitions,
-  points, keywords, diagrams, exam-ready sentences, and practice questions
-  strictly from the provided material.
+description: '学生が学習教材（PDF または貼り付けたノート）とシラバスを提供し、試験対策をしたい場合にこのスキルを有効化します。提供された教材だけから重要な定義、要点、キーワード、図、試験用の文、練習問題を抽出します。'
 ---
 
 # exam-ready
 
-Activate this skill when a student provides study material (PDF or pasted notes)
-and a syllabus, and wants to prepare for an exam.
+学生が学習教材（PDF または貼り付けたノート）
+とシラバスを提供し、試験対策をしたい場合にこのスキルを有効化します。
 
-## What this skill does
+## このスキルが行うこと
 
-For each syllabus topic, extract from the provided material:
-- What it is (1 line definition — exam-ready)
-- 3–5 key points an examiner expects
-- Important keywords to use in the answer (bold them)
-- Any important diagram or figure — describe what it shows in 2 lines
-- 1–2 sentences the student can directly write in their exam answer (or MCQ trick if exam type is MCQ)
-- 1 examiner-style practice question to test recall
+シラバスの各トピックについて、提供された教材から次を抽出します。
+- それが何であるか（1行の定義 — 試験対応）
+- 試験官が期待する重要ポイント 3～5 個
+- 解答で使用する重要キーワード（太字にする）
+- 重要な図または図表 — 何を示しているかを2行で説明
+- 学生が試験の解答にそのまま書ける 1～2 文（または試験形式が MCQ の場合は MCQ のコツ）
+- 想起を確認するための、試験官形式の練習問題 1 問
 
-Do NOT explain the full topic. Do NOT add context outside the provided material.
-Do NOT explain things the syllabus didn't ask for.
-Never tell the student to "read more" or "refer to chapter X". Give them what they need right here.
+トピック全体を説明してはなりません。提供された教材の範囲外の文脈を追加してはなりません。
+シラバスで求められていないことを説明してはなりません。
+学生に「もっと読む」や「第 X 章を参照する」と絶対に言わないでください。必要な内容をここで提供してください。
 
-## Input format
+## 入力形式
 
-Student will provide:
-1. A PDF file or pasted notes (their study material)
-2. A syllabus — either pasted as text or listed as topics
-3. Optionally: exam type (MCQ / short-answer / long-answer) and time available
+学生は次を提供します。
+1. PDF ファイルまたは貼り付けたノート（学習教材）
+2. シラバス — テキストとして貼り付けるか、トピック一覧として提示
+3. 任意：試験形式（MCQ / short-answer / long-answer）と利用可能な時間
 
-## Handling missing inputs
+## 不足している入力の扱い
 
-- If no study material is provided: say "Please share your notes or PDF first. I won't use outside knowledge."
-- If no syllabus is provided: say "Please list your syllabus topics so I cover exactly what's being tested."
-- If exam type is not mentioned: default to long-answer format, but ask once: "Is this MCQ or written?"
-- If a topic is not found in the provided material: say "This topic was not found in your notes. Check your material."
+- 学習教材が提供されていない場合：「まずノートまたは PDF を共有してください。外部知識は使用しません。」と伝えます。
+- シラバスが提供されていない場合：「試験範囲を正確に扱えるよう、シラバスのトピックを一覧で示してください。」と伝えます。
+- 試験形式が記載されていない場合：long-answer 形式を既定にしますが、一度だけ「これは MCQ ですか、それとも記述式ですか？」と尋ねます。
+- 提供された教材内にトピックが見つからない場合：「このトピックはあなたのノート内に見つかりませんでした。教材を確認してください。」と伝えます。
 
-## Triage mode (when student gives a time constraint)
+## トリアージモード（学生が時間の制約を示した場合）
 
-If the student says "I have X hours":
-1. First, output a **priority list** — number all syllabus topics in order of:
-   - Explicit weightage (if syllabus mentions marks)
-   - Frequency of appearance in the PDF (more coverage = higher priority)
-   - Breadth of subtopics under it
-2. Then expand each topic in that priority order, not syllabus order.
-3. If time is very short (≤1 hour), cut output to definition + key points + exam line only. Skip diagrams.
+学生が「X 時間あります」と言った場合：
+1. まず、**優先順位リスト**を出力します — 次の順序でシラバスの全トピックに番号を付けます。
+   - 明示的な配点（シラバスに点数の記載がある場合）
+   - PDF 内での出現頻度（より多く扱われているほど優先度が高い）
+   - その下にあるサブトピックの広さ
+2. 次に、シラバス順ではなく、その優先順位に従って各トピックを展開します。
+3. 時間が非常に短い場合（≤1 時間）は、出力を定義 + 重要ポイント + 試験用の文のみに絞ります。図は省略します。
 
-## Output format per topic
-
----
-
-### [Topic Name]
-
-**Definition:** [1 sentence]
-
-**Key Points:**
-- [point 1]
-- [point 2]
-- [point 3]
-
-**Keywords to use:** keyword1, keyword2, keyword3
-
-**Diagram (if any):** [What the diagram shows and what to label]
-
-**Write this in your exam:** *(skip if MCQ — show MCQ trick instead)*
-[1–2 ready-to-write sentences the student can use directly]
-
-**MCQ trick:** *(only if exam type is MCQ)*
-[How to identify the correct option or eliminate wrong ones for this topic]
-
-**Cross-references:** *(only if this topic's keywords appeared in another topic)*
-[e.g., "The term 'X' used here also appears in [Topic Y] — examiners may link them"]
-
-**Practice question:**
-[1 examiner-style question to test recall on this topic]
+## トピックごとの出力形式
 
 ---
 
-## Rules
+### [トピック名]
 
-- Stay strictly within the provided material. Do not add outside knowledge under any circumstance.
-- If exam type is MCQ, replace "Write this in your exam" with "MCQ trick".
-- If no weightage is given in the syllabus, prioritize topics that appear most in the PDF.
-- If a keyword from one topic reappears in another, flag it under "Cross-references".
-- If the PDF contradicts the syllabus topic name or scope, use the PDF content but note: "Your notes cover this as [X] — answering based on that."
-- Keep everything short. The student is cramming, not researching.
+**定義：** [1文]
 
-## Trigger phrases
+**重要ポイント：**
+- [ポイント 1]
+- [ポイント 2]
+- [ポイント 3]
 
-- "I have an exam tomorrow on [subject]"
-- "explain [topic] from my notes"
-- "what do I need to know about [topic] for my exam"
-- "go through my syllabus"
-- "I only have [X] hours, help me prepare"
-- "quiz me on [topic]"
+**使用するキーワード：** キーワード1, キーワード2, キーワード3
+
+**図（該当する場合）：** [図が示す内容とラベル付けする項目]
+
+**試験ではこれを書く：** *(MCQ の場合は省略し、代わりに MCQ のコツを示す)*
+[学生がそのまま直接使用できる、すぐに書ける 1～2 文]
+
+**MCQ のコツ：** *(試験形式が MCQ の場合のみ)*
+[このトピックに関する正解の選択肢を見分ける、または誤答を除外する方法]
+
+**相互参照：** *(このトピックのキーワードが別のトピックにも出現した場合のみ)*
+[例：「ここで使用される用語 'X' は [トピック Y] にも登場します — 試験官はそれらを関連付ける場合があります」]
+
+**練習問題：**
+[このトピックに関する想起を確認するための、試験官形式の質問 1 問]
+
+---
+
+## ルール
+
+- 厳密に提供された教材の範囲内にとどめてください。いかなる場合も外部知識を追加してはなりません。
+- 試験形式が MCQ の場合、「試験ではこれを書く」を「MCQ のコツ」に置き換えてください。
+- シラバスに配点が示されていない場合、PDF に最も多く登場するトピックを優先してください。
+- あるトピックのキーワードが別のトピックに再登場する場合、「相互参照」に記載してください。
+- PDF がシラバスのトピック名または範囲と矛盾する場合、PDF の内容を使用しますが、「あなたのノートではこれは [X] として扱われています — それに基づいて回答します。」と注記してください。
+- すべてを短く保ってください。学生は調査ではなく詰め込み学習をしています。
+
+## トリガーフレーズ
+
+- 「明日 [subject] の試験があります」
+- 「私のノートに基づいて [topic] を説明して」
+- 「試験のために [topic] について何を知っておく必要がありますか」
+- 「シラバスを一通り見て」
+- 「[X] 時間しかありません。準備を手伝ってください」
+- 「[topic] について小テストを出して」

@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "rug-agentic-workflow",
-  "description": "Three-agent workflow for orchestrated software delivery with an orchestrator plus implementation and QA subagents.",
+  "description": "オーケストレーター、実装サブエージェント、QAサブエージェントで構成する、ソフトウェア提供を統合管理する3エージェントワークフローです。",
   "version": "1.0.0",
   "author": {
     "name": "Awesome Copilot Community"

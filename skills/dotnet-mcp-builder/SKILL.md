@@ -3,25 +3,25 @@ name: dotnet-mcp-builder
 description: 'Build Model Context Protocol (MCP) servers in C#/.NET against the current ModelContextProtocol 2.x NuGet packages. Helps with cases the model gets wrong without guidance — stale versions (0.x preview or 1.x-era defaults), the v2 stateless-by-default HTTP flip, the 2026-07-28 spec deprecations (roots/sampling/logging), MCP Apps and Tasks extension packages, elicitation URL mode, per-session HTTP wiring, OAuth and reverse-proxy deploy specifics, and debugging MapMcp / STDIO / Streamable-HTTP errors. Also covers STDIO and Streamable HTTP transports (SSE is deprecated), tools, prompts, resources, completions, and a basic .NET MCP client. Trigger when the user says or implies any .NET MCP server work: ModelContextProtocol, McpServerTool, MapMcp, WithStdioServerTransport, "MCP server in C#", "MCP tool in dotnet", "expose this as MCP", or names a primitive (prompt/resource/elicitation/MCP App) in a .NET context. Skip for MCP work in other languages.'
 ---
 
-# Building MCP servers in .NET
+# .NET での MCP サーバー構築
 
-This skill helps you write production-quality MCP servers and basic clients in C#/.NET against the **official** [`ModelContextProtocol`](https://www.nuget.org/profiles/ModelContextProtocol) NuGet packages, maintained by Microsoft and the MCP project. It targets the **stable 2.x** line and the current spec (2026-07-28).
+このスキルは、Microsoft と MCP プロジェクトが管理する **公式** の [`ModelContextProtocol`](https://www.nuget.org/profiles/ModelContextProtocol) NuGet パッケージを使って、C#/.NET で本番品質の MCP サーバーと基本的なクライアントを記述するための支援を行います。**安定した 2.x** 系列と現在の仕様（2026-07-28）を対象とします。
 
-## When this skill earns its keep
+## このスキルが役立つとき
 
-The .NET MCP SDK had years of preview packages (`0.x-preview`) before reaching `1.0`, and v2 flipped several defaults. Without help, the model tends to:
-- Pin a stale preview version that won't compile against current samples.
-- Apply 1.x-era defaults that v2 reversed (HTTP was stateful by default; in 2.x `Stateless` defaults to `true`).
-- Recommend capabilities the 2026-07-28 spec deprecates (roots, sampling, MCP-channel logging — now `[Obsolete]`, warning `MCP9005`).
-- Miss recent spec features (multi-round-trip `input_required`, discovery-first negotiation, MCP Apps/Tasks extension packages, elicitation URL mode, structured content blocks).
-- Get HTTP transport details wrong (stateful/stateless, proxy buffering, OAuth wiring).
-- Forget the STDIO stdout/stderr trap.
+.NET MCP SDK は `0.x-preview` で数年にわたりプレビュー パッケージを経て `1.0` に到達し、v2 では既定値がいくつか入れ替わりました。手助けがないと、モデルは次のようなことをしがちです:
+- 現在のサンプルと互換性がなくコンパイルできない古いプレビュー バージョンを固定してしまう。
+- v2 で逆転した 1.x 時代の既定値を適用してしまう（HTTP は既定で stateful だったが、2.x では `Stateless` が `true` を既定にする）。
+- 2026-07-28 仕様で非推奨になった機能（roots、sampling、MCP-channel logging — 現在は `[Obsolete]`、警告 `MCP9005`）を推奨してしまう。
+- 新しい仕様機能を見落とす（multi-round-trip `input_required`、discovery-first negotiation、MCP Apps/Tasks 拡張パッケージ、elicitation URL モード、structured content blocks）。
+- HTTP トランスポートの詳細を誤る（stateful/stateless、proxy buffering、OAuth wiring）。
+- STDIO の stdout/stderr の落とし穴を忘れる。
 
-If the task is one of those, *load the matching reference* and follow it. If it's truly trivial (e.g. "rename this tool method"), you don't need to read everything — the cardinal rules below are the minimum.
+そのようなタスクなら、*対応する参照を読み込み*、それに従ってください。もし本当に簡単な場合（例: 「このツール メソッドの名前を変える」）なら、すべて読む必要はありません — 以下の基本ルールが最低限です。
 
-## Mental model in 30 seconds
+## 30 秒でわかるメンタルモデル
 
-A .NET MCP server is an ordinary `Microsoft.Extensions.Hosting` (or `WebApplication`) app that wires an MCP server through DI:
+.NET MCP サーバーは、MCP サーバーを DI 経由で接続する通常の `Microsoft.Extensions.Hosting`（または `WebApplication`）アプリです。
 
 ```csharp
 builder.Services
@@ -32,56 +32,56 @@ builder.Services
     .WithResources<MyResources>();   // optional
 ```
 
-Primitives are plain C# methods on classes marked with attributes (`[McpServerToolType]` + `[McpServerTool]`, `[McpServerPromptType]` + `[McpServerPrompt]`, `[McpServerResourceType]` + `[McpServerResource]`). Parameters bind from JSON-RPC; the SDK builds the JSON Schema from the signature plus `[Description]` attributes.
+プリミティブは、属性付きクラスで定義された通常の C# メソッドです（`[McpServerToolType]` + `[McpServerTool]`、`[McpServerPromptType]` + `[McpServerPrompt]`、`[McpServerResourceType]` + `[McpServerResource]`）。パラメータは JSON-RPC からバインドされ、SDK はシグネチャと `[Description]` 属性から JSON Schema を生成します。
 
-Server-to-client features (elicitation, progress notifications, and the now-deprecated sampling/roots/log notifications) are methods on the injected `IMcpServer`.
+サーバー → クライアント機能（elicitation、progress notifications、および現在非推奨の sampling/roots/log notifications）は、注入された `IMcpServer` のメソッドです。
 
-## Decision tree → which references to load
+## 判断木 → どの参照を読み込むか
 
-Always load `references/packages.md` if you're creating a new project or unsure of the current package version.
+新しいプロジェクトを作成する場合、または現在のパッケージ バージョンが不明な場合は、常に `references/packages.md` を読み込んでください。
 
-| Task | Load |
+| タスク | 読み込むもの |
 |---|---|
-| New STDIO server | `references/transport-stdio.md` |
-| New HTTP (Streamable) server | `references/transport-http.md` |
-| Add/modify a tool | `references/tool-primitive.md` |
-| Add/modify a prompt | `references/prompt-primitive.md` |
-| Add/modify a resource | `references/resource-primitive.md` |
-| Ask the user a question mid-tool | `references/elicitation.md` |
-| Call the client's LLM from a tool (deprecated in 2026-07-28) | `references/sampling.md` |
-| Read the user's project roots (deprecated in 2026-07-28) | `references/roots.md` |
-| Return an interactive UI | `references/mcp-apps.md` |
-| Argument completions, log/progress notifications, filters, server instructions | `references/server-features.md` |
-| Write a .NET program that **consumes** an MCP server | `references/client.md` |
-| MCP Inspector, in-memory tests, mocks, CI | `references/testing.md` |
+| 新しい STDIO サーバー | `references/transport-stdio.md` |
+| 新しい HTTP（Streamable）サーバー | `references/transport-http.md` |
+| ツールの追加/変更 | `references/tool-primitive.md` |
+| プロンプトの追加/変更 | `references/prompt-primitive.md` |
+| リソースの追加/変更 | `references/resource-primitive.md` |
+| ツール実行中にユーザーへ質問する | `references/elicitation.md` |
+| ツール内でクライアントの LLM を呼び出す（2026-07-28 で非推奨） | `references/sampling.md` |
+| ユーザーのプロジェクト ルートを読む（2026-07-28 で非推奨） | `references/roots.md` |
+| 対話型 UI を返す | `references/mcp-apps.md` |
+| 引数補完、ログ/進行通知、フィルター、サーバー指示 | `references/server-features.md` |
+| MCP サーバーを **利用する** .NET プログラムを書く | `references/client.md` |
+| MCP Inspector、インメモリ テスト、モック、CI | `references/testing.md` |
 
-For multi-primitive tasks, load several at once. For trivial edits in an existing file, you usually don't need any.
+複数プリミティブを扱うタスクでは、いくつかまとめて読み込んでください。既存ファイルの簡単な修正では、通常は何も読み込む必要はありません。
 
-## Cardinal rules (apply always; these prevent the highest-frequency breakages)
+## 基本ルール（常に適用; これらが最頻出の破損を防ぐ）
 
-1. **Pin the current stable package, not a preview.** Use `ModelContextProtocol` / `ModelContextProtocol.AspNetCore` / `ModelContextProtocol.Core` at the latest **2.x**. If you find yourself writing `0.3-preview` or `0.4-preview`, stop and check NuGet — preview APIs have breaking differences. 1.x still works but predates the 2026-07-28 spec.
-2. **STDIO servers must not write to stdout.** Stdout is the JSON-RPC channel. Configure `LogToStandardErrorThreshold = LogLevel.Trace` before anything else and never `Console.WriteLine` from a tool.
-3. **HTTP defaults to stateless in 2.x** (v1.x defaulted to stateful — the single most impactful v2 breaking change). The 2026-07-28 revision has no HTTP sessions at all: setting `Stateless = false` makes the server refuse that revision and serve clients via the legacy `initialize` fallback. For "ask the user something mid-tool" on current-protocol HTTP, use the multi-round-trip `InputRequiredException` pattern; reserve stateful HTTP (or STDIO) for the legacy `ElicitAsync`/sampling/roots paths and pushed notifications.
-4. **SSE-only is deprecated.** Use Streamable HTTP. Only enable legacy SSE (`EnableLegacySse = true`) for an old client you must support, and call it out.
-5. **Don't design new servers around deprecated capabilities.** The 2026-07-28 spec deprecates roots, sampling, and MCP-channel logging; the SDK marks them `[Obsolete]` (warning `MCP9005`). They still work against down-level clients, but for new designs prefer the multi-round-trip `input_required` pattern and `ILogger` logging. Suppress `MCP9005` only as a documented transition measure.
-6. **Always `[Description]` tools and parameters.** This is what the LLM sees when picking and shaping calls. Vague descriptions are the #1 reason tools don't get used.
-7. **Show the registration line every time you add a primitive.** A new `[McpServerPromptType]` class without `.WithPrompts<...>()` (or `.WithPromptsFromAssembly()`) is invisible.
-8. **Don't invent APIs.** If you're unsure a method exists, say so and check the [API reference](https://csharp.sdk.modelcontextprotocol.io/api/ModelContextProtocol.html) — wrong method names cause silent failures. This applies doubly to the new v2 extension packages (`ModelContextProtocol.Extensions.Tasks`, `ModelContextProtocol.Extensions.Apps`) — check their docs before writing code against them.
+1. **プレビューではなく現在の安定版パッケージを固定する。** 最新の **2.x** で `ModelContextProtocol` / `ModelContextProtocol.AspNetCore` / `ModelContextProtocol.Core` を使ってください。`0.3-preview` または `0.4-preview` を書いてしまうなら、NuGet を確認して止めてください — プレビュー API には破壊的な違いがあります。1.x でも動きますが、2026-07-28 仕様より古いものです。
+2. **STDIO サーバーは stdout に書き込んではいけません。** Stdout は JSON-RPC チャネルです。`LogToStandardErrorThreshold = LogLevel.Trace` を最優先で設定し、ツール内では絶対に `Console.WriteLine` しないでください。
+3. **HTTP は 2.x では既定で stateless です**（v1.x は stateful が既定で、これは v2 で最も大きな破壊的変更です）。2026-07-28 版には HTTP セッション自体がありません: `Stateless = false` を設定するとそのリビジョンを拒否し、レガシーの `initialize` フォールバック経由でクライアントに応答します。現在のプロトコル HTTP で「ツール実行中にユーザーに質問する」には、multi-round-trip `InputRequiredException` パターンを使ってください。stateful HTTP（または STDIO）は、レガシー `ElicitAsync`/sampling/roots パスとプッシュ通知にだけ確保してください。
+4. **SSE のみは非推奨です。** Streamable HTTP を使ってください。サポートが必要な古いクライアントに対してのみ、レガシー SSE（`EnableLegacySse = true`）を有効にし、それを明示してください。
+5. **非推奨機能を前提に新しいサーバーを設計しないでください。** 2026-07-28 仕様では roots、sampling、MCP-channel logging が非推奨になっており、SDK はこれらを `[Obsolete]`（警告 `MCP9005`）として扱います。これらは下位互換のクライアントでは動作しますが、新しい設計では multi-round-trip `input_required` パターンと `ILogger` ロギングを優先してください。`MCP9005` は文書化された移行措置としてのみ抑制してください。
+6. **ツールとパラメータを常に `[Description]` してください。** これは LLM が呼び出しを選択し、形を整えるときに見ている内容です。曖昧な説明はツールが使われない最大の理由です。
+7. **プリミティブを追加するたびに登録行を表示してください。** `[McpServerPromptType]` クラスに `.WithPrompts<...>()`（または `.WithPromptsFromAssembly()`）がないと見えません。
+8. **API を勝手に作らないでください。** メソッドが存在するか不明な場合は、そのことを伝えたうえで [API リファレンス](https://csharp.sdk.modelcontextprotocol.io/api/ModelContextProtocol.html) を確認してください — 間違ったメソッド名は静かに失敗します。これは新しい v2 拡張パッケージ（`ModelContextProtocol.Extensions.Tasks`、`ModelContextProtocol.Extensions.Apps`）にも同様に当てはまり、コードを書く前にドキュメントを確認してください。
 
-## Working style
+## 作業スタイル
 
-- **Make minimal, additive changes.** Add a method to the existing tool class rather than restructuring the project.
-- **For non-trivial setups, run `dotnet build`.** Catches missing usings, attribute typos, and TFM mismatches before the user sees them.
-- **Confirm transport + .NET version + primitives before scaffolding** if context doesn't already make them obvious. Default to **.NET 10** for new projects.
+- **最小限で加算的な変更を行う。** プロジェクトを再構成するよりも、既存のツール クラスにメソッドを追加してください。
+- **簡単ではないセットアップでは `dotnet build` を実行する。** 未使用 using の不足、属性のタイプミス、TFM の不一致をユーザーに見せる前に検出できます。
+- **コンテキストが明確でない場合は、トランスポート + .NET バージョン + プリミティブを確認してからスキャフォールディングする** こと。新しいプロジェクトでは既定で **.NET 10** を使ってください。
 
-## When the user is stuck
+## ユーザーが行き詰まったとき
 
-Walk this checklist before guessing:
-1. **STDIO:** something is writing to stdout (logger sink, `Console.WriteLine`, library banner).
-2. **HTTP 404:** path mismatch — `app.MapMcp()` is root, `app.MapMcp("/mcp")` puts it under `/mcp`.
-3. **Tool not appearing:** missing `[McpServerToolType]` on the class, or no `.WithToolsFromAssembly()` / `.WithTools<T>()` registered.
-4. **Args not bound:** parameter names must match the JSON-RPC `arguments` keys; complex types bind via `System.Text.Json`.
-5. **Sampling/elicitation/roots failing:** these legacy server-to-client calls can't run on current-protocol HTTP — migrate to the multi-round-trip `InputRequiredException` pattern, or (legacy paths only) set `Stateless = false`, knowing that pins HTTP clients to a down-level `initialize` revision. Also check the client actually advertises the capability.
-6. **`MCP9005` build warnings after upgrading to 2.x:** the code uses deprecated roots/sampling/logging APIs. Plan the migration; suppress only temporarily.
+推測する前に、このチェックリストを確認してください:
+1. **STDIO:** stdout に何かを書き込んでいるものがある（logger sink、`Console.WriteLine`、ライブラリ バナー）。
+2. **HTTP 404:** パスのミスマッチ — `app.MapMcp()` がルートで、`app.MapMcp("/mcp")` は `/mcp` 配下に置きます。
+3. **ツールが表示されない:** クラスに `[McpServerToolType]` がない、または `.WithToolsFromAssembly()` / `.WithTools<T>()` が登録されていません。
+4. **引数がバインドされない:** パラメータ名は JSON-RPC の `arguments` キーと一致している必要があり、複雑な型は `System.Text.Json` を介してバインドされます。
+5. **Sampling/elicitation/roots が失敗する:** これらのレガシーなサーバー → クライアント呼び出しは現在のプロトコル HTTP では実行できません — multi-round-trip `InputRequiredException` パターンへ移行するか、（レガシー パスのみ）`Stateless = false` を設定してください。これにより HTTP クライアントがダウンレベルの `initialize` リビジョンに固定されることに注意してください。また、クライアントが実際にその機能を提示しているかも確認してください。
+6. **2.x へのアップグレード後に `MCP9005` のビルド警告が出る:** コードが非推奨の roots/sampling/logging API を使用しています。移行計画を立て、抑制は一時的にだけ行ってください。
 
-Still stuck? Point the user at the [`EverythingServer`](https://github.com/modelcontextprotocol/csharp-sdk/tree/main/samples/EverythingServer) sample — it exercises every feature.
+それでも解決できない場合は、ユーザーに [`EverythingServer`](https://github.com/modelcontextprotocol/csharp-sdk/tree/main/samples/EverythingServer) のサンプルを示してください — これはあらゆる機能を実演しています。

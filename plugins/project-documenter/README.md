@@ -1,8 +1,8 @@
 # Project Documenter Plugin
 
-Generate professional project documentation with draw.io architecture diagrams and Word (.docx) output with embedded PNG images. Works on any software project — automatically discovers the technology stack, architecture, and code structure.
+draw.ioのアーキテクチャ図とPNG画像を埋め込んだWord（.docx）出力を備えた、プロフェッショナルなプロジェクト文書を生成します。任意のソフトウェアプロジェクトで利用でき、技術スタック、アーキテクチャ、コード構造を自動検出します。
 
-## Installation
+## インストール
 
 ```bash
 # Using Copilot CLI

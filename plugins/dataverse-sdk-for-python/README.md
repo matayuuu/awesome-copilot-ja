@@ -1,8 +1,8 @@
-# Dataverse SDK for Python Plugin
+# Dataverse SDK for Python プラグイン
 
-Comprehensive collection for building production-ready Python integrations with Microsoft Dataverse. Includes official documentation, best practices, advanced features, file operations, and code generation prompts.
+Microsoft Dataverse と本番対応の Python 統合を構築するための包括的なコレクションです。公式ドキュメント、ベストプラクティス、高度な機能、ファイル操作、コード生成プロンプトを含みます。
 
-## Installation
+## インストール
 
 ```bash
 # Using Copilot CLI

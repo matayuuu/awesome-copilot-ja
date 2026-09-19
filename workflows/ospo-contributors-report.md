@@ -1,6 +1,6 @@
 ---
-name: 'OSPO Contributors Report'
-description: 'Monthly contributor activity metrics across an organization''s repositories.'
+name: 'OSPOコントリビューターレポート'
+description: '組織のリポジトリ全体におけるコントリビューター活動の月次指標です。'
 labels: ['ospo', 'reporting', 'contributors']
 on:
   schedule:
@@ -54,11 +54,11 @@ safe-outputs:
 timeout-minutes: 60
 ---
 
-# Contributors Report
+# コントリビューターレポート
 
-Generate a contributors report for the specified organization or repositories.
+指定された組織またはリポジトリのコントリビューターレポートを作成します。
 
-## Step 1: Validate Configuration
+## 手順1: 設定を検証
 
 Check the workflow inputs. Either `organization` or `repositories` must be provided.
 
@@ -66,18 +66,18 @@ Check the workflow inputs. Either `organization` or `repositories` must be provi
 - If **both** are empty and this is a **manual dispatch**, fail with a clear error message: "You must provide either an organization or a comma-separated list of repositories."
 - If **both** are provided, prefer `repositories` and ignore `organization`.
 
-## Step 2: Determine Date Range
+## 手順2: 期間を決定
 
 - If `start_date` and `end_date` are provided, use them.
 - Otherwise, default to the **previous calendar month**. For example, if today is 2025-03-15, the range is 2025-02-01 to 2025-02-28.
 - Use bash to compute the dates if needed. Store them as `START_DATE` and `END_DATE`.
 
-## Step 3: Enumerate Repositories
+## 手順3: リポジトリを列挙
 
 - If `repositories` input was provided, split the comma-separated string into a list. Each entry should be in `owner/repo` format.
 - If `organization` input was provided (or defaulted from Step 1), list all **public, non-archived, non-fork** repositories in the organization using the GitHub API. Collect their `owner/repo` identifiers.
 
-## Step 4: Collect Contributors from Commit History
+## 手順4: コミット履歴からコントリビューターを収集
 
 For each repository in scope:
 
@@ -90,14 +90,14 @@ For each repository in scope:
 
 Use bash to aggregate and deduplicate the contributor data across all repositories.
 
-## Step 5: Determine New vs Returning Contributors
+## 手順5: 新規と継続コントリビューターを判定
 
 For each contributor found in Step 4, check whether they have **any commits before `START_DATE`** in any of the in-scope repositories.
 
 - If a contributor has **no commits before `START_DATE`**, mark them as a **New Contributor**.
 - Otherwise, mark them as a **Returning Contributor**.
 
-## Step 6: Collect Sponsor Information (Optional)
+## 手順6: スポンサー情報を収集（任意）
 
 If the `sponsor_info` input is `true`:
 
@@ -105,7 +105,7 @@ If the `sponsor_info` input is `true`:
 2. If the user has sponsorship enabled, record their sponsor URL as `https://github.com/sponsors/<username>`.
 3. If not, leave the sponsor field empty.
 
-## Step 7: Generate Markdown Report
+## 手順7: Markdownレポートを生成
 
 Build a markdown report with the following structure:
 
@@ -131,7 +131,7 @@ Sort contributors by commit count descending.
 - The **Sponsor URL** column should show "N/A" if `sponsor_info` is false or the user has no Sponsors page.
 - The **Commits** column should link to a filtered commits view.
 
-## Step 8: Create Issue with Report
+## 手順8: レポート付きIssueを作成
 
 Create an issue in the **current repository** with:
 

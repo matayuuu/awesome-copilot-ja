@@ -1,8 +1,8 @@
 # Ruby MCP Server Development Plugin
 
-Complete toolkit for building Model Context Protocol servers in Ruby using the official MCP Ruby SDK gem with Rails integration support.
+公式MCP Ruby SDK gemを使い、Rails統合にも対応したModel Context ProtocolサーバーをRubyで構築するための総合ツールキットです。
 
-## Installation
+## インストール
 
 ```bash
 # Using Copilot CLI

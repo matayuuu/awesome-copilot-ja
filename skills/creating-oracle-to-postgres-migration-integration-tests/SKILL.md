@@ -1,16 +1,16 @@
 ---
 name: creating-oracle-to-postgres-migration-integration-tests
-description: 'Creates integration test cases targeting Oracle for .NET data access artifacts. Tests capture Oracle expected behavior as the authoritative baseline; they are written once and later ported to PostgreSQL by migrating the test project in Phase 6. Use only during Phase 3, before any PostgreSQL migration work has begun. Do not invoke during Phase 6 or against a project that has already been migrated.'
+description: '.NETデータアクセス成果物を対象に、Oracle向けの統合テストケースを作成する。テストはOracleの期待動作を権威ある基準として記録し、一度作成した後、フェーズ6でテストプロジェクトを移行することでPostgreSQLへ移植する。PostgreSQL移行作業を開始する前のフェーズ3でのみ使用する。フェーズ6または移行済みプロジェクトには使用しない。'
 ---
 
-# Creating Integration Tests for Oracle-to-PostgreSQL Migration
+# OracleからPostgreSQLへの移行用統合テストの作成
 
-Generates integration test cases for data access artifacts in a single target project. Tests target Oracle and capture its behavior as the authoritative baseline. They are written to be logically portable — so they can survive Phase 6 migration without rewriting — but they do not run against PostgreSQL at this stage.
+単一の対象プロジェクト内にあるデータアクセス成果物の統合テストケースを生成する。テストはOracleを対象とし、その動作を権威ある基準として記録する。フェーズ6の移行後も書き直さず利用できるよう論理的な移植性を持たせるが、この段階ではPostgreSQLに対して実行しない。
 
-## Prerequisites
+## 前提条件
 
-- The test project must already exist and compile (scaffolded separately).
-- Read the existing base test class and seed manager conventions before writing tests.
+- テストプロジェクトが既に存在し、コンパイルできること（別途スキャフォールディング済み）
+- テストを書く前に、既存の基底テストクラスとシードマネージャーの規約を読むこと
 
 ## Workflow
 
@@ -23,44 +23,44 @@ Test Creation:
 - [ ] Step 5: Review determinism
 ```
 
-**Step 1: Discover the test project conventions**
+**ステップ1: テストプロジェクトの規約を確認する**
 
-Read the base test class, seed manager, and project file to understand inheritance patterns, transaction management, and seed file conventions.
+基底テストクラス、シードマネージャー、プロジェクトファイルを読み、継承パターン、トランザクション管理、シードファイルの規約を理解する。
 
-**Step 2: Identify testable data access artifacts**
+**ステップ2: テスト可能なデータアクセス成果物を特定する**
 
-Scope to the target project only. List data access methods that interact with the database — repositories, DAOs, stored procedure callers, query builders.
+対象プロジェクトだけに範囲を限定する。リポジトリ、DAO、ストアドプロシージャ呼び出し元、クエリビルダーなど、データベースとやり取りするデータアクセスメソッドを一覧化する。
 
-**Step 3: Create seed data**
+**ステップ3: シードデータを作成する**
 
-- Follow seed file location and naming conventions from the existing project.
-- Avoid `TRUNCATE TABLE` — keep existing database data intact.
-- Assume existing business rows and lookup rows are already present; add only minimal, collision-safe seed records needed for the scenario.
-- Do not commit seed data; tests run in transactions that roll back.
-- Ensure seed data does not conflict with other tests.
-- Load and verify seed data before assertions depend on it.
-- Create or reuse a test `LookupConstants` class for stable lookup IDs/codes used across seed builders and assertions.
+- 既存プロジェクトのシードファイルの配置と命名規則に従う
+- `TRUNCATE TABLE` を避け、既存のデータベースデータを保持する
+- 既存の業務行とルックアップ行は存在するとみなし、シナリオに必要な最小限の衝突しないシードレコードだけを追加する
+- シードデータをコミットしない。テストはロールバックされるトランザクション内で実行する
+- シードデータが他のテストと競合しないようにする
+- アサーションが依存する前に、シードデータを読み込んで確認する
+- シードビルダーとアサーション間で使う安定したルックアップIDやコードのため、テスト用 `LookupConstants` クラスを作成または再利用する
 
-**Step 4: Write test cases**
+**ステップ4: テストケースを書く**
 
-- Inherit from the base test class to get automatic transaction create/rollback.
-- Ensure each database-touching method in scope has at least one integration test (or multiple tests for higher-risk behavior branches).
-- Assert logical outputs (rows, columns, counts, error types), not platform-specific messages.
-- Assert specific expected values — never assert that a value is merely non-null or non-empty when a concrete value is available from seed data.
-- Avoid testing code paths that do not exist or asserting behavior that cannot occur.
-- Avoid redundant assertions across tests targeting the same method.
-- For text parameters, include both empty-string and `NULL`/missing input coverage where applicable.
-- For datetime behavior, include assertions that validate the value written and read back matches — use the Oracle column's precision (e.g., seconds-only for a date/time column with no fractional seconds) rather than assuming any particular database type syntax.
+- 基底テストクラスを継承し、トランザクションの自動作成とロールバックを利用する
+- 対象範囲内のデータベースへアクセスする各メソッドに、少なくとも1つの統合テストを用意する（リスクの高い分岐には複数のテストを用意する）
+- プラットフォーム固有のメッセージではなく、行、列、件数、エラー型などの論理的な出力を検証する
+- 具体的な期待値を検証する。シードデータから具体値を得られる場合、単に非NULLまたは空でないことだけを検証してはならない
+- 存在しないコードパスや発生し得ない動作をテストしない
+- 同じメソッドを対象とするテスト間で冗長なアサーションを避ける
+- テキストパラメーターでは、該当する場合に空文字列と `NULL` または欠落入力の両方を網羅する
+- 日時の動作では、書き込んだ値と読み戻した値が一致することを検証する。特定のデータベース型構文を仮定せず、Oracle列の精度を使う
 
-**Step 5: Review determinism**
+**ステップ5: 決定性を確認する**
 
-Re-examine every assertion against non-null values. Confirm each is deterministic against the seeded data. Fix any assertion that depends on database state outside the test's control.
+非NULL値に対するすべてのアサーションを再確認する。各アサーションがシードデータに対して決定的であることを確認し、テストで制御できないデータベース状態に依存するものを修正する。
 
-## Key Constraints
+## 主な制約
 
-- **Phase 3 only** — these tests target Oracle. Do not invoke this skill during Phase 6 or against a PostgreSQL-targeting project.
-- **Oracle is the golden source** — tests capture Oracle's expected behavior.
-- **Assertion portability** — avoid platform-specific error messages or syntax in assertions so that when the test project is migrated to PostgreSQL in Phase 6, assertions require no changes.
-- **Seed only against Oracle** — the test project will be migrated to PostgreSQL in Phase 6; seed data and infrastructure stay Oracle-targeted until then.
-- **Scoped to one project** — do not create tests for artifacts outside the target project.
-- **Preserve existing data** — never rewrite or wipe pre-existing business or lookup rows.
+- **フェーズ3のみ** — これらのテストはOracleを対象とする。フェーズ6またはPostgreSQLを対象とするプロジェクトではこのSkillを使用しない
+- **Oracleを基準とする** — テストはOracleの期待動作を記録する
+- **アサーションの移植性** — フェーズ6でテストプロジェクトをPostgreSQLへ移行したときにアサーションの変更が不要になるよう、プラットフォーム固有のエラーメッセージや構文を避ける
+- **シード対象はOracleのみ** — テストプロジェクトはフェーズ6でPostgreSQLへ移行するため、それまではシードデータと基盤をOracle向けのままにする
+- **1プロジェクトに限定** — 対象プロジェクト外の成果物に対するテストを作成しない
+- **既存データを保持** — 既存の業務行やルックアップ行を書き換えたり消去したりしない

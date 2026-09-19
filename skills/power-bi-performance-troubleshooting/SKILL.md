@@ -1,6 +1,6 @@
 ---
 name: power-bi-performance-troubleshooting
-description: 'Systematic Power BI performance troubleshooting prompt for identifying, diagnosing, and resolving performance issues in Power BI models, reports, and queries.'
+description: 'power-bi-performance-troubleshooting に関する作業を支援する Skill です。対象のファイルや設定を確認し、必要な手順、検証方法、注意点を案内します。対象技術の調査、実装、運用、トラブルシューティングに使用します。'
 ---
 
 # Power BI Performance Troubleshooting Guide
@@ -15,7 +15,7 @@ Begin by clearly defining the performance issue:
 ```
 Issue Classification:
 □ Model loading/refresh performance
-□ Report page loading performance  
+□ Report page loading performance
 □ Visual interaction responsiveness
 □ Query execution speed
 □ Capacity resource constraints
@@ -156,7 +156,7 @@ Key Metrics to Monitor:
 ```
 Fabric Capacity Metrics App:
 - CPU and memory utilization trends
-- Query volume and patterns  
+- Query volume and patterns
 - Refresh performance tracking
 - User activity analysis
 - Resource bottleneck identification
@@ -177,12 +177,12 @@ Premium Capacity Monitoring:
 -- Replace inefficient patterns:
 
 ❌ Poor Performance:
-Sales Growth = 
-([Total Sales] - CALCULATE([Total Sales], PREVIOUSMONTH('Date'[Date]))) / 
+Sales Growth =
+([Total Sales] - CALCULATE([Total Sales], PREVIOUSMONTH('Date'[Date]))) /
 CALCULATE([Total Sales], PREVIOUSMONTH('Date'[Date]))
 
 ✅ Optimized Version:
-Sales Growth = 
+Sales Growth =
 VAR CurrentMonth = [Total Sales]
 VAR PreviousMonth = CALCULATE([Total Sales], PREVIOUSMONTH('Date'[Date]))
 RETURN

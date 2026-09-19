@@ -1,32 +1,32 @@
 ---
 name: mcp-cli
-description: Interface for MCP (Model Context Protocol) servers via CLI. Use when you need to interact with external tools, APIs, or data sources through MCP servers, list available MCP servers/tools, or call MCP tools from command line.
+description: CLI を介して MCP（Model Context Protocol）サーバーを操作するためのインターフェース。MCP サーバーを通じて外部ツール、API、データソースを操作したり、利用可能な MCP サーバーやツールを一覧表示したり、コマンドラインから MCP ツールを呼び出したりする必要がある場合に使用します。
 ---
 
 # MCP-CLI
 
-Access MCP servers through the command line. MCP enables interaction with external systems like GitHub, filesystems, databases, and APIs.
+コマンドラインから MCP サーバーにアクセスします。MCP を使用すると、GitHub、ファイルシステム、データベース、API などの外部システムを操作できます。
 
-## Commands
+## コマンド
 
-| Command                            | Output                          |
+| コマンド                           | 出力                             |
 | ---------------------------------- | ------------------------------- |
-| `mcp-cli`                          | List all servers and tool names |
-| `mcp-cli <server>`                 | Show tools with parameters      |
-| `mcp-cli <server>/<tool>`          | Get tool JSON schema            |
-| `mcp-cli <server>/<tool> '<json>'` | Call tool with arguments        |
-| `mcp-cli grep "<glob>"`            | Search tools by name            |
+| `mcp-cli`                          | すべてのサーバーとツール名を一覧表示 |
+| `mcp-cli <server>`                 | パラメーター付きでツールを表示       |
+| `mcp-cli <server>/<tool>`          | ツールの JSON スキーマを取得         |
+| `mcp-cli <server>/<tool> '<json>'` | 引数を指定してツールを呼び出す       |
+| `mcp-cli grep "<glob>"`            | 名前でツールを検索                   |
 
-**Add `-d` to include descriptions** (e.g., `mcp-cli filesystem -d`)
+**説明を含めるには `-d` を追加します**（例: `mcp-cli filesystem -d`）
 
-## Workflow
+## ワークフロー
 
-1. **Discover**: `mcp-cli` → see available servers and tools
-2. **Explore**: `mcp-cli <server>` → see tools with parameters
-3. **Inspect**: `mcp-cli <server>/<tool>` → get full JSON input schema
-4. **Execute**: `mcp-cli <server>/<tool> '<json>'` → run with arguments
+1. **検出**: `mcp-cli` → 利用可能なサーバーとツールを確認
+2. **探索**: `mcp-cli <server>` → パラメーター付きのツールを確認
+3. **検査**: `mcp-cli <server>/<tool>` → 完全な JSON 入力スキーマを取得
+4. **実行**: `mcp-cli <server>/<tool> '<json>'` → 引数を指定して実行
 
-## Examples
+## 例
 
 ```bash
 # List all servers and tool names
@@ -62,17 +62,17 @@ cat args.json | mcp-cli server/tool
 mcp-cli filesystem/search_files '{"path": "src/", "pattern": "*.ts"}' --json | jq -r '.content[0].text' | head -1 | xargs -I {} sh -c 'mcp-cli filesystem/read_file "{\"path\": \"{}\"}"'
 ```
 
-## Options
+## オプション
 
-| Flag         | Purpose                   |
+| フラグ       | 目的                      |
 | ------------ | ------------------------- |
-| `-j, --json` | JSON output for scripting |
-| `-r, --raw`  | Raw text content          |
-| `-d`         | Include descriptions      |
+| `-j, --json` | スクリプト用の JSON 出力  |
+| `-r, --raw`  | 生のテキストコンテンツ    |
+| `-d`         | 説明を含める              |
 
-## Exit Codes
+## 終了コード
 
-- `0`: Success
-- `1`: Client error (bad args, missing config)
-- `2`: Server error (tool failed)
-- `3`: Network error
+- `0`: 成功
+- `1`: クライアントエラー（引数が不正、設定が存在しない）
+- `2`: サーバーエラー（ツールが失敗）
+- `3`: ネットワークエラー

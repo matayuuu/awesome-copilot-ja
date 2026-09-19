@@ -1,6 +1,6 @@
 ---
 name: qdrant-scaling
-description: "Guides Qdrant scaling decisions. Use when someone asks 'how many nodes do I need', 'data doesn't fit on one node', 'need more throughput', 'cluster is slow', 'too many tenants', 'vertical or horizontal', 'how to shard', or 'need to add capacity'."
+description: 'qdrant-scaling に関する作業を支援する Skill です。対象のファイルや設定を確認し、必要な手順、検証方法、注意点を案内します。対象技術の調査、実装、運用、トラブルシューティングに使用します。'
 allowed-tools:
   - Read
   - Grep
@@ -43,9 +43,9 @@ Read more about scaling for query latency in [Scaling for Query Latency](minimiz
 
 ## Scaling for Query Volume
 
-By query volume we understand the amount of results that a single query returns. 
+By query volume we understand the amount of results that a single query returns.
 If the query volume is too high, it can cause performance issues and increase latency.
 
-Tuning for query volume is opposite might require special strategies. 
+Tuning for query volume is opposite might require special strategies.
 
 Read more about scaling for query volume in [Scaling for Query Volume](scaling-query-volume/SKILL.md)

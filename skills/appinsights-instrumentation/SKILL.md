@@ -1,48 +1,48 @@
 ---
 name: appinsights-instrumentation
-description: 'Instrument a webapp to send useful telemetry data to Azure App Insights'
+description: '有用なテレメトリデータを Azure App Insights に送信するようWebアプリを計装します。'
 ---
 
-# AppInsights instrumentation
+# AppInsights の計装
 
-This skill enables sending telemetry data of a webapp to Azure App Insights for better observability of the app's health.
+このスキルは、アプリの正常性をより観測しやすくするために、Webアプリのテレメトリデータを Azure App Insights へ送信できるようにします。
 
-## When to use this skill
+## このスキルを使用する場面
 
-Use this skill when the user wants to enable telemetry for their webapp.
+ユーザーがWebアプリのテレメトリを有効にしたい場合に、このスキルを使用します。
 
-## Prerequisites
+## 前提条件
 
-The app in the workspace must be one of these kinds
+ワークスペース内のアプリは、次のいずれかである必要があります。
 
-- An ASP.NET Core app hosted in Azure
-- A Node.js app hosted in Azure
+- Azure でホストされる ASP.NET Core アプリ
+- Azure でホストされる Node.js アプリ
 
-## Guidelines
+## ガイドライン
 
-### Collect context information
+### コンテキスト情報を収集する
 
-Find out the (programming language, application framework, hosting) tuple of the application the user is trying to add telemetry support in. This determines how the application can be instrumented. Read the source code to make an educated guess. Confirm with the user on anything you don't know. You must always ask the user where the application is hosted (e.g. on a personal computer, in an Azure App Service as code, in an Azure App Service as container, in an Azure Container App, etc.). 
+ユーザーがテレメトリサポートを追加しようとしているアプリの（プログラミング言語、アプリケーションフレームワーク、ホスティング）の組み合わせを特定します。これによりアプリを計装する方法が決まります。ソースコードを読んで根拠のある推測を行います。不明な点はユーザーに確認します。アプリがどこでホストされているか（例: 個人のコンピューター、コードとして Azure App Service、コンテナーとして Azure App Service、Azure Container App など）を常にユーザーへ尋ねる必要があります。
 
-### Prefer auto-instrument if possible
+### 可能なら自動計装を優先する
 
-If the app is a C# ASP.NET Core app hosted in Azure App Service, use [AUTO guide](references/AUTO.md) to help user auto-instrument the app.
+アプリが Azure App Service でホストされている C# ASP.NET Core アプリの場合は、[AUTO ガイド](references/AUTO.md) を使用して、ユーザーがアプリを自動計装できるよう支援します。
 
-### Manually instrument
+### 手動で計装する
 
-Manually instrument the app by creating the AppInsights resource and update the app's code. 
+AppInsights リソースを作成してアプリのコードを更新することで、アプリを手動計装します。
 
-#### Create AppInsights resource
+#### AppInsights リソースを作成する
 
-Use one of the following options that fits the environment.
+環境に適した次のいずれかの方法を使用します。
 
-- Add AppInsights to existing Bicep template. See [examples/appinsights.bicep](examples/appinsights.bicep) for what to add. This is the best option if there are existing Bicep template files in the workspace.
-- Use Azure CLI. See [scripts/appinsights.ps1](scripts/appinsights.ps1) for what Azure CLI command to execute to create the App Insights resource.
+- 既存の Bicep テンプレートに AppInsights を追加します。追加内容は [examples/appinsights.bicep](examples/appinsights.bicep) を参照してください。ワークスペースに既存の Bicep テンプレートファイルがある場合、これが最適な方法です。
+- Azure CLI を使用します。App Insights リソースを作成するために実行する Azure CLI コマンドは、[scripts/appinsights.ps1](scripts/appinsights.ps1) を参照してください。
 
-No matter which option you choose, recommend the user to create the App Insights resource in a meaningful resource group that makes managing resources easier. A good candidate will be the same resource group that contains the resources for the hosted app in Azure.
+どちらの方法を選んでも、リソース管理を容易にする意味のあるリソースグループに App Insights リソースを作成するよう、ユーザーへ推奨します。Azure でホストされているアプリのリソースを含むリソースグループが適切な候補です。
 
-#### Modify application code
+#### アプリケーションコードを変更する
 
-- If the app is an ASP.NET Core app, see [ASPNETCORE guide](references/ASPNETCORE.md) for how to modify the C# code.
-- If the app is a Node.js app, see [NODEJS guide](references/NODEJS.md) for how to modify the JavaScript/TypeScript code.
-- If the app is a Python app, see [PYTHON guide](references/PYTHON.md) for how to modify the Python code.
+- アプリが ASP.NET Core アプリの場合、C# コードの変更方法は [ASPNETCORE ガイド](references/ASPNETCORE.md) を参照してください。
+- アプリが Node.js アプリの場合、JavaScript/TypeScript コードの変更方法は [NODEJS ガイド](references/NODEJS.md) を参照してください。
+- アプリが Python アプリの場合、Python コードの変更方法は [PYTHON ガイド](references/PYTHON.md) を参照してください。

@@ -1,6 +1,6 @@
 ---
 name: power-bi-model-design-review
-description: 'Comprehensive Power BI data model design review prompt for evaluating model architecture, relationships, and optimization opportunities.'
+description: 'power-bi-model-design-review に関する作業を支援する Skill です。対象のファイルや設定を確認し、必要な手順、検証方法、注意点を案内します。対象技術の調査、実装、運用、トラブルシューティングに使用します。'
 ---
 
 # Power BI Data Model Design Review
@@ -17,7 +17,7 @@ When reviewing a Power BI data model, conduct analysis across these key dimensio
 ```
 Star Schema Compliance:
 □ Clear separation of fact and dimension tables
-□ Proper grain consistency within fact tables  
+□ Proper grain consistency within fact tables
 □ Dimension tables contain descriptive attributes
 □ Minimal snowflaking (justified when present)
 □ Appropriate use of bridge tables for many-to-many
@@ -78,7 +78,7 @@ Fact Table Analysis:
 - Size and growth projections
 - Historical data management
 
-Dimension Table Analysis:  
+Dimension Table Analysis:
 - Attribute completeness and quality
 - Hierarchy design and implementation
 - Slowly changing dimension handling
@@ -224,7 +224,7 @@ Model Overview:
 
 Key Findings:
 - Critical issues requiring immediate attention
-- Performance optimization opportunities  
+- Performance optimization opportunities
 - Best practice compliance assessment
 - Security and governance status
 
@@ -235,7 +235,7 @@ Priority Recommendations:
 
 Implementation Roadmap:
 - Quick wins (1-2 weeks)
-- Short-term improvements (1-3 months)  
+- Short-term improvements (1-3 months)
 - Long-term strategic enhancements (3-12 months)
 ```
 
@@ -250,7 +250,7 @@ Implementation Roadmap:
    □ Naming convention compliance
    □ Data type optimization suggestions
 
-2. Performance Architecture  
+2. Performance Architecture
    □ Storage mode strategy evaluation
    □ Size optimization recommendations
    □ Query performance enhancement opportunities
@@ -309,7 +309,7 @@ Implementation Guidance:
 ```
 Architecture & Design:
 □ Complete schema architecture analysis
-□ Detailed relationship design review  
+□ Detailed relationship design review
 □ Storage mode strategy evaluation
 □ Performance optimization assessment
 □ Scalability planning review
@@ -343,7 +343,7 @@ Governance & Security:
 Focus Areas:
 - Functionality completeness
 - Performance validation
-- Security implementation  
+- Security implementation
 - User acceptance criteria
 - Go-live readiness assessment
 

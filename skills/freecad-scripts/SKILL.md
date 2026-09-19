@@ -1,34 +1,34 @@
 ---
 name: freecad-scripts
-description: 'Expert skill for writing FreeCAD Python scripts, macros, and automation. Use when asked to create FreeCAD models, parametric objects, Part/Mesh/Sketcher scripts, workbench tools, GUI dialogs with PySide, Coin3D scenegraph manipulation, or any FreeCAD Python API task. Covers FreeCAD scripting basics, geometry creation, FeaturePython objects, interface tools, and macro development.'
+description: 'FreeCAD の Python スクリプト、マクロ、自動化を作成する専門スキルです。FreeCAD モデル、パラメトリック オブジェクト、Part/Mesh/Sketcher スクリプト、ワークベンチ ツール、PySide による GUI ダイアログ、Coin3D シーングラフ操作、または FreeCAD Python API に関するタスクの作成を求められた場合に使用します。FreeCAD スクリプティングの基礎、ジオメトリ作成、FeaturePython オブジェクト、インターフェイス ツール、マクロ開発を扱います。'
 ---
 
-# FreeCAD Scripts
+# FreeCAD スクリプト
 
-Expert skill for generating production-quality Python scripts for the FreeCAD CAD application. Interprets shorthand, quasi-code, and natural language descriptions of 3D modeling tasks and translates them into correct FreeCAD Python API calls.
+FreeCAD CAD アプリケーション向けの本番品質の Python スクリプトを生成するための専門スキル。3D モデリングタスクの略記、疑似コード、自然言語による説明を解釈し、正しい FreeCAD Python API 呼び出しへ変換します。
 
-## When to Use This Skill
+## このスキルを使用する場面
 
-- Writing Python scripts for FreeCAD's built-in console or macro system
-- Creating or manipulating 3D geometry (Part, Mesh, Sketcher, Path, FEM)
-- Building parametric FeaturePython objects with custom properties
-- Developing GUI tools using PySide/Qt within FreeCAD
-- Manipulating the Coin3D scenegraph via Pivy
-- Creating custom workbenches or Gui Commands
-- Automating repetitive CAD operations with macros
-- Converting between mesh and solid representations
-- Scripting FEM analyses, raytracing, or drawing exports
+- FreeCAD の組み込みコンソールまたはマクロシステム向け Python スクリプトの作成
+- 3D ジオメトリの作成または操作（Part、Mesh、Sketcher、Path、FEM）
+- カスタムプロパティを持つパラメトリック FeaturePython オブジェクトの構築
+- FreeCAD 内で PySide/Qt を使用する GUI ツールの開発
+- Pivy による Coin3D シーングラフの操作
+- カスタムワークベンチまたは Gui Commands の作成
+- マクロによる反復的な CAD 操作の自動化
+- メッシュ表現とソリッド表現の変換
+- FEM 解析、レイトレーシング、図面エクスポートのスクリプト化
 
-## Prerequisites
+## 前提条件
 
-- FreeCAD installed (0.19+ recommended; 0.21+/1.0+ for latest API)
-- Python 3.x (bundled with FreeCAD)
-- For GUI work: PySide2 (bundled with FreeCAD)
-- For scenegraph: Pivy (bundled with FreeCAD)
+- FreeCAD がインストール済みであること（0.19+ を推奨。最新 API には 0.21+/1.0+）
+- Python 3.x（FreeCAD に同梱）
+- GUI 作業の場合: PySide2（FreeCAD に同梱）
+- シーングラフの場合: Pivy（FreeCAD に同梱）
 
-## FreeCAD Python Environment
+## FreeCAD Python 環境
 
-FreeCAD embeds a Python interpreter. Scripts run in an environment where these key modules are available:
+FreeCAD には Python インタープリターが埋め込まれています。スクリプトは、以下の主要モジュールが利用可能な環境で実行されます。
 
 ```python
 import FreeCAD          # Core module (also aliased as 'App')
@@ -45,7 +45,7 @@ import BOPTools         # Boolean operations
 import CompoundTools    # Compound shape utilities
 ```
 
-### The FreeCAD Document Model
+### FreeCAD のドキュメントモデル
 
 ```python
 # Create or access a document
@@ -69,9 +69,9 @@ obj = doc.MyBox  # Attribute access also works
 doc.removeObject("MyBox")
 ```
 
-## Core Concepts
+## コアコンセプト
 
-### Vectors and Placements
+### ベクトルと配置
 
 ```python
 import FreeCAD
@@ -105,9 +105,9 @@ mat.move(FreeCAD.Vector(10, 0, 0))
 mat.rotateZ(math.radians(45))
 ```
 
-### Creating and Manipulating Geometry (Part Module)
+### ジオメトリの作成と操作（Part モジュール）
 
-The Part module wraps OpenCASCADE and provides BRep solid modeling:
+Part モジュールは OpenCASCADE をラップし、BRep ソリッドモデリングを提供します。
 
 ```python
 import FreeCAD
@@ -170,7 +170,7 @@ obj.Shape = box
 doc.recompute()
 ```
 
-### Topological Exploration
+### トポロジーの探索
 
 ```python
 shape = obj.Shape
@@ -199,7 +199,7 @@ edge.Curve         # Underlying geometric curve
 shape.ShapeType    # "Solid", "Shell", "Face", "Wire", "Edge", "Vertex", "Compound"
 ```
 
-### Mesh Module
+### Mesh モジュール
 
 ```python
 import Mesh
@@ -229,7 +229,7 @@ shape.makeShapeFromMesh(mesh.Topology, 0.05)  # tolerance
 solid = Part.makeSolid(shape)
 ```
 
-### Sketcher Module
+### Sketcher モジュール
 
 # Create a sketch on XY plane
 sketch = doc.addObject("Sketcher::SketchObject", "MySketch")
@@ -280,9 +280,9 @@ array = Draft.makeArray(obj, FreeCAD.Vector(15,0,0),
                          FreeCAD.Vector(0,15,0), 3, 3)
 ```
 
-## Creating Parametric Objects (FeaturePython)
+## パラメトリックオブジェクトの作成（FeaturePython）
 
-FeaturePython objects are custom parametric objects with properties that trigger recomputation:
+FeaturePython オブジェクトは、再計算をトリガーするプロパティを持つカスタムパラメトリックオブジェクトです。
 
 ```python
 import FreeCAD
@@ -348,26 +348,26 @@ ViewProviderMyBox(obj.ViewObject)
 doc.recompute()
 ```
 
-### Common Property Types
+### 一般的なプロパティ型
 
-| Property Type | Python Type | Description |
+| プロパティ型 | Python 型 | 説明 |
 |---|---|---|
-| `App::PropertyBool` | `bool` | Boolean |
-| `App::PropertyInteger` | `int` | Integer |
-| `App::PropertyFloat` | `float` | Float |
-| `App::PropertyString` | `str` | String |
-| `App::PropertyLength` | `float` (units) | Length with units |
-| `App::PropertyAngle` | `float` (deg) | Angle in degrees |
-| `App::PropertyVector` | `FreeCAD.Vector` | 3D vector |
-| `App::PropertyPlacement` | `FreeCAD.Placement` | Position + rotation |
-| `App::PropertyLink` | object ref | Link to another object |
-| `App::PropertyLinkList` | list of refs | Links to multiple objects |
-| `App::PropertyEnumeration` | `list`/`str` | Dropdown selection |
-| `App::PropertyFile` | `str` | File path |
-| `App::PropertyColor` | `tuple` | RGB color (0.0-1.0) |
-| `App::PropertyPythonObject` | any | Serializable Python object |
+| `App::PropertyBool` | `bool` | ブール値 |
+| `App::PropertyInteger` | `int` | 整数 |
+| `App::PropertyFloat` | `float` | 浮動小数点数 |
+| `App::PropertyString` | `str` | 文字列 |
+| `App::PropertyLength` | `float` (units) | 単位付きの長さ |
+| `App::PropertyAngle` | `float` (deg) | 度単位の角度 |
+| `App::PropertyVector` | `FreeCAD.Vector` | 3D ベクトル |
+| `App::PropertyPlacement` | `FreeCAD.Placement` | 位置 + 回転 |
+| `App::PropertyLink` | object ref | 別のオブジェクトへのリンク |
+| `App::PropertyLinkList` | list of refs | 複数オブジェクトへのリンク |
+| `App::PropertyEnumeration` | `list`/`str` | ドロップダウン選択 |
+| `App::PropertyFile` | `str` | ファイルパス |
+| `App::PropertyColor` | `tuple` | RGB 色（0.0-1.0） |
+| `App::PropertyPythonObject` | any | シリアル化可能な Python オブジェクト |
 
-## Creating GUI Tools
+## GUI ツールの作成
 
 ### Gui Commands
 
@@ -396,7 +396,7 @@ class MyCommand:
 FreeCADGui.addCommand("My_CustomCommand", MyCommand())
 ```
 
-### PySide Dialogs
+### PySide ダイアログ
 
 ```python
 from PySide2 import QtWidgets, QtCore, QtGui
@@ -438,7 +438,7 @@ if dialog.exec_() == QtWidgets.QDialog.Accepted:
     FreeCAD.Console.PrintMessage(f"Length: {length}\n")
 ```
 
-### Task Panel (Recommended for FreeCAD integration)
+### タスクパネル（FreeCAD 統合に推奨）
 
 ```python
 class MyTaskPanel:
@@ -472,7 +472,7 @@ panel = MyTaskPanel()
 FreeCADGui.Control.showDialog(panel)
 ```
 
-## Coin3D Scenegraph (Pivy)
+## Coin3D シーングラフ（Pivy）
 
 ```python
 from pivy import coin
@@ -498,7 +498,7 @@ sg.addChild(sep)
 sg.removeChild(sep)
 ```
 
-## Custom Workbench Creation
+## カスタムワークベンチの作成
 
 ```python
 import FreeCADGui
@@ -526,7 +526,7 @@ class MyWorkbench(FreeCADGui.Workbench):
 FreeCADGui.addWorkbench(MyWorkbench)
 ```
 
-## Macro Best Practices
+## マクロのベストプラクティス
 
 ```python
 # Standard macro header
@@ -566,7 +566,7 @@ if __name__ == "__main__":
     main()
 ```
 
-### Selection Handling
+### 選択の処理
 
 ```python
 # Get selected objects
@@ -585,7 +585,7 @@ FreeCADGui.Selection.addSelection(doc.MyBox, "Face1")
 FreeCADGui.Selection.clearSelection()
 ```
 
-### Console Output
+### コンソール出力
 
 ```python
 FreeCAD.Console.PrintMessage("Info message\n")
@@ -594,9 +594,9 @@ FreeCAD.Console.PrintError("Error message\n")
 FreeCAD.Console.PrintLog("Debug/log message\n")
 ```
 
-## Common Patterns
+## 一般的なパターン
 
-### Parametric Pad from Sketch
+### スケッチからのパラメトリック Pad
 
 ```python
 doc = FreeCAD.ActiveDocument
@@ -620,7 +620,7 @@ sketch.Visibility = False
 doc.recompute()
 ```
 
-### Export Shapes
+### シェイプのエクスポート
 
 ```python
 # STEP export
@@ -638,7 +638,7 @@ import importlib
 importlib.import_module("importOBJ").export([doc.MyBox], "/path/to/output.obj")
 ```
 
-### Units and Quantities
+### 単位と Quantity
 
 ```python
 # FreeCAD uses mm internally
@@ -651,39 +651,39 @@ q = FreeCAD.Units.parseQuantity("2.5 in")
 value_mm = float(q)  # Value in mm (internal unit)
 ```
 
-## Compensation Rules (Quasi-Coder Integration)
+## 補償ルール（Quasi-Coder 統合）
 
-When interpreting shorthand or quasi-code for FreeCAD scripts:
+FreeCAD スクリプト向けの略記または疑似コードを解釈する場合:
 
-1. **Terminology mapping**: "box" → `Part.makeBox()`, "cylinder" → `Part.makeCylinder()`, "sphere" → `Part.makeSphere()`, "merge/combine/join" → `.fuse()`, "subtract/cut/remove" → `.cut()`, "intersect" → `.common()`, "round edges/fillet" → `.makeFillet()`, "bevel/chamfer" → `.makeChamfer()`
-2. **Implicit document**: If no document handling is mentioned, wrap in standard `doc = FreeCAD.ActiveDocument or FreeCAD.newDocument()`
-3. **Units assumption**: Default to millimeters unless stated otherwise
-4. **Recompute**: Always call `doc.recompute()` after modifications
-5. **GUI guard**: Wrap GUI-dependent code in `if FreeCAD.GuiUp:` when the script may run headless
-6. **Part.show()**: Use `Part.show(shape, "Name")` for quick display, or `doc.addObject("Part::Feature", "Name")` for named persistent objects
+1. **用語のマッピング**: 「box」→ `Part.makeBox()`、「cylinder」→ `Part.makeCylinder()`、「sphere」→ `Part.makeSphere()`、「merge/combine/join」→ `.fuse()`、「subtract/cut/remove」→ `.cut()`、「intersect」→ `.common()`、「round edges/fillet」→ `.makeFillet()`、「bevel/chamfer」→ `.makeChamfer()`
+2. **暗黙的なドキュメント**: ドキュメント処理が指定されていない場合は、標準の `doc = FreeCAD.ActiveDocument or FreeCAD.newDocument()` でラップする
+3. **単位の前提**: 別途指定がない限り、デフォルトはミリメートルとする
+4. **再計算**: 変更後は常に `doc.recompute()` を呼び出す
+5. **GUI ガード**: スクリプトがヘッドレスで実行される可能性がある場合は、GUI 依存コードを `if FreeCAD.GuiUp:` でラップする
+6. **Part.show()**: 簡易表示には `Part.show(shape, "Name")` を使用し、名前付きの永続オブジェクトには `doc.addObject("Part::Feature", "Name")` を使用する
 
-## References
+## 参考資料
 
-### Primary Links
+### 主要リンク
 
-- [Writing Python code](https://wiki.freecad.org/Manual:A_gentle_introduction#Writing_Python_code)
-- [Manipulating FreeCAD objects](https://wiki.freecad.org/Manual:A_gentle_introduction#Manipulating_FreeCAD_objects)
-- [Vectors and Placements](https://wiki.freecad.org/Manual:A_gentle_introduction#Vectors_and_Placements)
-- [Creating and manipulating geometry](https://wiki.freecad.org/Manual:Creating_and_manipulating_geometry)
-- [Creating parametric objects](https://wiki.freecad.org/Manual:Creating_parametric_objects)
-- [Creating interface tools](https://wiki.freecad.org/Manual:Creating_interface_tools)
+- [Python コードの記述](https://wiki.freecad.org/Manual:A_gentle_introduction#Writing_Python_code)
+- [FreeCAD オブジェクトの操作](https://wiki.freecad.org/Manual:A_gentle_introduction#Manipulating_FreeCAD_objects)
+- [ベクトルと配置](https://wiki.freecad.org/Manual:A_gentle_introduction#Vectors_and_Placements)
+- [ジオメトリの作成と操作](https://wiki.freecad.org/Manual:Creating_and_manipulating_geometry)
+- [パラメトリックオブジェクトの作成](https://wiki.freecad.org/Manual:Creating_parametric_objects)
+- [インターフェイスツールの作成](https://wiki.freecad.org/Manual:Creating_interface_tools)
 - [Python](https://en.wikipedia.org/wiki/Python_%28programming_language%29)
-- [Introduction to Python](https://wiki.freecad.org/Introduction_to_Python)
-- [Python scripting tutorial](https://wiki.freecad.org/Python_scripting_tutorial)
-- [FreeCAD scripting basics](https://wiki.freecad.org/FreeCAD_Scripting_Basics)
+- [Python 入門](https://wiki.freecad.org/Introduction_to_Python)
+- [Python スクリプティングチュートリアル](https://wiki.freecad.org/Python_scripting_tutorial)
+- [FreeCAD スクリプティングの基礎](https://wiki.freecad.org/FreeCAD_Scripting_Basics)
 - [Gui Command](https://wiki.freecad.org/Gui_Command)
 
-### Bundled Reference Documents
+### 同梱の参照ドキュメント
 
-See the [references/](references/) directory for topic-organized guides:
+トピック別に整理されたガイドについては、[references/](references/) ディレクトリを参照してください。
 
-1. [scripting-fundamentals.md](references/scripting-fundamentals.md) — Core scripting, document model, console
-2. [geometry-and-shapes.md](references/geometry-and-shapes.md) — Part, Mesh, Sketcher, topology
-3. [parametric-objects.md](references/parametric-objects.md) — FeaturePython, properties, scripted objects
-4. [gui-and-interface.md](references/gui-and-interface.md) — PySide, dialogs, task panels, Coin3D
-5. [workbenches-and-advanced.md](references/workbenches-and-advanced.md) — Workbenches, macros, FEM, Path, recipes
+1. [scripting-fundamentals.md](references/scripting-fundamentals.md) — コアスクリプティング、ドキュメントモデル、コンソール
+2. [geometry-and-shapes.md](references/geometry-and-shapes.md) — Part、Mesh、Sketcher、トポロジー
+3. [parametric-objects.md](references/parametric-objects.md) — FeaturePython、プロパティ、スクリプト化オブジェクト
+4. [gui-and-interface.md](references/gui-and-interface.md) — PySide、ダイアログ、タスクパネル、Coin3D
+5. [workbenches-and-advanced.md](references/workbenches-and-advanced.md) — ワークベンチ、マクロ、FEM、Path、レシピ

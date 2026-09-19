@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "cms-development",
-  "description": "Skills for CMS development across themes, plugins, admin tooling, media workflows, markdown rendering, and static export pipelines.",
+  "description": "テーマ、プラグイン、管理ツール、メディアワークフロー、Markdown レンダリング、静的エクスポートパイプラインに対応する CMS 開発スキルです。",
   "version": "1.1.0",
   "keywords": [
     "cms",

@@ -1,15 +1,15 @@
-# Arize AX Plugin
+# Arize AX プラグイン
 
-Arize AX platform skills for LLM observability, evaluation, and optimization. Includes trace export, instrumentation, datasets, experiments, evaluators, AI provider integrations, annotations, prompt optimization, and deep linking to the Arize UI.
+LLM の可観測性、評価、最適化のための Arize AX プラットフォームスキルです。トレースのエクスポート、計装、データセット、実験、評価器、AI プロバイダー統合、アノテーション、プロンプト最適化、Arize UI へのディープリンクに対応します。
 
-## Installation
+## インストール
 
 ```bash
 # Using Copilot CLI
 copilot plugin install arize-ax@awesome-copilot
 ```
 
-## What's Included
+## 含まれるもの
 
 ### Skills
 

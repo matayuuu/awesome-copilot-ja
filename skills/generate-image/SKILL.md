@@ -1,9 +1,7 @@
 ---
 name: generate-image
 description: >-
-  Generate images using AI. Use when asked to generate, create, or make images, textures,
-  icons, sprites, artwork, visual assets, or mockups. Supports OpenAI (gpt-image-2) and
-  Google Gemini (Nano Banana). Requires an API key for the chosen provider.
+  AI を使って画像を生成します。画像の生成、作成、作成依頼、テクスチャ、アイコン、スプライト、アートワーク、視覚アセット、モックアップの生成が必要なときに使います。OpenAI (gpt-image-2) と Google Gemini (Nano Banana) に対応しています。選択したプロバイダーの API キーが必要です。
 argument-hint: "[description of the image to generate]"
 license: MIT
 metadata:
@@ -11,42 +9,42 @@ metadata:
   providers: "openai, gemini"
 ---
 
-# Generate Image
+# 画像生成
 
-You are an image generation assistant. When invoked, follow the workflow below.
+画像生成アシスタントとして動作します。呼び出されたときは、以下のワークフローに従ってください。
 
-## Workflow
+## ワークフロー
 
-1. **Check for API keys** — check whether `SKILL_IMAGE_GEN_OPENAI_KEY` and/or `SKILL_IMAGE_GEN_GEMINI_KEY` are set in the environment.
-2. **If one key is set** — use that provider. No need to ask.
-3. **If both are set** — pick based on context (OpenAI for polish, Gemini for speed), or ask if the user has a preference.
-4. **If no keys are set** — run the Onboarding section.
-5. **Generate the image** using the appropriate API reference.
-6. **Tell the user** where the image was saved.
+1. **API キーを確認する** — 環境変数 `SKILL_IMAGE_GEN_OPENAI_KEY` と `SKILL_IMAGE_GEN_GEMINI_KEY` が設定されているか確認します。
+2. **キーが 1 つだけ設定されている場合** — そのプロバイダーを使います。追加で質問する必要はありません。
+3. **両方のキーが設定されている場合** — 文脈に応じて選びます（OpenAI は仕上がり重視、Gemini は速度重視）。ユーザーの好みがあれば確認します。
+4. **キーがどちらも設定されていない場合** — オンボーディングのセクションを実行します。
+5. **適切な API 仕様を使って画像を生成する**
+6. **ユーザーに画像が保存された場所を伝える**
 
-## Onboarding
+## オンボーディング
 
-Only run this if no keys are set. Guide the user conversationally.
+キーが未設定のときだけ実行します。ユーザーに対して会話形式で案内します。
 
-1. Ask which provider they'd like to use:
-   - **OpenAI (gpt-image-2)** — High quality, excellent text rendering, paid per image
-   - **Google Gemini (Nano Banana)** — Fast, free tier available, great for iteration
-2. Direct them to get an API key:
+1. どのプロバイダーを使いたいかを聞く:
+   - **OpenAI (gpt-image-2)** — 高品質で、テキストの描画が優秀、1 枚ごとに課金
+   - **Google Gemini (Nano Banana)** — 高速で、無料枠あり、反復作業に適している
+2. API キーの取得方法を案内する:
    - OpenAI → https://platform.openai.com/api-keys
    - Gemini → https://aistudio.google.com/apikey
-3. Once they provide the key, set `SKILL_IMAGE_GEN_OPENAI_KEY` or `SKILL_IMAGE_GEN_GEMINI_KEY` in the current session and persist it to the appropriate shell profile.
-4. Proceed to generate the image they originally asked for.
+3. キーを受け取ったら、現在のセッションで `SKILL_IMAGE_GEN_OPENAI_KEY` または `SKILL_IMAGE_GEN_GEMINI_KEY` を設定し、適切なシェルプロファイルに永続化する。
+4. 元々依頼されていた画像生成を続行する。
 
-## API Reference: OpenAI
+## API リファレンス: OpenAI
 
-**Method:** `POST`
+**メソッド:** `POST`
 **URL:** `https://api.openai.com/v1/images/generations`
 
-**Headers:**
-- `Authorization: Bearer <SKILL_IMAGE_GEN_OPENAI_KEY>`
+**ヘッダー:**
+- `Authorization: ******`
 - `Content-Type: application/json`
 
-**Body (JSON):**
+**リクエスト本文 (JSON):**
 ```json
 {
   "model": "gpt-image-2",
@@ -57,24 +55,24 @@ Only run this if no keys are set. Guide the user conversationally.
 }
 ```
 
-| Field | Default | Options |
+| 項目 | 既定値 | オプション |
 |---|---|---|
 | model | `gpt-image-2` | `gpt-image-2`, `gpt-image-1` |
 | size | `1024x1024` | `1024x1024`, `1024x1536`, `1536x1024`, `auto` |
 | quality | `medium` | `low`, `medium`, `high` |
 
-**Response:** `data[0].b64_json` contains the base64-encoded image. Decode it and save to the output path. If `data[0].url` is present instead, download the image from that URL.
+**レスポンス:** `data[0].b64_json` に Base64 形式の画像が入ります。これをデコードして出力パスに保存します。`data[0].url` が存在する場合は、その URL から画像をダウンロードします。
 
-## API Reference: Google Gemini (Nano Banana)
+## API リファレンス: Google Gemini (Nano Banana)
 
-**Method:** `POST`
+**メソッド:** `POST`
 **URL:** `https://generativelanguage.googleapis.com/v1beta/models/<model>:generateContent`
 
-**Headers:**
+**ヘッダー:**
 - `x-goog-api-key: <SKILL_IMAGE_GEN_GEMINI_KEY>`
 - `Content-Type: application/json`
 
-**Body (JSON):**
+**リクエスト本文 (JSON):**
 ```json
 {
   "contents": [{"parts": [{"text": "Generate an image: <user prompt>"}]}],
@@ -82,19 +80,19 @@ Only run this if no keys are set. Guide the user conversationally.
 }
 ```
 
-| Field | Default | Options |
+| 項目 | 既定値 | オプション |
 |---|---|---|
-| model (in URL) | `gemini-2.0-flash-exp` | `gemini-2.0-flash-exp`, `gemini-2.5-flash-image` |
+| model (URL 内) | `gemini-2.0-flash-exp` | `gemini-2.0-flash-exp`, `gemini-2.5-flash-image` |
 
-**Response:** Find `candidates[0].content.parts[]` — look for a part with `inlineData.data` (base64 image) and `inlineData.mimeType`. Decode and save.
+**レスポンス:** `candidates[0].content.parts[]` を探し、`inlineData.data`（Base64 画像）と `inlineData.mimeType` を持つ part を見つけます。デコードして保存します。
 
-**Error cases:** `error` key (API error), `promptFeedback.blockReason` (safety block), `finishReason: "SAFETY"` (filtered).
+**エラーケース:** `error` キー（API エラー）、`promptFeedback.blockReason`（安全性ブロック）、`finishReason: "SAFETY"`（フィルタリング）。
 
-## Agent Guidelines
+## エージェントのガイドライン
 
-- Choose the output path intelligently — save to the project's relevant directory (e.g., `assets/`, `images/`, or the current directory).
-- For game textures, enrich prompts with "seamless", "tileable", "game asset".
-- For batch generation, make multiple API calls in parallel.
-- If the user asks to switch providers or what options are available, explain both and help them set up.
-- Always create the output directory before saving.
-- Ensure special characters in the user's prompt are properly escaped in the JSON body.
+- 出力パスは適切に選ぶ — プロジェクトに関連するディレクトリ（例: `assets/`、`images/`、現在のディレクトリ）に保存する。
+- ゲームテクスチャでは、`"seamless"`、`"tileable"`、`"game asset"` をプロンプトに加えて拡張する。
+- バッチ生成では、複数の API 呼び出しを並列に行う。
+- プロバイダーの切り替えや利用可能なオプションを尋ねられた場合は、両方を説明し、設定を支援する。
+- 保存前に出力ディレクトリを必ず作成する。
+- ユーザーのプロンプト中の特殊文字が JSON 本文で適切にエスケープされるようにする。

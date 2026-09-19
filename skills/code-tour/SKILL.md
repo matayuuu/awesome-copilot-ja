@@ -1,74 +1,61 @@
 ---
 name: code-tour
-description: >
-  Use this skill to create CodeTour .tour files — persona-targeted, step-by-step walkthroughs
-  that link to real files and line numbers. Trigger for: "create a tour", "make a code tour",
-  "generate a tour", "onboarding tour", "tour for this PR", "tour for this bug", "RCA tour",
-  "architecture tour", "explain how X works", "vibe check", "PR review tour",
-  "contributor guide", "help someone ramp up", or any request for a structured walkthrough
-  through code. Supports 20 developer personas (new joiner, bug fixer, architect, PR reviewer,
-  vibecoder, security reviewer, and more), all CodeTour step types (file/line, selection,
-  pattern, uri, commands, view), and tour-level fields (ref, isPrimary, nextTour).
-  Works with any repository in any language.
+description: '実在するファイルと行番号へリンクする、ペルソナ別の段階的なCodeTour .tourファイルを作成する。「ツアーを作成」「コードツアーを作って」「オンボーディングツアー」「このPRのツアー」「このバグのツアー」「RCAツアー」「アーキテクチャツアー」「Xの仕組みを説明」「PRレビューツアー」「コントリビューターガイド」など、コードを構造的に案内する依頼で使用する。20種類の開発者ペルソナ、すべてのCodeTourステップ形式、ツアーレベルのフィールドに対応し、あらゆる言語のRepositoryで使用できる。'
 ---
 
-# Code Tour Skill
+# Code Tour Skillの使い方
 
-You are creating a **CodeTour** — a persona-targeted, step-by-step walkthrough of a codebase
-that links directly to files and line numbers. CodeTour files live in `.tours/` and work with
-the [VS Code CodeTour extension](https://github.com/microsoft/codetour).
+あなたは**CodeTour**を作成します。これは、ファイルと行番号へ直接リンクする、ペルソナ別の段階的なコードベース案内です。CodeTourファイルは`.tours/`に配置し、[VS Code CodeTour extension](https://github.com/microsoft/codetour)で動作します。
 
-Two scripts are bundled in `scripts/`:
+`scripts/`には2つのスクリプトが同梱されています:
 
-- **`scripts/validate_tour.py`** — run after writing any tour. Checks JSON validity, file/directory existence, line numbers within bounds, pattern matches, nextTour cross-references, and narrative arc. Run it: `python ~/.agents/skills/code-tour/scripts/validate_tour.py .tours/<name>.tour --repo-root .`
-- **`scripts/generate_from_docs.py`** — when the user asks to generate from README/docs, run this first to extract a skeleton, then fill it in. Run it: `python ~/.agents/skills/code-tour/scripts/generate_from_docs.py --persona new-joiner --output .tours/skeleton.tour`
+- **`scripts/validate_tour.py`** — ツアーを書いた後に実行する。JSONの妥当性、ファイル／ディレクトリの存在、行番号の範囲、パターン一致、nextTourの相互参照、物語の流れを確認する。実行方法: `python ~/.agents/skills/code-tour/scripts/validate_tour.py .tours/<name>.tour --repo-root .`
+- **`scripts/generate_from_docs.py`** — ユーザーがREADME／ドキュメントからの生成を依頼した場合、最初に実行して骨格を抽出し、その後内容を埋める。実行方法: `python ~/.agents/skills/code-tour/scripts/generate_from_docs.py --persona new-joiner --output .tours/skeleton.tour`
 
-Two reference files are bundled:
+2つの参考ファイルが同梱されています:
 
-- **`references/codetour-schema.json`** — the authoritative JSON schema. Read it to verify any field name or type. Every field you use must conform to it.
-- **`references/examples.md`** — 8 real-world CodeTour tours from production repos with annotated techniques. Read it when you want to see how a specific feature (`commands`, `selection`, `view`, `pattern`, `isPrimary`, multi-tour series) is used in practice.
+- **`references/codetour-schema.json`** — 正式なJSON Schema。フィールド名や型を確認するために読む。使用するすべてのフィールドをこのSchemaへ準拠させる。
+- **`references/examples.md`** — 本番Repositoryから取得した8件の実際のCodeTourと、手法に関する注釈。特定の機能（`commands`、`selection`、`view`、`pattern`、`isPrimary`、複数ツアーのシリーズ）が実際にどう使われるかを確認するときに読む。
 
-### Real-world `.tour` files on GitHub
+### GitHub上の実際の`.tour`ファイル
 
-These are confirmed production `.tour` files. Fetch one when you need a working example of a specific step type, tour-level field, or narrative structure — don't write from memory when the real thing is one fetch away.
+以下は本番利用が確認された`.tour`ファイルです。特定のステップ形式、ツアーレベルのフィールド、物語構造の動作例が必要な場合に取得してください。実物を取得できるなら、記憶だけで書かないでください。
 
-Find more with the GitHub code search: https://github.com/search?q=path%3A**%2F*.tour+&type=code
+GitHub code searchでさらに探せます: https://github.com/search?q=path%3A**%2F*.tour+&type=code
 
-#### By step type / technique demonstrated
+#### 示されるステップ形式／手法別
 
-| What to study | File URL |
+| 学習対象 | ファイルURL |
 |---|---|
-| `directory` + `file+line` (contributor onboarding) | https://github.com/coder/code-server/blob/main/.tours/contributing.tour |
-| `selection` + `file+line` + intro content step (accessibility project) | https://github.com/a11yproject/a11yproject.com/blob/main/.tours/code-tour.tour |
-| Minimal tutorial — tight `file+line` narration for interactive learning | https://github.com/lostintangent/rock-paper-scissors/blob/master/main.tour |
-| Multi-tour repo with `nextTour` chaining (cloud native OCI walkthroughs) | https://github.com/lucasjellema/cloudnative-on-oci-2021/blob/main/.tours/introduction.tour |
-| `isPrimary: true` (marks the onboarding entry point) | https://github.com/nickvdyck/webbundlr/blob/main/.tours/getting-started.tour |
-| `pattern` instead of `line` (regex-anchored steps) | https://github.com/nickvdyck/webbundlr/blob/main/.tours/architecture.tour |
+| `directory` + `file+line`（コントリビューターのオンボーディング） | https://github.com/coder/code-server/blob/main/.tours/contributing.tour |
+| `selection` + `file+line` + 導入用contentステップ（アクセシビリティプロジェクト） | https://github.com/a11yproject/a11yproject.com/blob/main/.tours/code-tour.tour |
+| 最小限のチュートリアル — 対話型学習向けの簡潔な`file+line`説明 | https://github.com/lostintangent/rock-paper-scissors/blob/master/main.tour |
+| `nextTour`で連結した複数ツアーのRepository（クラウドネイティブOCIの案内） | https://github.com/lucasjellema/cloudnative-on-oci-2021/blob/main/.tours/introduction.tour |
+| `isPrimary: true`（オンボーディングのエントリポイントを示す） | https://github.com/nickvdyck/webbundlr/blob/main/.tours/getting-started.tour |
+| `line`の代わりに`pattern`を使用（正規表現で固定したステップ） | https://github.com/nickvdyck/webbundlr/blob/main/.tours/architecture.tour |
 
-**Raw content tip:** Prefix `raw.githubusercontent.com` and drop `/blob/` for raw JSON access.
+**Rawコンテンツのヒント:** Raw JSONへアクセスするには、`raw.githubusercontent.com`を先頭に使用し、`/blob/`を削除します。
 
-A great tour is not just annotated files. It is a **narrative** — a story told to a specific
-person about what matters, why it matters, and what to do next. Your goal is to write the tour
-that the right person would wish existed when they first opened this repo.
+優れたツアーは、単にファイルへ注釈を付けたものではありません。重要なこと、その理由、次にすべきことを特定の人へ伝える**物語**です。対象者がこのRepositoryを初めて開いたときに、あってほしかったと思えるツアーを書くことが目標です。
 
-**CRITICAL: Only create `.tour` JSON files. Never create, modify, or scaffold any other files.**
+**重要: `.tour` JSONファイルだけを作成します。その他のファイルは作成、変更、scaffoldしないでください。**
 
 ---
 
-## Step 1: Discover the repo
+## ステップ1: Repositoryを調査する
 
-Before asking the user anything, explore the codebase:
+ユーザーへ質問する前に、コードベースを調査します:
 
-- List the root directory, read the README, and check key config files
-  (package.json, pyproject.toml, go.mod, Cargo.toml, composer.json, etc.)
-- Identify the language(s), framework(s), and what the project does
-- Map the folder structure 1–2 levels deep
-- Find entry points: main files, index files, app bootstrapping
-- **Note which files actually exist** — every path you write in the tour must be real
+- ルートディレクトリを一覧表示し、READMEを読み、主要な構成ファイルを確認する
+  （package.json、pyproject.toml、go.mod、Cargo.toml、composer.jsonなど）
+- 言語、フレームワーク、プロジェクトの目的を特定する
+- フォルダー構造を1～2階層まで整理する
+- エントリポイント（mainファイル、indexファイル、アプリのbootstrap）を見つける
+- **実在するファイルを記録する** — ツアーに記述するすべてのパスは実在しなければならない
 
-If the repo is sparse or empty, say so and work with what exists.
+Repository内のファイルが少ない、または空の場合は、その旨を伝え、存在するものを使用します。
 
-**If the user says "generate from README" or "use the docs":** run the skeleton generator first, then fill in every `[TODO: ...]` by reading the actual files:
+**ユーザーが「READMEから生成」または「ドキュメントを使う」と依頼した場合:** 最初に骨格生成ツールを実行し、その後、実際のファイルを読んですべての`[TODO: ...]`を埋めます:
 
 ```bash
 python skills/code-tour/scripts/generate_from_docs.py \
@@ -76,11 +63,11 @@ python skills/code-tour/scripts/generate_from_docs.py \
   --output .tours/skeleton.tour
 ```
 
-### Entry points by language/framework
+### 言語／フレームワーク別のエントリポイント
 
-Don't read everything — start here, then follow imports.
+すべてを読まず、ここから始めてimportをたどります。
 
-| Stack | Entry points to read first |
+| スタック | 最初に読むエントリポイント |
 |-------|---------------------------|
 | **Node.js / TS** | `index.js/ts`, `server.js`, `app.js`, `src/main.ts`, `package.json` (scripts) |
 | **Python** | `main.py`, `app.py`, `__main__.py`, `manage.py` (Django), `app/__init__.py` (Flask/FastAPI) |
@@ -90,107 +77,105 @@ Don't read everything — start here, then follow imports.
 | **Ruby** | `config/application.rb`, `config/routes.rb`, `app/controllers/application_controller.rb` |
 | **PHP** | `index.php`, `public/index.php`, `bootstrap/app.php` (Laravel) |
 
-### Repo type variants — adjust focus accordingly
+### Repositoryの種類による差異 — 注目点を調整する
 
-The same persona asks for different things depending on what kind of repo this is:
+同じペルソナでも、Repositoryの種類に応じて求める内容は異なります:
 
-| Repo type | What to emphasize | Typical anchor files |
+| Repositoryの種類 | 強調する内容 | 典型的なアンカーファイル |
 |-----------|-------------------|----------------------|
-| **Service / API** | Request lifecycle, auth, error contracts | router, middleware, handler, schema |
-| **Library / SDK** | Public API surface, extension points, versioning | index/exports, types, changelog |
-| **CLI tool** | Command parsing, config loading, output formatting | main, commands/, config |
-| **Monorepo** | Package boundaries, shared contracts, build graph | root package.json/pnpm-workspace, shared/, packages/ |
-| **Framework** | Plugin system, lifecycle hooks, escape hatches | core/, plugins/, lifecycle |
-| **Data pipeline** | Source → transform → sink, schema ownership | ingest/, transform/, schema/, dbt models |
-| **Frontend app** | Component hierarchy, state management, routing | pages/, store/, router, api/ |
+| **サービス／API** | リクエストのライフサイクル、認証、エラー契約 | router、middleware、handler、schema |
+| **ライブラリ／SDK** | 公開API、拡張ポイント、バージョン管理 | index／exports、types、changelog |
+| **CLI Tool** | コマンド解析、構成読み込み、出力形式 | main、commands/、config |
+| **Monorepo** | パッケージ境界、共有契約、ビルドグラフ | ルートのpackage.json／pnpm-workspace、shared/、packages/ |
+| **フレームワーク** | プラグインシステム、ライフサイクルフック、escape hatch | core/、plugins/、lifecycle |
+| **データパイプライン** | ソース → 変換 → シンク、スキーマの所有権 | ingest/、transform/、schema/、dbt model |
+| **フロントエンドアプリ** | コンポーネント階層、状態管理、ルーティング | pages/、store/、router、api/ |
 
-For **monorepos**: identify the 2–3 packages most relevant to the persona's goal. Don't try to tour everything — open the tour with a step that explains how to navigate the workspace, then stay focused.
+**monorepo**では、ペルソナの目標に最も関連する2～3個のパッケージを特定します。すべてを案内しようとせず、ワークスペースの移動方法を説明するステップでツアーを開始し、その後は対象に集中します。
 
-### Large repo strategy
+### 大規模Repositoryの戦略
 
-For repos with 100+ files: don't try to read everything.
+100個以上のファイルがあるRepositoryでは、すべてを読もうとしないでください。
 
-1. Read entry points and the README first
-2. Build a mental model of the top 5–7 modules
-3. For the requested persona, identify the **2–3 modules that matter most** and read those deeply
-4. For modules you're not covering, mention them in the intro step as "out of scope for this tour"
-5. Use `directory` steps for areas you mapped but didn't read — they orient without requiring full knowledge
+1. 最初にエントリポイントとREADMEを読む
+2. 主要な5～7個のモジュールについて全体像を作る
+3. 指定されたペルソナにとって**最も重要な2～3個のモジュール**を特定し、詳しく読む
+4. 扱わないモジュールは、導入ステップで「このツアーの対象外」として言及する
+5. 整理したものの読んでいない領域には`directory`ステップを使用する。完全な知識がなくても方向性を示せる
 
-A focused 10-step tour of the right files beats a scattered 25-step tour of everything.
+適切なファイルに集中した10ステップのツアーは、すべてを散漫に扱う25ステップのツアーより優れています。
 
 ---
 
-## Step 2: Read the intent — infer everything you can, ask only what you can't
+## ステップ2: 意図を読み取る — 推測できることは推測し、分からないことだけを質問する
 
-**One message from the user should be enough.** Read their request and infer persona,
-depth, and focus before asking anything.
+**ユーザーからの1件のメッセージで十分にしてください。** 質問する前に依頼を読み、ペルソナ、深さ、注目領域を推測します。
 
-### Intent map
+### 意図の対応表
 
-| User says | → Persona | → Depth | → Action |
+| ユーザーの依頼 | → ペルソナ | → 深さ | → 動作 |
 |-----------|-----------|---------|----------|
-| "tour for this PR" / "PR review" / "#123" | pr-reviewer | standard | Add `uri` step for the PR; use `ref` for the branch |
-| "why did X break" / "RCA" / "incident" | rca-investigator | standard | Trace the failure causality chain |
-| "debug X" / "bug tour" / "find the bug" | bug-fixer | standard | Entry → fault points → tests |
-| "onboarding" / "new joiner" / "ramp up" | new-joiner | standard | Directories, setup, business context |
-| "quick tour" / "vibe check" / "just the gist" | vibecoder | quick | 5–8 steps, fast path only |
-| "explain how X works" / "feature tour" | feature-explainer | standard | UI → API → backend → storage |
-| "architecture" / "tech lead" / "system design" | architect | deep | Boundaries, decisions, tradeoffs |
-| "security" / "auth review" / "trust boundaries" | security-reviewer | standard | Auth flow, validation, sensitive sinks |
-| "refactor" / "safe to extract?" | refactorer | standard | Seams, hidden deps, extraction order |
-| "performance" / "bottlenecks" / "slow path" | performance-optimizer | standard | Hot path, N+1, I/O, caches |
-| "contributor" / "open source onboarding" | external-contributor | quick | Safe areas, conventions, landmines |
-| "concept" / "explain pattern X" | concept-learner | standard | Concept → implementation → rationale |
-| "test coverage" / "where to add tests" | test-writer | standard | Contracts, seams, coverage gaps |
-| "how do I call the API" | api-consumer | standard | Public surface, auth, error semantics |
+| 「このPRのツアー」／「PRレビュー」／「#123」 | pr-reviewer | standard | PRへの`uri`ステップを追加し、ブランチには`ref`を使用する |
+| 「Xが壊れた理由」／「RCA」／「インシデント」 | rca-investigator | standard | 障害の因果関係を追跡する |
+| 「Xをデバッグ」／「バグツアー」／「バグを探す」 | bug-fixer | standard | エントリ → 障害点 → テスト |
+| 「オンボーディング」／「新規参加者」／「立ち上がり」 | new-joiner | standard | ディレクトリ、セットアップ、ビジネスコンテキスト |
+| 「簡易ツアー」／「雰囲気をつかむ」／「要点だけ」 | vibecoder | quick | 5～8ステップ、最短経路のみ |
+| 「Xの仕組みを説明」／「機能ツアー」 | feature-explainer | standard | UI → API → バックエンド → ストレージ |
+| 「アーキテクチャ」／「技術リード」／「システム設計」 | architect | deep | 境界、判断、トレードオフ |
+| 「セキュリティ」／「認証レビュー」／「信頼境界」 | security-reviewer | standard | 認証フロー、検証、機密性の高いシンク |
+| 「リファクタリング」／「安全に抽出できる？」 | refactorer | standard | 境界、隠れた依存関係、抽出順序 |
+| 「パフォーマンス」／「ボトルネック」／「遅い経路」 | performance-optimizer | standard | ホットパス、N+1、I/O、キャッシュ |
+| 「コントリビューター」／「オープンソースのオンボーディング」 | external-contributor | quick | 安全な領域、規約、落とし穴 |
+| 「概念」／「パターンXを説明」 | concept-learner | standard | 概念 → 実装 → 根拠 |
+| 「テストカバレッジ」／「テストを追加する場所」 | test-writer | standard | 契約、境界、カバレッジ不足 |
+| 「APIの呼び出し方」 | api-consumer | standard | 公開インターフェイス、認証、エラーの意味 |
 
-**Infer silently:** persona, depth, focus area, whether to add `uri`/`ref`, `isPrimary`.
+**黙って推測する項目:** ペルソナ、深さ、注目領域、`uri`／`ref`を追加するか、`isPrimary`。
 
-**Ask only if you genuinely can't infer:**
-- "bug tour" but no bug described → ask for the bug description
-- "feature tour" but no feature named → ask which feature
-- "specific files" explicitly requested → honor them as required stops
+**本当に推測できない場合だけ質問する:**
+- 「バグツアー」だがバグの説明がない → バグの説明を求める
+- 「機能ツアー」だが機能名がない → 対象機能を尋ねる
+- 「特定のファイル」が明示されている → 必須の経由地点として扱う
 
-Never ask about `nextTour`, `commands`, `when`, or `stepMarker` unless the user mentioned them.
+ユーザーが言及しない限り、`nextTour`、`commands`、`when`、`stepMarker`について質問しないでください。
 
-### PR tour recipe
+### PRツアーのレシピ
 
-For PR tours: set `"ref"` to the branch, open with a `uri` step for the PR, cover changed files first, then unchanged-but-critical files, close with a reviewer checklist.
+PRツアーでは、`"ref"`をブランチに設定し、PRへの`uri`ステップで開始します。変更されたファイルを先に扱い、その後、変更されていないが重要なファイルを扱い、レビュアー向けチェックリストで締めくくります。
 
-### User-provided customization — always honor these
+### ユーザー指定のカスタマイズ — 必ず尊重する
 
-| User says | What to do |
+| ユーザーの依頼 | 対応 |
 |-----------|-----------|
-| "cover `src/auth.ts` and `config/db.yml`" | Those files are required stops |
-| "pin to the `v2.3.0` tag" / "this commit: abc123" | Set `"ref": "v2.3.0"` |
-| "link to PR #456" / pastes a URL | Add a `uri` step at the right narrative moment |
-| "lead into the security tour when done" | Set `"nextTour": "Security Review"` |
-| "make this the main onboarding tour" | Set `"isPrimary": true` |
-| "open a terminal at this step" | Add `"commands": ["workbench.action.terminal.focus"]` |
-| "deep" / "thorough" / "5 steps" / "quick" | Override depth accordingly |
+| 「`src/auth.ts`と`config/db.yml`を扱う」 | これらのファイルを必須の経由地点にする |
+| 「`v2.3.0`タグに固定」／「このコミット: abc123」 | `"ref": "v2.3.0"`を設定する |
+| 「PR #456へリンク」／URLを貼り付ける | 物語上の適切な位置へ`uri`ステップを追加する |
+| 「完了後にセキュリティツアーへつなぐ」 | `"nextTour": "Security Review"`を設定する |
+| 「これをメインのオンボーディングツアーにする」 | `"isPrimary": true`を設定する |
+| 「このステップでターミナルを開く」 | `"commands": ["workbench.action.terminal.focus"]`を追加する |
+| 「詳細」／「徹底的」／「5ステップ」／「簡易」 | 指定に合わせて深さを上書きする |
 
 ---
 
-## Step 3: Read the actual files — no exceptions
+## ステップ3: 実際のファイルを読む — 例外なし
 
-**Every file path and line number in the tour must be verified by reading the file.**
-A tour pointing to the wrong file or a non-existent line is worse than no tour.
+**ツアー内のすべてのファイルパスと行番号は、ファイルを読んで確認する必要があります。**
+誤ったファイルや存在しない行を指すツアーは、ツアーがない状態より悪質です。
 
-For every planned step:
-1. Read the file
-2. Find the exact line of the code you want to highlight
-3. Understand it well enough to explain it to the target persona
+計画した各ステップについて:
+1. ファイルを読む
+2. 強調するコードの正確な行を見つける
+3. 対象ペルソナへ説明できるまで理解する
 
-If a user-requested file doesn't exist, say so — don't silently substitute another.
+ユーザーが指定したファイルが存在しない場合は、その旨を伝え、黙って別のファイルに置き換えないでください。
 
 ---
 
-## Step 4: Write the tour
+## ステップ4: ツアーを書く
 
-Save to `.tours/<persona>-<focus>.tour`. Read `references/codetour-schema.json` for the
-authoritative field list. Every field you use must appear in that schema.
+`.tours/<persona>-<focus>.tour`へ保存します。正式なフィールド一覧については`references/codetour-schema.json`を読みます。使用するすべてのフィールドがそのSchemaに存在しなければなりません。
 
-### Tour root
+### ツアーのルート
 
 ```json
 {
@@ -204,223 +189,215 @@ authoritative field list. Every field you use must appear in that schema.
 }
 ```
 
-Omit any field that doesn't apply to this tour.
+このツアーに該当しないフィールドは省略します。
 
-**`when`** — conditional display. A JavaScript expression evaluated at runtime. Only show this tour
-if the condition is true. Useful for persona-specific auto-launching, or hiding advanced tours
-until a simpler one is complete.
+**`when`** — 条件付き表示。ランタイムで評価されるJavaScript式です。条件がtrueの場合だけこのツアーを表示します。ペルソナ固有の自動起動や、簡単なツアーが完了するまで高度なツアーを非表示にする場合に役立ちます。
 ```json
 { "when": "workspaceFolders[0].name === 'api'" }
 ```
 
-**`stepMarker`** — embed step anchors directly in source code comments. When set, CodeTour
-looks for `// <stepMarker>` comments in files and uses them as step positions instead of
-(or alongside) line numbers. Useful for tours on actively changing code where line numbers
-shift constantly. Example: set `"stepMarker": "CT"` and put `// CT` in the source file.
-Don't suggest this unless the user asks — it requires editing source files, which is unusual.
+**`stepMarker`** — ステップのアンカーをソースコードのコメントへ直接埋め込みます。設定すると、CodeTourはファイル内の`// <stepMarker>`コメントを探し、行番号の代わり、または行番号と併せてステップ位置として使用します。行番号が頻繁に変わる、活発に変更されるコードのツアーに役立ちます。例: `"stepMarker": "CT"`を設定し、ソースファイルへ`// CT`を記述します。ソースファイルの編集が必要となる特殊な方法なので、ユーザーが依頼しない限り提案しないでください。
 
 ---
 
-### Step types — full reference
+### ステップ形式 — 完全なリファレンス
 
-All step types: **content** (intro/closing, max 2), **directory**, **file+line** (workhorse), **selection** (code block), **pattern** (regex match), **uri** (external link), **view** (focus VS Code panel), **commands** (run VS Code commands).
+すべてのステップ形式: **content**（導入／締めくくり、最大2件）、**directory**、**file+line**（中心的な形式）、**selection**（コードブロック）、**pattern**（正規表現一致）、**uri**（外部リンク）、**view**（VS Codeパネルへフォーカス）、**commands**（VS Codeコマンドを実行）。
 
-> **Path rule:** `"file"` and `"directory"` must be relative to repo root. No absolute paths, no leading `./`.
+> **パスのルール:** `"file"`と`"directory"`はRepositoryルートからの相対パスにする。絶対パスや先頭の`./`は使用しない。
 
 ---
 
-### When to use each step type
+### 各ステップ形式を使用する場面
 
-| Situation | Step type |
+| 状況 | ステップ形式 |
 |-----------|-----------|
-| Tour intro or closing | content |
-| "Here's what lives in this folder" | directory |
-| One line tells the whole story | file + line |
-| A function/class body is the point | selection |
-| Line numbers shift, file is volatile | pattern |
-| PR / issue / doc gives the "why" | uri |
-| Reader should open terminal or explorer | view or commands |
+| ツアーの導入または締めくくり | content |
+| 「このフォルダーにあるもの」を示す | directory |
+| 1行で全体を説明できる | file + line |
+| 関数／クラス本体が要点 | selection |
+| 行番号が変わりやすく、ファイルが頻繁に変化する | pattern |
+| PR／Issue／ドキュメントが「理由」を示す | uri |
+| 読者にterminalまたはexplorerを開いてほしい | viewまたはcommands |
 
 ---
 
-### Step count calibration
+### ステップ数の調整
 
-Match steps to depth and persona. These are targets, not hard limits.
+ステップ数を深さとペルソナに合わせます。これは目安であり、厳密な上限ではありません。
 
-| Depth | Total steps | Core path steps | Notes |
+| 深さ | 総ステップ数 | コアパスのステップ数 | 注記 |
 |-------|-------------|-----------------|-------|
-| Quick | 5–8 | 3–5 | Vibecoder, fast explorer — cut ruthlessly |
-| Standard | 9–13 | 6–9 | Most personas — breadth + enough detail |
-| Deep | 14–18 | 10–13 | Architect, RCA — every tradeoff surfaced |
+| 簡易 | 5～8 | 3～5 | バイブコーダー、短時間の調査 — 徹底して絞る |
+| 標準 | 9～13 | 6～9 | 多くのペルソナ — 幅広さと十分な詳細 |
+| 詳細 | 14～18 | 10～13 | アーキテクト、RCA — すべてのトレードオフを示す |
 
-Scale with repo size too. A 3-file CLI doesn't get 15 steps. A 200-file monolith shouldn't be squeezed into 5.
+Repositoryの規模にも合わせます。3ファイルのCLIに15ステップは不要です。200ファイルのmonolithを5ステップに押し込めるべきでもありません。
 
-| Repo size | Recommended standard depth |
+| Repositoryの規模 | 推奨される標準の深さ |
 |-----------|---------------------------|
-| Tiny (< 20 files) | 5–8 steps |
-| Small (20–80 files) | 8–11 steps |
-| Medium (80–300 files) | 10–13 steps |
-| Large (300+ files) | 12–15 steps (scoped to relevant subsystem) |
+| 極小（20ファイル未満） | 5～8ステップ |
+| 小（20～80ファイル） | 8～11ステップ |
+| 中（80～300ファイル） | 10～13ステップ |
+| 大（300ファイル超） | 12～15ステップ（関連サブシステムに限定） |
 
 ---
 
-### Writing excellent descriptions — the SMIG formula
+### 優れた説明を書く — SMIGの公式
 
-Every description should answer four questions in order. You don't need four paragraphs — but every description needs all four elements, even briefly.
+すべての説明で、4つの問いに順番に答えます。4段落にする必要はありませんが、短くても4つの要素をすべて含めます。
 
-**S — Situation**: What is the reader looking at? One sentence grounding them in context.
-**M — Mechanism**: How does this code work? What pattern, rule, or design is in play?
-**I — Implication**: Why does this matter for *this persona's goal specifically*?
-**G — Gotcha**: What would a smart person get wrong here? What's non-obvious, fragile, or surprising?
+**S — Situation（状況）**: 読者は何を見ているか。1文でコンテキストを示す。
+**M — Mechanism（仕組み）**: このコードはどう動くか。どのパターン、規則、設計が使われているか。
+**I — Implication（意味）**: *このペルソナの目標にとって*なぜ重要か。
+**G — Gotcha（注意点）**: 理解力のある人でも何を誤りやすいか。分かりにくい点、壊れやすい点、意外な点は何か。
 
-Descriptions should tell the reader something they couldn't learn by reading the file themselves. Name the pattern, explain the design decision, flag failure modes, and cross-reference related context.
-
----
-
-## Narrative arc — every tour, every persona
-
-1. **Orientation** — **must be a `file` or `directory` step, never content-only.**
-   Use `"file": "README.md", "line": 1` or `"directory": "src"` and put your welcome text in the description.
-   A content-only first step (no `file`, `directory`, or `uri`) renders as a blank page in VS Code CodeTour — this is a known VS Code extension behaviour, not configurable.
-
-2. **High-level map** (1–3 directory or uri steps) — major modules and how they relate.
-   Not every folder — just what this persona needs to know.
-
-3. **Core path** (file/line, selection, pattern, uri steps) — the specific code that matters.
-   This is the heart of the tour. Read and narrate. Don't skim.
-
-4. **Closing** (content) — what the reader now understands, what they can do next,
-   2–3 suggested follow-up tours. If `nextTour` is set, reference it by name here.
-
-### Closing steps
-
-Don't summarize — the reader just read it. Instead, tell them what they can now *do*, what to avoid, and suggest 2-3 follow-up tours.
+説明では、ファイルを読むだけでは分からないことを読者へ伝えます。パターン名を示し、設計判断を説明し、障害モードを指摘し、関連コンテキストを相互参照します。
 
 ---
 
-## The 20 personas
+## 物語の流れ — すべてのツアーとペルソナ
 
-| Persona | Goal | Must cover | Avoid |
+1. **方向付け** — **必ず`file`または`directory`ステップにし、contentだけにはしない。**
+   `"file": "README.md", "line": 1`または`"directory": "src"`を使用し、歓迎メッセージをdescriptionへ記述します。
+   contentだけの最初のステップ（`file`、`directory`、`uri`なし）は、VS Code CodeTourで空白ページとして表示されます。これはVS Code extensionの既知の動作で、構成変更できません。
+
+2. **上位レベルの地図**（directoryまたはuriを1～3ステップ） — 主要モジュールとその関係。
+   すべてのフォルダーではなく、このペルソナが知る必要のあるものだけを扱います。
+
+3. **コアパス**（file/line、selection、pattern、uriステップ） — 重要な具体的コード。
+   ここがツアーの中心です。読み、物語として説明します。流し読みしないでください。
+
+4. **締めくくり**（content） — 読者が理解したこと、次にできること、
+   推奨する後続ツアー2～3件。`nextTour`を設定した場合は、ここで名前を参照します。
+
+### 締めくくりのステップ
+
+要約しないでください。読者は今読んだばかりです。代わりに、これから*できること*、避けるべきことを伝え、後続ツアーを2～3件提案します。
+
+---
+
+## 20種類のペルソナ
+
+| ペルソナ | 目標 | 必ず扱う内容 | 避ける内容 |
 |---------|------|------------|-------|
-| **Vibecoder** | Get the vibe fast | Entry point, request flow, main modules. Max 8 steps. | Deep dives, edge cases |
-| **New joiner** | Structured ramp-up | Directories, setup, business context, service boundaries. | Advanced internals |
-| **Bug fixer** | Root cause fast | User action → trigger → fault points. Repro hints + test locations. | Architecture tours |
-| **RCA investigator** | Why did it fail | Causality chain, side effects, race conditions, observability. | Happy path |
-| **Feature explainer** | One feature end-to-end | UI → API → backend → storage. Feature flags, edge cases. | Unrelated features |
-| **PR reviewer** | Review the change correctly | Change story, invariants, risky areas, reviewer checklist. URI step for PR. | Unrelated context |
-| **Security reviewer** | Trust boundaries | Auth flow, input validation, secret handling, sensitive sinks. | Unrelated business logic |
-| **Refactorer** | Safe restructuring | Seams, hidden deps, coupling hotspots, safe extraction order. | Feature explanations |
-| **External contributor** | Contribute without breaking | Safe areas, code style, architecture landmines. | Deep internals |
-| **Tech lead / architect** | Shape and rationale | Module boundaries, design tradeoffs, risk hotspots. | Line-by-line walkthroughs |
+| **バイブコーダー** | 短時間で雰囲気をつかむ | エントリポイント、リクエストフロー、主要モジュール。最大8ステップ。 | 詳細な掘り下げ、エッジケース |
+| **新規参加者** | 構造的に立ち上がる | ディレクトリ、セットアップ、ビジネスコンテキスト、サービス境界。 | 高度な内部実装 |
+| **バグ修正担当** | 根本原因を素早く見つける | ユーザー操作 → トリガー → 障害点。再現のヒント + テストの場所。 | アーキテクチャツアー |
+| **RCA調査担当** | 失敗理由を理解する | 因果関係、副作用、race condition、可観測性。 | 正常系 |
+| **機能説明担当** | 1つの機能をend-to-endで理解する | UI → API → バックエンド → ストレージ。feature flag、エッジケース。 | 無関係な機能 |
+| **PRレビュアー** | 変更を正しくレビューする | 変更の物語、不変条件、危険な領域、レビュアー向けチェックリスト。PRへのURIステップ。 | 無関係なコンテキスト |
+| **セキュリティレビュアー** | 信頼境界を理解する | 認証フロー、入力検証、secret処理、機密性の高いシンク。 | 無関係なビジネスロジック |
+| **リファクタリング担当** | 安全に再構成する | 境界、隠れた依存関係、結合の集中箇所、安全な抽出順序。 | 機能説明 |
+| **外部コントリビューター** | 壊さずに貢献する | 安全な領域、コードスタイル、アーキテクチャ上の落とし穴。 | 深い内部実装 |
+| **技術リード／アーキテクト** | 構造と根拠を理解する | モジュール境界、設計上のトレードオフ、リスク集中箇所。 | 1行ずつの案内 |
 
 ---
 
-## Designing a tour series
+## ツアーシリーズの設計
 
-When a codebase is complex enough that one tour can't cover it well, design a series.
-The `nextTour` field chains them: when the reader finishes one tour, VS Code offers to
-launch the next automatically.
+コードベースが複雑で1つのツアーでは十分に扱えない場合は、シリーズを設計します。`nextTour`フィールドでツアーを連結すると、読者が1つのツアーを完了したとき、VS Codeが次のツアーの自動起動を提案します。
 
-**Plan the series before writing any tour.** A good series has:
-- A clear escalation path (broad → narrow, orientation → deep-dive)
-- No duplicate steps between tours
-- Each tour standalone enough to be useful on its own
+**ツアーを書く前にシリーズを計画します。** 優れたシリーズの特徴:
+- 明確な段階的進行（広い範囲 → 狭い範囲、方向付け → 詳細）
+- ツアー間でステップが重複しない
+- 各ツアーが単独でも役立つ程度に独立している
 
-Set `nextTour` in each tour to the `title` of the next one (must match exactly). Each tour should be standalone enough to be useful on its own.
+各ツアーの`nextTour`を次のツアーの`title`へ設定します（完全一致が必要）。各ツアーは単独でも役立つ程度に独立させます。
 
 ---
 
-## What CodeTour cannot do
+## CodeTourでできないこと
 
-If asked for any of these, say clearly that it's not supported — do not suggest a workaround that doesn't exist:
+次のいずれかを依頼された場合は、対応していないことを明確に伝え、存在しない回避策を提案しないでください:
 
-| Request | Reality |
+| 依頼 | 実際の仕様 |
 |---|---|
-| **Auto-advance to next step after X seconds** | Not supported. Navigation is always manual — the reader clicks Next. There is no timer, delay, or autoplay step mechanic in CodeTour. |
-| **Embed a video or GIF in a step** | Not supported. Descriptions are Markdown text only. |
-| **Run arbitrary shell commands** | Not supported. `commands` only executes VS Code commands (e.g. `workbench.action.terminal.focus`), not shell commands. |
-| **Branch / conditional next step** | Not supported. Tours are linear. `when` controls whether a tour is shown, not which step follows which. |
-| **Show a step without opening a file** | Partially — content-only steps work, but step 1 must have a `file` or `directory` anchor or VS Code shows a blank page. |
+| **X秒後に次のステップへ自動で進む** | 非対応。移動は常に手動で、読者が「次へ」をクリックする。CodeTourにはtimer、delay、自動再生の仕組みがない。 |
+| **ステップへ動画やGIFを埋め込む** | 非対応。descriptionはMarkdownテキストのみ。 |
+| **任意のshellコマンドを実行する** | 非対応。`commands`で実行できるのはVS Codeコマンド（例: `workbench.action.terminal.focus`）だけで、shellコマンドは実行できない。 |
+| **分岐／条件付きの次ステップ** | 非対応。ツアーは直線的である。`when`が制御するのはツアーを表示するかどうかであり、次にどのステップへ進むかではない。 |
+| **ファイルを開かずにステップを表示する** | 一部対応。contentだけのステップは動作するが、ステップ1には`file`または`directory`アンカーが必要で、ない場合はVS Codeに空白ページが表示される。 |
 
 ---
 
-## Anti-patterns
+## アンチパターン
 
-| Anti-pattern | Fix |
+| アンチパターン | 修正方法 |
 |---|---|
-| **File listing** — visiting files with "this file contains..." | Tell a story; each step should depend on the previous one |
-| **Generic descriptions** | Name the specific pattern/gotcha unique to *this* codebase |
-| **Line number guessing** | Never write a line number you didn't verify by reading the file |
-| **Ignoring the persona** | Cut every step that doesn't serve their specific goal |
-| **Hallucinated files** | If a file doesn't exist, skip the step |
+| **ファイル一覧** — 「このファイルには～が含まれる」とファイルを巡る | 物語を伝える。各ステップが前のステップに依存するようにする |
+| **一般的すぎる説明** | *この*コードベース固有のパターン／注意点を示す |
+| **行番号の推測** | ファイルを読んで確認していない行番号は絶対に書かない |
+| **ペルソナの無視** | ペルソナ固有の目標に役立たないステップをすべて削る |
+| **存在しないファイル** | ファイルが存在しない場合は、そのステップを省く |
 
 ---
 
-## Quality checklist — verify before writing the file
+## 品質チェックリスト — ファイルを書く前に確認
 
-- [ ] Every `file` path is **relative to the repo root** (no leading `/` or `./`)
-- [ ] Every `file` path read and confirmed to exist
-- [ ] Every `line` number verified by reading the file (not guessed)
-- [ ] Every `directory` is **relative to the repo root** and confirmed to exist
-- [ ] Every `pattern` regex would match a real line in the file
-- [ ] Every `uri` is a complete, real URL (https://...)
-- [ ] `ref` is a real branch/tag/commit if set
-- [ ] `nextTour` exactly matches the `title` of another `.tour` file if set
-- [ ] Only `.tour` JSON files created — no source code touched
-- [ ] First step has a `file` or `directory` anchor (content-only first step = blank page in VS Code)
-- [ ] Tour ends with a closing content step that tells the reader what they can *do* next
-- [ ] Every description answers SMIG — Situation, Mechanism, Implication, Gotcha
-- [ ] Persona's priorities drive step selection (cut everything that doesn't serve their goal)
-- [ ] Step count matches requested depth and repo size (see calibration table)
-- [ ] At most 2 content-only steps (intro + closing)
-- [ ] All fields conform to `references/codetour-schema.json`
+- [ ] すべての`file`パスが**Repositoryルートからの相対パス**である（先頭に`/`または`./`を付けない）
+- [ ] すべての`file`パスを読み、存在を確認した
+- [ ] すべての`line`番号をファイルを読んで確認した（推測していない）
+- [ ] すべての`directory`が**Repositoryルートからの相対パス**であり、存在を確認した
+- [ ] すべての`pattern`正規表現がファイル内の実在する行に一致する
+- [ ] すべての`uri`が完全な実在するURLである（https://...）
+- [ ] `ref`を設定した場合、実在するbranch／tag／commitである
+- [ ] `nextTour`を設定した場合、別の`.tour`ファイルの`title`と完全に一致する
+- [ ] `.tour` JSONファイルだけを作成し、ソースコードには触れていない
+- [ ] 最初のステップに`file`または`directory`アンカーがある（contentだけの最初のステップはVS Codeで空白ページになる）
+- [ ] ツアーが、読者が次に*できること*を伝える締めくくりのcontentステップで終わる
+- [ ] すべてのdescriptionがSMIG（Situation、Mechanism、Implication、Gotcha）に答える
+- [ ] ペルソナの優先事項に基づいてステップを選択している（目標に役立たないものをすべて削る）
+- [ ] ステップ数が指定された深さとRepository規模に合っている（調整表を参照）
+- [ ] contentだけのステップが最大2件（導入 + 締めくくり）
+- [ ] すべてのフィールドが`references/codetour-schema.json`に準拠している
 
 ---
 
-## Step 5: Validate the tour
+## ステップ5: ツアーを検証する
 
-**Always run the validator immediately after writing the tour file. Do not skip this step.**
+**ツアーファイルを書いた直後に、必ずvalidatorを実行します。この手順を省略しないでください。**
 
 ```bash
 python ~/.agents/skills/code-tour/scripts/validate_tour.py .tours/<name>.tour --repo-root .
 ```
 
-The validator checks:
-- JSON validity
-- Every `file` path exists and every `line` is within file bounds
-- Every `directory` exists
-- Every `pattern` regex compiles and matches at least one line in the file
-- Every `uri` starts with `https://`
-- `nextTour` matches an existing tour title in `.tours/`
-- Content-only step count (warns if > 2)
-- Narrative arc (warns if no orientation or closing step)
+validatorは次を確認します:
+- JSONの妥当性
+- すべての`file`パスが存在し、すべての`line`がファイルの範囲内にあること
+- すべての`directory`が存在すること
+- すべての`pattern`正規表現がコンパイルでき、ファイル内の少なくとも1行に一致すること
+- すべての`uri`が`https://`で始まること
+- `nextTour`が`.tours/`内の既存ツアーのtitleと一致すること
+- contentだけのステップ数（2件を超える場合は警告）
+- 物語の流れ（方向付けまたは締めくくりのステップがない場合は警告）
 
-**Fix every error before proceeding.** Re-run until the validator reports ✓ or only warnings. Warnings are advisory — use your judgment. Do not show the user the tour until validation passes.
+**続行する前にすべてのエラーを修正します。** validatorが✓または警告だけを報告するまで再実行します。警告は助言なので、判断して対応してください。検証に合格するまでユーザーへツアーを提示しないでください。
 
-**Common VS Code issues:** Content-only first step renders blank (anchor to file/directory instead). Absolute or `./`-prefixed paths silently fail. Out-of-bounds line numbers scroll nowhere.
+**一般的なVS Codeの問題:** contentだけの最初のステップは空白になる（代わりにfile／directoryへ固定する）。絶対パスや`./`で始まるパスは通知なく失敗する。範囲外の行番号ではどこにもスクロールしない。
 
-If you can't run scripts, manually verify: step 1 has `file`/`directory`, all paths exist, all line numbers are in bounds, `nextTour` matches exactly.
+スクリプトを実行できない場合は、ステップ1に`file`／`directory`があること、すべてのパスが存在すること、すべての行番号が範囲内であること、`nextTour`が完全に一致することを手動で確認します。
 
-**Autoplay:** `isPrimary: true` + `.vscode/settings.json` with `{ "codetour.promptForPrimaryTour": true }` prompts on repo open. Omit `ref` for tours that should appear on any branch.
+**自動再生:** `isPrimary: true`と、`{ "codetour.promptForPrimaryTour": true }`を含む`.vscode/settings.json`を設定すると、Repositoryを開いたときに確認が表示されます。どのブランチでも表示するツアーでは`ref`を省略します。
 
-**Share:** For public repos, users can open tours at `https://vscode.dev/github.com/<owner>/<repo>` with no install.
-
----
-
-## Step 6: Summarize
-
-After writing the tour, tell the user:
-- File path (`.tours/<name>.tour`)
-- One-paragraph summary of what the tour covers and who it's for
-- The `vscode.dev` URL if the repo is public (so they can share it immediately)
-- 2–3 suggested follow-up tours (or the next tour in the series if one was planned)
-- Any user-requested files that didn't exist (be explicit — don't quietly substitute)
+**共有:** 公開Repositoryでは、ユーザーはインストールせずに`https://vscode.dev/github.com/<owner>/<repo>`でツアーを開けます。
 
 ---
 
-## File naming
+## ステップ6: 要約する
 
-`<persona>-<focus>.tour` — kebab-case, communicates both:
+ツアーを書いた後、ユーザーへ次を伝えます:
+- ファイルパス（`.tours/<name>.tour`）
+- ツアーが扱う内容と対象者を説明する1段落の要約
+- Repositoryが公開されている場合は`vscode.dev`のURL（すぐに共有できる）
+- 推奨する後続ツアー2～3件（シリーズを計画した場合は次のツアー）
+- ユーザーが指定したものの存在しなかったファイル（明示し、黙って置き換えない）
+
+---
+
+## ファイル命名
+
+`<persona>-<focus>.tour` — kebab-caseで、両方を伝える:
 ```
 onboarding-new-joiner.tour
 bug-fixer-payment-flow.tour

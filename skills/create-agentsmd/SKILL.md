@@ -1,112 +1,112 @@
 ---
 name: create-agentsmd
-description: 'Prompt for generating an AGENTS.md file for a repository'
+description: 'リポジトリ用のAGENTS.mdファイルを生成するプロンプト。'
 ---
 
-# Create high‑quality AGENTS.md file
+# 高品質なAGENTS.mdファイルの作成
 
-You are a code agent. Your task is to create a complete, accurate AGENTS.md at the root of this repository that follows the public guidance at https://agents.md/.
+あなたはコーディングエージェントである。https://agents.md/ の公開指針に従い、このリポジトリのルートへ完全で正確なAGENTS.mdを作成する。
 
-AGENTS.md is an open format designed to provide coding agents with the context and instructions they need to work effectively on a project.
+AGENTS.mdは、コーディングエージェントがプロジェクトで効果的に作業するために必要なコンテキストと指示を提供するオープン形式である。
 
-## What is AGENTS.md?
+## AGENTS.mdとは
 
-AGENTS.md is a Markdown file that serves as a "README for agents" - a dedicated, predictable place to provide context and instructions to help AI coding agents work on your project. It complements README.md by containing detailed technical context that coding agents need but might clutter a human-focused README.
+AGENTS.mdは「エージェント向けREADME」として機能するMarkdownファイルであり、AIコーディングエージェントがプロジェクトで作業するためのコンテキストと指示を、専用の予測可能な場所で提供する。人向けREADMEでは煩雑になり得る、コーディングエージェントに必要な詳細な技術コンテキストを含めることでREADME.mdを補完する。
 
-## Key Principles
+## 主な原則
 
-- **Agent-focused**: Contains detailed technical instructions for automated tools
-- **Complements README.md**: Doesn't replace human documentation but adds agent-specific context
-- **Standardized location**: Placed at repository root (or subproject roots for monorepos)
-- **Open format**: Uses standard Markdown with flexible structure
-- **Ecosystem compatibility**: Works across 20+ different AI coding tools and agents
+- **エージェント重視**: 自動化ツール向けの詳細な技術指示を含める
+- **README.mdを補完**: 人向け文書を置き換えず、エージェント固有のコンテキストを追加する
+- **標準化された配置**: リポジトリルート、またはmonorepoのサブプロジェクトルートに置く
+- **オープン形式**: 柔軟な構造の標準Markdownを使う
+- **エコシステム互換性**: 20種類以上のAIコーディングツールおよびエージェントで機能する
 
-## File Structure and Content Guidelines
+## ファイル構造と内容の指針
 
-### 1. Required Setup
+### 1. 必須の設定
 
-- Create the file as `AGENTS.md` in the repository root
-- Use standard Markdown formatting
-- No required fields - flexible structure based on project needs
+- リポジトリルートに `AGENTS.md` としてファイルを作成する
+- 標準のMarkdown書式を使う
+- 必須フィールドはなく、プロジェクトのニーズに応じた柔軟な構造にする
 
-### 2. Essential Sections to Include
+### 2. 含めるべき必須セクション
 
-#### Project Overview
+#### プロジェクト概要
 
-- Brief description of what the project does
-- Architecture overview if complex
-- Key technologies and frameworks used
+- プロジェクトの機能に関する簡潔な説明
+- 複雑な場合はアーキテクチャ概要
+- 使用する主要な技術とフレームワーク
 
-#### Setup Commands
+#### セットアップコマンド
 
-- Installation instructions
-- Environment setup steps
-- Dependency management commands
-- Database setup if applicable
+- インストール手順
+- 環境セットアップ手順
+- 依存関係管理コマンド
+- 該当する場合はデータベースのセットアップ
 
-#### Development Workflow
+#### 開発Workflow
 
-- How to start development server
-- Build commands
-- Watch/hot-reload setup
-- Package manager specifics (npm, pnpm, yarn, etc.)
+- 開発サーバーの起動方法
+- ビルドコマンド
+- watch/hot-reloadの設定
+- package manager固有の情報（npm、pnpm、yarnなど）
 
-#### Testing Instructions
+#### テスト手順
 
-- How to run tests (unit, integration, e2e)
-- Test file locations and naming conventions
-- Coverage requirements
-- Specific test patterns or frameworks used
-- How to run subset of tests or focus on specific areas
+- テスト（unit、integration、e2e）の実行方法
+- テストファイルの配置と命名規則
+- カバレッジ要件
+- 使用する特定のテストパターンまたはフレームワーク
+- テストの一部だけを実行する方法や特定領域へ絞る方法
 
-#### Code Style Guidelines
+#### コードスタイルの指針
 
-- Language-specific conventions
-- Linting and formatting rules
-- File organization patterns
-- Naming conventions
-- Import/export patterns
+- 言語固有の規約
+- lintとformatの規則
+- ファイル構成パターン
+- 命名規則
+- import/exportパターン
 
-#### Build and Deployment
+#### ビルドとデプロイ
 
-- Build commands and outputs
-- Environment configurations
-- Deployment steps and requirements
-- CI/CD pipeline information
+- ビルドコマンドと出力
+- 環境構成
+- デプロイ手順と要件
+- CI/CDパイプライン情報
 
-### 3. Optional but Recommended Sections
+### 3. 任意だが推奨するセクション
 
-#### Security Considerations
+#### セキュリティ上の考慮事項
 
 - Security testing requirements
 - Secrets management
 - Authentication patterns
 - Permission models
 
-#### Monorepo Instructions (if applicable)
+#### Monorepoの手順（該当する場合）
 
 - How to work with multiple packages
 - Cross-package dependencies
 - Selective building/testing
 - Package-specific commands
 
-#### Pull Request Guidelines
+#### Pull Requestの指針
 
 - Title format requirements
 - Required checks before submission
 - Review process
 - Commit message conventions
 
-#### Debugging and Troubleshooting
+#### デバッグとトラブルシューティング
 
 - Common issues and solutions
 - Logging patterns
 - Debug configuration
 - Performance considerations
 
-## Example Template
+## テンプレート例
 
-Use this as a starting template and customize based on the specific project:
+これを出発点として、対象プロジェクトに合わせてカスタマイズする。
 
 ```markdown
 # AGENTS.md
@@ -162,9 +162,9 @@ Use this as a starting template and customize based on the specific project:
 - [Performance considerations]
 ```
 
-## Working Example from agents.md
+## agents.mdの実例
 
-Here's a real example from the agents.md website:
+次はagents.mdのWebサイトにある実例である。
 
 ```markdown
 # Sample AGENTS.md file
@@ -192,58 +192,58 @@ Here's a real example from the agents.md website:
 - Always run `pnpm lint` and `pnpm test` before committing.
 ```
 
-## Implementation Steps
+## 実装手順
 
-1. **Analyze the project structure** to understand:
+1. 次を理解するため、**プロジェクト構造を分析する**。
 
    - Programming languages and frameworks used
    - Package managers and build tools
    - Testing frameworks
    - Project architecture (monorepo, single package, etc.)
 
-2. **Identify key workflows** by examining:
+2. 次を調べて**主要なWorkflowを特定する**。
 
    - package.json scripts
    - Makefile or other build files
    - CI/CD configuration files
    - Documentation files
 
-3. **Create comprehensive sections** covering:
+3. 次を網羅する**包括的なセクションを作成する**。
 
    - All essential setup and development commands
    - Testing strategies and commands
    - Code style and conventions
    - Build and deployment processes
 
-4. **Include specific, actionable commands** that agents can execute directly
+4. エージェントが直接実行できる**具体的で実行可能なコマンドを含める**
 
-5. **Test the instructions** by ensuring all commands work as documented
+5. すべてのコマンドが文書どおり動作することを確認して、**手順をテストする**
 
-6. **Keep it focused** on what agents need to know, not general project information
+6. 一般的なプロジェクト情報ではなく、エージェントが知るべき内容へ**焦点を絞る**
 
-## Best Practices
+## ベストプラクティス
 
-- **Be specific**: Include exact commands, not vague descriptions
-- **Use code blocks**: Wrap commands in backticks for clarity
-- **Include context**: Explain why certain steps are needed
-- **Stay current**: Update as the project evolves
-- **Test commands**: Ensure all listed commands actually work
-- **Consider nested files**: For monorepos, create AGENTS.md files in subprojects as needed
+- **具体的にする**: 曖昧な説明ではなく正確なコマンドを含める
+- **コードブロックを使う**: 明確にするためコマンドをバッククォートで囲む
+- **コンテキストを含める**: 特定の手順が必要な理由を説明する
+- **最新に保つ**: プロジェクトの進化に合わせて更新する
+- **コマンドをテストする**: 記載したすべてのコマンドが実際に動作することを確認する
+- **ネストしたファイルを考慮する**: monorepoでは必要に応じてサブプロジェクトにAGENTS.mdを作成する
 
-## Monorepo Considerations
+## Monorepoの考慮事項
 
-For large monorepos:
+大規模なmonorepoでは次に従う。
 
-- Place a main AGENTS.md at the repository root
-- Create additional AGENTS.md files in subproject directories
-- The closest AGENTS.md file takes precedence for any given location
-- Include navigation tips between packages/projects
+- リポジトリルートにメインのAGENTS.mdを置く
+- サブプロジェクトのディレクトリに追加のAGENTS.mdを作成する
+- 各場所では最も近いAGENTS.mdを優先する
+- packageまたはproject間を移動するためのヒントを含める
 
-## Final Notes
+## 最終的な注意事項
 
-- AGENTS.md works with 20+ AI coding tools including Cursor, Aider, Gemini CLI, and many others
-- The format is intentionally flexible - adapt it to your project's needs
-- Focus on actionable instructions that help agents understand and work with your codebase
-- This is living documentation - update it as your project evolves
+- AGENTS.mdはCursor、Aider、Gemini CLIなど20種類以上のAIコーディングツールで機能する
+- この形式は意図的に柔軟であり、プロジェクトのニーズに合わせる
+- エージェントがコードベースを理解して作業するための、実行可能な指示に焦点を当てる
+- これは継続的に更新する文書であり、プロジェクトの進化に合わせて更新する
 
-When creating the AGENTS.md file, prioritize clarity, completeness, and actionability. The goal is to give any coding agent enough context to effectively contribute to the project without requiring additional human guidance.
+AGENTS.mdを作成するときは、明確さ、完全性、実行可能性を優先する。追加の人による案内なしで、どのコーディングエージェントでもプロジェクトへ効果的に貢献できる十分なコンテキストを提供することが目標である。

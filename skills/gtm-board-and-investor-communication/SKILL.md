@@ -1,50 +1,50 @@
 ---
 name: gtm-board-and-investor-communication
-description: Board meeting preparation, investor updates, and executive communication. Use when preparing board decks, writing investor updates, handling bad news with the board, structuring QBRs, or building board-level metric discipline. Includes the "Three Things" narrative model, the 4-tier metric hierarchy, and the pre-brief pattern that prevents board surprises.
+description: 取締役会の準備、投資家向け更新、経営層コミュニケーション。ボード資料の準備、投資家更新の作成、取締役会への悪い知らせの伝達、QBR の構成、取締役会レベルの指標運用に使う。「Three Things」ナラティブモデル、4 層の指標階層、取締役会の不意打ちを防ぐ事前説明パターンを含む。
 license: MIT
 metadata:
   author: Smit Patel (https://linkedin.com/in/smitkpatel)
   source: https://github.com/beingsmit/technical-product-gtm
 ---
 
-# Board and Investor Communication
+# 取締役会と投資家とのコミュニケーション
 
 Structure board meetings, investor updates, and executive communication that builds trust and drives decisions — not slide decks that nobody reads.
 
-## When to Use
+## 使用する場面
 
-**Triggers:**
-- "How do I prepare for our board meeting?"
-- "What should go in our investor update?"
-- "We missed our numbers, how do we communicate this?"
-- "Board deck structure"
-- "How often should we update investors?"
-- "Our board meetings aren't productive"
+**トリガー:**
+- 「取締役会議にどう備えるか」
+- 「投資家更新には何を入れるべきか」
+- 「数値目標を逃したことをどう伝えるか」
+- 「ボード資料の構成」
+- 「投資家にはどのくらいの頻度で更新すべきか」
+- 「取締役会議が生産的でない」
 
-**Context:**
-- Seed through growth-stage companies
-- Board meeting preparation and follow-up
-- Monthly/quarterly investor updates
-- Handling misses and bad news
-- Cascading strategy from board to organization
+**コンテキスト:**
+- Seed から成長段階までの企業
+- 取締役会議の準備とフォローアップ
+- 月次・四半期の投資家更新
+- 目標未達と悪い知らせへの対応
+- 取締役会から組織への戦略浸透
 
 ---
 
-## Core Frameworks
+## 中核フレームワーク
 
-### 1. Tell the Story, Then Show the Data
+### 1. 物語を語ってからデータを示す
 
-**The Pattern:**
+**パターン:**
 
 Most board meetings start with a data dump. Slide after slide of metrics, then 10 minutes of Q&A where board members try to figure out what it all means.
 
 Flip it. The narrative should lead; data should confirm.
 
-**How It Works:**
+**仕組み:**
 
 Open with where you are in the journey. Not "here's our ARR" but "here's what we believed coming into the quarter, what we learned, and where that puts us now." Then show the data that validates the narrative.
 
-**Board Meeting Structure:**
+**取締役会議の構成:**
 
 **Pre-Read (Sent 48-72 Hours Before)**
 - Financial dashboard (ARR, burn, runway, pipeline)
@@ -80,7 +80,7 @@ Open with where you are in the journey. Not "here's our ARR" but "here's what we
    - Closed session (board without management)
    - CEO and board chair debrief
 
-**Common Mistakes:**
+**よくある失敗:**
 
 - Opening with data before narrative (board gets lost in numbers without context)
 - Multiple competing narratives (board can't synthesize — pick one arc)
@@ -90,7 +90,7 @@ Open with where you are in the journey. Not "here's our ARR" but "here's what we
 
 ---
 
-### 2. The "Three Things" Narrative Model
+### 2. 「Three Things」ナラティブモデル
 
 **The Pattern:**
 
@@ -108,25 +108,25 @@ Be equally specific. Not "we had some challenges" but "self-serve conversion is 
 **What We're Doing About It (for each "not working"):**
 Articulate specific changes. What product changes? What org changes? What's the timeline? What resources are committed?
 
-**Why This Works:**
+**これが機能する理由:**
 
 Board members read dozens of updates. The Three Things model gives them a mental filing system: momentum (feel good), risk (pay attention), agency (this team handles problems). Without it, boards either over-index on one bad metric or miss the real issue buried in a 40-slide deck.
 
 ---
 
-### 3. Progress Is Directional, Not Absolute
+### 3. 進捗は絶対値ではなく方向性で示す
 
 **The Pattern:**
 
 It doesn't matter if you hit 100K users if you were aiming for 50K — or if you missed 200K. Context is everything. Show progress toward your goal, not just the number.
 
-**How to Frame Progress:**
+**進捗の示し方:**
 
 - **On track:** "Target 100K active developers. Currently 70K. All initiatives performing as planned. Confidence: High."
 - **At risk:** "Target 100K active developers. Currently 50K. Acquisition cost higher than expected. Testing new channels. Adjusted target: 85K. Confidence: Medium."
 - **Ahead:** "Target 100K active developers. Currently 95K. Exceeding acquisition forecasts. New partnerships accelerating growth. Confidence: Very high."
 
-**The Rules:**
+**ルール:**
 1. Set the goal upfront (every metric needs a target)
 2. Show progress as % toward goal, not just absolute number
 3. Acknowledge misses; explain pivots
@@ -138,7 +138,7 @@ Changing goals when you miss them. Boards track this. If Q1 target was 100K and 
 
 ---
 
-### 4. The Four-Tier Metric Hierarchy
+### 4. 4 層の指標階層
 
 **The Pattern:**
 
@@ -188,13 +188,13 @@ Changing which metrics you show based on which ones look good this quarter. Boar
 
 ---
 
-### 5. Deliver Bad News Before the Board Asks
+### 5. 取締役会に聞かれる前に悪い知らせを伝える
 
 **The Pattern:**
 
 Board confidence erodes when bad news is delayed or sugar-coated. They can handle bad news. They can't handle surprises. And they hate slow decision-making.
 
-**The Pre-Brief Pattern:**
+**事前説明のパターン:**
 
 Before bad news hits the full board, pre-brief your lead director 48-72 hours before the meeting.
 
@@ -206,7 +206,7 @@ Then send a short email to the full board:
 
 "Wanted to flag something before our next meeting. [Specific problem]. Here's what we know so far, what we don't know yet, and what we're doing about it. Will have a full update at the board meeting."
 
-**The Bad News Framework:**
+**悪い知らせのフレームワーク:**
 
 For every piece of bad news, four elements:
 
@@ -230,7 +230,7 @@ For every piece of bad news, four elements:
 
 All vague. All defensive. None explain root cause or plan.
 
-**Follow-Through Pattern:**
+**フォローアップのパターン:**
 
 Every subsequent board update should reference previously raised issues: "Last quarter I flagged [issue]. Here's the update: [progress]. Status: [resolved / in progress / escalating]."
 
@@ -242,7 +242,7 @@ Sandwiching bad news between good news hoping nobody notices. Board members see 
 
 ---
 
-### 6. The Monthly Investor Update
+### 6. 月次投資家更新
 
 **The Pattern:**
 
@@ -298,7 +298,7 @@ Only sending updates when things are good. Six months of good news followed by s
 
 ---
 
-### 7. Burn Is About Discipline; Revenue Is About Traction
+### 7. Burn は規律、売上はトラクション
 
 **The Pattern:**
 
@@ -327,7 +327,7 @@ Conflating burn with growth. A board that hears "we're growing fast" while burn 
 
 ---
 
-### 8. Cascading Strategy from Board to Organization
+### 8. 取締役会から組織へ戦略を浸透させる
 
 **The Pattern:**
 
@@ -369,9 +369,9 @@ Inconsistent messaging. If different leaders tell different stories about where 
 
 ---
 
-## Decision Trees
+## 判断ツリー
 
-### Board Meeting vs Investor Update
+### 取締役会議か投資家更新か
 
 ```
 Is this a full board meeting?
@@ -383,7 +383,7 @@ Is this a full board meeting?
     └─ No → Monthly investor update format
 ```
 
-### How to Frame a Metric
+### 指標をどう説明するか
 
 ```
 Did you hit the target?
@@ -401,7 +401,7 @@ Did you hit the target?
 
 ---
 
-## Common Mistakes
+## よくある失敗
 
 **1. Board meetings as status reports**
 Board members can read. Send the pre-read. Use the meeting for decisions and discussion, not data walkthroughs.
@@ -423,7 +423,7 @@ Bad news should never land for the first time in a board meeting. Pre-brief the 
 
 ---
 
-## Quick Reference
+## クイックリファレンス
 
 **Board meeting flow:**
 Pre-read (48-72 hrs before) → Questions (15 min) → Three Things narrative (15 min) → Decision items (30-45 min) → Deep dive (20-30 min) → Closed session (10 min)
@@ -445,7 +445,7 @@ Exec (weekly) → Leadership (bi-weekly) → All-hands (monthly) → Team (ongoi
 
 ---
 
-## Related Skills
+## 関連 Skill
 
 - **operating-cadence**: Internal meeting rhythms that feed board preparation
 - **enterprise-account-planning**: Pipeline and deal metrics for board reporting

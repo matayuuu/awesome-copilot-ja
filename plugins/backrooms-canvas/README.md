@@ -1,17 +1,17 @@
-# Backrooms Canvas Plugin
+# Backrooms Canvas プラグイン
 
-Wander an endless first-person backrooms in a Copilot canvas while agents work; their status ghost-writes on the walls.
+エージェントが作業している間、Copilot canvas の無限に続く一人称視点の backrooms を歩き回れます。エージェントの状態は壁にゴーストライティングされます。
 
-## Installation
+## インストール
 
 ``bash
 copilot plugin install backrooms-canvas@awesome-copilot
 ``
 
-## Source
+## ソース
 
-This plugin is part of [Awesome Copilot](https://github.com/github/awesome-copilot).
+このプラグインは [Awesome Copilot](https://github.com/github/awesome-copilot) の一部です。
 
-## License
+## ライセンス
 
 MIT

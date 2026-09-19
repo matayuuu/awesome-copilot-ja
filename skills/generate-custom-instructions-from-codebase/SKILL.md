@@ -1,39 +1,39 @@
 ---
 name: generate-custom-instructions-from-codebase
-description: 'Migration and code evolution instructions generator for GitHub Copilot. Analyzes differences between two project versions (branches, commits, or releases) to create precise instructions allowing Copilot to maintain consistency during technology migrations, major refactoring, or framework version upgrades.'
+description: 'GitHub Copilot 向けの移行とコード進化の指示生成。2つのプロジェクト状態（ブランチ、コミット、またはリリース）間の差分を分析し、技術移行、大規模リファクタリング、またはフレームワーク更新中に Copilot が整合性を保てるようにする、正確な指示を作成します。'
 ---
 
-# Migration and Code Evolution Instructions Generator
+# 移行とコード進化の指示生成
 
-## Configuration Variables
+## 設定変数
 
 ```
 ${MIGRATION_TYPE="Framework Version|Architecture Refactoring|Technology Migration|Dependencies Update|Pattern Changes"}
-<!-- Type of migration or evolution -->
+<!-- マイグレーションまたは進化の種類 -->
 
 ${SOURCE_REFERENCE="branch|commit|tag"}
-<!-- Source reference point (before state) -->
+<!-- 変更前の状態の参照ポイント -->
 
 ${TARGET_REFERENCE="branch|commit|tag"}  
-<!-- Target reference point (after state) -->
+<!-- 変更後の状態の参照ポイント -->
 
 ${ANALYSIS_SCOPE="Entire project|Specific folder|Modified files only"}
-<!-- Scope of analysis -->
+<!-- 分析対象の範囲 -->
 
 ${CHANGE_FOCUS="Breaking Changes|New Conventions|Obsolete Patterns|API Changes|Configuration"}
-<!-- Main aspect of changes -->
+<!-- 変更の主な観点 -->
 
 ${AUTOMATION_LEVEL="Conservative|Balanced|Aggressive"}
-<!-- Level of automation for Copilot suggestions -->
+<!-- Copilot 提案の自動化レベル -->
 
 ${GENERATE_EXAMPLES="true|false"}
-<!-- Include transformation examples -->
+<!-- 変換例を含める -->
 
 ${VALIDATION_REQUIRED="true|false"}
-<!-- Require validation before application -->
+<!-- 適用前に検証を要求する -->
 ```
 
-## Generated Prompt
+## 生成プロンプト
 
 ```
 "Analyze code evolution between two project states to generate precise migration instructions for GitHub Copilot. These instructions will guide Copilot to automatically apply the same transformation patterns during future modifications. Follow this methodology:
@@ -211,30 +211,30 @@ These instructions transform Copilot into an intelligent migration assistant, ca
 "
 ```
 
-## Typical Use Cases
+## 典型的なユースケース
 
-### Framework Version Migration
-Perfect for documenting the transition from Angular 14 to Angular 17, React Class Components to Hooks, or .NET Framework to .NET Core. Automatically identifies breaking changes and generates corresponding transformation rules.
+### フレームワーク バージョン移行
+Angular 14 から Angular 17 への移行、React の Class Components から Hooks への移行、または .NET Framework から .NET Core への移行を記録するのに最適です。互換性破壊の変更を自動的に特定し、対応する変換ルールを生成します。
 
-### Technology Stack Evolution  
-Essential when replacing a technology entirely: jQuery to React, REST to GraphQL, SQL to NoSQL. Creates a comprehensive migration guide with pattern mappings.
+### テクノロジースタックの進化
+jQuery から React、REST から GraphQL、SQL から NoSQL など、技術そのものを置き換える場合に不可欠です。包括的な移行ガイドとパターンマッピングを作成します。
 
-### Architecture Refactoring
-Ideal for large refactorings like Monolith to Microservices, MVC to Clean Architecture, or Component to Composable architecture. Preserves architectural knowledge for future similar transformations.
+### アーキテクチャのリファクタリング
+モノリスからマイクロサービス、MVC から Clean Architecture、Component から Composable Architecture などの大規模リファクタリングに最適です。将来の同様の変換に備えて、アーキテクチャ知識を保存します。
 
-### Design Pattern Modernization
-Useful for adopting new patterns: Repository Pattern, Dependency Injection, Observer to Reactive Programming. Documents the rationale and implementation differences.
+### 設計パターンのモダナイゼーション
+Repository Pattern、Dependency Injection、Observer から Reactive Programming への採用に役立ちます。理由と実装差分を文書化します。
 
-## Unique Benefits
+## 独自の利点
 
-### 🧠 **Artificial Intelligence Enhancement**
-Unlike traditional migration documentation, these instructions "train" GitHub Copilot to reproduce your technology evolution decisions automatically during future code modifications.
+### 🧠 **人工知能の強化**
+従来の移行ドキュメントと異なり、これらの指示は GitHub Copilot が将来のコード修正時に、あなたの技術進化判断を自動的に再現できるように "学習" させます。
 
-### 🔄 **Knowledge Capitalization**  
-Transforms specific project experience into reusable rules, avoiding the loss of migration expertise and accelerating future similar transformations.
+### 🔄 **知識資産化**
+特定プロジェクトで得た移行経験を再利用可能なルールに変換し、移行ノウハウの喪失を防ぎ、同様の作業をより高速に進めます。
 
-### 🎯 **Context-Aware Precision**
-Instead of generic advice, generates instructions tailored to your specific codebase, with real before/after examples from your project evolution.
+### 🎯 **文脈に応じた正確さ**
+汎用的な助言ではなく、実際のコードベースに合わせて、プロジェクトの進化から得た実際の before/after 例を含む具体的な指示を生成します。
 
-### ⚡ **Automated Consistency**
-Ensures that new code additions automatically follow the new conventions, preventing architectural regression and maintaining code evolution coherence.
+### ⚡ **自動的な一貫性**
+新しいコード追加が自動的に新しい規約に従うようにし、アーキテクチャの退行を防ぎ、コード進化の整合性を維持します。

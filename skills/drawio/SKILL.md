@@ -3,24 +3,24 @@ name: drawio
 description: Generate draw.io diagrams as .drawio files and export to PNG/SVG/PDF with embedded XML
 ---
 
-# Draw.io Diagram Skill
+# Draw.io 図作成スキル
 
-Generate draw.io diagrams as native `.drawio` files and export them to PNG images that can be embedded in Word documents.
+draw.io 図をネイティブの `.drawio` ファイルとして生成し、Word 文書に埋め込める PNG 画像としてエクスポートします。
 
-## How to Create a Diagram
+## 図の作成方法
 
-1. **Generate draw.io XML** in `mxGraphModel` format for the requested diagram
-2. **Write the XML** to a `.drawio` file using the create/edit file tool
-3. **Export to PNG** using the bundled export script
+1. 要求された図の **draw.io XML を生成** します（形式: `mxGraphModel`）
+2. create/edit file tool を使用して、XML を `.drawio` ファイルへ **書き込み** ます
+3. バンドルされたエクスポートスクリプトを使用して **PNG にエクスポート** します
 
-## Bundled Export Script
+## バンドルされたエクスポートスクリプト
 
-This skill includes `drawio-to-png.mjs`, a Node.js export script with two rendering backends:
+このスキルには `drawio-to-png.mjs` が含まれています。これは 2 つのレンダリングバックエンドを備えた Node.js エクスポートスクリプトです。
 
-1. **draw.io CLI** (pixel-perfect, fastest) — used automatically if draw.io desktop is installed
-2. **Official draw.io viewer in headless browser** (pixel-perfect, needs Chromium/Edge) — fallback when CLI is unavailable
+1. **draw.io CLI**（ピクセルパーフェクト、最速）— draw.io desktop がインストールされている場合は自動的に使用されます
+2. **ヘッドレスブラウザー内の公式 draw.io viewer**（ピクセルパーフェクト、Chromium/Edge が必要）— CLI を使用できない場合のフォールバックです
 
-### Usage
+### 使用方法
 
 ```bash
 # Install dependencies (one-time, from the scripts folder)
@@ -36,25 +36,25 @@ node skills/drawio/scripts/drawio-to-png.mjs --dir <directory>
 node skills/drawio/scripts/drawio-to-png.mjs --renderer=cli|viewer|auto <input.drawio>
 ```
 
-### Skill Folder Contents
+### スキルフォルダーの内容
 
-| File | Purpose |
+| ファイル | 用途 |
 |------|---------|
-| `SKILL.md` | This instruction file |
-| `scripts/drawio-to-png.mjs` | Node.js export script (CLI + browser fallback) |
-| `scripts/package.json` | Dependencies (`puppeteer-core`) |
+| `SKILL.md` | この指示ファイル |
+| `scripts/drawio-to-png.mjs` | Node.js エクスポートスクリプト（CLI + ブラウザーフォールバック） |
+| `scripts/package.json` | 依存関係（`puppeteer-core`） |
 
-## Supported Export Formats
+## サポートされるエクスポート形式
 
-| Format | Embed XML | Notes |
+| 形式 | XML を埋め込む | 注記 |
 |--------|-----------|-------|
-| `png` | Yes | Viewable everywhere, editable in draw.io |
-| `svg` | Yes | Scalable, editable in draw.io |
-| `pdf` | Yes | Printable, editable in draw.io |
+| `png` | はい | あらゆる環境で表示可能、draw.io で編集可能 |
+| `svg` | はい | 拡大縮小可能、draw.io で編集可能 |
+| `pdf` | はい | 印刷可能、draw.io で編集可能 |
 
-## Draw.io XML Style Conventions
+## Draw.io XML スタイル規則
 
-Use these styles for consistent, professional diagrams:
+一貫性があり、プロフェッショナルな図にするため、次のスタイルを使用してください。
 
 ```xml
 <!-- Primary service (highlighted) -->
@@ -79,18 +79,18 @@ Use these styles for consistent, professional diagrams:
 <mxCell style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#6c8ebf;strokeWidth=2;" />
 ```
 
-## Locating the draw.io CLI
+## draw.io CLI の場所
 
-Try `drawio` first (works if on PATH), then fall back:
+まず `drawio` を試してください（PATH 上にあれば動作します）。その後、次の場所にフォールバックします。
 
 - **Windows**: `"C:\Program Files\draw.io\draw.io.exe"`
 - **macOS**: `/Applications/draw.io.app/Contents/MacOS/draw.io`
-- **Linux**: `drawio` (via snap/apt/flatpak)
+- **Linux**: `drawio`（snap/apt/flatpak 経由）
 
-### CLI Export Command
+### CLI エクスポートコマンド
 
 ```bash
 drawio -x -f png -e -b 10 -o <output.png> <input.drawio>
 ```
 
-Flags: `-x` (export), `-f` (format), `-e` (embed diagram XML), `-b` (border), `-o` (output path).
+フラグ: `-x`（エクスポート）、`-f`（形式）、`-e`（図の XML を埋め込む）、`-b`（境界線）、`-o`（出力パス）。

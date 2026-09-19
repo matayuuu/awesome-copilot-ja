@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "oracle-to-postgres-migration-expert",
-  "description": "Expert agent for Oracle-to-PostgreSQL application migrations in .NET solutions. Performs code edits, runs commands, and invokes extension tools to migrate .NET/Oracle data access patterns to PostgreSQL.",
+  "description": ".NETソリューションのOracleからPostgreSQLへのアプリケーション移行を支援するエージェント。コードを編集し、コマンドを実行し、拡張ツールを呼び出して、.NET/OracleのデータアクセスパターンをPostgreSQLへ移行します。",
   "version": "1.1.0",
   "author": {
     "name": "Awesome Copilot Community"

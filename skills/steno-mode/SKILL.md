@@ -1,105 +1,104 @@
 ---
 name: steno-mode
-description: 'Shorthand-first response compression that cuts ~40% of response tokens while preserving technical precision and exact literals. Use when the user says "steno mode", "shorthand mode", "compressed responses", "token reduction", "brief structured output", or invokes /steno. Supports four compression levels: lite, brief, court, machine. Do not trigger for requests needing polished prose such as onboarding/tutorial content, stakeholder or customer-facing copy, or teaching-focused explanations.'
+description: '技術的な正確さとリテラルを保ちながら、略記を優先して回答トークンを約 40% 削減する。ユーザーが「steno mode」「shorthand mode」「compressed responses」「token reduction」「brief structured output」と言うか、/steno を呼び出したときに使用する。圧縮レベルは lite、brief、court、machine の 4 種類。オンボーディング、チュートリアル、ステークホルダー・顧客向け文面、教育的な説明など、洗練された prose が必要な依頼では起動しない。'
 license: MIT
 ---
+# Steno モード
 
-# Steno Mode
+規律ある略記を使う専門家のように回答する。密度が高く、正確で、読みやすくする。速記法の文字記号をそのまままねしない。
 
-Respond like an expert using disciplined shorthand. Dense, exact, readable. Do not imitate literal court-reporting notation.
+## 持続
 
-## Persistence
+有効化後はすべての回答で有効。Ask、Edit、Agent、カスタムエージェントを含め、ターンやエージェントの切り替えをまたいで維持する。ユーザーが「stop steno」または「normal mode」と言ったときだけ解除する。
 
-ACTIVE EVERY RESPONSE after enabled. Stay active across turns and across agent switches, including Ask, Edit, Agent, and custom agents. Turn off only when the user says "stop steno" or "normal mode".
+既定レベル: **brief**。`/steno lite|brief|court|machine` で切り替える。
 
-Default level: **brief**. Switch with `/steno lite|brief|court|machine`.
+## 契約
 
-## Contract
+目標: 正確さを犠牲にせず prose を圧縮して、トークンを減らす。
 
-Goal: reduce tokens by compressing prose, not by sacrificing precision.
+優先順位:
 
-Priority order:
+1. 正確さ
+2. 可読性
+3. 圧縮
 
-1. Exactness
-2. Readability
-3. Compression
+圧縮によって正確さが損なわれるなら、完全な形を保つ。
 
-If compression harms exactness, keep the full form.
+## 基本ルール
 
-## Core Rules
+削るもの:
 
-Cut:
+- filler と社交辞令
+- 意味が明確なままなら価値の低い接続語
+- 回答前の繰り返しの前置き
 
-- filler and pleasantries
-- low-value glue words when meaning stays clear
-- repeated framing before the answer
+正確に保持するもの（決して圧縮しない）:
 
-Keep exact (never compress):
+- コードブロック
+- コマンド
+- パスとファイル名
+- API 名と識別子
+- 環境変数
+- 引用されたエラー文
+- バージョン、フラグ、数字
 
-- code blocks
-- commands
-- paths and filenames
-- API names and identifiers
-- env vars
-- quoted error text
-- versions, flags, and numbers
+次で圧縮する:
 
-Compress with:
+- 安定した略語（例）: `cfg`、`auth`、`deps`、`env`、`req`、`resp`、`impl`、`perf`、`arch`、`ctx`、`conn`、`ctr`
+- 記号による結合: `->`、`=>`、`vs`、`w/`、`w/o`、`+`、`=`
+- 内容が自然に箇条書きになる場合は、リストを先に置く構成
+- 短い因果の連鎖: `X -> Y -> Z`
 
-- stable abbreviations (examples): `cfg`, `auth`, `deps`, `env`, `req`, `resp`, `impl`, `perf`, `arch`, `ctx`, `conn`, `ctr`
-- symbolic joins: `->`, `=>`, `vs`, `w/`, `w/o`, `+`, `=`
-- list-first structure when content is naturally list-shaped
-- short causal chains: `X -> Y -> Z`
+避けるもの:
 
-Avoid:
+- 無作為な略語
+- スラングやメッセージ風の綴り
+- 音声速記の記号
+- 異なる 2 つの技術用語を 1 つの略記にまとめること
 
-- random abbreviations
-- slang or text-message spelling
-- phonetic stenography glyphs
-- collapsing two distinct technical terms into one shorthand
+パターン: `[問題/要点] -> [原因/判断] -> [行動/結果]`
 
-Pattern: `[problem/point] -> [cause/decision] -> [action/result]`
+## レベル
 
-## Levels
-
-| Level | Behavior |
+| レベル | 動作 |
 |-------|----------|
-| **lite** | Tight professional prose. Full sentences mostly intact. Minimal filler. |
-| **brief** | Default. Shorthand + symbols + compact phrasing. High readability. |
-| **court** | Dense expert shorthand. Fragments allowed. Strong symbol use. |
-| **machine** | Max compression for expert users. Heavy abbreviation, minimal connectors. Use only when clarity still holds. |
+| **lite** | 引き締まった専門的な文章。完全な文をほぼ維持し、冗長な表現を最小限にする。 |
+| **brief** | 既定値。略記、記号、簡潔な表現を使い、高い可読性を保つ。 |
+| **court** | 密度の高い専門家向け略記。断片的な文と強い記号使用を許容する。 |
+| **machine** | 専門家向けの最大圧縮。略語を多用し、接続語を最小限にする。明確さを保てる場合だけ使う。 |
 
-## Examples
+## 例
 
-Example — "Why does this API retry loop never stop?"
+例 — 「この API の再試行ループが止まらないのはなぜですか？」
 
-- lite: "Retry state resets on each req, so the loop never reaches the terminal condition. Persist the ctr outside the req scope."
-- brief: "Retry state resets per req -> terminal condition never reached. Move ctr outside req scope."
-- court: "State resets per req -> no terminal hit -> loop. Persist ctr outside req scope."
-- machine: "Per-req reset -> no terminal -> loop. Persist ctr outside scope."
+- lite: 「各 req で再試行状態がリセットされるため、ループが終了条件に到達しない。ctr を req のスコープ外に保持する。」
+- brief: 「req ごとに再試行状態がリセット -> 終了条件に到達しない。ctr を req のスコープ外へ移す。」
+- court: 「req ごとに状態リセット -> 終了なし -> ループ。ctr を req の外へ保持。」
+- machine: 「req ごとにリセット -> 終了なし -> ループ。スコープ外に ctr を保持。」
 
-Example — "Review this bug fix."
+例 — 「このバグ修正をレビューしてください。」
 
-- lite: "The fix handles null input, but it still mutates shared state. Clone before modifying."
-- brief: "Null case fixed. Shared state still mutated. Clone before write."
-- court: "Null fixed. Shared state mutates. Clone pre-write."
-- machine: "Null OK. Shared mutates. Clone pre-write."
+- lite: 「修正は null 入力を処理するが、共有状態を変更している。変更前に複製する。」
+- brief: 「null ケースは修正済み。共有状態はまだ変更される。書き込み前に複製。」
+- court: 「null は修正済み。共有状態が変更される。書き込み前に複製。」
+- machine: 「null OK。共有状態を変更。書き込み前に複製。」
 
-Example — "Explain connection pooling."
+例 — 「接続プールを説明してください。」
 
-- lite: "Connection pooling reuses open connections instead of creating a new one for every req. That cuts handshake overhead."
-- brief: "Pool reuses open conns vs new conn per req. Cuts handshake overhead."
-- court: "Pool = reuse open conns. No per-req open/close. Less handshake cost."
-- machine: "Pool reuse conns. Skip per-req handshake."
+- lite: 「接続プールは req ごとに新しい接続を作らず、開いた接続を再利用する。これによりハンドシェイクの負荷が下がる。」
+- brief: 「プールは req ごとの新規接続ではなく開いた接続を再利用。ハンドシェイク負荷を削減。」
+- court: 「プール = 開いた接続を再利用。req ごとの開閉なし。ハンドシェイク費用を削減。」
+- machine: 「プールで接続を再利用。req ごとのハンドシェイクを省略。」
 
-## Scope
+## 適用範囲
 
-Works well: code review comments, bug explanations, debugging Q&A, architecture summaries, API and config documentation, progress updates.
+適しているもの: コードレビューコメント、バグ説明、デバッグ Q&A、アーキテクチャ要約、API・設定文書、進捗更新。
 
-Does not work well: onboarding and tutorials, stakeholder communication, empathetic responses, teaching new concepts. For these, switch to lite or ask whether compression should stay on.
+適さないもの: オンボーディングやチュートリアル、ステークホルダーとの連絡、共感的な回答、新しい概念の教育。この場合は lite に切り替えるか、圧縮を続けるか尋ねる。
 
-## Safety
+## 安全性
 
-- When exact wording matters, quote verbatim.
-- When ambiguity appears, expand once, then resume shorthand.
-- When the user asks for docs, legal text, customer copy, or polished prose, either switch to lite or ask whether compression should stay on.
+- 正確な文言が重要な場合は逐語引用する。
+- 曖昧さが生じたら一度だけ完全な形に展開し、その後は略記に戻る。
+- ユーザーが文書、法的文章、顧客向け文面、洗練された prose を求めた場合は lite に切り替えるか、圧縮を続けるか尋ねる。

@@ -1,56 +1,56 @@
 ---
 name: gtm-enterprise-onboarding
-description: Four-phase framework for onboarding enterprise customers from contract to value realization. Use when implementing new enterprise customers, preventing churn during onboarding, or solving the adoption cliff that kills deals post-go-live. Includes the Week 4 ghosting pattern.
+契約から価値実現まで、エンタープライズ顧客をオンボーディングする 4 段階フレームワーク。新規エンタープライズ顧客の導入、オンボーディング中の解約防止、稼働後に案件を失わせる採用の崖の解決に使う。4 週目に顧客から反応がなくなるパターンを含む。
 license: MIT
 metadata:
   author: Smit Patel (https://linkedin.com/in/smitkpatel)
   source: https://github.com/beingsmit/technical-product-gtm
 ---
 
-# Enterprise Onboarding
+# エンタープライズオンボーディング
 
 Four-phase framework for onboarding enterprise customers from contract to value realization. The goal isn't just go-live — it's sustained adoption that doesn't cliff at Week 12.
 
-## When to Use
+## 使用する場面
 
-**Triggers:**
-- "How do we onboard this enterprise customer?"
-- "Customer went live but adoption is weak"
-- "We keep losing customers 3 months after go-live"
-- "POC to production transition"
-- "How do I prevent Week 4 ghosting?"
-- "Customer success onboarding framework"
+**トリガー:**
+- 「このエンタープライズ顧客をどうオンボーディングするか」
+- 「顧客は稼働したが採用が弱い」
+- 「稼働の 3 か月後に顧客を失い続けている」
+- 「POC から本番への移行」
+- 「4 週目に反応がなくなるのをどう防ぐか」
+- 「カスタマーサクセスのオンボーディングフレームワーク」
 
-**Context:**
-- Enterprise or mid-market deals
-- Complex technical requirements
-- Multiple stakeholders involved
-- 30-90 day implementation timelines
-- Risk of churn during first year
+**コンテキスト:**
+- エンタープライズまたはミッドマーケット案件
+- 複雑な技術要件
+- 複数の関係者
+- 30～90 日の導入期間
+- 初年度の解約リスク
 
 ---
 
-## Core Frameworks
+## 中核フレームワーク
 
-### 1. The Week 4 Ghosting Problem (And How to Prevent It)
+### 1. 4 週目に反応がなくなる問題（防止方法）
 
-**The Pattern:**
+**パターン:**
 
 Week 1: Kickoff call goes great. Everyone's excited.
 Week 2-3: Technical discovery, requirements gathering. Still good.
 Week 4: Customer stops responding. Meetings get cancelled. "Too busy."
 
-**What Happened?**
+**何が起きたのか:**
 
 You started customer onboarding before internal alignment on their side.
 
-**Who Owns This Project Internally?**
+**社内でこのプロジェクトを誰が担当するのか:**
 - Sales rep? (Already moved to next deal)
 - Technical champion? (Day job took over)
 - Executive sponsor? (Delegates, doesn't drive)
 - Nobody? (**This is why they're ghosting**)
 
-**The Framework: Internal Owner Validation**
+**フレームワーク: 社内担当者の検証**
 
 Before kickoff call, answer:
 
@@ -62,7 +62,7 @@ Before kickoff call, answer:
 
 **If you can't name a specific person for each, you don't have a project owner. You have a signed contract with nobody driving it.**
 
-**How to Fix It:**
+**修正方法:**
 
 **During sales → CS handoff (before customer kickoff):**
 
@@ -78,13 +78,13 @@ Don't start onboarding yet. Have sales introduce you to economic buyer:
 
 "Before we kick off implementation, we want to make sure we have the right project owner on your side. In our experience, implementations succeed when someone owns driving this forward week-to-week. Who on your team should we partner with?"
 
-**Common Mistake:**
+**よくある失敗:**
 
 Assuming someone will own it. Ask explicitly. If they can't name someone, the deal is at risk.
 
 ---
 
-### 2. The Adoption Cliff (Week 12 Problem)
+### 2. 採用の崖（12 週目の問題）
 
 **The Pattern:**
 
@@ -98,13 +98,13 @@ Week 12: Usage down 50% from peak.
 
 You treated go-live as the finish line. **Go-live is the starting line.**
 
-**What Drives Sustained Adoption:**
+**継続的な採用を促すもの:**
 
 **Not:** Feature completeness, technical integration, training sessions
 
 **Yes:** Ongoing value demonstration, user success stories, expanding use cases
 
-**Framework: Adoption Stages Beyond Go-Live**
+**フレームワーク: 稼働後の採用段階**
 
 **Week 1-6 (Implementation):** Get it working
 - Measure: % of technical setup complete
@@ -122,13 +122,13 @@ You treated go-live as the finish line. **Go-live is the starting line.**
 - Measure: New teams, new use cases, upgrade triggers
 - Owner: Account executive + CS
 
-**The Handoff That Most Teams Miss:**
+**多くのチームが見落とす引き継ぎ:**
 
 Week 6 (go-live) → Week 12 (sustained adoption)
 
 Most CS teams celebrate go-live and move to next customer. **This is when churn seeds get planted.**
 
-**What to Do Week 6-12:**
+**6～12 週目に行うこと:**
 
 **Week 7:** First value report
 "Here's what your team accomplished in the first week: [specific metric]. Here's what good looks like at Week 12: [target]."
@@ -145,7 +145,7 @@ Measuring "go-live completion" instead of "sustained active usage." Go-live is n
 
 ---
 
-### 3. Pre-Onboarding: Success Is Built Before First Customer Call
+### 3. オンボーディング前: 成功は最初の顧客通話より前に作られる
 
 **The Pattern:**
 
@@ -205,7 +205,7 @@ Starting onboarding without internal clarity. This creates confusion, missed dea
 
 ---
 
-### 4. The Four-Phase Onboarding Flow
+### 4. 4 段階のオンボーディングフロー
 
 **Phase 1: Kickoff (Week 1)**
 
@@ -296,7 +296,7 @@ Treating go-live as completion. Phase 4 is where retention is won or lost.
 
 ---
 
-### 5. The Parallel Tracks Anti-Pattern
+### 5. 並列トラックのアンチパターン
 
 **The Pattern:**
 
@@ -337,9 +337,9 @@ Waiting for "perfect technical setup" before starting pilot. Get pilot group usi
 
 ---
 
-## Decision Trees
+## 判断ツリー
 
-### Should I Start Customer Onboarding?
+### 顧客オンボーディングを開始すべきか
 
 ```
 Has sales identified a project owner by name?
@@ -355,7 +355,7 @@ Has sales identified a project owner by name?
         └─ Yes → Proceed to kickoff
 ```
 
-### Is This Onboarding At Risk?
+### このオンボーディングは危険な状態か
 
 ```
 Is customer responding to meeting invites?
@@ -371,7 +371,7 @@ Is customer responding to meeting invites?
         └─ Yes → On track
 ```
 
-### Is Adoption Sustained Post-Go-Live?
+### 稼働後も採用は継続しているか
 
 ```
 Are active users growing Week 6 → Week 12?
@@ -385,7 +385,7 @@ Are active users growing Week 6 → Week 12?
 
 ---
 
-## Common Mistakes
+## よくある失敗
 
 **1. Starting customer onboarding before internal alignment**
    - Wastes first 2-3 weeks, creates confusion, kills credibility
@@ -410,7 +410,7 @@ Are active users growing Week 6 → Week 12?
 
 ---
 
-## Quick Reference
+## クイックリファレンス
 
 **Pre-Kickoff Validation:**
 - [ ] Sales handoff complete (deal drivers, stakeholders, requirements)
@@ -446,7 +446,7 @@ Are active users growing Week 6 → Week 12?
 
 ---
 
-## Related Skills
+## 関連 Skill
 
 - **enterprise-account-planning**: Pre-sale deal planning and stakeholder mapping
 - **operating-cadence**: Onboarding review cadence and health metrics

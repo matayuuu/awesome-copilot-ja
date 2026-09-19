@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "java-modernization-studio",
-  "description": "Drive the GitHub Copilot App Modernization for Java workflow from an interactive canvas: environment readiness, repo assessment, prioritized plan and progress, validation gates, and one-click predefined-task runs grounded in the repo's real artifacts.",
+  "description": "インタラクティブな canvas から GitHub Copilot App Modernization for Java ワークフローを操作します。環境の準備状況、リポジトリ評価、優先順位付き計画と進捗、検証ゲート、リポジトリの実際の成果物に基づく定義済みタスクのワンクリック実行を提供します。",
   "version": "1.0.2",
   "author": {
     "name": "Ayan Gupta",

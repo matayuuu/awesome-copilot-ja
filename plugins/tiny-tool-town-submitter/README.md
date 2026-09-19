@@ -1,8 +1,8 @@
 # Tiny Tool Town Submitter Plugin
 
-Inspect a repository, improve Tiny Tool Town readiness, submit its listing issue, and launch remediation work.
+リポジトリを調査し、Tiny Tool Townへの掲載準備を整え、掲載課題を提出して、改善作業を開始します。
 
-## Installation
+## インストール
 
 ``bash
 copilot plugin install tiny-tool-town-submitter@awesome-copilot

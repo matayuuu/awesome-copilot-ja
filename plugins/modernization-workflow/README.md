@@ -1,10 +1,10 @@
-# Modernization Workflow Plugin
+# Modernization Workflow プラグイン
 
-Interactive canvas for visualizing and guiding the GitHub Copilot Modernize CLI
-Assess, Plan, and Execute workflow for .NET, Java, and C++ application
-repositories.
+GitHub Copilot Modernize CLI の
+Assess、Plan、Execute ワークフローを可視化し、案内するインタラクティブな canvas です。.NET、Java、C++ アプリケーション
+リポジトリに対応します。
 
-## Installation
+## インストール
 
 ```bash
 copilot plugin install modernization-workflow@awesome-copilot

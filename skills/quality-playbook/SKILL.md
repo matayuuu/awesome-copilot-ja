@@ -1,6 +1,6 @@
 ---
 name: quality-playbook
-description: "Run a complete quality engineering audit on any codebase. Derives behavioral requirements from the code, generates spec-traced functional tests, runs a three-pass code review with regression tests, executes a multi-model spec audit (Council of Three), and produces a consolidated bug report with TDD-verified patches. Finds the 35% of real defects that structural code review alone cannot catch. Works with any language. Trigger on 'quality playbook', 'spec audit', 'Council of Three', 'fitness-to-purpose', or 'coverage theater'."
+description: 'quality-playbook に関する作業を支援する Skill です。対象のファイルや設定を確認し、必要な手順、検証方法、注意点を案内します。対象技術の調査、実装、運用、トラブルシューティングに使用します。'
 license: Complete terms in LICENSE.txt
 metadata:
   version: 1.5.6
@@ -889,7 +889,7 @@ This is the most important step for the code review protocol. Everything found d
    # Auto-generated: re-run mechanical extraction commands and verify saved artifacts
    set -euo pipefail
    FAIL=0
-   
+
    # Verify <function>
    ACTUAL=$(awk '/void vring_transport_features/,/^}$/' drivers/virtio/virtio_ring.c | grep -nE '^\s*case\s+')
    SAVED=$(cat quality/mechanical/vring_transport_features_cases.txt)
@@ -900,7 +900,7 @@ This is the most important step for the code review protocol. Everything found d
    else
      echo "OK: vring_transport_features_cases.txt"
    fi
-   
+
    exit $FAIL
    ```
 
@@ -2445,7 +2445,7 @@ For each bug, perform these checks in order:
    - Apply it: `git apply quality/patches/BUG-NNN-regression-test.patch`
    - Run the test (using the project's test runner). If the test PASSES, the bug is fixed. If it FAILS, the bug is still present.
    - Reverse the patch: `git apply -R quality/patches/BUG-NNN-regression-test.patch`
-   
+
    If the regression test patch doesn't apply cleanly (because the source has changed), note this and fall back to source inspection alone.
 
 4. **Verdict.** Assign one of these statuses:

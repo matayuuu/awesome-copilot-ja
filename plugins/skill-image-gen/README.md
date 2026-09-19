@@ -1,8 +1,8 @@
 # Skill Image Gen
 
-Generate images using AI directly from your coding workflow. Supports **OpenAI (gpt-image-2)** and **Google Gemini (Nano Banana)**.
+コーディングワークフローから直接AIで画像を生成します。**OpenAI（gpt-image-2）**と**Google Gemini（Nano Banana）**に対応しています。
 
-## What it does
+## できること
 
 Use natural language to generate images — icons, sprites, textures, mockups, artwork — without leaving your editor. The skill handles API calls, file saving, and guides you through setup on first use.
 

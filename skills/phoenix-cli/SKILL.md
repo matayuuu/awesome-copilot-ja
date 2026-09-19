@@ -1,6 +1,6 @@
 ---
 name: phoenix-cli
-description: Debug LLM applications using the Phoenix CLI. Fetch traces, analyze errors, structure trace review with open coding and axial coding, inspect datasets, review experiments, query annotation configs, and use the GraphQL API. Use whenever the user is analyzing traces or spans, investigating LLM/agent failures, deciding what to do after instrumenting an app, building failure taxonomies, choosing what evals to write, or asking "what's going wrong", "what kinds of mistakes", or "where do I focus" — even without naming a technique.
+description: 'phoenix-cli に関する作業を支援する Skill です。対象のファイルや設定を確認し、必要な手順、検証方法、注意点を案内します。対象技術の調査、実装、運用、トラブルシューティングに使用します。'
 license: Apache-2.0
 compatibility: Requires Node.js (for npx) or global install of @arizeai/phoenix-cli. Optionally requires jq for JSON processing.
 metadata:
@@ -48,7 +48,7 @@ px profile edit <name>
 px profile delete <name>
 ```
 
-## Setup
+## セットアップ
 
 ```bash
 export PHOENIX_HOST=http://localhost:6006

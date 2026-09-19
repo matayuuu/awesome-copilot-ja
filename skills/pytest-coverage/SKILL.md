@@ -1,6 +1,6 @@
 ---
 name: pytest-coverage
-description: 'Run pytest tests with coverage, discover lines missing coverage, and increase coverage to 100%.'
+description: 'pytest-coverage に関する作業を支援する Skill です。対象のファイルや設定を確認し、必要な手順、検証方法、注意点を案内します。対象技術の調査、実装、運用、トラブルシューティングに使用します。'
 ---
 
 The goal is for the tests to cover all lines of code.

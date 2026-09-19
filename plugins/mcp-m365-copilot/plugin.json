@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "mcp-m365-copilot",
-  "description": "Comprehensive collection for building declarative agents with Model Context Protocol integration for Microsoft 365 Copilot",
+  "description": "Microsoft 365 Copilot 向けに Model Context Protocol 統合を備えた宣言型 agents を構築するための包括的なコレクションです。",
   "version": "1.0.0",
   "author": {
     "name": "Awesome Copilot Community"

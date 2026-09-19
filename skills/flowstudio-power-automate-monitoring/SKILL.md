@@ -1,117 +1,109 @@
 ---
 name: flowstudio-power-automate-monitoring
-description: >-
-  Pro+ subscription required. Tenant-wide Power Automate monitoring using the
-  FlowStudio MCP cached store: failure rates, run-health trends, maker/app
-  inventory, inactive owners, and compliance/health reports. Use only for
-  aggregated tenant views. For one environment, one flow, run control, or
-  root-cause debugging, use flowstudio-power-automate-mcp, flowstudio-power-automate-debug, or the
-  server monitor-flow bundle. Requires FlowStudio for Teams or MCP Pro+.
+description: 'Pro+ サブスクリプションが必要です。FlowStudio MCP のキャッシュ済みストアを使用して、テナント全体の Power Automate を監視します。失敗率、実行健全性の傾向、メーカーやアプリのインベントリ、非アクティブな所有者、コンプライアンスおよび健全性レポートを扱います。集約されたテナントビューにのみ使用してください。1 つの環境、1 つのフロー、実行制御、または根本原因のデバッグには、flowstudio-power-automate-mcp、flowstudio-power-automate-debug、またはサーバーの monitor-flow バンドルを使用します。FlowStudio for Teams または MCP Pro+ が必要です。'
 ---
 
-# Power Automate Monitoring with FlowStudio MCP
+# FlowStudio MCP による Power Automate 監視
 
-Monitor flow health, track failure rates, and inventory tenant assets through
-the FlowStudio MCP **cached store** — fast reads, no PA API rate limits, and
-enriched with governance metadata and remediation hints.
+FlowStudio MCP の **cached store** を通じて、フローの健全性を監視し、失敗率を追跡し、テナント資産を棚卸しします — 高速な読み取り、PA API のレート制限なし、さらにガバナンス メタデータと修復ヒントで強化されています。
 
-> **⚠️ Pro+ subscription required.** This skill calls `store_*` tools that
-> only work for FlowStudio for Teams or MCP Pro+ subscribers.
+> **⚠️ Pro+ サブスクリプションが必要です。** このスキルは `store_*` ツールを呼び出しますが、
+> これらは FlowStudio for Teams または MCP Pro+ サブスクライバーでのみ動作します。
 >
-> **If the user does not have Pro+ access:** the first `store_*` tool call
-> will return a 403/404 error. When that happens:
-> 1. STOP calling store tools
-> 2. Tell the user this feature requires a Pro+ subscription
-> 3. Link them to https://mcp.flowstudio.app/pricing
-> 4. If their question can be answered with live tools (e.g. "list flows in
->    one environment"), offer to use the `flowstudio-power-automate-mcp` skill instead
+> **ユーザーが Pro+ アクセスを持っていない場合:** 最初の `store_*` ツール呼び出しは
+> 403/404 エラーを返します。その場合は:
+> 1. store ツールの呼び出しを停止する
+> 2. この機能には Pro+ サブスクリプションが必要であることをユーザーに伝える
+> 3. https://mcp.flowstudio.app/pricing へのリンクを提示する
+> 4. 質問が live ツールで回答できる場合（例: 「1 つの環境内のフローを一覧表示する」）は、
+>    代わりに `flowstudio-power-automate-mcp` スキルを使うことを提案する
 >
-> **Discovery:** load tool schemas via `tool_search` rather than `tools/list` —
-> call with `query: "select:list_store_flows,get_store_flow_summary"` for the
-> common monitoring tools, or load the full set with `query: "skill:governance"`
-> (the server's governance bundle covers most monitoring reads too — this skill
-> and `flowstudio-power-automate-governance` share the underlying tool family). This skill
-> covers response shapes, behavioral notes, and workflow patterns — things
-> `tool_search` cannot tell you. If this document disagrees with a real API
-> response, the API wins.
+> **Discovery:** ツール スキーマは `tools/list` ではなく `tool_search` で読み込みます —
+> 一般的な監視ツールには `query: "select:list_store_flows,get_store_flow_summary"` を指定して呼び出すか、
+> `query: "skill:governance"` で全セットを読み込みます
+> （サーバーの governance バンドルもほとんどの監視読み取りをカバーします — このスキルと
+> `flowstudio-power-automate-governance` は基盤となる同じツール ファミリを共有しています）。このスキルは、
+> 応答形状、動作上の注意、ワークフロー パターンを扱います — これらは
+> `tool_search` では分からない内容です。このドキュメントが実際の API
+> 応答と食い違う場合は、API が正です。
 
 ---
 
-## How Monitoring Works
+## 監視の仕組み
 
-FlowStudio scans the Power Automate API daily for each subscriber and caches
-the results. There are two levels:
+FlowStudio は各サブスクライバーについて Power Automate API を毎日スキャンし、
+結果をキャッシュします。レベルは 2 つあります:
 
-- **All flows** get metadata scanned: definition, connections, owners, trigger
-  type, and aggregate run statistics (`runPeriodTotal`, `runPeriodFailRate`,
-  etc.). Environments, apps, connections, and makers are also scanned.
-- **Monitored flows** (`monitor: true`) additionally get per-run detail:
-  individual run records with status, duration, failed action names, and
-  remediation hints. This is what populates `get_store_flow_runs` and
-  `get_store_flow_summary`.
+- **すべてのフロー** ではメタデータがスキャンされます: 定義、接続、所有者、トリガー
+  種類、集計された実行統計（`runPeriodTotal`、`runPeriodFailRate`
+  など）。環境、アプリ、接続、作成者もスキャンされます。
+- **監視対象フロー**（`monitor: true`）では、さらに実行ごとの詳細も取得されます:
+  ステータス、期間、失敗したアクション名、修復ヒントを含む個別の実行レコードです。
+  これが `get_store_flow_runs` と
+  `get_store_flow_summary` に入力される内容です。
 
-**Data freshness:** Check the `scanned` field on `get_store_flow` to see when
-a flow was last scanned. If stale, the scanning pipeline may not be running.
+**データの鮮度:** フローが最後にスキャンされた日時を確認するには、`get_store_flow` の
+`scanned` フィールドを確認します。古い場合、スキャン パイプラインが実行されていない可能性があります。
 
-**Enabling monitoring:** Set `monitor: true` via `update_store_flow` or the
-FlowStudio for Teams app
-([how to select flows](https://learn.flowstudio.app/teams-monitoring)).
+**監視の有効化:** `update_store_flow` または
+FlowStudio for Teams アプリ
+（[フローの選択方法](https://learn.flowstudio.app/teams-monitoring)）を使用して `monitor: true` を設定します。
 
-**Designating critical flows:** Use `update_store_flow` with `critical=true`
-on business-critical flows. This enables the governance skill's notification
-rule management to auto-configure failure alerts on critical flows.
+**重要フローの指定:** ビジネス上重要なフローでは、`critical=true`
+付きで `update_store_flow` を使用します。これにより、governance スキルの通知
+ルール管理で、重要フローの失敗アラートを自動構成できるようになります。
 
 ---
 
-## Tools
+## ツール
 
-| Tool | Purpose |
+| ツール | 目的 |
 |---|---|
-| `list_store_flows` | List flows with failure rates and monitoring filters |
-| `get_store_flow` | Full cached record: run stats, owners, tier, connections, definition (`triggerUrl` field included) |
-| `get_store_flow_summary` | Aggregated run stats: success/fail rate, avg/max duration |
-| `get_store_flow_runs` | Per-run history with duration, status, failed actions, remediation (filter `status="Failed"` for errors-only view) |
-| `update_store_flow` | Set monitor flag, notification rules, tags, governance metadata |
-| `list_store_environments` | All Power Platform environments |
-| `list_store_connections` | All connections |
-| `list_store_makers` | All makers (citizen developers) |
-| `get_store_maker` | Maker detail: flow/app counts, licenses, account status |
-| `list_store_power_apps` | All Power Apps canvas apps |
+| `list_store_flows` | 失敗率と監視フィルター付きでフローを一覧表示 |
+| `get_store_flow` | 完全なキャッシュ レコード: 実行統計、所有者、階層、接続、定義（`triggerUrl` フィールドを含む） |
+| `get_store_flow_summary` | 集計された実行統計: 成功/失敗率、平均/最大期間 |
+| `get_store_flow_runs` | 期間、ステータス、失敗したアクション、修復を含む実行ごとの履歴（エラーのみのビューには `status="Failed"` をフィルター） |
+| `update_store_flow` | 監視フラグ、通知ルール、タグ、ガバナンス メタデータを設定 |
+| `list_store_environments` | すべての Power Platform 環境 |
+| `list_store_connections` | すべての接続 |
+| `list_store_makers` | すべての作成者（市民開発者） |
+| `get_store_maker` | 作成者の詳細: フロー/アプリ数、ライセンス、アカウント状態 |
+| `list_store_power_apps` | すべての Power Apps キャンバス アプリ |
 
-> For start/stop, use `set_live_flow_state` from the `monitor-flow` bundle
-> (`tool_search query: "select:set_live_flow_state"`) — the cache resyncs on
-> the next scan. The previous `set_store_flow_state` convenience wrapper is
-> deprecated.
+> 開始/停止には、`monitor-flow` バンドルの `set_live_flow_state`
+> （`tool_search query: "select:set_live_flow_state"`）を使用します — キャッシュは
+> 次回のスキャンで再同期されます。以前の `set_store_flow_state` 便利ラッパーは
+> 非推奨です。
 
 ---
 
-## Store vs Live
+## Store と Live
 
-| Question | Use Store | Use Live |
+| 質問 | Store を使用 | Live を使用 |
 |---|---|---|
-| How many flows are failing? | `list_store_flows` | — |
-| What's the fail rate over 30 days? | `get_store_flow_summary` | — |
-| Show error history for a flow | `get_store_flow_runs` (filter `status="Failed"`) | — |
-| Who built this flow? | `get_store_flow` → parse `owners` | — |
-| Read the full flow definition | `get_store_flow` has it (JSON string) | `get_live_flow` (structured) |
-| Inspect action inputs/outputs from a run | — | `get_live_flow_run_action_outputs` |
-| Resubmit a failed run | — | `resubmit_live_flow_run` |
+| 失敗しているフローはいくつあるか？ | `list_store_flows` | — |
+| 30 日間の失敗率は？ | `get_store_flow_summary` | — |
+| フローのエラー履歴を表示する | `get_store_flow_runs`（`status="Failed"` をフィルター） | — |
+| このフローを作成したのは誰か？ | `get_store_flow` → `owners` を解析 | — |
+| フロー定義全体を読む | `get_store_flow` に含まれる（JSON 文字列） | `get_live_flow`（構造化） |
+| 実行からアクションの入力/出力を調べる | — | `get_live_flow_run_action_outputs` |
+| 失敗した実行を再送信する | — | `resubmit_live_flow_run` |
 
-> Store tools answer "what happened?" and "how healthy is it?"
-> Live tools answer "what exactly went wrong?" and "fix it now."
+> Store ツールは「何が起きたか？」と「どの程度健全か？」に答えます。
+> Live ツールは「具体的に何が間違っていたか？」と「今すぐ修正する」に答えます。
 
-> If `get_store_flow_runs` or `get_store_flow_summary` return empty results,
-> check: (1) is `monitor: true` on the flow? and (2) is the `scanned` field
-> recent? Use `get_store_flow` to verify both.
+> `get_store_flow_runs` または `get_store_flow_summary` が空の結果を返す場合は、
+> 次を確認してください: (1) フローで `monitor: true` が有効か？ (2) `scanned` フィールドは
+> 最近のものか？ 両方を確認するには `get_store_flow` を使用します。
 
 ---
 
-## Response Shapes
+## 応答形状
 
 ### `list_store_flows`
 
-Direct array. Filters: `monitor` (bool), `rule_notify_onfail` (bool),
-`rule_notify_onmissingdays` (bool).
+直接配列。フィルター: `monitor`（bool）、`rule_notify_onfail`（bool）、
+`rule_notify_onmissingdays`（bool）。
 
 ```json
 [
@@ -132,39 +124,39 @@ Direct array. Filters: `monitor` (bool), `rule_notify_onfail` (bool),
 ]
 ```
 
-> `id` format: `Default-<envGuid>.<flowGuid>`. Split on first `.` to get
-> `environmentName` and `flowName`.
+> `id` の形式: `Default-<envGuid>.<flowGuid>`。最初の `.` で分割して
+> `environmentName` と `flowName` を取得します。
 >
-> `triggerUrl` and `tags` are optional. Some entries are sparse (just `id` +
-> `monitor`) — skip entries without `displayName`.
+> `triggerUrl` と `tags` は任意です。一部のエントリは疎です（`id` +
+> `monitor` のみ）— `displayName` がないエントリはスキップします。
 >
-> Tags on `list_store_flows` are auto-extracted from the flow's `description`
-> field (maker hashtags like `#operations`). Tags written via
-> `update_store_flow(tags=...)` are stored separately and only visible on
-> `get_store_flow` — they do NOT appear in the list response.
+> `list_store_flows` 上のタグは、フローの `description`
+> フィールド（`#operations` のような作成者ハッシュタグ）から自動抽出されます。
+> `update_store_flow(tags=...)` で書き込まれたタグは別に保存され、
+> `get_store_flow` でのみ表示されます — 一覧応答には表示されません。
 
 ### `get_store_flow`
 
-Full cached record. Key fields:
+完全なキャッシュ レコード。主なフィールド:
 
-| Category | Fields |
+| カテゴリ | フィールド |
 |---|---|
-| Identity | `name`, `displayName`, `environmentName`, `state`, `triggerType`, `triggerKind`, `tier`, `sharingType` |
-| Run stats | `runPeriodTotal`, `runPeriodFails`, `runPeriodSuccess`, `runPeriodFailRate`, `runPeriodSuccessRate`, `runPeriodDurationAverage`/`Max`/`Min` (milliseconds), `runTotal`, `runFails`, `runFirst`, `runLast`, `runToday` |
-| Governance | `monitor` (bool), `rule_notify_onfail` (bool), `rule_notify_onmissingdays` (number), `rule_notify_email` (string), `log_notify_onfail` (ISO), `description`, `tags` |
-| Freshness | `scanned` (ISO), `nextScan` (ISO) |
-| Lifecycle | `deleted` (bool), `deletedTime` (ISO) |
-| JSON strings | `actions`, `connections`, `owners`, `complexity`, `definition`, `createdBy`, `security`, `triggers`, `referencedResources`, `runError` — all require `json.loads()` to parse |
+| ID | `name`, `displayName`, `environmentName`, `state`, `triggerType`, `triggerKind`, `tier`, `sharingType` |
+| 実行統計 | `runPeriodTotal`, `runPeriodFails`, `runPeriodSuccess`, `runPeriodFailRate`, `runPeriodSuccessRate`, `runPeriodDurationAverage`/`Max`/`Min`（ミリ秒）, `runTotal`, `runFails`, `runFirst`, `runLast`, `runToday` |
+| ガバナンス | `monitor`（bool）, `rule_notify_onfail`（bool）, `rule_notify_onmissingdays`（number）, `rule_notify_email`（string）, `log_notify_onfail`（ISO）, `description`, `tags` |
+| 鮮度 | `scanned`（ISO）, `nextScan`（ISO） |
+| ライフサイクル | `deleted`（bool）, `deletedTime`（ISO） |
+| JSON 文字列 | `actions`, `connections`, `owners`, `complexity`, `definition`, `createdBy`, `security`, `triggers`, `referencedResources`, `runError` — すべて解析には `json.loads()` が必要 |
 
-> Duration fields (`runPeriodDurationAverage`, `Max`, `Min`) are in
-> **milliseconds**. Divide by 1000 for seconds.
+> 期間フィールド（`runPeriodDurationAverage`、`Max`、`Min`）は
+> **ミリ秒** 単位です。秒にするには 1000 で割ります。
 >
-> `runError` contains the last run error as a JSON string. Parse it:
-> `json.loads(record["runError"])` — returns `{}` when no error.
+> `runError` には最後の実行エラーが JSON 文字列として含まれます。解析してください:
+> `json.loads(record["runError"])` — エラーがない場合は `{}` を返します。
 
 ### `get_store_flow_summary`
 
-Aggregated stats over a time window (default: last 7 days).
+時間枠内の集計統計（既定: 過去 7 日間）。
 
 ```json
 {
@@ -183,43 +175,44 @@ Aggregated stats over a time window (default: last 7 days).
 }
 ```
 
-> Returns all zeros when no run data exists for this flow in the window.
-> Use `startTime` and `endTime` (ISO 8601) parameters to change the window.
+> このフローについて、その時間枠内に実行データが存在しない場合は、すべてゼロを返します。
+> 時間枠を変更するには `startTime` と `endTime`（ISO 8601）パラメーターを使用します。
 
 ### `get_store_flow_runs`
 
-Direct array of cached run records. Parameters: `startTime`, `endTime`,
-`status` (array — pass `["Failed"]` for an errors-only view, `["Succeeded"]`,
-or omit for all).
+キャッシュされた実行レコードの直接配列。パラメーター: `startTime`、`endTime`、
+`status`（配列 — エラーのみのビューには `["Failed"]`、`["Succeeded"]` を渡すか、
+すべての場合は省略します）。
 
-> Returns `[]` when no run data exists in the window.
+> 時間枠内に実行データが存在しない場合は `[]` を返します。
 
-### Trigger URL
+### トリガー URL
 
-Read the `triggerUrl` field directly from `get_store_flow` (cached) or
-`get_live_flow` (live). It is `null` for non-HTTP triggers.
+`get_store_flow`（キャッシュ済み）または
+`get_live_flow`（live）から `triggerUrl` フィールドを直接読み取ります。非 HTTP トリガーの場合は
+`null` です。
 
-### Starting / stopping a flow
+### フローの開始 / 停止
 
-Use `set_live_flow_state` from the `monitor-flow` server bundle. The cache
-catches up on the next daily scan; if you need cache freshness sooner, call
-`get_live_flow` after the state change to confirm and let the next scan sync.
+`monitor-flow` サーバー バンドルの `set_live_flow_state` を使用します。キャッシュは
+次回の日次スキャンで追いつきます。キャッシュの鮮度をより早く確認する必要がある場合は、
+状態変更後に `get_live_flow` を呼び出して確認し、次回スキャンで同期させます。
 
 ### `update_store_flow`
 
-Updates governance metadata. Only provided fields are updated (merge).
-Returns the full updated record (same shape as `get_store_flow`).
+ガバナンス メタデータを更新します。指定されたフィールドのみが更新（マージ）されます。
+完全な更新後レコード（`get_store_flow` と同じ形状）を返します。
 
-Settable fields: `monitor` (bool), `rule_notify_onfail` (bool),
-`rule_notify_onmissingdays` (number, 0=disabled),
-`rule_notify_email` (comma-separated), `description`, `tags`,
-`businessImpact`, `businessJustification`, `businessValue`,
-`ownerTeam`, `ownerBusinessUnit`, `supportGroup`, `supportEmail`,
-`critical` (bool), `tier`, `security`.
+設定可能なフィールド: `monitor`（bool）、`rule_notify_onfail`（bool）、
+`rule_notify_onmissingdays`（number、0=disabled）、
+`rule_notify_email`（カンマ区切り）、`description`、`tags`、
+`businessImpact`、`businessJustification`、`businessValue`、
+`ownerTeam`、`ownerBusinessUnit`、`supportGroup`、`supportEmail`、
+`critical`（bool）、`tier`、`security`。
 
 ### `list_store_environments`
 
-Direct array.
+直接配列。
 
 ```json
 [
@@ -237,11 +230,11 @@ Direct array.
 ]
 ```
 
-> `sku` values: `Default`, `Production`, `Developer`, `Sandbox`, `Teams`.
+> `sku` の値: `Default`、`Production`、`Developer`、`Sandbox`、`Teams`。
 
 ### `list_store_connections`
 
-Direct array. Can be very large (1500+ items).
+直接配列。非常に大きくなる場合があります（1500+ 項目）。
 
 ```json
 [
@@ -255,11 +248,11 @@ Direct array. Can be very large (1500+ items).
 ]
 ```
 
-> `createdBy` and `statuses` are **JSON strings** — parse with `json.loads()`.
+> `createdBy` と `statuses` は **JSON 文字列** です — `json.loads()` で解析します。
 
 ### `list_store_makers`
 
-Direct array.
+直接配列。
 
 ```json
 [
@@ -275,19 +268,19 @@ Direct array.
 ]
 ```
 
-> Deleted makers have `deleted: true` and no `displayName`/`mail` fields.
+> 削除された作成者には `deleted: true` があり、`displayName`/`mail` フィールドはありません。
 
 ### `get_store_maker`
 
-Full maker record. Key fields: `displayName`, `mail`, `userPrincipalName`,
-`ownerFlowCount`, `ownerAppCount`, `accountEnabled`, `deleted`, `country`,
-`firstFlow`, `firstFlowCreatedTime`, `lastFlowCreatedTime`,
-`firstPowerApp`, `lastPowerAppCreatedTime`,
-`licenses` (JSON string of M365 SKUs).
+完全な作成者レコード。主なフィールド: `displayName`、`mail`、`userPrincipalName`、
+`ownerFlowCount`、`ownerAppCount`、`accountEnabled`、`deleted`、`country`、
+`firstFlow`、`firstFlowCreatedTime`、`lastFlowCreatedTime`、
+`firstPowerApp`、`lastPowerAppCreatedTime`、
+`licenses`（M365 SKU の JSON 文字列）。
 
 ### `list_store_power_apps`
 
-Direct array.
+直接配列。
 
 ```json
 [
@@ -308,9 +301,9 @@ Direct array.
 
 ---
 
-## Common Workflows
+## 一般的なワークフロー
 
-### Find unhealthy flows
+### 不健全なフローを見つける
 
 ```
 1. list_store_flows
@@ -319,7 +312,7 @@ Direct array.
 4. For each: get_store_flow for full detail
 ```
 
-### Check a specific flow's health
+### 特定のフローの健全性を確認する
 
 ```
 1. get_store_flow → check scanned (freshness), runPeriodFailRate, runPeriodTotal
@@ -329,7 +322,7 @@ Direct array.
    get_live_flow_runs → get_live_flow_run_action_outputs
 ```
 
-### Enable monitoring on a flow
+### フローの監視を有効にする
 
 ```
 1. update_store_flow with monitor=true
@@ -337,7 +330,7 @@ Direct array.
 3. Run data will appear after the next daily scan
 ```
 
-### Daily health check
+### 日次健全性チェック
 
 ```
 1. list_store_flows
@@ -346,7 +339,7 @@ Direct array.
 4. For critical failures → get_store_flow_runs(status=["Failed"]) for remediation hints
 ```
 
-### Maker audit
+### 作成者監査
 
 ```
 1. list_store_makers
@@ -354,7 +347,7 @@ Direct array.
 3. get_store_maker for full detail on specific users
 ```
 
-### Inventory
+### 棚卸し
 
 ```
 1. list_store_environments → environment count, SKUs, locations
@@ -365,9 +358,9 @@ Direct array.
 
 ---
 
-## Related Skills
+## 関連スキル
 
-- `flowstudio-power-automate-mcp` — Foundation skill: connection setup, MCP helper, tool discovery
-- `flowstudio-power-automate-debug` — Deep diagnosis with action-level inputs/outputs (live API)
-- `flowstudio-power-automate-build` — Build and deploy flow definitions
-- `flowstudio-power-automate-governance` — Governance metadata, tagging, notification rules, CoE patterns
+- `flowstudio-power-automate-mcp` — 基盤スキル: 接続設定、MCP ヘルパー、ツール discovery
+- `flowstudio-power-automate-debug` — アクション レベルの入力/出力を使った詳細診断（live API）
+- `flowstudio-power-automate-build` — フロー定義のビルドとデプロイ
+- `flowstudio-power-automate-governance` — ガバナンス メタデータ、タグ付け、通知ルール、CoE パターン

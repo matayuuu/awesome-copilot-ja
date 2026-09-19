@@ -1,10 +1,10 @@
 # Roundup
 
-Status briefing generator that learns how you communicate.
+あなたのコミュニケーション方法を学習する状況報告ジェネレーターです。
 
-Roundup watches your work across GitHub, email, Teams, Slack, and other tools, then drafts status updates and briefings in your own voice for any audience you define.
+RoundupはGitHub、メール、Teams、Slackなどのツール上の作業を確認し、指定した対象者に向けて、あなた自身の文体で状況更新とブリーフィングの下書きを作成します。
 
-## The Problem
+## 課題
 
 Managers and team leads spend hours each week assembling status updates from scattered sources: scanning PR activity in GitHub, reading email threads for decisions, checking Teams or Slack for context, then rewriting all of it for different audiences at different levels of detail.
 

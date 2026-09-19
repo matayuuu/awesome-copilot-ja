@@ -1,10 +1,10 @@
-A tool to help verify AI statements, without (or at least with fewer) context switching pains.
+AI の主張を、コンテキストを切り替える負担なし（少なくとも軽減した状態）で検証するためのツールです。
 
-When AI analyzes a document and tells you "Section 10 requires mutual indemnification," how do you know Section 10 actually says that? Eyeball lets you see for yourself.
+AI が文書を分析して「Section 10 では相互補償が必要です」と伝えたとき、本当に Section 10 にそう書かれているとどう確認できますか。Eyeball なら自分の目で確かめられます。
 
-This is a Copilot CLI plugin that generates document analyses as Word files with inline screenshots of relevant portions from the source material. Every factual claim in the analysis includes a highlighted excerpt from the original document, so you can verify each assertion without switching between files or hunting for the right page.
+これは、出典資料の該当箇所のスクリーンショットを本文内に含む Word ファイルとして文書分析を生成する Copilot CLI プラグインです。分析中の各事実の主張には原文書のハイライト付き抜粋が含まれるため、ファイルを切り替えたり該当ページを探したりせずに、各主張を検証できます。
 
-## What it does
+## できること
 
 You give Copilot a document (Word file, PDF, or web URL) and ask it to analyze something specific. Eyeball reads the source, writes the analysis, and for each claim, captures a screenshot of the relevant section from the original document with the cited text highlighted in yellow. The output is a Word document on your Desktop with analysis text and source screenshots interleaved.
 

@@ -1,17 +1,17 @@
-# Color Orb Plugin
+# Color Orb プラグイン
 
-A visual orb that users can ask the agent to recolor while showing a live activity log in the canvas.
+canvas にライブのアクティビティログを表示しながら、ユーザーが agent に色の変更を依頼できるビジュアルオーブです。
 
-## Installation
+## インストール
 
 ``bash
 copilot plugin install color-orb@awesome-copilot
 ``
 
-## Source
+## ソース
 
-This plugin is part of [Awesome Copilot](https://github.com/github/awesome-copilot).
+このプラグインは [Awesome Copilot](https://github.com/github/awesome-copilot) の一部です。
 
-## License
+## ライセンス
 
 MIT

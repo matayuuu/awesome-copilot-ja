@@ -1,19 +1,18 @@
 ---
 name: winui3-migration-guide
-description: 'UWP-to-WinUI 3 migration reference. Maps legacy UWP APIs to correct Windows App SDK equivalents with before/after code snippets. Covers namespace changes, threading (CoreDispatcher to DispatcherQueue), windowing (CoreWindow to AppWindow), dialogs, pickers, sharing, printing, background tasks, and the most common Copilot code generation mistakes.'
+description: 'UWP から WinUI 3 への移行リファレンス。レガシー UWP API を正しい Windows App SDK 相当 API に対応付け、移行前後のコード例を示す。名前空間の変更、スレッド処理（CoreDispatcher から DispatcherQueue）、ウィンドウ管理（CoreWindow から AppWindow）、ダイアログ、ピッカー、共有、印刷、バックグラウンドタスク、Copilot がコード生成で起こしやすい間違いを扱う。'
+---
+# WinUI 3 移行ガイド
+
+UWP アプリを WinUI 3 / Windows App SDK に移行するとき、または生成コードがレガシー UWP パターンではなく正しい WinUI 3 API を使っているか検証するときに使う。
+
 ---
 
-# WinUI 3 Migration Guide
+## 名前空間の変更
 
-Use this skill when migrating UWP apps to WinUI 3 / Windows App SDK, or when verifying that generated code uses correct WinUI 3 APIs instead of legacy UWP patterns.
+すべての `Windows.UI.Xaml.*` 名前空間は `Microsoft.UI.Xaml.*` に移行する:
 
----
-
-## Namespace Changes
-
-All `Windows.UI.Xaml.*` namespaces move to `Microsoft.UI.Xaml.*`:
-
-| UWP Namespace | WinUI 3 Namespace |
+| UWP 名前空間 | WinUI 3 名前空間 |
 |--------------|-------------------|
 | `Windows.UI.Xaml` | `Microsoft.UI.Xaml` |
 | `Windows.UI.Xaml.Controls` | `Microsoft.UI.Xaml.Controls` |
@@ -26,13 +25,13 @@ All `Windows.UI.Xaml.*` namespaces move to `Microsoft.UI.Xaml.*`:
 | `Windows.UI.Input` | `Microsoft.UI.Input` |
 | `Windows.UI.Colors` | `Microsoft.UI.Colors` |
 | `Windows.UI.Text` | `Microsoft.UI.Text` |
-| `Windows.UI.Core` | `Microsoft.UI.Dispatching` (for dispatcher) |
+| `Windows.UI.Core` | `Microsoft.UI.Dispatching`（ディスパッチャー用） |
 
 ---
 
-## Top 3 Most Common Copilot Mistakes
+## Copilot が最も起こしやすい3つの間違い
 
-### 1. ContentDialog Without XamlRoot
+### 1. XamlRoot なしの ContentDialog
 
 ```csharp
 // ❌ WRONG — Throws InvalidOperationException in WinUI 3
@@ -57,7 +56,7 @@ var dialog = new ContentDialog
 await dialog.ShowAsync();
 ```
 
-### 2. MessageDialog Instead of ContentDialog
+### 2. ContentDialog の代わりに MessageDialog を使う
 
 ```csharp
 // ❌ WRONG — UWP API, not available in WinUI 3 desktop
@@ -82,7 +81,7 @@ if (result == ContentDialogResult.Primary)
 }
 ```
 
-### 3. CoreDispatcher Instead of DispatcherQueue
+### 3. DispatcherQueue の代わりに CoreDispatcher を使う
 
 ```csharp
 // ❌ WRONG — CoreDispatcher does not exist in WinUI 3
@@ -108,9 +107,9 @@ DispatcherQueue.TryEnqueue(DispatcherQueuePriority.High, () =>
 
 ---
 
-## Windowing Migration
+## ウィンドウ管理の移行
 
-### Window Reference
+### ウィンドウ参照
 
 ```csharp
 // ❌ WRONG — Window.Current does not exist in WinUI 3
@@ -132,7 +131,7 @@ public partial class App : Application
 // Access anywhere: App.MainWindow
 ```
 
-### Window Management
+### ウィンドウ管理
 
 | UWP API | WinUI 3 API |
 |---------|-------------|
@@ -144,7 +143,7 @@ public partial class App : Application
 | `AppWindow.GetPlacement()` | `AppWindow.Position` property |
 | `AppWindow.RequestPresentation()` | `AppWindow.SetPresenter()` |
 
-### Title Bar
+### タイトルバー
 
 | UWP API | WinUI 3 API |
 |---------|-------------|
@@ -153,9 +152,9 @@ public partial class App : Application
 
 ---
 
-## Dialogs and Pickers Migration
+## ダイアログとピッカーの移行
 
-### File/Folder Pickers
+### ファイル／フォルダーのピッカー
 
 ```csharp
 // ❌ WRONG — UWP style, no window handle
@@ -173,20 +172,20 @@ picker.FileTypeFilter.Add(".txt");
 var file = await picker.PickSingleFileAsync();
 ```
 
-## Threading Migration
+## スレッド処理の移行
 
-| UWP Pattern | WinUI 3 Equivalent |
+| UWP パターン | WinUI 3 相当 |
 |-------------|-------------------|
 | `CoreDispatcher.RunAsync(priority, callback)` | `DispatcherQueue.TryEnqueue(priority, callback)` |
 | `Dispatcher.HasThreadAccess` | `DispatcherQueue.HasThreadAccess` |
-| `CoreDispatcher.ProcessEvents()` | No equivalent — restructure async code |
-| `CoreWindow.GetForCurrentThread()` | Not available — use `DispatcherQueue.GetForCurrentThread()` |
+| `CoreDispatcher.ProcessEvents()` | 相当機能なし — 非同期コードを再構成する |
+| `CoreWindow.GetForCurrentThread()` | 利用不可 — `DispatcherQueue.GetForCurrentThread()` を使う |
 
-**Key difference**: UWP uses ASTA (Application STA) with built-in reentrancy blocking. WinUI 3 uses standard STA without this protection. Watch for reentrancy issues when async code pumps messages.
+**重要な違い**: UWP は組み込みの再入防止を備えた ASTA（Application STA）を使う。WinUI 3 はこの保護のない標準 STA を使う。非同期コードがメッセージを処理するときの再入問題に注意する。
 
 ---
 
-## Background Tasks Migration
+## バックグラウンドタスクの移行
 
 ```csharp
 // ❌ WRONG — UWP IBackgroundTask
@@ -210,38 +209,38 @@ if (args.Kind == ExtendedActivationKind.AppNotification)
 
 ---
 
-## App Settings Migration
+## アプリ設定の移行
 
-| Scenario | Packaged App | Unpackaged App |
+| シナリオ | パッケージ アプリ | パッケージ化されていないアプリ |
 |----------|-------------|----------------|
-| Simple settings | `ApplicationData.Current.LocalSettings` | JSON file in `LocalApplicationData` |
-| Local file storage | `ApplicationData.Current.LocalFolder` | `Environment.GetFolderPath(SpecialFolder.LocalApplicationData)` |
+| 簡単な設定 | `ApplicationData.Current.LocalSettings` | `LocalApplicationData` の JSON ファイル |
+| ローカル ファイル保存 | `ApplicationData.Current.LocalFolder` | `Environment.GetFolderPath(SpecialFolder.LocalApplicationData)` |
 
 ---
 
-## GetForCurrentView() Replacements
+## GetForCurrentView() の置き換え
 
-All `GetForCurrentView()` patterns are unavailable in WinUI 3 desktop apps:
+WinUI 3 デスクトップ アプリでは、すべての `GetForCurrentView()` パターンを利用できない:
 
-| UWP API | WinUI 3 Replacement |
+| UWP API | WinUI 3 での置き換え |
 |---------|-------------------|
-| `UIViewSettings.GetForCurrentView()` | Use `AppWindow` properties |
+| `UIViewSettings.GetForCurrentView()` | `AppWindow` プロパティを使う |
 | `ApplicationView.GetForCurrentView()` | `AppWindow.GetFromWindowId(windowId)` |
-| `DisplayInformation.GetForCurrentView()` | Win32 `GetDpiForWindow()` or `XamlRoot.RasterizationScale` |
-| `CoreApplication.GetCurrentView()` | Not available — track windows manually |
-| `SystemNavigationManager.GetForCurrentView()` | Handle back navigation in `NavigationView` directly |
+| `DisplayInformation.GetForCurrentView()` | Win32 `GetDpiForWindow()` または `XamlRoot.RasterizationScale` |
+| `CoreApplication.GetCurrentView()` | 利用不可 — ウィンドウを手動で追跡する |
+| `SystemNavigationManager.GetForCurrentView()` | `NavigationView` で戻るナビゲーションを直接処理する |
 
 ---
 
-## Testing Migration
+## テストの移行
 
-UWP unit test projects do not work with WinUI 3. You must migrate to the WinUI 3 test project templates.
+UWP の単体テスト プロジェクトは WinUI 3 では動作しない。WinUI 3 のテスト プロジェクト テンプレートへ移行する必要がある。
 
 | UWP | WinUI 3 |
 |-----|---------|
 | Unit Test App (Universal Windows) | **Unit Test App (WinUI in Desktop)** |
-| Standard MSTest project with UWP types | Must use WinUI test app for Xaml runtime |
-| `[TestMethod]` for all tests | `[TestMethod]` for logic, `[UITestMethod]` for XAML/UI tests |
+| UWP 型を使う標準 MSTest プロジェクト | Xaml ランタイムには WinUI テスト アプリを使う必要がある |
+| すべてのテストに `[TestMethod]` | ロジックには `[TestMethod]`、XAML/UI テストには `[UITestMethod]` |
 | Class Library (Universal Windows) | **Class Library (WinUI in Desktop)** |
 
 ```csharp
@@ -254,24 +253,24 @@ public void TestMyControl()
 }
 ```
 
-**Key:** The `[UITestMethod]` attribute tells the test runner to execute the test on the XAML UI thread, which is required for instantiating any `Microsoft.UI.Xaml` type.
+**要点:** `[UITestMethod]` 属性は、テストランナーに XAML UI スレッド上でテストを実行させる。これは `Microsoft.UI.Xaml` 型をインスタンス化するために必要である。
 
 ---
 
-## Migration Checklist
+## 移行チェックリスト
 
-1. [ ] Replace all `Windows.UI.Xaml.*` using directives with `Microsoft.UI.Xaml.*`
-2. [ ] Replace `Windows.UI.Colors` with `Microsoft.UI.Colors`
-3. [ ] Replace `CoreDispatcher.RunAsync` with `DispatcherQueue.TryEnqueue`
-4. [ ] Replace `Window.Current` with `App.MainWindow` static property
-5. [ ] Add `XamlRoot` to all `ContentDialog` instances
-6. [ ] Initialize all pickers with `InitializeWithWindow.Initialize(picker, hwnd)`
-7. [ ] Replace `MessageDialog` with `ContentDialog`
-8. [ ] Replace `ApplicationView`/`CoreWindow` with `AppWindow`
-9. [ ] Replace `CoreApplicationViewTitleBar` with `AppWindowTitleBar`
-10. [ ] Replace all `GetForCurrentView()` calls with `AppWindow` equivalents
-11. [ ] Update interop for Share and Print managers
-12. [ ] Replace `IBackgroundTask` with `AppLifecycle` activation
-13. [ ] Update project file: TFM to `net10.0-windows10.0.22621.0`, add `<UseWinUI>true</UseWinUI>`
-14. [ ] Migrate unit tests to **Unit Test App (WinUI in Desktop)** project; use `[UITestMethod]` for XAML tests
-15. [ ] Test both packaged and unpackaged configurations
+1. [ ] すべての `Windows.UI.Xaml.*` using ディレクティブを `Microsoft.UI.Xaml.*` に置き換える
+2. [ ] `Windows.UI.Colors` を `Microsoft.UI.Colors` に置き換える
+3. [ ] `CoreDispatcher.RunAsync` を `DispatcherQueue.TryEnqueue` に置き換える
+4. [ ] `Window.Current` を `App.MainWindow` 静的プロパティに置き換える
+5. [ ] すべての `ContentDialog` インスタンスに `XamlRoot` を追加する
+6. [ ] すべてのピッカーを `InitializeWithWindow.Initialize(picker, hwnd)` で初期化する
+7. [ ] `MessageDialog` を `ContentDialog` に置き換える
+8. [ ] `ApplicationView`/`CoreWindow` を `AppWindow` に置き換える
+9. [ ] `CoreApplicationViewTitleBar` を `AppWindowTitleBar` に置き換える
+10. [ ] すべての `GetForCurrentView()` 呼び出しを `AppWindow` 相当へ置き換える
+11. [ ] Share および Print マネージャーの相互運用を更新する
+12. [ ] `IBackgroundTask` を `AppLifecycle` のアクティベーションに置き換える
+13. [ ] プロジェクト ファイルを更新する: TFM を `net10.0-windows10.0.22621.0` にし、`<UseWinUI>true</UseWinUI>` を追加する
+14. [ ] 単体テストを **Unit Test App (WinUI in Desktop)** プロジェクトへ移行し、XAML テストには `[UITestMethod]` を使う
+15. [ ] パッケージ化構成とパッケージ化されていない構成の両方をテストする

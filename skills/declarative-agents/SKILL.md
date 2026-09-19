@@ -1,57 +1,57 @@
 ---
 name: declarative-agents
-description: 'Complete development kit for Microsoft 365 Copilot declarative agents with three comprehensive workflows (basic, advanced, validation), TypeSpec support, and Microsoft 365 Agents Toolkit integration'
+description: '3 つの包括的なワークフロー（基本、高度、検証）、TypeSpec 対応、Microsoft 365 Agents Toolkit 統合を備えた Microsoft 365 Copilot declarative agent の完全な開発キット'
 ---
 
-# Microsoft 365 Declarative Agents Development Kit
+# Microsoft 365 Declarative Agents 開発キット
 
-I'll help you create and develop Microsoft 365 Copilot declarative agents using the latest v1.5 schema with comprehensive TypeSpec and Microsoft 365 Agents Toolkit integration. Choose from three specialized workflows:
+最新の v1.5 スキーマを使用し、TypeSpec と Microsoft 365 Agents Toolkit を包括的に統合した Microsoft 365 Copilot declarative agent の作成と開発を支援します。3 つの専門ワークフローから選択してください。
 
-## Workflow 1: Basic Agent Creation
-**Perfect for**: New developers, simple agents, quick prototypes
+## ワークフロー 1: 基本的なエージェント作成
+**最適な用途**: 新しい開発者、単純なエージェント、迅速なプロトタイプ
 
-I'll guide you through:
-1. **Agent Planning**: Define purpose, target users, and core capabilities
-2. **Capability Selection**: Choose from 11 available capabilities (WebSearch, OneDriveAndSharePoint, GraphConnectors, etc.)
-3. **Basic Schema Creation**: Generate compliant JSON manifest with proper constraints
-4. **TypeSpec Alternative**: Create modern type-safe definitions that compile to JSON
-5. **Testing Setup**: Configure Agents Playground for local testing
-6. **Toolkit Integration**: Leverage Microsoft 365 Agents Toolkit for enhanced development
+次の手順を案内します。
+1. **エージェント計画**: 目的、対象ユーザー、主要機能を定義する
+2. **機能の選択**: 利用可能な 11 の機能（WebSearch、OneDriveAndSharePoint、GraphConnectors など）から選ぶ
+3. **基本スキーマの作成**: 適切な制約を備えた準拠 JSON manifest を生成する
+4. **TypeSpec の選択肢**: JSON にコンパイルされるモダンで型安全な定義を作成する
+5. **テストのセットアップ**: ローカルテスト用に Agents Playground を構成する
+6. **Toolkit 統合**: Microsoft 365 Agents Toolkit を活用して開発を強化する
 
-## Workflow 2: Advanced Enterprise Agent Design
-**Perfect for**: Complex enterprise scenarios, production deployment, advanced features
+## ワークフロー 2: 高度なエンタープライズエージェント設計
+**最適な用途**: 複雑なエンタープライズシナリオ、本番デプロイ、高度な機能
 
-I'll help you architect:
-1. **Enterprise Requirements Analysis**: Multi-tenant considerations, compliance, security
-2. **Advanced Capability Configuration**: Complex capability combinations and interactions
-3. **Behavior Override Implementation**: Custom response patterns and specialized behaviors
-4. **Localization Strategy**: Multi-language support with proper resource management
-5. **Conversation Starters**: Strategic conversation entry points for user engagement
-6. **Production Deployment**: Environment management, versioning, and lifecycle planning
-7. **Monitoring & Analytics**: Implementation of tracking and performance optimization
+次の設計を支援します。
+1. **エンタープライズ要件分析**: マルチテナントの考慮事項、コンプライアンス、セキュリティ
+2. **高度な機能構成**: 複雑な機能の組み合わせと相互作用
+3. **動作オーバーライドの実装**: カスタム応答パターンと専門的な動作
+4. **ローカライズ戦略**: 適切なリソース管理を備えた多言語対応
+5. **会話スターター**: ユーザーエンゲージメントのための戦略的な会話開始点
+6. **本番デプロイ**: 環境管理、バージョン管理、ライフサイクル計画
+7. **監視と分析**: 追跡とパフォーマンス最適化の実装
 
-## Workflow 3: Validation & Optimization
-**Perfect for**: Existing agents, troubleshooting, performance optimization
+## ワークフロー 3: 検証と最適化
+**最適な用途**: 既存エージェント、トラブルシューティング、パフォーマンス最適化
 
-I'll perform:
-1. **Schema Compliance Validation**: Full v1.5 specification adherence checking
-2. **Character Limit Optimization**: Name (100), description (1000), instructions (8000)
-3. **Capability Audit**: Verify proper capability configuration and usage
-4. **TypeSpec Migration**: Convert existing JSON to modern TypeSpec definitions
-5. **Testing Protocol**: Comprehensive validation using Agents Playground
-6. **Performance Analysis**: Identify bottlenecks and optimization opportunities
-7. **Best Practices Review**: Alignment with Microsoft guidelines and recommendations
+次を実施します。
+1. **スキーマ準拠検証**: v1.5 仕様への完全な準拠を確認する
+2. **文字数制限の最適化**: name（100）、description（1000）、instructions（8000）
+3. **機能監査**: 機能が適切に構成、使用されていることを確認する
+4. **TypeSpec 移行**: 既存 JSON をモダンな TypeSpec 定義に変換する
+5. **テストプロトコル**: Agents Playground を使って包括的に検証する
+6. **パフォーマンス分析**: ボトルネックと最適化の機会を特定する
+7. **ベストプラクティスレビュー**: Microsoft のガイドラインと推奨事項への整合性を確認する
 
-## Core Features Across All Workflows
+## すべてのワークフローに共通する主要機能
 
-### Microsoft 365 Agents Toolkit Integration
-- **VS Code Extension**: Full integration with `teamsdevapp.ms-teams-vscode-extension`
-- **TypeSpec Development**: Modern type-safe agent definitions
-- **Local Debugging**: Agents Playground integration for testing
-- **Environment Management**: Development, staging, production configurations
-- **Lifecycle Management**: Creation, testing, deployment, monitoring
+### Microsoft 365 Agents Toolkit 統合
+- **VS Code 拡張機能**: `teamsdevapp.ms-teams-vscode-extension` との完全な統合
+- **TypeSpec 開発**: モダンで型安全なエージェント定義
+- **ローカルデバッグ**: テスト用の Agents Playground 統合
+- **環境管理**: 開発、ステージング、本番の構成
+- **ライフサイクル管理**: 作成、テスト、デプロイ、監視
 
-### TypeSpec Examples
+### TypeSpec の例
 ```typespec
 // Modern declarative agent definition
 model MyAgent {
@@ -63,26 +63,26 @@ model MyAgent {
 }
 ```
 
-### JSON Schema v1.5 Validation
-- Full compliance with latest Microsoft specification
-- Character limit enforcement (name: 100, description: 1000, instructions: 8000)
-- Array constraint validation (conversation_starters: max 4, capabilities: max 5)
-- Required field validation and type checking
+### JSON Schema v1.5 の検証
+- 最新の Microsoft 仕様への完全準拠
+- 文字数制限の適用（name: 100、description: 1000、instructions: 8000）
+- 配列制約の検証（conversation_starters: 最大 4、capabilities: 最大 5）
+- 必須フィールドの検証と型チェック
 
-### Available Capabilities (Choose up to 5)
-1. **WebSearch**: Internet search functionality
-2. **OneDriveAndSharePoint**: File and content access
-3. **GraphConnectors**: Enterprise data integration
-4. **MicrosoftGraph**: Microsoft 365 service integration
-5. **TeamsAndOutlook**: Communication platform access
-6. **PowerPlatform**: Power Apps and Power Automate integration
-7. **BusinessDataProcessing**: Enterprise data analysis
-8. **WordAndExcel**: Document and spreadsheet manipulation
-9. **CopilotForMicrosoft365**: Advanced Copilot features
-10. **EnterpriseApplications**: Third-party system integration
-11. **CustomConnectors**: Custom API and service integration
+### 利用可能な機能（最大 5 つ選択）
+1. **WebSearch**: インターネット検索機能
+2. **OneDriveAndSharePoint**: ファイルとコンテンツへのアクセス
+3. **GraphConnectors**: エンタープライズデータ統合
+4. **MicrosoftGraph**: Microsoft 365 サービス統合
+5. **TeamsAndOutlook**: コミュニケーションプラットフォームへのアクセス
+6. **PowerPlatform**: Power Apps と Power Automate の統合
+7. **BusinessDataProcessing**: エンタープライズデータ分析
+8. **WordAndExcel**: ドキュメントとスプレッドシートの操作
+9. **CopilotForMicrosoft365**: 高度な Copilot 機能
+10. **EnterpriseApplications**: サードパーティシステム統合
+11. **CustomConnectors**: カスタム API とサービスの統合
 
-### Environment Variables Support
+### 環境変数のサポート
 ```json
 {
   "name": "${AGENT_NAME}",
@@ -91,4 +91,4 @@ model MyAgent {
 }
 ```
 
-**Which workflow would you like to start with?** Share your requirements and I'll provide specialized guidance for your Microsoft 365 Copilot declarative agent development with full TypeSpec and Microsoft 365 Agents Toolkit support.
+**どのワークフローから始めますか？** 要件を共有してください。TypeSpec と Microsoft 365 Agents Toolkit を完全にサポートした、Microsoft 365 Copilot declarative agent 開発向けの専門的なガイダンスを提供します。

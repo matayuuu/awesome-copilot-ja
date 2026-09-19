@@ -1,6 +1,6 @@
 ---
 name: postgresql-code-review
-description: 'PostgreSQL-specific code review assistant focusing on PostgreSQL best practices, anti-patterns, and unique quality standards. Covers JSONB operations, array usage, custom types, schema design, function optimization, and PostgreSQL-exclusive security features like Row Level Security (RLS).'
+description: 'postgresql-code-review に関する作業を支援する Skill です。対象のファイルや設定を確認し、必要な手順、検証方法、注意点を案内します。対象技術の調査、実装、運用、トラブルシューティングに使用します。'
 ---
 
 # PostgreSQL Code Review Assistant
@@ -22,7 +22,7 @@ SELECT * FROM orders WHERE data @> '{"status": "shipped"}';
 UPDATE orders SET data = data || '{"shipping":{"tracking":{"number":"123"}}}';
 
 -- ✅ GOOD: Structured JSONB with validation
-ALTER TABLE orders ADD CONSTRAINT valid_status 
+ALTER TABLE orders ADD CONSTRAINT valid_status
 CHECK (data->>'status' IN ('pending', 'shipped', 'delivered'));
 ```
 

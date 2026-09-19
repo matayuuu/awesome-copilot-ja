@@ -1,6 +1,6 @@
 ---
 name: oo-component-documentation
-description: 'Create or update standardized object-oriented component documentation using a shared template plus mode-specific guidance for new and existing docs.'
+description: 'oo-component-documentation に関する作業を支援する Skill です。対象のファイルや設定を確認し、必要な手順、検証方法、注意点を案内します。対象技術の調査、実装、運用、トラブルシューティングに使用します。'
 ---
 
 # OO Component Documentation
@@ -58,7 +58,7 @@ Choose the workflow before writing anything:
 - ERR-004: If the code uses non-standard architectural patterns, document the custom approach rather than forcing it into a generic pattern
 - ERR-005: If source access is incomplete, continue with available evidence and clearly call out any unsupported sections
 
-## Workflow
+## ワークフロー
 
 1. Determine whether the task is create mode or update mode.
 2. Inspect the component implementation and any related files needed to understand its public surface area and internal structure.

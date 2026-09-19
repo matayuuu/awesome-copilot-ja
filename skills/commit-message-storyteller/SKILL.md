@@ -1,61 +1,61 @@
 ---
 name: commit-message-storyteller
-description: 'Analyzes git diffs or staged changes and generates narrative commit messages that explain WHY a change was made, not just what changed — following Conventional Commits format. Use when asked to "write a commit message", "generate a commit", "describe my changes", "what should I commit this as", "commit this", "summarize my diff", or "help me commit". Works with git diff output, staged files, or plain descriptions of changes.'
+description: 'git diffまたはステージ済み変更を分析し、変更内容だけでなく変更理由を説明する物語性のあるコミットメッセージをConventional Commits形式で生成する。「コミットメッセージを書いて」「コミットを生成して」「変更を説明して」「どんなコミットにすべきか」「これをコミットして」「diffを要約して」「コミットを手伝って」と依頼されたときに使用する。git diff出力、ステージ済みファイル、変更内容の文章による説明に対応する。'
 ---
 
-# Commit Message Storyteller
+# コミットメッセージ・ストーリーテラー
 
-Transforms raw git diffs and change descriptions into clear, story-driven commit messages that follow the [Conventional Commits](https://www.conventionalcommits.org/) specification. Instead of "update file.js", you get messages that communicate intent, context, and impact.
+未加工のgit diffや変更説明を、[Conventional Commits](https://www.conventionalcommits.org/)仕様に従う明確で物語性のあるコミットメッセージへ変換します。「update file.js」ではなく、意図、背景、影響が伝わるメッセージを生成します。
 
-## When to Use This Skill
+## このSkillを使用する場面
 
-- User says "write a commit message", "help me commit", or "generate a commit"
-- User pastes a git diff or describes code changes
-- User says "what should I commit this as?" or "summarize my diff"
-- User wants better commit history for their team or open-source project
-- User is preparing a pull request and wants meaningful commit messages
+- ユーザーが「コミットメッセージを書いて」「コミットを手伝って」「コミットを生成して」と依頼した場合
+- ユーザーがgit diffを貼り付けた場合、またはコード変更を説明した場合
+- ユーザーが「どんなコミットにすべきか」「diffを要約して」と依頼した場合
+- チームまたはオープンソースプロジェクトのコミット履歴を改善したい場合
+- Pull Requestの準備中で、意味のあるコミットメッセージが必要な場合
 
-## Prerequisites
+## 前提条件
 
-Have at least one of the following ready:
-- Output from `git diff` or `git diff --staged`
-- A description of what you changed and why
-- A list of modified files
+次のうち少なくとも1つを用意します:
+- `git diff`または`git diff --staged`の出力
+- 変更内容と変更理由の説明
+- 変更したファイルの一覧
 
-## How It Works
+## 仕組み
 
-### Step 1: Gather the Change Context
+### ステップ1: 変更のコンテキストを収集する
 
-Ask the user (or infer from the diff) for:
+ユーザーに次を確認します（またはdiffから推測します）:
 
-1. **What changed** — files, functions, logic affected
-2. **Why it changed** — bug fix, new feature, refactor, performance, etc.
-3. **Who/what triggered it** — issue number, user request, tech debt, etc.
+1. **何が変わったか** — 影響を受けるファイル、関数、ロジック
+2. **なぜ変えたか** — バグ修正、新機能、リファクタリング、パフォーマンスなど
+3. **きっかけは何か** — Issue番号、ユーザーの要望、技術的負債など
 
-If the user provides a raw `git diff`, extract this context automatically from the diff.
+ユーザーが未加工の`git diff`を提示した場合は、このコンテキストをdiffから自動的に抽出します。
 
-### Step 2: Identify the Commit Type
+### ステップ2: コミットの種類を特定する
 
-Map the change to a Conventional Commits type using this guide:
+次のガイドを使用して、変更をConventional Commitsの種類へ対応付けます:
 
-| Type | Use When |
+| 種類 | 使用する場面 |
 |------|----------|
-| `feat` | A new feature or capability is added |
-| `fix` | A bug or incorrect behavior is corrected |
-| `refactor` | Code restructured without changing behavior |
-| `perf` | A change that improves performance |
-| `docs` | Documentation only changes |
-| `style` | Formatting, whitespace, missing semicolons (no logic change) |
-| `test` | Adding or updating tests |
-| `chore` | Build process, dependency updates, config changes |
-| `ci` | CI/CD pipeline changes |
-| `revert` | Reverting a previous commit |
+| `feat` | 新しい機能または能力を追加する |
+| `fix` | バグまたは誤った動作を修正する |
+| `refactor` | 動作を変えずにコードを再構成する |
+| `perf` | パフォーマンスを改善する |
+| `docs` | ドキュメントだけを変更する |
+| `style` | 書式、空白、セミコロン不足を変更する（ロジック変更なし） |
+| `test` | テストを追加または更新する |
+| `chore` | ビルドプロセス、依存関係、構成を変更する |
+| `ci` | CI/CDパイプラインを変更する |
+| `revert` | 以前のコミットを元に戻す |
 
-See `references/conventional-commits-guide.md` for detailed examples.
+詳しい例については`references/conventional-commits-guide.md`を参照してください。
 
-### Step 3: Write the Commit Message
+### ステップ3: コミットメッセージを書く
 
-Follow this structure:
+次の構造に従います:
 
 ```
 <type>(<optional scope>): <short imperative summary>
@@ -65,30 +65,30 @@ Follow this structure:
 <footer — issue refs, breaking change notices>
 ```
 
-#### Rules for Each Part
+#### 各部分のルール
 
-**Subject line (first line):**
-- Use imperative mood: "add", "fix", "remove" — not "added" or "fixes"
-- Max 72 characters
-- No period at the end
-- Lowercase after the colon
+**件名行（1行目）:**
+- 命令形を使用する: "added"や"fixes"ではなく、"add"、"fix"、"remove"
+- 最大72文字
+- 末尾にピリオドを付けない
+- コロンの後は小文字にする
 
-**Body (the story):**
-- Explain the *why*, not the *what* (the diff already shows the what)
-- Describe the problem that existed before this change
-- Mention any alternatives considered if relevant
-- Keep lines under 100 characters
-- Separate from subject with a blank line
+**本文（物語）:**
+- *何を*ではなく*なぜ*を説明する（何を変えたかはdiffで分かる）
+- 変更前に存在していた問題を説明する
+- 該当する場合は、検討した代替案に言及する
+- 各行を100文字未満にする
+- 件名との間に空行を入れる
 
-**Footer:**
-- Reference issues: `Closes #123`, `Fixes #456`, `Refs #789`
-- Mark breaking changes: `BREAKING CHANGE: <description>`
+**フッター:**
+- Issueを参照する: `Closes #123`、`Fixes #456`、`Refs #789`
+- 破壊的変更を示す: `BREAKING CHANGE: <description>`
 
-### Step 4: Generate Output
+### ステップ4: 出力を生成する
 
-Produce the commit message in a copyable code block, followed by a one-line plain-English explanation of the story you told.
+コミットメッセージをコピー可能なコードブロックで出力し、その後に、表現した物語を日本語で1行説明します。
 
-**Example output:**
+**出力例:**
 
 ```
 fix(auth): prevent token refresh loop on expired sessions
@@ -103,33 +103,33 @@ refresh is already in progress, returning a clean 401 instead.
 Closes #312
 ```
 
-> **Story told:** A silent infinite loop on session expiry was crashing the app; this stops the cycle early and returns a clean error.
+> **表現した物語:** セッション期限切れ時に発生する気付きにくい無限ループがアプリをクラッシュさせていたため、循環を早期に止めて明確なエラーを返すようにした。
 
 ---
 
-## Multiple Commits from One Diff
+## 1つのdiffから複数のコミットを作る場合
 
-If the diff contains **logically separate changes**, split them into multiple commit messages and tell the user. Use this heuristic:
+diffに**論理的に独立した変更**が含まれる場合は、複数のコミットメッセージへ分割し、ユーザーに伝えます。次の判断基準を使用します:
 
-- Different files with unrelated purposes → likely separate commits
-- Same file but distinct concerns (e.g., bug fix + refactor) → suggest splitting
-- Everything tightly coupled → one commit is fine
+- 目的が無関係な別ファイル → 別コミットの可能性が高い
+- 同じファイルでも関心事が異なる（例: バグ修正 + リファクタリング） → 分割を提案する
+- すべてが密接に関連している → 1コミットでよい
 
 ---
 
-## Edge Cases
+## エッジケース
 
-| Situation | How to Handle |
+| 状況 | 対処方法 |
 |-----------|---------------|
-| User provides no context beyond a diff | Infer type and scope from file names and changed symbols |
-| Changes span many files with no clear theme | Ask: "Is this one logical change, or multiple?" |
-| Breaking change detected | Add `BREAKING CHANGE:` footer automatically |
-| User says "keep it short" | Omit body, just write a strong subject line |
-| No issue number available | Omit the footer entirely |
+| ユーザーがdiff以外のコンテキストを提示しない | ファイル名と変更されたシンボルから種類とスコープを推測する |
+| 明確なテーマなしに変更が多数のファイルへ及ぶ | 「これは1つの論理的変更ですか、それとも複数ですか？」と確認する |
+| 破壊的変更を検出した | `BREAKING CHANGE:`フッターを自動的に追加する |
+| ユーザーが「短くして」と依頼した | 本文を省略し、強い件名行だけを書く |
+| Issue番号がない | フッター全体を省略する |
 
 ---
 
-## Quick Reference
+## クイックリファレンス
 
 ```bash
 # Get your staged diff to paste into Copilot
@@ -139,4 +139,4 @@ git diff --staged
 git diff
 ```
 
-See `references/conventional-commits-guide.md` for type examples and scope guidelines.
+種類の例とスコープのガイドラインについては`references/conventional-commits-guide.md`を参照してください。

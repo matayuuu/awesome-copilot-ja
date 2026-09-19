@@ -1,32 +1,27 @@
 ---
 name: workshop-create
-description: 'Create a new workshop or use an existing directory as one. Handles two paths: (A) use an existing local directory the operator points at, or (B) create a new private GitHub repo in the signed-in account. Never creates a repo inside another repo.'
+description: '新しい workshop を作成するか、既存のディレクトリを workshop として使う。2つの経路に対応する: (A) オペレーターが指定した既存のローカルディレクトリを使う、または (B) サインイン済みアカウントに新しいプライベート GitHub リポジトリを作成する。別のリポジトリ内にリポジトリを作成しない。'
 ---
+# Workshop を作成
 
-# Create a Workshop
+desks が配置されるルートディレクトリである新しい workshop をセットアップする。
 
-Set up a new workshop — the root directory where desks live.
+## 使用する場面
 
-## When to use
+- オペレーターが「workshop を作成」または「新しい workshop を開始」と言う場合
+- オペレーターが共有ルートの下で作業を整理したい場合
+- オペレーターが workshop として使いたい既存ディレクトリを持っている場合
 
-- The operator says "create a workshop" or "start a new workshop"
-- The operator wants to organize work under a shared root
-- The operator has an existing directory they want to use as a workshop
+## 2つの経路
 
-## Two paths
+### 経路 A: 既存のディレクトリを使う
 
-### Path A: Use an existing directory
+オペレーターが使いたいフォルダーをすでに持っている。クローンしたリポジトリの場合も、ローカルプロジェクトフォルダーの場合もある。
 
-The operator already has a folder they want to use. Maybe it's a repo
-they cloned, maybe it's a local project folder.
-
-1. **Confirm the path exists.** If not, ask the operator for a valid path.
-2. **Detect existing workshop markers.** Look for `desks/` or `classroom/`
-   folders, a `workshop.md`, `CAIRN.md`, or `hands-up.md`. Finding any of
-   these tells you this is an existing workshop — but this is detection
-   only, not a stopping point. Continue to the next step and add whatever
-   is missing; never overwrite what is already there.
-3. **Scaffold the workshop structure** (only what's missing):
+1. **パスの存在を確認する。** なければ、オペレーターに有効なパスを尋ねる。
+2. **既存の workshop マーカーを検出する。** `desks/` または `classroom/`
+フォルダー、`workshop.md`、`CAIRN.md`、`hands-up.md` を探す。これらのいずれかが見つかれば既存の workshop だが、これは検出であり停止条件ではない。次の手順へ進み、不足しているものを追加する。既存の内容を上書きしない。
+3. **workshop 構造をスキャフォールドする**（不足しているものだけ）:
    ```
    <path>/
      desks/           # where desks live
@@ -34,33 +29,30 @@ they cloned, maybe it's a local project folder.
      CAIRN.md          # operating disposition
      README.md         # workshop map
    ```
-4. **Do NOT run `git init`.** The directory may already be a git repo, or
-   the operator may not want one yet. Leave git state alone.
-5. **Do NOT create a GitHub repo.** This path is local-only.
+4. **`git init` を実行しない。** ディレクトリがすでに Git リポジトリである場合や、オペレーターがまだ作成を望まない場合がある。Git の状態を変更しない。
+5. **GitHub リポジトリを作成しない。** この経路はローカル専用である。
 
-### Path B: Create a new private GitHub repo
+### 経路 B: 新しいプライベート GitHub リポジトリを作成する
 
-The operator wants a fresh workshop backed by a GitHub repo.
+オペレーターが GitHub リポジトリを基盤とする新しい workshop を望んでいる。
 
-1. **Get the workshop name.** Short, no spaces, kebab-case preferred.
-2. **Pick and validate a clone parent.** `gh repo create --clone` clones
-   into the **current working directory**, so choose an explicit parent
-   directory first (ask the operator, or use their configured workshops
-   directory) and confirm it is **not** already inside a git repo:
+1. **workshop 名を決める。** 短く、空白を含めず、kebab-case を推奨する。
+2. **クローン先の親を選び、検証する。** `gh repo create --clone` は
+   **現在の作業ディレクトリ**へクローンするため、まず明示的な親
+   ディレクトリを選ぶ（オペレーターに尋ねるか、設定済みの workshop
+   ディレクトリを使う）。その親がすでに git リポジトリの内部に **ない** ことを確認する:
    ```bash
    git -C <parent-dir> rev-parse --is-inside-work-tree
    ```
-   If that prints `true`, pick a different parent — otherwise the new
-   repo nests inside the existing one. Create the parent if needed.
-3. **Create and clone the repo from that parent:**
+   `true` と表示された場合は別の親を選ぶ。そうしないと新しいリポジトリが既存のリポジトリ内に入れ子になる。必要なら親を作成する。
+3. **その親からリポジトリを作成してクローンする:**
    ```bash
    cd <parent-dir>
    gh repo create <owner>/<name> --private --clone
    ```
-   Use the operator's signed-in GitHub account as `<owner>`.
-4. **Scaffold the workshop structure** inside the cloned repo. Git does
-   not track empty directories, so add a placeholder in each otherwise
-   empty folder or the scaffold will not survive the next clone:
+   `<owner>` にはオペレーターがサインインしている GitHub アカウントを使う。
+4. **クローンしたリポジトリ内に workshop 構造の雛形を作る。** Git は
+   空のディレクトリを追跡しないため、ほかに内容がないフォルダーにはプレースホルダーを追加する。そうしないと次回のクローンで雛形が残らない:
    ```
    <name>/
      desks/.gitkeep
@@ -68,25 +60,23 @@ The operator wants a fresh workshop backed by a GitHub repo.
      CAIRN.md
      README.md
    ```
-5. **Commit and push** the scaffold, including the `.gitkeep` placeholders.
+5. `.gitkeep` のプレースホルダーを含む雛形をコミットして push する。
 
-### Critical: Never nest repos
+### 重要: リポジトリを入れ子にしない
 
-**Never run `git init` inside a directory that is already inside a git
-repository.** Before initializing, check:
+**すでに git リポジトリの内部にあるディレクトリで `git init` を実行しない。** 初期化前に次を確認する:
 
 ```bash
 git -C <parent-dir> rev-parse --is-inside-work-tree
 ```
 
-If that returns `true`, the parent is already a git repo. Do NOT create
-another repo inside it. Either:
-- Use Path A (just scaffold, no git)
-- Or clone to a different location that isn't inside a repo
+`true` が返った場合、親はすでに git リポジトリである。その中に別のリポジトリを作成しない。次のいずれかを選ぶ:
+- 経路 A を使う（雛形だけを作成し、git は使わない）
+- またはリポジトリの内部ではない別の場所へクローンする
 
-## CAIRN.md content
+## CAIRN.md の内容
 
-The operating disposition every desk reads:
+すべての desk が読む運用方針:
 
 ```markdown
 # cairn
@@ -118,16 +108,16 @@ that's a hands-up. it goes to the operator. this is the system
 working, not failing.
 ```
 
-## After creation
+## 作成後
 
-Tell the operator:
-- Where the workshop lives (full path)
-- That they can now open desks in it with `desk-open`
-- That Cairn will show signals once desks start emitting them
+オペレーターに次を伝える:
+- workshop の場所（完全なパス）
+- これで `desk-open` を使って desk を開けること
+- desk がシグナルを出し始めると Cairn にシグナルが表示されること
 
-## Principles
+## 原則
 
-- A workshop is a place, not a product. Keep it simple.
-- The operator decides where things go. Don't assume.
-- If an existing directory already has work in it, preserve everything.
-  Only add what's missing.
+- workshop は製品ではなく場所である。単純に保つ。
+- 配置場所はオペレーターが決める。推測しない。
+- 既存ディレクトリにすでに作業内容がある場合は、すべて保持する。
+  不足しているものだけを追加する。

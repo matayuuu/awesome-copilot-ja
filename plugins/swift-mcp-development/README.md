@@ -1,8 +1,8 @@
 # Swift MCP Server Development Plugin
 
-Comprehensive collection for building Model Context Protocol servers in Swift using the official MCP Swift SDK with modern concurrency features.
+公式MCP Swift SDKと最新の並行処理機能を使って、SwiftでModel Context Protocolサーバーを構築するための総合コレクションです。
 
-## Installation
+## インストール
 
 ```bash
 # Using Copilot CLI

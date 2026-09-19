@@ -1,6 +1,6 @@
 ---
 name: nano-banana-pro-openrouter
-description: 'Generate or edit images via OpenRouter with the Gemini 3 Pro Image model. Use for prompt-only image generation, image edits, and multi-image compositing; supports 1K/2K/4K output.'
+description: 'nano-banana-pro-openrouter に関する作業を支援する Skill です。対象のファイルや設定を確認し、必要な手順、検証方法、注意点を案内します。対象技術の調査、実装、運用、トラブルシューティングに使用します。'
 metadata:
   emoji: 🍌
   requires:
@@ -14,7 +14,7 @@ metadata:
 
 # Nano Banana Pro OpenRouter
 
-## Overview
+## 概要
 
 Generate or edit images with OpenRouter using the `google/gemini-3-pro-image-preview` model. Support prompt-only generation, single-image edits, and multi-image composition.
 
@@ -61,7 +61,7 @@ The skill reads an optional system prompt from `assets/SYSTEM_TEMPLATE`. This al
 - If multiple images are returned, append `-1`, `-2`, etc. to the filename.
 - Print `MEDIA: <path>` for each saved image. Do not read images back into the response.
 
-## Troubleshooting
+## トラブルシューティング
 
 If the script exits non-zero, check stderr against these common blockers:
 

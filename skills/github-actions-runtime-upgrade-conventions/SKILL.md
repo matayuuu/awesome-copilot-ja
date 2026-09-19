@@ -1,35 +1,35 @@
 ---
 name: github-actions-runtime-upgrade-conventions
-description: 'Upgrade GitHub Actions to supported runtimes by selecting safe action versions, preserving workflow behavior, and validating post-upgrade execution.'
+description: GitHub Actionsをサポート対象のランタイムへアップグレードするため、ワークフローの動作を維持しながら安全なアクションバージョンを選択し、アップグレード後の実行を検証する。
 ---
 
 # GitHub Actions Runtime Upgrade Conventions
 
-Use this skill when editing GitHub Actions workflows to address deprecation warnings about action runtimes (for example Node.js runtime migrations).
+アクションランタイムの非推奨に関する警告（Node.jsランタイムの移行など）に対応するためにGitHub Actionsワークフローを編集するときに、このSkillを使用する。
 
-## Use This Skill When
+## このSkillを使用する場面
 
-- Workflow logs report an action is running on a deprecated runtime.
-- You are upgrading action versions in `.github/workflows/*.yml` or `.github/workflows/*.yaml`.
-- You need to keep existing workflow behavior while modernizing action dependencies.
+- ワークフローログに、アクションが非推奨ランタイムで実行されていると表示された場合。
+- `.github/workflows/*.yml`または`.github/workflows/*.yaml`でアクションのバージョンをアップグレードする場合。
+- アクションの依存関係を最新化しながら、既存のワークフロー動作を維持する必要がある場合。
 
-## Upgrade Rules
+## アップグレード規則
 
-- Prefer upgrading to the latest stable **major** version of each action that is compatible with the workflow.
-- Prefer immutable pins: resolve the target release to a full commit SHA and use that SHA in `uses:`.
-- Do not pin to mutable tags or branches (for example `@v4` or `@main`) in final recommendations.
-- Upgrade one action at a time per commit (or one tightly related group) so failures are easy to isolate.
-- Keep existing workflow behavior unchanged while upgrading runtime/dependency actions.
+- ワークフローと互換性のある各アクションについて、最新の安定した**メジャー**バージョンへのアップグレードを優先する。
+- 不変な固定を優先する：対象リリースを完全なコミットSHAへ解決し、そのSHAを`uses:`で使用する。
+- 最終的な推奨では、可変タグやブランチ（例：`@v4`や`@main`）に固定しない。
+- 一度に1つのアクション（または密接に関連する1つのグループ）をアップグレードし、失敗を切り分けやすくする。
+- ランタイム／依存アクションをアップグレードする際も、既存のワークフロー動作を変更しない。
 
-## Actions We Track in This Repo
+## このリポジトリで追跡するアクション
 
-Prioritize runtime review for these groups when warnings appear:
+警告が発生した場合は、次のグループについてランタイムレビューを優先する。
 
-- Any first-party action under `actions/*`
-- Especially setup actions under `actions/setup-*` (for example `setup-node`, `setup-python`, `setup-dotnet`)
-- Any other action explicitly named by the runtime deprecation warning in workflow logs
+- `actions/*`配下のすべての第一者アクション
+- 特に`actions/setup-*`配下のセットアップアクション（例：`setup-node`、`setup-python`、`setup-dotnet`）
+- ランタイムの非推奨警告で明示的に指定されたその他のアクション
 
-## Pinning Pattern
+## 固定パターン
 
 ```yaml
 steps:
@@ -37,29 +37,29 @@ steps:
   - uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4.0.4
 ```
 
-When recommending upgrades, identify the latest compatible release first, then use the corresponding commit SHA with an optional version comment.
+アップグレードを推奨する際は、まず最新の互換リリースを特定し、対応するコミットSHAと任意のバージョンコメントを使用する。
 
-## Verification Checklist
+## 検証チェックリスト
 
-After changing action versions:
+アクションのバージョンを変更した後：
 
-1. Ensure all edited workflows still parse and keep the same triggers/permissions unless intentionally changed.
-2. Run the affected workflows (or equivalent local build/test commands) and confirm the upgraded steps complete successfully.
-3. Confirm release/signing/artifact steps still produce expected outputs where applicable.
-4. Check workflow run logs for any new deprecation warnings or runtime migration notes.
+1. 編集したすべてのワークフローが引き続き解析でき、意図的に変更していない限り、同じトリガー／権限を維持していることを確認する。
+2. 影響を受けるワークフロー（または同等のローカルビルド／テストコマンド）を実行し、アップグレードしたステップが正常に完了することを確認する。
+3. 該当する場合、リリース／署名／アーティファクトのステップが期待する出力を引き続き生成することを確認する。
+4. ワークフローの実行ログに、新しい非推奨警告やランタイム移行に関する注記がないか確認する。
 
-## PR Notes
+## PRの注記
 
-Include in the PR summary:
+PRの概要には次を含める。
 
-- Which actions were upgraded (from -> to).
-- Whether any action could not move to a new major and why.
-- Which workflows were re-run to validate the change.
+- アップグレードしたアクション（変更前 -> 変更後）。
+- 新しいメジャーへ移行できなかったアクションと、その理由。
+- 検証のために再実行したワークフロー。
 
-## How This Complements Dependabot
+## Dependabotとの補完関係
 
-Dependabot can automate many updates, but this skill still helps when:
+Dependabotは多くの更新を自動化できるが、次の場合にもこのSkillが役立つ。
 
-- Dependabot is not enabled for workflows in a repository.
-- Runtime warnings appear before an automated update is available.
-- A workflow needs behavior-preserving validation after the action bump.
+- リポジトリでワークフロー用のDependabotが有効になっていない場合。
+- 自動更新が利用可能になる前にランタイム警告が発生した場合。
+- アクションの更新後に、動作を維持していることを検証する必要があるワークフロー。

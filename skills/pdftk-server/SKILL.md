@@ -1,6 +1,6 @@
 ---
 name: pdftk-server
-description: 'Skill for using the command-line tool pdftk (PDFtk Server) for working with PDF files. Use when asked to merge PDFs, split PDFs, rotate pages, encrypt or decrypt PDFs, fill PDF forms, apply watermarks, stamp overlays, extract metadata, burst documents into pages, repair corrupted PDFs, attach or extract files, or perform any PDF manipulation from the command line.'
+description: 'pdftk-server に関する作業を支援する Skill です。対象のファイルや設定を確認し、必要な手順、検証方法、注意点を案内します。対象技術の調査、実装、運用、トラブルシューティングに使用します。'
 ---
 
 # PDFtk Server
@@ -22,7 +22,7 @@ PDFtk Server is a command-line tool for working with PDF documents. It can merge
 - Collating separately scanned even/odd pages
 - Compressing or decompressing PDF page streams
 
-## Prerequisites
+## 前提条件
 
 - PDFtk Server must be installed on the system
   - **Windows**: `winget install --id PDFLabs.PDFtk.Server`
@@ -140,7 +140,7 @@ Interleave separately scanned even and odd pages:
 pdftk A=even.pdf B=odd.pdf shuffle A B output collated.pdf
 ```
 
-## Troubleshooting
+## トラブルシューティング
 
 | Issue | Solution |
 |-------|----------|
@@ -151,7 +151,7 @@ pdftk A=even.pdf B=odd.pdf shuffle A B output collated.pdf
 | Watermark not appearing | Ensure the input PDF has transparent regions; use `stamp` for opaque overlays |
 | Permission denied errors | Check file permissions on input and output paths |
 
-## References
+## 参考資料
 
 Bundled reference documents in the `references/` folder:
 

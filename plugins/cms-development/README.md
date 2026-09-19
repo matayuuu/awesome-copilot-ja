@@ -1,15 +1,15 @@
-# CMS Development Plugin
+# CMS Development プラグイン
 
-Toolkit for content management system development across themes, plugins, admin tooling, media workflows, markdown rendering, and static export pipelines.
+テーマ、プラグイン、管理ツール、メディアワークフロー、Markdown レンダリング、静的エクスポートパイプラインに対応する CMS 開発ツールキットです。
 
-## Installation
+## インストール
 
 ```bash
 # Using Copilot CLI
 copilot plugin install cms-development@awesome-copilot
 ```
 
-## What's Included
+## 含まれるもの
 
 ### Skills
 

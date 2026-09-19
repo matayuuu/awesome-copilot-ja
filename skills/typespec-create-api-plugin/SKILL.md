@@ -1,17 +1,16 @@
 ---
 name: typespec-create-api-plugin
-description: 'Generate a TypeSpec API plugin with REST operations, authentication, and Adaptive Cards for Microsoft 365 Copilot'
+description: 'Microsoft 365 Copilot向けに、REST操作、認証、Adaptive Cardsを備えたTypeSpec APIプラグインを生成します。'
 ---
+# TypeSpec APIプラグインの作成
 
-# Create TypeSpec API Plugin
+外部REST APIと統合する、Microsoft 365 Copilot向けの完全なTypeSpec APIプラグインを作成します。
 
-Create a complete TypeSpec API plugin for Microsoft 365 Copilot that integrates with external REST APIs.
+## 要件
 
-## Requirements
+次のTypeSpecファイルを生成します。
 
-Generate TypeSpec files with:
-
-### main.tsp - Agent Definition
+### main.tsp - Agent定義
 ```typescript
 import "@typespec/http";
 import "@typespec/openapi3";
@@ -35,7 +34,7 @@ namespace [AgentName] {
 }
 ```
 
-### actions.tsp - API Operations
+### actions.tsp - API操作
 ```typescript
 import "@typespec/http";
 import "@microsoft/typespec-m365-copilot";
@@ -67,16 +66,16 @@ namespace [APINamespace] {
 }
 ```
 
-## Authentication Options
+## 認証オプション
 
-Choose based on API requirements:
+APIの要件に応じて選択します。
 
-1. **No Authentication** (Public APIs)
+1. **認証なし**（公開API）
    ```typescript
    // No @useAuth decorator needed
    ```
 
-2. **API Key**
+2. **APIキー**
    ```typescript
    @useAuth(ApiKeyAuth<ApiKeyLocation.header, "X-API-Key">)
    ```
@@ -92,7 +91,7 @@ Choose based on API requirements:
    }]>)
    ```
 
-4. **Registered Auth Reference**
+4. **登録済み認証参照**
    ```typescript
    @useAuth(Auth)
    
@@ -100,9 +99,9 @@ Choose based on API requirements:
    model Auth is ApiKeyAuth<ApiKeyLocation.header, "X-API-Key">
    ```
 
-## Function Capabilities
+## 操作の機能
 
-### Confirmation Dialog
+### 確認ダイアログ
 ```typescript
 @capabilities(#{
   confirmation: #{
@@ -116,7 +115,7 @@ Choose based on API requirements:
 })
 ```
 
-### Adaptive Card Response
+### Adaptive Cardレスポンス
 ```typescript
 @card(#{
   dataPath: "$.items",
@@ -126,7 +125,7 @@ Choose based on API requirements:
 })
 ```
 
-### Reasoning & Response Instructions
+### 推論とレスポンスの指示
 ```typescript
 @reasoning("""
   Consider user's context when calling this operation.
@@ -138,27 +137,27 @@ Choose based on API requirements:
 """)
 ```
 
-## Best Practices
+## 推奨事項
 
-1. **Operation Names**: Use clear, action-oriented names (listProjects, createTicket)
-2. **Models**: Define TypeScript-like models for requests and responses
-3. **HTTP Methods**: Use appropriate verbs (@get, @post, @patch, @delete)
-4. **Paths**: Use RESTful path conventions with @route
-5. **Parameters**: Use @path, @query, @header, @body appropriately
-6. **Descriptions**: Provide clear descriptions for model understanding
-7. **Confirmations**: Add for destructive operations (delete, update critical data)
-8. **Cards**: Use for rich visual responses with multiple data items
+1. **操作名**：明確でアクションを表す名前を使う（listProjects、createTicket）
+2. **モデル**：リクエストとレスポンスにTypeScript風のモデルを定義する
+3. **HTTPメソッド**：適切な動詞（@get、@post、@patch、@delete）を使う
+4. **パス**：@routeでRESTfulなパス規約を使う
+5. **パラメーター**：@path、@query、@header、@bodyを適切に使う
+6. **説明**：モデルが理解できる明確な説明を付ける
+7. **確認**：破壊的操作（削除、重要データの更新）に追加する
+8. **カード**：複数のデータ項目を含む豊かな視覚レスポンスに使う
 
-## Workflow
+## ワークフロー
 
-Ask the user:
-1. What is the API base URL and purpose?
-2. What operations are needed (CRUD operations)?
-3. What authentication method does the API use?
-4. Should confirmations be required for any operations?
-5. Do responses need Adaptive Cards?
+ユーザーに次の点を尋ねます。
+1. APIのベースURLと目的は何か。
+2. どの操作（CRUD操作）が必要か。
+3. APIはどの認証方式を使うか。
+4. どの操作に確認が必要か。
+5. レスポンスにAdaptive Cardsが必要か。
 
-Then generate:
-- Complete `main.tsp` with agent definition
-- Complete `actions.tsp` with API operations and models
-- Optional `cards/card.json` if Adaptive Cards are needed
+その後、次を生成します。
+- Agent定義を含む完全な`main.tsp`
+- API操作とモデルを含む完全な`actions.tsp`
+- Adaptive Cardsが必要な場合は任意の`cards/card.json`

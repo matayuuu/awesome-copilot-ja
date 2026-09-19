@@ -1,27 +1,27 @@
 ---
 name: integrate-context-matic
-description: 'Discovers and integrates third-party APIs using the context-matic MCP server. Uses `fetch_api` to find available API SDKs, `ask` for integration guidance, `model_search` and `endpoint_search` for SDK details. Use when the user asks to integrate a third-party API, add an API client, implement features with an external API, or work with any third-party API or SDK.'
+description: 'context-matic MCP serverを使ってサードパーティAPIを発見・統合する。利用可能なAPI SDKの検索に `fetch_api`、統合ガイダンスに `ask`、SDK詳細に `model_search` と `endpoint_search` を使う。サードパーティAPIの統合、APIクライアントの追加、外部APIを使う機能の実装、サードパーティAPIまたはSDKの利用を依頼されたときに使う。'
 ---
 
-# API Integration
+# API統合
 
-When the user asks to integrate a third-party API or implement anything involving an external API or SDK, follow this workflow. Do not rely on your own knowledge for available APIs or their capabilities — always use the context-matic MCP server.
+ユーザーがサードパーティAPIの統合、または外部APIやSDKに関係する実装を求めたときは、このワークフローに従う。利用可能なAPIや機能について自分の知識に頼らず、常にcontext-matic MCP serverを使う。
 
-## When to Apply
+## 適用する場面
 
-Apply this skill when the user:
-- Asks to integrate a third-party API
-- Wants to add a client or SDK for an external service
-- Requests implementation that depends on an external API
-- Mentions a specific API (e.g. PayPal, Twilio) and implementation or integration
+次の場合にこのSkillを適用する。
+- サードパーティAPIの統合を依頼した
+- 外部サービスのクライアントまたはSDKを追加したい
+- 外部APIに依存する実装を依頼した
+- 特定のAPI（例: PayPal、Twilio）と実装または統合について言及した
 
-## Workflow
+## ワークフロー
 
-### 1. Ensure Guidelines and Skills Exist
+### 1. ガイドラインとSkillの存在を確認する
 
-#### 1a. Detect the Project's Primary Language
+#### 1a. プロジェクトの主要言語を検出する
 
-Before checking for guidelines or skills, identify the project's primary programming language by inspecting the workspace:
+ガイドラインやSkillを確認する前に、ワークスペースを調べてプロジェクトの主要プログラミング言語を特定する。
 
 | File / Pattern | Language |
 |---|---|
@@ -33,78 +33,78 @@ Before checking for guidelines or skills, identify the project's primary program
 | `Gemfile`, `*.rb` | `ruby` |
 | `composer.json`, `*.php` | `php` |
 
-Use the detected language in all subsequent steps wherever `language` is required.
+以降の手順で `language` が必要な場合は、検出した言語を使う。
 
-#### 1b. Check for Existing Guidelines and Skills
+#### 1b. 既存のガイドラインとSkillを確認する
 
-Check whether guidelines and skills have already been added for this project by looking for their presence in the workspace.
+ワークスペース内の存在を確認し、このプロジェクトにガイドラインとSkillが追加済みか調べる。
 
-- `{language}-conventions` is the skill produced by **add_skills**.
-- `{language}-security-guidelines.md` and `{language}-test-guidelines.md` are language-specific guideline files produced by **add_guidelines**.
-- `update-activity-workflow.md` is a workflow guideline file produced by **add_guidelines** (it is not language-specific).
-- Check these independently. Do not treat the presence of one set as proof that the other set already exists.
-- **If any required guideline files for this project are missing:** Call **add_guidelines**.
-- **If `{language}-conventions` is missing for the project's language:** Call **add_skills**.
-- **If all required guideline files and `{language}-conventions` already exist:** Skip this step and proceed to step 2.
+- `{language}-conventions` は **add_skills** が生成するSkillである。
+- `{language}-security-guidelines.md` と `{language}-test-guidelines.md` は **add_guidelines** が生成する言語固有のガイドラインファイルである。
+- `update-activity-workflow.md` は **add_guidelines** が生成するワークフローガイドラインファイルである（言語固有ではない）。
+- これらは個別に確認する。一方の集合の存在を、もう一方も存在する根拠にしない。
+- **このプロジェクトに必要なガイドラインファイルが1つでも欠けている場合:** **add_guidelines** を呼び出す。
+- **プロジェクトの言語用 `{language}-conventions` がない場合:** **add_skills** を呼び出す。
+- **必要なガイドラインファイルと `{language}-conventions` がすべて存在する場合:** この手順をスキップして手順2へ進む。
 
-### 2. Discover Available APIs
+### 2. 利用可能なAPIを発見する
 
-Call **fetch_api** to find available APIs — always start here.
+利用可能なAPIを検索するために **fetch_api** を呼び出す。必ずここから始める。
 
-- Always provide the `language` parameter using the language detected in step 1a.
-- Always provide the `key` parameter: pass the API name/key from the user's request (e.g. `"paypal"`, `"twilio"`).
-- If the user did not provide an API name/key, ask them which API they want to integrate, then call `fetch_api` with that value.
-- The tool returns only the matching API on an exact match, or the full API catalog (name, description, and `key`) when there is no exact match.
-- Identify the API that matches the user's request based on the name and description.
-- Extract the correct `key` for the user's requested API before proceeding. This key will be used for all subsequent tool calls related to that API.
+- 手順1aで検出した言語を使い、必ず `language` パラメーターを指定する。
+- 必ず `key` パラメーターを指定し、ユーザーの依頼にあるAPI名またはキー（例: `"paypal"`、`"twilio"`）を渡す。
+- ユーザーがAPI名またはキーを指定していない場合は、統合したいAPIを確認し、その値で `fetch_api` を呼び出す。
+- ツールは完全一致なら一致したAPIだけを返し、完全一致がなければAPIカタログ全体（名前、説明、`key`）を返す。
+- 名前と説明に基づき、ユーザーの依頼に一致するAPIを特定する。
+- 先へ進む前に、依頼されたAPIの正しい `key` を取り出す。このキーを、そのAPIに関する以降のすべてのツール呼び出しで使う。
 
-**If the requested API is not in the list:**
-- Inform the user that the API is not currently available in this plugin (context-matic) and stop.
-- Request guidance from user on how to proceed with the API's integration.
+**依頼されたAPIが一覧にない場合:**
+- そのAPIは現在このプラグイン（context-matic）では利用できないとユーザーに伝え、停止する。
+- API統合をどのように進めるか、ユーザーに指示を求める。
 
-### 3. Get Integration Guidance
+### 3. 統合ガイダンスを取得する
 
-- Provide `ask` with: `language`, `key` (from step 2), and your `query`.
-- Break complex questions into smaller focused queries for best results:
+- `ask` に `language`、`key`（手順2で取得したもの）、`query` を渡す。
+- 複雑な質問は、より良い結果を得るため小さく焦点を絞った質問に分割する。
   - _"How do I authenticate?"_
   - _"How do I create a payment?"_
   - _"What are the rate limits?"_
 
-### 4. Look Up SDK Models and Endpoints (as needed)
+### 4. SDKモデルとエンドポイントを調べる（必要に応じて）
 
-These tools return definitions only — they do not call APIs or generate code.
+これらのツールは定義だけを返し、APIを呼び出したりコードを生成したりしない。
 
-- **model_search** — look up a model/object definition.
-  - Provide: `language`, `key`, and an exact or partial case-sensitive model name as `query` (e.g. `availableBalance`, `TransactionId`).
-- **endpoint_search** — look up an endpoint method's details.
-  - Provide: `language`, `key`, and an exact or partial case-sensitive method name as `query` (e.g. `createUser`, `get_account_balance`).
+- **model_search** — モデル/オブジェクト定義を調べる。
+  - `language`、`key`、大文字小文字を区別するモデル名の完全一致または部分一致を `query` として渡す（例: `availableBalance`、`TransactionId`）。
+- **endpoint_search** — エンドポイントメソッドの詳細を調べる。
+  - `language`、`key`、大文字小文字を区別するメソッド名の完全一致または部分一致を `query` として渡す（例: `createUser`、`get_account_balance`）。
 
-### 5. Record Milestones
+### 5. マイルストーンを記録する
 
-Call **update_activity** (with the appropriate `milestone`) whenever one of these is **concretely reached in code or infrastructure** — not merely mentioned or planned:
+次のいずれかが**コードまたはインフラで具体的に達成された**とき（言及や計画だけではない）、適切な `milestone` を指定して **update_activity** を呼び出す。
 
-| Milestone | When to pass it |
+| マイルストーン | 渡すタイミング |
 |---|---|
-| `sdk_setup` | SDK package is installed in the project (e.g. `npm install`, `pip install`, `go get` has run and succeeded). |
-| `auth_configured` | API credentials are explicitly written into the project's runtime environment (e.g. present in a `.env` file, secrets manager, or config file) **and** referenced in actual code. |
-| `first_call_made` | First API call code written and executed |
-| `error_encountered` | Developer reports a bug, error response, or failing call |
-| `error_resolved` | Fix applied and API call confirmed working |
+| `sdk_setup` | SDKパッケージをプロジェクトにインストールした（例: `npm install`、`pip install`、`go get` が成功した）。 |
+| `auth_configured` | API資格情報をプロジェクトの実行環境に明示的に書き込み（例: `.env`、シークレット管理ツール、設定ファイルに存在し）、**実際のコードから参照した**。 |
+| `first_call_made` | 最初のAPI呼び出しコードを書き、実行した |
+| `error_encountered` | 開発者がバグ、エラーレスポンス、失敗した呼び出しを報告した |
+| `error_resolved` | 修正を適用し、API呼び出しが動作することを確認した |
 
-## Checklist
+## チェックリスト
 
-- [ ] Project's primary language detected (step 1a)
-- [ ] `add_guidelines` called if guideline files were missing, otherwise skipped
-- [ ] `add_skills` called if `{language}-conventions` was missing, otherwise skipped
-- [ ] `fetch_api` called with correct `language` and `key` (API name)
-- [ ] Correct `key` identified for the requested API (or user informed if not found)
-- [ ] `update_activity` called only when a milestone is concretely reached in code/infrastructure — never for questions, searches, or tool lookups
-- [ ] `update_activity` called with the appropriate `milestone` at each integration milestone
-- [ ] `ask` used for integration guidance and code samples
-- [ ] `model_search` / `endpoint_search` used as needed for SDK details
-- [ ] Project compiles after each code modification
+- [ ] プロジェクトの主要言語を検出した（手順1a）
+- [ ] ガイドラインファイルが欠けていれば `add_guidelines` を呼び出し、そうでなければスキップした
+- [ ] `{language}-conventions` がなければ `add_skills` を呼び出し、そうでなければスキップした
+- [ ] 正しい `language` と `key`（API名）で `fetch_api` を呼び出した
+- [ ] 依頼されたAPIの正しい `key` を特定した（見つからない場合はユーザーに伝えた）
+- [ ] コード/インフラでマイルストーンに到達したときだけ `update_activity` を呼び出した。質問、検索、ツール照会では呼び出していない
+- [ ] 各統合マイルストーンで適切な `milestone` を指定して `update_activity` を呼び出した
+- [ ] 統合ガイダンスとコード例に `ask` を使った
+- [ ] SDK詳細に必要に応じて `model_search` / `endpoint_search` を使った
+- [ ] 各コード変更後にプロジェクトをコンパイルした
 
-## Notes
+## 注記
 
-- **API not found**: If an API is missing from `fetch_api`, do not guess at SDK usage — inform the user that the API is not currently available in this plugin and stop.
-- **update_activity and fetch_api**: `fetch_api` is API discovery, not integration — do not call `update_activity` before it.
+- **APIが見つからない場合**: APIが `fetch_api` にない場合、SDKの使い方を推測しない。このプラグインでは現在利用できないとユーザーに伝え、停止する。
+- **update_activityとfetch_api**: `fetch_api` はAPI発見であり統合ではない。その前に `update_activity` を呼び出さない。

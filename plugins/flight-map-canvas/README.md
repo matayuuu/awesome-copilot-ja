@@ -1,17 +1,17 @@
-# Flight Map Canvas Plugin
+# Flight Map Canvas プラグイン
 
-A GitHub Copilot canvas that generates a view where Google Maps can be explored using 3D controls, as if a flight simulator. Agents can send the flight anywhere and report what they are working on.
+フライトシミュレーターのように 3D 操作で Google Maps を探索できるビューを生成する GitHub Copilot canvas です。agents はフライトを任意の場所へ送り、作業内容を報告できます。
 
-## Installation
+## インストール
 
 ``bash
 copilot plugin install flight-map-canvas@awesome-copilot
 ``
 
-## Source
+## ソース
 
-This plugin is part of [Awesome Copilot](https://github.com/github/awesome-copilot).
+このプラグインは [Awesome Copilot](https://github.com/github/awesome-copilot) の一部です。
 
-## License
+## ライセンス
 
 MIT

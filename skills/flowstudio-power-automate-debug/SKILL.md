@@ -1,43 +1,34 @@
 ---
 name: flowstudio-power-automate-debug
-description: >-
-  Debug failing Power Automate cloud flows using the FlowStudio MCP server.
-  The Graph API only shows top-level status codes. This skill gives your agent
-  action-level inputs and outputs to find the actual root cause.
-  Load this skill when asked to: debug a flow, investigate a failed run, why is
-  this flow failing, inspect action outputs, find the root cause of a flow error,
-  fix a broken Power Automate flow, diagnose a timeout, trace a DynamicOperationRequestFailure,
-  check connector auth errors, read error details from a run, or troubleshoot
-  expression failures. Requires a FlowStudio MCP subscription — see https://mcp.flowstudio.app
+description: 'FlowStudio MCP サーバーを使用して失敗した Power Automate クラウドフローをデバッグします。Graph API では最上位のステータスコードしか表示されませんが、このスキルは実際の根本原因を特定するためにアクションレベルの入力と出力を提供します。フローのデバッグ、失敗した実行の調査、フローが失敗する理由の確認、アクション出力の検査、フローエラーの根本原因特定、壊れたフローの修正、タイムアウトの診断、DynamicOperationRequestFailure の追跡、コネクタ認証エラーの確認、実行からのエラー詳細の取得、式の失敗のトラブルシューティングを求められた場合に読み込みます。FlowStudio MCP サブスクリプションが必要です（https://mcp.flowstudio.app を参照）。'
 ---
 
-# Power Automate Debugging with FlowStudio MCP
+# FlowStudio MCP による Power Automate デバッグ
 
-A step-by-step diagnostic process for investigating failing Power Automate
-cloud flows through the FlowStudio MCP server.
+FlowStudio MCP server を通じて失敗している Power Automate
+cloud flows を調査するための、段階的な診断プロセスです。
 
-> **Real debugging examples**: [Expression error in child flow](https://github.com/ninihen1/power-automate-mcp-skills/blob/main/examples/fix-expression-error.md) |
-> [Data entry, not a flow bug](https://github.com/ninihen1/power-automate-mcp-skills/blob/main/examples/data-not-flow.md) |
-> [Null value crashes child flow](https://github.com/ninihen1/power-automate-mcp-skills/blob/main/examples/null-child-flow.md)
+> **実際のデバッグ例**: [子フローの式エラー](https://github.com/ninihen1/power-automate-mcp-skills/blob/main/examples/fix-expression-error.md) |
+> [データ入力の問題であり、フローのバグではない](https://github.com/ninihen1/power-automate-mcp-skills/blob/main/examples/data-not-flow.md) |
+> [null 値で子フローがクラッシュする](https://github.com/ninihen1/power-automate-mcp-skills/blob/main/examples/null-child-flow.md)
 
-**Prerequisite**: A FlowStudio MCP server must be reachable with a valid JWT.
-See the `flowstudio-power-automate-mcp` skill for connection setup.
-Subscribe at https://mcp.flowstudio.app
+**前提条件**: 有効な JWT で FlowStudio MCP server に到達できる必要があります。
+接続設定については `flowstudio-power-automate-mcp` skill を参照してください。
+https://mcp.flowstudio.app で購読してください
 
 ---
 
-## Source of Truth
+## 信頼できる情報源
 
-> **Always call `list_skills` / `tool_search` first** to confirm available tool
-> names and parameter schemas. Tool names and parameters may change between
-> server versions.
-> This skill covers response shapes, behavioral notes, and diagnostic patterns —
-> things tool schemas cannot tell you. If this document disagrees with
-> `tool_search` or a real API response, the API wins.
+> 利用可能な tool 名とパラメーター スキーマを確認するため、**必ず最初に `list_skills` / `tool_search` を呼び出してください**。
+> tool 名とパラメーターは、server バージョン間で変わる可能性があります。
+> この skill では、レスポンス形状、挙動上の注意点、診断パターンを扱います —
+> これらは tool スキーマだけでは分からないことです。このドキュメントが
+> `tool_search` または実際の API レスポンスと矛盾する場合は、API が優先されます。
 
 ---
 
-## Python Helper
+## Python ヘルパー
 
 ```python
 import json, urllib.request
@@ -66,7 +57,7 @@ ENV = "<environment-id>"   # e.g. Default-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
 
 ---
 
-## Step 1 — Locate the Flow
+## 手順 1 — Flow を特定する
 
 ```python
 result = mcp("list_live_flows", environmentName=ENV)
@@ -78,7 +69,7 @@ print(FLOW_ID)
 
 ---
 
-## Step 2 — Find the Failing Run
+## 手順 2 — 失敗した Run を見つける
 
 ```python
 runs = mcp("get_live_flow_runs", environmentName=ENV, flowName=FLOW_ID, top=5)
@@ -99,14 +90,14 @@ RUN_ID = next(r["name"] for r in runs if r["status"] == "Failed")
 
 ---
 
-## Step 3 — Get the Top-Level Error
+## 手順 3 — 最上位のエラーを取得する
 
-> **CRITICAL**: `get_live_flow_run_error` tells you **which** action failed.
-> `get_live_flow_run_action_outputs` tells you **why**. You must call BOTH.
-> Never stop at the error alone — error codes like `ActionFailed`,
-> `NotSpecified`, and `InternalServerError` are generic wrappers. The actual
-> root cause (wrong field, null value, HTTP 500 body, stack trace) is only
-> visible in the action's inputs and outputs.
+> **重要**: `get_live_flow_run_error` は、**どの** action が失敗したかを示します。
+> `get_live_flow_run_action_outputs` は、**なぜ**失敗したかを示します。必ず両方を呼び出してください。
+> エラーだけで止めないでください — `ActionFailed`、
+> `NotSpecified`、`InternalServerError` のようなエラー コードは汎用的なラッパーです。実際の
+> 根本原因（誤ったフィールド、null 値、HTTP 500 body、stack trace）は、action の inputs と outputs でのみ
+> 確認できます。
 
 ```python
 err = mcp("get_live_flow_run_error",
@@ -138,13 +129,12 @@ print(f"Root action: {root['actionName']} → code: {root.get('code')}")
 
 ---
 
-## Step 4 — Inspect the Failing Action's Inputs and Outputs
+## 手順 4 — 失敗した Action の Inputs と Outputs を調べる
 
-> **This is the most important step.** `get_live_flow_run_error` only gives
-> you a generic error code. The actual error detail — HTTP status codes,
-> response bodies, stack traces, null values — lives in the action's runtime
-> inputs and outputs. **Always inspect the failing action immediately after
-> identifying it.**
+> **これは最も重要な手順です。** `get_live_flow_run_error` から得られるのは
+> 汎用的なエラー コードだけです。実際のエラー詳細 — HTTP status codes、
+> response bodies、stack traces、null values — は、action の実行時
+> inputs と outputs にあります。**失敗した action を特定したら、必ず直ちに調べてください。**
 
 ```python
 # Get the root failing action's full inputs and outputs
@@ -184,22 +174,23 @@ if out.get("inputs"):
     print(f"Inputs: {json.dumps(out['inputs'], indent=2)[:500]}")
 ```
 
-### What the action outputs reveal (that error codes don't)
+### action の outputs から分かること（エラー コードでは分からないこと）
 
-| Error code from `get_live_flow_run_error` | What `get_live_flow_run_action_outputs` reveals |
+| `get_live_flow_run_error` からのエラー コード | `get_live_flow_run_action_outputs` で分かること |
 |---|---|
-| `ActionFailed` | Which nested action actually failed and its HTTP response |
-| `NotSpecified` | The HTTP status code + response body with the real error |
-| `InternalServerError` | The server's error message, stack trace, or API error JSON |
-| `InvalidTemplate` | The exact expression that failed and the null/wrong-type value |
-| `BadRequest` | The request body that was sent and why the server rejected it |
+| `ActionFailed` | 実際に失敗したネストされた action と、その HTTP レスポンス |
+| `NotSpecified` | 実際のエラーを含む HTTP status code + response body |
+| `InternalServerError` | server のエラー メッセージ、stack trace、または API error JSON |
+| `InvalidTemplate` | 失敗した正確な expression と、null / 誤った型の値 |
+| `BadRequest` | 送信された request body と、server がそれを拒否した理由 |
 
-### Foreach iterations
+### foreach の反復
 
-When `actionName` refers to an action inside a foreach, the output tool can
-return every repetition of that action. Each item may include
-`repetitionIndexes` with the loop name and zero-based `itemIndex`. Use
-`iterationIndex` to inspect one iteration after you find the suspicious item:
+`actionName` が foreach 内の action を参照している場合、output tool は
+その action のすべての反復を返すことがあります。各 item には、
+loop 名と 0 始まりの `itemIndex` を含む
+`repetitionIndexes` が含まれる場合があります。疑わしい item を見つけたら、
+`iterationIndex` を使って 1 つの iteration を調べてください。
 
 ```python
 all_reps = mcp("get_live_flow_run_action_outputs",
@@ -219,15 +210,14 @@ one_rep = mcp("get_live_flow_run_action_outputs",
     iterationIndex=3)
 ```
 
-### Evidence Compose Bookends
+### 証拠用 Compose の前後配置
 
-For uncertain connector work, add a `Compose_*_Request` before the risky action
-and a `Compose_*_Result` after it, with the result action allowed on both
-`Succeeded` and `Failed`. This gives future debugging a clean payload snapshot
-without requiring another deploy. Do not include secrets or long binary payloads
-in these bookends.
+不確実な connector 作業では、リスクのある action の前に `Compose_*_Request` を追加し、
+その後に `Compose_*_Result` を追加します。その result action は
+`Succeeded` と `Failed` の両方で許可します。これにより、将来のデバッグで、再デプロイを必要とせずにクリーンな payload snapshot を得られます。
+これらの前後配置に secrets や長い binary payloads を含めないでください。
 
-### Example: HTTP action returning 500
+### 例: HTTP action が 500 を返す
 
 ```
 Error code: "InternalServerError" ← this tells you nothing
@@ -239,7 +229,7 @@ Action outputs reveal:
   ← THIS tells you the Azure Function crashed because a connection string is undefined
 ```
 
-### Example: Expression error on null
+### 例: null による Expression error
 
 ```
 Error code: "BadRequest" ← generic
@@ -252,7 +242,7 @@ Action outputs reveal:
 
 ---
 
-## Step 5 — Read the Flow Definition
+## 手順 5 — Flow 定義を読む
 
 ```python
 defn = mcp("get_live_flow", environmentName=ENV, flowName=FLOW_ID)
@@ -260,16 +250,15 @@ actions = defn["properties"]["definition"]["actions"]
 print(list(actions.keys()))
 ```
 
-Find the failing action in the definition. Inspect its `inputs` expression
-to understand what data it expects.
+definition 内で失敗した action を見つけます。その `inputs` expression を調べ、
+どの data を期待しているかを理解します。
 
 ---
 
-## Step 6 — Walk Back from the Failure
+## 手順 6 — 失敗箇所からさかのぼる
 
-When the failing action's inputs reference upstream actions, inspect those
-too. Walk backward through the chain until you find the source of the
-bad data:
+失敗した action の inputs が upstream actions を参照している場合は、それらも
+調べます。不正な data の発生源を見つけるまで、chain をさかのぼってください。
 
 ```python
 # Inspect multiple actions leading up to the failure
@@ -285,22 +274,22 @@ for action_name in [root_action, "Compose_WeekEnd", "HTTP_Get_Data"]:
     print(f"Outputs: {json.dumps(out.get('outputs', ''), indent=2)[:300]}")
 ```
 
-> ⚠️ Output payloads from array-processing actions can be very large.
-> Always slice (e.g. `[:500]`) before printing.
+> ⚠️ array-processing actions からの output payloads は非常に大きくなることがあります。
+> 表示する前に、必ず slice（例: `[:500]`）してください。
 
-> **Tip**: Omit `actionName` to list top-level actions when you're not sure
-> which action produced the bad data. Once you pick an action inside a foreach,
-> pass `iterationIndex` to avoid pulling every repetition into context.
+> **ヒント**: どの action が不正な data を生成したか分からない場合は、
+> top-level actions を一覧するために `actionName` を省略します。foreach 内の action を選んだら、
+> すべての反復を context に取り込まないよう `iterationIndex` を渡してください。
 
 ---
 
-## Step 7 — Pinpoint the Root Cause
+## 手順 7 — 根本原因を特定する
 
-### Expression Errors (e.g. `split` on null)
-If the error mentions `InvalidTemplate` or a function name:
-1. Find the action in the definition
-2. Check what upstream action/expression it reads
-3. **Inspect that upstream action's output** for null / missing fields
+### Expression Errors（例: null に対する `split`）
+エラーが `InvalidTemplate` または関数名に言及している場合:
+1. definition 内で action を見つける
+2. それが読み取っている upstream action/expression を確認する
+3. null / missing fields がないか、**その upstream action の output を調べる**
 
 ```python
 # Example: action uses split(item()?['Name'], ' ')
@@ -315,17 +304,17 @@ nulls = [x for x in names if x.get("Name") is None]
 print(f"{len(nulls)} records with null Name")
 ```
 
-### Wrong Field Path
-Expression `triggerBody()?['fieldName']` returns null → `fieldName` is wrong.
-**Inspect the trigger output** to see the actual field names:
+### 誤った Field Path
+Expression `triggerBody()?['fieldName']` が null を返す → `fieldName` が誤っています。
+実際の field names を確認するため、**trigger output を調べてください**:
 ```python
 result = mcp("get_live_flow_run_action_outputs", ..., actionName="<trigger-action-name>")
 print(json.dumps(result[0].get("outputs"), indent=2)[:500])
 ```
 
-### HTTP Actions Returning Errors
-The error code says `InternalServerError` or `NotSpecified` — **always inspect
-the action outputs** to get the actual HTTP status and response body:
+### エラーを返す HTTP Actions
+エラー コードが `InternalServerError` または `NotSpecified` である場合 — 実際の HTTP status と response body を取得するため、**必ず
+action outputs を調べてください**:
 ```python
 result = mcp("get_live_flow_run_action_outputs", ..., actionName="HTTP_Get_Data")
 out = result[0]
@@ -333,30 +322,29 @@ print(f"HTTP {out['outputs']['statusCode']}")
 print(json.dumps(out['outputs']['body'], indent=2)[:500])
 ```
 
-### Connection / Auth Failures
-Look for `ConnectionAuthorizationFailed` — the connection owner must match the
-service account running the flow. Cannot fix via API; fix in PA designer.
+### 接続 / 認証エラー
+`ConnectionAuthorizationFailed` を探してください — connection owner は、
+flow を実行している service account と一致している必要があります。API 経由では修正できません。PA designer で修正してください。
 
-### Outlook user-picker failures (`DynamicListValuesUndefinedOrInvalid`)
-Outlook actions like `GetEmailsV3` use parameters (`mailboxAddress`, `to`, `cc`,
-`from`) whose dropdown is backed by `builtInOperation:AadGraph.GetUsers` — which
-is broken at the PA listEnum layer and always returns
-`DynamicListValuesUndefinedOrInvalid`. This shows up when an agent rebuilds or
-modifies an Outlook action via `update_live_flow` and tries to resolve a user
-through dynamic options. **Don't fix it by retrying AadGraph** — switch to
-`shared_office365users.SearchUserV2` instead (returns the same AAD user shape).
-Use `describe_live_connector` to confirm whether the affected parameter exposes
-a structured `fallback`, then call `get_live_dynamic_options` against
-`shared_office365users.SearchUserV2` instead of the broken AadGraph operation.
-For dynamic field schemas rather than dropdown options, use
-`get_live_dynamic_properties` with the metadata returned by
-`describe_live_connector`.
+### Outlook user-picker の失敗（`DynamicListValuesUndefinedOrInvalid`）
+`GetEmailsV3` のような Outlook actions は parameters（`mailboxAddress`、`to`、`cc`、
+`from`）を使用し、その dropdown は `builtInOperation:AadGraph.GetUsers` によって支えられています — これは
+PA listEnum layer で壊れており、常に
+`DynamicListValuesUndefinedOrInvalid` を返します。これは、agent が `update_live_flow` 経由で Outlook action を再構築または
+変更し、dynamic options を通じて user を解決しようとすると発生します。**AadGraph を再試行して修正しようとしないでください** — 代わりに
+`shared_office365users.SearchUserV2` に切り替えてください（同じ AAD user shape を返します）。
+影響を受ける parameter が構造化された `fallback` を公開しているかを確認するには
+`describe_live_connector` を使用し、そのうえで壊れた AadGraph operation ではなく
+`shared_office365users.SearchUserV2` に対して `get_live_dynamic_options` を呼び出してください。
+dropdown options ではなく dynamic field schemas の場合は、
+`describe_live_connector` によって返された metadata とともに
+`get_live_dynamic_properties` を使用してください。
 
 ---
 
-## Step 8 — Apply the Fix
+## 手順 8 — 修正を適用する
 
-**For expression/data issues**:
+**expression/data の問題の場合**:
 ```python
 defn = mcp("get_live_flow", environmentName=ENV, flowName=FLOW_ID)
 acts = defn["properties"]["definition"]["actions"]
@@ -375,22 +363,22 @@ result = mcp("update_live_flow",
 print(result.get("error"))  # None = success
 ```
 
-> ⚠️ `update_live_flow` always returns an `error` key.
-> A value of `null` (Python `None`) means success.
+> ⚠️ `update_live_flow` は常に `error` key を返します。
+> `null`（Python の `None`）という値は成功を意味します。
 
 ---
 
-## Step 9 — Verify the Fix
+## 手順 9 — 修正を検証する
 
-> **Use `resubmit_live_flow_run` to test ANY flow — not just HTTP triggers.**
-> `resubmit_live_flow_run` replays a previous run using its original trigger
-> payload. This works for **every trigger type**: Recurrence, SharePoint
-> "When an item is created", connector webhooks, Button triggers, and HTTP
-> triggers. You do NOT need to ask the user to manually trigger the flow or
-> wait for the next scheduled run.
+> **HTTP triggers だけでなく、任意の flow をテストするには `resubmit_live_flow_run` を使用してください。**
+> `resubmit_live_flow_run` は、元の trigger
+> payload を使用して以前の run を再実行します。これは **すべての trigger type** で機能します: Recurrence、SharePoint
+> "When an item is created"、connector webhooks、Button triggers、HTTP
+> triggers。flow を手動で trigger するよう user に依頼したり、
+> 次の scheduled run を待ったりする必要はありません。
 >
-> The only case where `resubmit` is not available is a **brand-new flow that
-> has never run** — it has no prior run to replay.
+> `resubmit` が利用できない唯一のケースは、**一度も実行されたことのない新しい flow** です —
+> replay する prior run がありません。
 
 ```python
 # Resubmit the failed run — works for ANY trigger type
@@ -404,21 +392,21 @@ new_runs = mcp("get_live_flow_runs", environmentName=ENV, flowName=FLOW_ID, top=
 print(new_runs[0]["status"])   # Succeeded = done
 ```
 
-### When to use resubmit vs trigger
+### resubmit と trigger の使い分け
 
-| Scenario | Use | Why |
+| シナリオ | 使用するもの | 理由 |
 |---|---|---|
-| **Testing a fix** on any flow | `resubmit_live_flow_run` | Replays the exact trigger payload that caused the failure — best way to verify |
-| Recurrence / scheduled flow | `trigger_live_flow` (no `body`) | Runs it now, like the portal's "Run flow" button; resubmit replays a past run's data |
-| SharePoint / connector trigger | `resubmit_live_flow_run` | Cannot be triggered without creating a real SP item |
-| HTTP, Button, or PowerApps trigger with **custom** test payload | `trigger_live_flow` | When you need to send different data than the original run |
-| Brand-new flow, never run | `trigger_live_flow` | No prior run exists to resubmit |
+| 任意の flow で **fix をテストする** | `resubmit_live_flow_run` | 失敗を引き起こした正確な trigger payload を replay する — 検証に最適 |
+| Recurrence / scheduled flow | `trigger_live_flow`（`body` なし） | portal の "Run flow" button のように今すぐ実行する。resubmit は過去の run の data を replay する |
+| SharePoint / connector trigger | `resubmit_live_flow_run` | 実際の SP item を作成しないと trigger できない |
+| **custom** test payload を使用する HTTP、Button、または PowerApps trigger | `trigger_live_flow` | original run とは異なる data を送信する必要がある場合 |
+| 新しい flow、未実行 | `trigger_live_flow` | resubmit できる prior run が存在しない |
 
-### Testing HTTP, Button, and PowerApps flows with custom payloads
+### custom payloads を使って HTTP、Button、PowerApps flows をテストする
 
-For flows with a `Request` trigger (HTTP request, manual Button, or PowerApps),
-use `trigger_live_flow` when you need to send a **different** payload than the
-original run. Pass trigger inputs as `body` for every kind:
+`Request` trigger（HTTP request、manual Button、または PowerApps）を持つ flows では、
+original run とは **異なる** payload を送信する必要がある場合に
+`trigger_live_flow` を使用します。すべての種類で trigger inputs を `body` として渡します:
 
 ```python
 # First inspect what the trigger expects — read directly from the flow definition
@@ -444,51 +432,51 @@ if result.get("warning"):
     print(result["warning"])   # required trigger inputs you left out
 ```
 
-> `trigger_live_flow` handles AAD-authenticated triggers automatically.
-> Works for `Request` triggers (HTTP request, Button, PowerApps) and for
-> scheduled (Recurrence) flows, which it runs immediately — with no `body`,
-> since a scheduled trigger takes no inputs (a body is refused). Automated
-> connector triggers only fire from their source event.
+> `trigger_live_flow` は AAD-authenticated triggers を自動的に処理します。
+> `Request` triggers（HTTP request、Button、PowerApps）と、
+> scheduled（Recurrence）flows で機能し、これらは即時実行されます — scheduled trigger は inputs を取らないため、
+> `body` はありません（body は拒否されます）。Automated
+> connector triggers は source event からのみ発火します。
 >
-> Power Automate does not enforce a trigger's `required` inputs. If you leave
-> one out the run still starts, with that input null, and the result carries a
-> `warning` naming the missing keys. Cancel the run and call again with the
-> full body if that matters.
+> Power Automate は trigger の `required` inputs を強制しません。1 つ省略しても
+> run は開始され、その input は null になり、result には missing keys の名前を示す
+> `warning` が含まれます。重要な場合は run をキャンセルし、
+> full body でもう一度呼び出してください。
 >
-> `runName` is only returned for Button and PowerApps runs. For HTTP triggers
-> find the run with `get_live_flow_runs`.
+> `runName` は Button と PowerApps runs の場合にのみ返されます。HTTP triggers の場合は
+> `get_live_flow_runs` で run を見つけてください。
 >
-> Over a browser-extension key, Button and PowerApps triggers run only with an
-> empty body. The tool says so and lists the ways round it: resubmit a past run,
-> default the inputs inside the flow with `coalesce(triggerBody()?['x'], 'value')`,
-> or use a standard API key.
+> browser-extension key 経由では、Button と PowerApps triggers は
+> empty body でのみ実行されます。tool はその旨を示し、回避策を列挙します: past run を resubmit する、
+> flow 内で `coalesce(triggerBody()?['x'], 'value')` を使って inputs の default を設定する、
+> または standard API key を使用する。
 
 ---
 
-## Quick-Reference Diagnostic Decision Tree
+## クイック リファレンス診断判断ツリー
 
-| Symptom | First Tool | Then ALWAYS Call | What to Look For |
+| 症状 | 最初の Tool | 次に必ず呼び出すもの | 確認する内容 |
 |---|---|---|---|
-| Flow shows as Failed | `get_live_flow_run_error` | `get_live_flow_run_action_outputs` on the failing action | HTTP status + response body in `outputs` |
-| Error code is generic (`ActionFailed`, `NotSpecified`) | — | `get_live_flow_run_action_outputs` | The `outputs.body` contains the real error message, stack trace, or API error |
-| HTTP action returns 500 | — | `get_live_flow_run_action_outputs` | `outputs.statusCode` + `outputs.body` with server error detail |
-| Expression crash | — | `get_live_flow_run_action_outputs` on prior action | null / wrong-type fields in output body |
-| Flow never starts | `get_live_flow` | — | check `properties.state` = "Started" |
-| Action returns wrong data | `get_live_flow_run_action_outputs` | — | actual output body vs expected |
-| Fix applied but still fails | `get_live_flow_runs` after resubmit | — | new run `status` field |
+| Flow が Failed と表示される | `get_live_flow_run_error` | 失敗した action に対して `get_live_flow_run_action_outputs` | `outputs` 内の HTTP status + response body |
+| エラー コードが汎用的（`ActionFailed`、`NotSpecified`） | — | `get_live_flow_run_action_outputs` | `outputs.body` には実際のエラー メッセージ、stack trace、または API error が含まれる |
+| HTTP action が 500 を返す | — | `get_live_flow_run_action_outputs` | server error detail を含む `outputs.statusCode` + `outputs.body` |
+| Expression crash | — | prior action に対して `get_live_flow_run_action_outputs` | output body 内の null / wrong-type fields |
+| Flow が開始されない | `get_live_flow` | — | `properties.state` = "Started" を確認 |
+| Action が誤った data を返す | `get_live_flow_run_action_outputs` | — | 実際の output body と期待値の比較 |
+| Fix を適用したがまだ失敗する | resubmit 後に `get_live_flow_runs` | — | new run の `status` field |
 
-> **Rule: never diagnose from error codes alone.** `get_live_flow_run_error`
-> identifies the failing action. `get_live_flow_run_action_outputs` reveals
-> the actual cause. Always call both.
+> **ルール: error codes だけで診断しないでください。** `get_live_flow_run_error` は
+> 失敗した action を特定します。`get_live_flow_run_action_outputs` は
+> 実際の原因を明らかにします。必ず両方を呼び出してください。
 
 ---
 
-## Reference Files
+## 参照ファイル
 
-- [common-errors.md](references/common-errors.md) — Error codes, likely causes, and fixes
-- [debug-workflow.md](references/debug-workflow.md) — Full decision tree for complex failures
+- [common-errors.md](references/common-errors.md) — Error codes、考えられる原因、修正
+- [debug-workflow.md](references/debug-workflow.md) — 複雑な失敗のための完全な decision tree
 
-## Related Skills
+## 関連する Skills
 
-- `flowstudio-power-automate-mcp` — Foundation skill: connection setup, MCP helper, tool discovery
-- `flowstudio-power-automate-build` — Build and deploy new flows
+- `flowstudio-power-automate-mcp` — 基盤 skill: connection setup、MCP helper、tool discovery
+- `flowstudio-power-automate-build` — 新しい flows の build と deploy

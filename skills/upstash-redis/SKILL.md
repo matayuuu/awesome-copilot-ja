@@ -1,20 +1,11 @@
 ---
 name: upstash-redis
-description: >
-  Use Redis over HTTP from serverless and edge runtimes with @upstash/redis, and
-  add rate limiting with @upstash/ratelimit. Use when the user mentions Upstash
-  Redis, needs Redis from a Next.js route handler or middleware, Vercel,
-  Cloudflare Workers, Deno, or Bun without TCP connection pooling, or wants
-  cache-aside with TTLs, a session store, counters, or a 429 rate limiter using
-  fixed window, sliding window, or token bucket. DO NOT use for self-hosted or
-  TCP Redis clients (ioredis, node-redis), Redis Cluster administration, or
-  vector similarity search.
+description: 'serverlessおよびedge runtimeから@upstash/redisでHTTP経由のRedisを使い、@upstash/ratelimitでレート制限を追加します。Upstash Redis、Next.jsのroute handlerまたはmiddleware、Vercel、Cloudflare Workers、Deno、Bun、TCP接続プールなしのRedis、TTL付きcache-aside、セッションストア、カウンター、fixed window・sliding window・token bucketによる429レート制限を扱うときに使います。self-hostedまたはTCP Redisクライアント（ioredis、node-redis）、Redis Cluster管理、ベクトル類似検索には使いません。'
 license: MIT
 compatibility: "@upstash/redis 1.x, @upstash/ratelimit 2.x, Node.js 18+ or any runtime with global fetch"
 metadata:
   author: Upstash
 ---
-
 # Upstash Redis Skill
 
 This skill covers the three things serverless apps most often need Redis for:

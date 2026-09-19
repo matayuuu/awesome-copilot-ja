@@ -1,9 +1,6 @@
 ---
 name: eval-driven-dev
-description: >
-  Improve AI application with evaluation-driven development. Define eval criteria, instrument the application, build golden datasets, observe and evaluate application runs, analyze results, and produce a concrete action plan for improvements.
-  ALWAYS USE THIS SKILL when the user asks to set up QA, add tests, add evals,
-  evaluate, benchmark, fix wrong behaviors, improve quality, or do quality assurance for any Python project that calls an LLM model.
+description: '評価駆動開発で AI アプリケーションを改善します。評価基準を定義し、アプリケーションを計測し、ゴールデンデータセットを構築し、アプリケーションの実行を観測・評価し、結果を分析して、改善のための具体的なアクションプランを作成します。ユーザーが QA の設定、テストや評価の追加、評価、ベンチマーク、誤った動作の修正、品質改善、または LLM モデルを呼び出す Python プロジェクトの品質保証を求めた場合は、必ずこのスキルを使用してください。'
 license: MIT
 compatibility: Python 3.10+
 metadata:
@@ -12,199 +9,199 @@ metadata:
   pixie-qa-source: https://github.com/yiouli/pixie-qa/
 ---
 
-# Eval-Driven Development for Python LLM Applications
+# Python LLMアプリケーションの評価駆動開発
 
-You're building an **automated evaluation pipeline** that tests a Python-based AI application end-to-end — running it the same way a real user would, with real inputs — then scoring the outputs using evaluators and producing pass/fail results via `pixie test`.
+あなたは、PythonベースのAIアプリケーションをエンドツーエンドでテストする「自動評価パイプライン」を構築している — 実際の利用者と同じようにアプリを実行し、実際の入力を与え、評価器で出力を採点し、`pixie test` で合否を出す。
 
-**What you're testing is the app itself** — its request handling, context assembly (how it gathers data, builds prompts, manages conversation state), routing, and response formatting. The app uses an LLM, which makes outputs non-deterministic — that's why you use evaluators (LLM-as-judge, similarity scores) instead of `assertEqual` — but the thing under test is the app's code, not the LLM.
+**テスト対象はアプリそのもの** — リクエスト処理、コンテキスト組み立て（データ収集、プロンプト構築、会話状態管理）、ルーティング、応答フォーマットです。アプリはLLMを使うため出力は非決定的です — そのため`assertEqual` ではなく評価器（LLM-as-judge、類似度スコア）を使います — ただしテスト対象はLLMではなく、アプリのコードです。
 
-During evaluation, the app's own code runs for real — routing, prompt assembly, LLM calls, response formatting — nothing is mocked or stubbed. But the data the app reads from external sources (databases, caches, third-party APIs, voice streams) is replaced with test-specified values via instrumentations. This means each test case controls exactly what data the app sees, while still exercising the full application code path.
+評価中には、アプリのコード自体が実際に実行されます — ルーティング、プロンプト組み立て、LLM呼び出し、応答フォーマット — モックやスタブは使いません。ただし、アプリが外部ソースから読み取るデータ（データベース、キャッシュ、サードパーティAPI、音声ストリーム）は、テストで指定された値に置き換えられます。これにより、各テストケースはアプリが見るデータを厳密に制御しながら、アプリの全コード経路を実際に実行できます。
 
-**Rule: The app's LLM calls must go to a real LLM.** Do not replace, mock, stub, or intercept the LLM with a fake implementation. The LLM is the core value-generating component — replacing it makes the eval tautological (you control both inputs and outputs, so scores are meaningless). If the project's test suite contains LLM mocking patterns, those are for the project's own unit tests — do NOT adopt them for the eval Runnable.
+**ルール: アプリのLLM呼び出しは実際のLLMに向けること。** フェイク実装で置き換え、モック化、スタブ化、インターセプトしないでください。LLMは価値を生み出す中核コンポーネントであり、それを置き換えると評価がトートロジー（入力と出力の両方を自分で制御するので、スコアが意味を失う）になってしまいます。プロジェクトのテストスイートにLLMモックのパターンが含まれていても、それらはプロジェクト独自のユニットテスト向けであり、eval Runnableでは採用しないでください。
 
-**The deliverable is a working `pixie test` run with real scores** — not a plan, not just instrumentation, not just a dataset.
+納品物は、`pixie test` を実行して実際のスコアが出る動作するもの — 計画ではなく、計測だけでもなく、データセットだけでもない。
 
-This skill is about doing the work, not describing it. Read code, edit files, run commands, produce a working pipeline.
-
----
-
-## Before you start
-
-**First, activate the virtual environment**. Identify the correct virtual environment for the project and activate it. After the virtual environment is active, run the setup.sh included in the skill's resources.
-The script updates the `eval-driven-dev` skill and `pixie-qa` python package to latest version, initialize the pixie working directory if it's not already initialized, and start a web server in the background to show user updates.
-
-**Setup error handling — what you can skip vs. what must succeed:**
-
-- **Skill update fails** → OK to continue. The existing skill version is sufficient.
-- **pixie-qa upgrade fails but was already installed** → OK to continue with the existing version.
-- **pixie-qa is NOT installed and installation fails** → **STOP.** Ask the user for help. The workflow cannot proceed without the `pixie` package.
-- **`pixie init` fails** → **STOP.** Ask the user for help.
-- **`pixie start` (web server) fails** → **STOP.** Ask the user for help. Check `server.log` in the pixie root directory for diagnostics. Common causes: port conflict, missing dependency, slow environment. Do NOT proceed without the web server — the user needs it to see eval results.
+このスキルは説明するためではなく、実際に作業を進めるためのものです。コードを読み、ファイルを編集し、コマンドを実行し、動作するパイプラインを作り上げます。
 
 ---
 
-## The workflow
+## 開始前に
 
-Follow Steps 1–6 straight through without stopping. Do not ask the user for confirmation at intermediate steps — verify each step yourself and continue.
+**まず仮想環境を有効化してください。** プロジェクトに適した仮想環境を特定して有効化し、その後、スキルのリソースに含まれる setup.sh を実行してください。
+このスクリプトは `eval-driven-dev` スキルと `pixie-qa` Pythonパッケージを最新バージョンに更新し、pixie の作業ディレクトリがまだ初期化されていなければ初期化し、バックグラウンドでWebサーバーを起動してユーザー更新を表示します。
 
-**How to work — read this before doing anything else:**
+**セットアップのエラーハンドリング — スキップしてよいものと、成功させる必要があるもの:**
 
-- **One step at a time.** Read only the current step's instructions. Do NOT read Steps 2–6 while working on Step 1.
-- **Read references only when a step tells you to.** Each step names a specific reference file. Read it when you reach that step — not before.
-- **Create artifacts immediately.** After reading code for a sub-step, write the output file for that sub-step before moving on. Don't accumulate understanding across multiple sub-steps before writing anything.
-- **Verify, then move on.** Each step has a checkpoint. Verify it, then proceed to the next step. Don't plan future steps while verifying the current one.
-
-**When to stop and ask for help:**
-
-Some blockers cannot and should not be worked around. When you encounter any of the following, **stop immediately and ask the user for help** — do not attempt workarounds:
-
-- **Application won't run due to missing environment variables or configuration**: The app requires environment variables or configuration that are not set and cannot be inferred. Do NOT work around this by mocking, faking, or replacing application components — the eval must exercise real production code. Ask the user to fix the environment setup.
-- **App import failures that indicate a broken project**: If the app's core modules cannot be imported due to missing system dependencies or incompatible Python versions (not just missing pip packages you can install), ask the user to fix the project setup.
-- **Ambiguous entry point**: If the app has multiple equally plausible entry points and the project analysis doesn't clarify which one matters most, ask the user which to target.
-
-Blockers you SHOULD resolve yourself (do not ask): missing Python packages (install them), missing `pixie` package (install it), port conflicts (pick a different port), file permission issues (fix them).
-
-**Run Steps 1–6 in sequence.** If the user's prompt makes it clear that earlier steps are already done (e.g., "run the existing tests", "re-run evals"), skip to the appropriate step. When in doubt, start from Step 1.
+- **スキル更新に失敗** → OK。既存のスキルバージョンで十分です。
+- **pixie-qa の更新が失敗したが、すでにインストール済みだった** → OK。既存バージョンを使い続けてください。
+- **pixie-qa が未インストールでインストールに失敗** → **停止。** ユーザーに支援を依頼してください。`pixie` パッケージがないとワークフローを進められません。
+- **`pixie init` に失敗** → **停止。** ユーザーに支援を依頼してください。
+- **`pixie start`（Webサーバー）の起動に失敗** → **停止。** ユーザーに支援を依頼してください。pixie ルートディレクトリの `server.log` を確認して診断してください。よくある原因は、ポート競合、依存関係不足、環境の遅さです。Webサーバーがないと進めません — ユーザーはeval結果を見ることができません。
 
 ---
 
-### Step 1: Understand the app and define eval criteria
+## 作業フロー
 
-**First, check the user's prompt for specific requirements.** Before reading app code, examine what the user asked for:
+ステップ1〜6を途中で止めずに順番に進めてください。途中でユーザーの確認を求めないでください — 各ステップを自分で検証してから進みます。
 
-- **Referenced documents or specs**: Does the prompt mention a file to follow (e.g., "follow the spec in EVAL_SPEC.md", "use the methodology in REQUIREMENTS.md")? If so, **read that file first** — it may specify datasets, evaluation dimensions, pass criteria, or methodology that override your defaults.
-- **Specified datasets or data sources**: Does the prompt reference specific data files (e.g., "use questions from eval_inputs/research_questions.json", "use the scenarios in call_scenarios.json")? If so, **read those files** — you must use them as the basis for your eval dataset, not fabricate generic alternatives.
-- **Specified evaluation dimensions**: Does the prompt name specific quality aspects to evaluate (e.g., "evaluate on factuality, completeness, and bias", "test identity verification and tool call correctness")? If so, **every named dimension must have a corresponding evaluator** in your test file.
+**作業方法 — 何より先にこれを読む:**
 
-If the prompt specifies any of the above, they take priority. Read and incorporate them before proceeding.
+- **一度に一つのステップ。** 現在のステップの指示だけを読みます。ステップ2〜6を作業中に読むことはしません。
+- **参照はステップが指示したときだけ読む。** 各ステップで特定の参照ファイルが指定されます。そのステップに達したときに読むだけで、前に読まないでください。
+- **成果物をすぐ作成する。** サブステップのコードを読んだら、そのサブステップの出力ファイルを次に進む前に作成します。複数のサブステップを理解したあとでまとめて書き起こさないでください。
+- **検証してから進む。** 各ステップにはチェックポイントがあります。検証してから次のステップへ進みます。現在の検証を終える前に将来のステップを計画しないでください。
 
-Step 1 has three sub-steps. Each reads its own reference file and produces its own output file. **Complete each sub-step fully before starting the next.**
+**助けを依頼するタイミング:**
 
-#### Sub-step 1a: Project analysis
+回避できず、かつ回避してはいけないブロッカーがある場合、**すぐにユーザーに助けを依頼してください** — 回避策を試さないでください:
 
-> **Reference**: Read `references/1-a-project-analysis.md` now.
+- **環境変数や設定が不足してアプリが起動しない**: アプリが必要とする環境変数や設定が設定されておらず、推測できません。アプリの本番コードを実行するevalを行うため、モックや偽のコンポーネントで回避しないでください。ユーザーに環境設定の修正を依頼してください。
+- **アプリのインポート失敗がプロジェクトの破損を示す**: コアモジュールがシステム依存関係の不足や互換性のないPythonバージョンのためにインポートできない場合（pipでインストール可能な不足パッケージの問題ではなく）、ユーザーにプロジェクト設定の修正を依頼してください。
+- **エントリーポイントがあいまい**: アプリに同程度に妥当なエントリーポイントが複数あり、プロジェクト分析でどれが最重要かが明確でない場合、対象を指定してもらってください。
 
-Before looking at code structure or entry points, understand what this software does in the real world — its purpose, its users, the complexity of real inputs, and where it fails. This understanding drives every downstream decision: which entry points matter most, what eval criteria to define, what trace inputs to use, and what dataset entries to create. Write the detailed context file before moving on. **Note**: the project may contain `tests/`, `fixtures/`, `examples/`, mock servers, and documentation — these are the project's own development infrastructure, NOT data sources for your eval pipeline. Ignore them when sourcing trace inputs and dataset content.
+自分で解決できるブロッカー（質問しない）: Pythonパッケージ不足（インストールする）、`pixie` パッケージ不足（インストールする）、ポート競合（別ポートを使う）、ファイル権限問題（修正する）。
 
-> **Checkpoint**: `pixie_qa/00-project-analysis.md` written — covering what the software does, target users, capability inventory (at least 3 capabilities if the project has them), realistic input characteristics, and hard problems / failure modes (at least 2).
-
-#### Sub-step 1b: Entry point & execution flow
-
-> **Reference**: Read `references/1-b-entry-point.md` now.
-
-Read the source code to understand how the app starts and how a real user invokes it. Use the **capability inventory** from `pixie_qa/00-project-analysis.md` to prioritize entry points — focus on the entry point(s) that exercise the most valuable capabilities, not just the first one found. Write the detailed context file before moving on.
-
-> **Checkpoint**: `pixie_qa/01-entry-point.md` written — covering entry point, execution flow, user-facing interface, and env requirements.
-
-#### Sub-step 1c: Eval criteria
-
-> **Reference**: Read `references/1-c-eval-criteria.md` now.
-
-Define the app's use cases and eval criteria. Derive use cases from the **capability inventory** in `pixie_qa/00-project-analysis.md`. Derive eval criteria from the **hard problems / failure modes** — not generic quality dimensions. Use cases drive dataset creation (Step 4); eval criteria drive evaluator selection (Step 3). Write the detailed context file before moving on.
-
-> **Checkpoint**: `pixie_qa/02-eval-criteria.md` written — covering use cases, eval criteria, and their applicability scope. Do NOT read Step 2 instructions yet.
+**ステップ1〜6を順番に実行してください。** ユーザーの指示が進行済みのステップを明示している場合（例: "既存のテストを実行する"、"evalを再実行する"）は、その適切なステップまで飛ばしてください。迷ったらステップ1から開始してください。
 
 ---
 
-### Step 2: Instrument, run application, and capture a reference trace
+### ステップ1: アプリを理解し、eval基準を定義する
 
-Step 2 has three sub-steps. Each reads its own reference file. **Complete each sub-step before starting the next.**
+**まずユーザーの指示に特定の要件があるか確認してください。** アプリコードを読む前に、ユーザーが何を依頼したかを確認します:
 
-#### Sub-step 2a: Instrument with `wrap`
+- **参照された文書や仕様**: 指示にファイルの指定がありますか（例: "EVAL_SPEC.md の仕様に従って", "REQUIREMENTS.md の方法論を使って"）？ その場合、**まずそのファイルを読みます** — データセット、評価次元、合格基準、方法論を指定している可能性があり、デフォルトより優先されます。
+- **指定されたデータセットやデータソース**: 指示に特定のデータファイルが含まれていますか（例: "eval_inputs/research_questions.json を使う", "call_scenarios.json のシナリオを使う"）？ その場合、**そのファイルを読みます** — これらをevalデータセットの基礎として使い、一般的な代替案を作ってはいけません。
+- **指定された評価次元**: 指示で特定の品質側面が名前付きされていますか（例: "事実性、完全性、偏りを評価する", "身元確認とツール呼び出しの正確性をテストする"）？ その場合、**名前の付いた各次元にはテストファイル中に対応する評価器が必要です。**
 
-> **Reference**: Read `references/2a-instrumentation.md` now.
+上記のいずれかをプロンプトが指定している場合、それらが優先されます。先に読み込み、対応してから進んでください。
 
-Add `wrap()` calls at the app's data boundaries so the eval harness can inject controlled inputs and capture outputs. This makes the app testable without changing its logic.
+ステップ1には3つのサブステップがあります。各サブステップは独自の参照ファイルを読んで、独自の出力ファイルを作成します。**次のサブステップを始める前に、各サブステップを完全に完了させてください。**
 
-> **Checkpoint**: `wrap()` calls added at all data boundaries. Every eval criterion from `pixie_qa/02-eval-criteria.md` has a corresponding data point.
+#### サブステップ1a: プロジェクト分析
 
-#### Sub-step 2b: Implement the Runnable
+> **参照**: ここで `references/1-a-project-analysis.md` を読みます。
 
-> **Reference**: Read `references/2b-implement-runnable.md` now.
+コード構造やエントリーポイントを見てからではなく、まず実世界でこのソフトウェアが何をしているかを理解してください — 目的、利用者、実際の入力の複雑さ、どこで失敗しやすいか。 この理解が、後続のあらゆる判断の基礎になります: どのエントリーポイントが重要か、どのeval基準を定義するか、どのトレース入力を使うか、どのデータセット項目を作るか。 先に詳細なコンテキストファイルを書いてから進んでください。**注**: プロジェクトには `tests/`、`fixtures/`、`examples/`、モックサーバー、ドキュメントが含まれている可能性があります — これらは評価パイプラインのデータソースではなく、プロジェクト独自の開発基盤です。トレース入力やデータセットのソースとして扱わず無視してください。
 
-Write a Runnable class that lets the eval harness invoke the app exactly as a real user would. The Runnable should be simple — it just wires up the app's real entry point to the harness interface. If it's getting complicated, something is wrong.
+> **チェックポイント**: `pixie_qa/00-project-analysis.md` が書かれている — ソフトウェアの役割、対象ユーザー、機能一覧（少なくとも3つの機能があれば記載）、現実的な入力の特徴、困難な問題 / 失敗モード（少なくとも2つ）を含むこと。
 
-> **Checkpoint**: `pixie_qa/run_app.py` written. The Runnable calls the app's real entry point with real LLM configuration — no mocking, no faking, no component replacement.
+#### サブステップ1b: エントリーポイントと実行フロー
 
-#### Sub-step 2c: Capture and verify a reference trace
+> **参照**: ここで `references/1-b-entry-point.md` を読みます。
 
-> **Reference**: Read `references/2c-capture-and-verify-trace.md` now.
+ソースコードを読んで、アプリがどのように起動し、実際のユーザーがどのように呼び出すかを理解してください。`pixie_qa/00-project-analysis.md` の機能一覧を使ってエントリーポイントの優先順位を決めてください — 最初に見つかったものではなく、最も価値の高い機能を実行するエントリーポイントに注力してください。先に詳細なコンテキストファイルを書いてから進んでください。
 
-Run the app through the Runnable and capture a trace. The trace proves instrumentation and the Runnable are working correctly, and provides the data shapes needed for dataset creation in Step 4.
+> **チェックポイント**: `pixie_qa/01-entry-point.md` が書かれている — エントリーポイント、実行フロー、ユーザー向けインターフェース、環境要件を含むこと。
 
-> **Checkpoint**: `pixie_qa/reference-trace.jsonl` exists. All expected `wrap` entries and `llm_span` entries appear. `pixie format` shows all data points needed for evaluation. Do NOT read Step 3 instructions yet.
+#### サブステップ1c: Eval基準
 
----
+> **参照**: ここで `references/1-c-eval-criteria.md` を読みます。
 
-### Step 3: Define evaluators
+アプリのユースケースとeval基準を定義してください。ユースケースは `pixie_qa/00-project-analysis.md` の機能一覧から導き出します。eval基準は一般的な品質次元ではなく、**困難な問題 / 失敗モード** から導き出してください。ユースケースはデータセット作成（ステップ4）に使い、eval基準は評価器選択（ステップ3）に使います。先に詳細なコンテキストファイルを書いてから進んでください。
 
-> **Reference**: Read `references/3-define-evaluators.md` now for the detailed sub-steps.
-
-**Goal**: Turn the qualitative eval criteria from Step 1c into concrete, runnable scoring functions. Each criterion maps to either a built-in evaluator, an **agent evaluator** (the default for any semantic or qualitative criterion), or a manual custom function (only for mechanical/deterministic checks like regex or field existence). The evaluator mapping artifact bridges between criteria and the dataset, ensuring every quality dimension has a scorer. Select evaluators that measure the **hard problems** identified in `pixie_qa/00-project-analysis.md` — not just generic quality dimensions.
-
-> **Checkpoint**: All evaluators implemented. `pixie_qa/03-evaluator-mapping.md` written with criterion-to-evaluator mapping and decision rationale. Do NOT read Step 4 instructions yet.
+> **チェックポイント**: `pixie_qa/02-eval-criteria.md` が書かれている — ユースケース、eval基準、その適用範囲を含むこと。ここでステップ2の指示はまだ読まないでください。
 
 ---
 
-### Step 4: Build the dataset
+### ステップ2: アプリを計測し、実行して参照トレースを取得する
 
-> **Reference**: Read `references/4-build-dataset.md` now for the detailed sub-steps.
+ステップ2には3つのサブステップがあります。各サブステップは独自の参照ファイルを読みます。**次のサブステップを始める前に、各サブステップを完了させてください。**
 
-**Goal**: Create the test scenarios that tie everything together — the runnable (Step 2), the evaluators (Step 3), and the use cases (Step 1c). Each dataset entry defines what to send to the app, what data the app should see from external services, and how to score the result. Use the reference trace from Step 2 as the source of truth for data shapes and field names. Cover entries from the **capability inventory** in `pixie_qa/00-project-analysis.md` and include entries targeting the **failure modes** identified there. **Do NOT use the project's own test fixtures, mock servers, or example data as dataset `eval_input` content** — source real-world data instead. **Every `wrap(purpose="input")` in the app must have pre-captured content in each entry's `eval_input`** — do NOT leave `eval_input` empty when the app has input wraps.
+#### サブステップ2a: `wrap` で計測する
 
-> **Checkpoint**: Dataset JSON created at `pixie_qa/datasets/<name>.json` with diverse entries covering all use cases. **Dataset realism audit passed** — entries use real-world data at representative scale, no project test fixtures contamination, at least one entry targets a failure mode with uncertain outcome, and every `eval_input` has captured content for all input wraps. Do NOT read Step 5 instructions yet.
+> **参照**: ここで `references/2a-instrumentation.md` を読みます。
+
+アプリのデータ境界に `wrap()` 呼び出しを追加して、evalハーネスが制御された入力を注入し、出力を収集できるようにします。これにより、ロジックを変えずにアプリをテスト可能にします。
+
+> **チェックポイント**: `wrap()` 呼び出しがすべてのデータ境界に追加されている。`pixie_qa/02-eval-criteria.md` の各eval基準に対応するデータポイントがある。
+
+#### サブステップ2b: Runnableを実装する
+
+> **参照**: ここで `references/2b-implement-runnable.md` を読みます。
+
+evalハーネスがアプリを実際の利用者と同じように呼び出せるように、Runnableクラスを書いてください。Runnableはシンプルで構いません — アプリの実際のエントリーポイントをハーネスのインターフェースに接続するだけです。複雑になってきたら、何かが間違っています。
+
+> **チェックポイント**: `pixie_qa/run_app.py` が書かれている。Runnableはアプリの実際のエントリーポイントを実際のLLM設定で呼び出している — モック化、偽装、コンポーネント置換なし。
+
+#### サブステップ2c: 参照トレースを取得して検証する
+
+> **参照**: ここで `references/2c-capture-and-verify-trace.md` を読みます。
+
+Runnableを通じてアプリを実行し、トレースを取得します。このトレースは計測とRunnableが正しく動作していることを証明し、ステップ4でデータセットを作るときに必要なデータの形を提供します。
+
+> **チェックポイント**: `pixie_qa/reference-trace.jsonl` が存在する。期待される `wrap` エントリと `llm_span` エントリがすべて現れる。`pixie format` には評価に必要なすべてのデータポイントが示される。ここでステップ3の指示はまだ読まないでください。
 
 ---
 
-### Step 5: Run `pixie test` and fix mechanical issues
+### ステップ3: 評価器を定義する
 
-> **Reference**: Read `references/5-run-tests.md` now for the detailed sub-steps.
+> **参照**: 詳細なサブステップのために `references/3-define-evaluators.md` を読みます。
 
-**Goal**: Execute the full pipeline end-to-end and get it running without mechanical errors. This step is strictly about fixing setup and data issues in the pixie QA components (dataset, runnable, custom evaluators) — NOT about fixing the application itself or evaluating result quality. Once `pixie test` completes without errors and produces real evaluator scores for every entry, this step is done.
+**目標**: ステップ1cで定義した定性的なeval基準を、実行可能な具体的な採点関数に変換します。各基準は組み込み評価器、**エージェント評価器**（意味的または定性的な基準のデフォルト）、または手動のカスタム関数（正規表現やフィールド存在のような機械的・決定的な検査のみ）に対応させます。評価器の対応表は基準とデータセットの橋渡しとなり、すべての品質次元にスコアラーがあることを保証します。`pixie_qa/00-project-analysis.md` で特定した「困難な問題」を測る評価器を選択してください — 一般的な品質次元だけを選ぶのではありません。
 
-> **Checkpoint**: `pixie test` runs to completion. Every dataset entry has evaluator scores (real `EvaluationResult` or `PendingEvaluation`). No setup errors, no import failures, no data validation errors.
+> **チェックポイント**: すべての評価器が実装されている。`pixie_qa/03-evaluator-mapping.md` には基準と評価器の対応、決定理由が記載されている。ここでステップ4の指示はまだ読まないでください。
+
+---
+
+### ステップ4: データセットを作成する
+
+> **参照**: 詳細なサブステップのために `references/4-build-dataset.md` を読みます。
+
+**目標**: すべてを結びつけるテストシナリオを作成する — Runnable（ステップ2）、評価器（ステップ3）、ユースケース（ステップ1c）。各データセット項目は、アプリに何を送るか、アプリが外部サービスからどのデータを見られるか、結果の採点方法を定義します。データ形状とフィールド名の真実ソースとしてステップ2の参照トレースを使います。`pixie_qa/00-project-analysis.md` の機能一覧から項目を網羅し、そこにある失敗モードを狙った項目も含めてください。**プロジェクト自身のテストフィクスチャ、モックサーバー、サンプルデータをデータセット `eval_input` の内容として使わないでください** — 実世界のデータをソースにしてください。アプリ内の**すべての `wrap(purpose="input")`** は各項目の `eval_input` に事前に取得した内容を持つ必要があります — アプリに入力ラップがある場合でも、`eval_input` を空のままにしないでください。
+
+> **チェックポイント**: `pixie_qa/datasets/<name>.json` に作成されたデータセットJSONは、多様な項目を含み、すべてのユースケースをカバーしている。**データセットの現実性監査に合格** — 項目は代表的な規模の実世界データを使っており、プロジェクトのテストフィクスチャ汚染がなく、少なくとも1項目は結果が不確実な失敗モードを対象としており、すべての `eval_input` には入力ラップごとの取得済み内容がある。ここでステップ5の指示はまだ読まないでください。
+
+---
+
+### ステップ5: `pixie test` を実行して機械的な問題を修正する
+
+> **参照**: 詳細なサブステップのために `references/5-run-tests.md` を読みます。
+
+**目標**: フルパイプラインをエンドツーエンドで実行し、正常に動作させます。これはpixie QAコンポーネント（データセット、Runnable、カスタム評価器）のセットアップとデータの問題を修正する段階であり、**アプリ本体や結果の品質評価を修正する段階ではありません**。`pixie test` がエラーなく完了し、すべての項目に実際の評価器スコアが出れば、このステップは完了です。
+
+> **チェックポイント**: `pixie test` が正常に完了する。すべてのデータセット項目に評価器スコア（実際の `EvaluationResult` または `PendingEvaluation`）がある。セットアップエラー、インポート失敗、データ検証エラーがない。
 >
-> If the test errors out, that's a mechanical bug in your QA components — fix and re-run. But once tests produce scores, move on. Do NOT assess result quality here — that's Step 6.
+> テストがエラーで終了した場合、それはQAコンポーネントの機械的なバグです — 修正して再実行してください。ただし、テストがスコアを出したら、その後に進みます。ここで結果の品質を評価してはいけません — それはステップ6です。
 
-**Always proceed to Step 6 after tests produce scores.** Analysis is the essential final step — without it, pending evaluations are never completed and the user gets uninterpreted raw scores with no actionable insights. Do NOT stop here and ask the user whether to continue.
+**スコアが出たら必ずステップ6へ進んでください。** 分析は重要な最終段階です — これがないと、保留中の評価は完了せず、ユーザーには解釈のない生のスコアだけが渡され、実行可能な示唆も得られません。ここで止まってユーザーに続行するかどうかを確認しないでください。
 
-**Cycle rule for iterative runs**: Every successful `pixie test` invocation creates a concrete `pixie_qa/results/<test_id>` directory and starts a new analysis cycle. Before you edit application code, prompts, datasets, evaluators, or rerun `pixie test`, complete Step 6 for that exact results directory. Do not skip earlier cycles and analyze only the last run.
-
----
-
-### Step 6: Analyze outcomes
-
-> **Reference**: Read `references/6-analyze-outcomes.md` now — it has the complete three-phase analysis process, writing guidelines, and output format requirements.
-
-**Goal**: Analyze `pixie test` results in a structured, data-driven process to produce actionable insights on test case quality, evaluator quality, and application quality. This step completes pending evaluations, writes per-entry and per-dataset analysis, and produces a prioritized action plan. Every statement must be backed by concrete data from the evaluation run — no speculation, no hand-waving.
-
-**Persisted analysis artifacts**: In this trimmed workflow, persist analysis only at the dataset level and test-run level. Those artifacts still use a **detailed version** (for agent consumption: data points, evidence trails, reasoning chains) plus a **summary version** (for human review: concise TLDR readable in under 2 minutes). Do not create per-entry analysis files.
-
-**Hard completion gate**: Step 6 is **not complete** until all of the following are true:
-
-- Every `"status": "pending"` entry in every `pixie_qa/results/<test_id>/dataset-*/entry-*/evaluations.jsonl` has been replaced with a scored result containing `score` and `reasoning`.
-- Every dataset directory has `analysis.md` and `analysis-summary.md`.
-- The test run root has `action-plan.md` and `action-plan-summary.md`.
-- You have run the Step 6 verifier script from this skill's `resources/` directory against `pixie_qa/results/<test_id>`, and it reports success.
-
-**Explicitly not sufficient**:
-
-- Writing a single top-level file such as `pixie_qa/06-analysis.md`
-- Saying pending evaluations are for the user to review in the web UI
-- Saying an entry "likely passes" without updating `evaluations.jsonl`
+**反復実行のサイクル規則**: 成功した `pixie test` 実行のたびに、具体的な `pixie_qa/results/<test_id>` ディレクトリが作られ、新しい分析サイクルが始まります。アプリコード、プロンプト、データセット、評価器を編集したり、`pixie test` を再実行する前に、その正確な結果ディレクトリに対してステップ6を完了させてください。前のサイクルをスキップして最後の実行だけを分析してはいけません。
 
 ---
 
-## Web Server Management
+### ステップ6: 結果を分析する
 
-pixie-qa runs a web server in the background for displaying context, traces, and eval results to the user. It's automatically started by the setup script (via `pixie start`, which launches a detached background process and returns immediately).
+> **参照**: `references/6-analyze-outcomes.md` を読みます — ここには完全な3フェーズ分析プロセス、書き方ガイド、出力形式の要件が含まれています。
 
-When the user is done with the eval-driven-dev workflow, inform them the web server is still running and you can clean it up with:
+**目標**: `pixie test` の結果を、データ駆動の構造化プロセスで分析し、テストケースの品質、評価器の品質、アプリの品質について実行可能な示唆を出します。このステップで保留中の評価を完了し、項目別とデータセット別の分析を記録し、優先度の高いアクション計画を作成します。すべての記述は評価実行から得られた具体的なデータに基づいていなければなりません — 推測や大まかな説明は不可です。
+
+**永続化される分析成果物**: この簡略化されたワークフローでは、分析成果物はデータセットレベルとテスト実行レベルのみを保持します。これらの成果物は依然として**詳細版**（エージェント向け: データポイント、根拠の軌跡、推論の連鎖）と**要約版**（人間向け: 2分以内で読める簡潔なTL;DR）を持ちます。項目ごとの分析ファイルは作成しません。
+
+**完了ゲート**: ステップ6は、次のすべてが成り立つまで**完了ではありません**:
+
+- すべての `"status": "pending"` 項目が、`pixie_qa/results/<test_id>/dataset-*/entry-*/evaluations.jsonl` 内の評価結果に置き換わり、`score` と `reasoning` が含まれていること。
+- すべてのデータセットディレクトリに `analysis.md` と `analysis-summary.md` が存在すること。
+- テスト実行ルートに `action-plan.md` と `action-plan-summary.md` が存在すること。
+- このスキルの `resources/` ディレクトリから Step 6 検証スクリプトを `pixie_qa/results/<test_id>` に対して実行し、成功と報告されること。
+
+**十分ではない明示的な例**:
+
+- `pixie_qa/06-analysis.md` のような単一のトップレベルファイルを書くこと
+- Web UI でユーザーに保留中の評価を見てもらうと説明すること
+- エントリが「たぶん合格している」と言うだけで、`evaluations.jsonl` を更新しないこと
+
+---
+
+## Webサーバーの管理
+
+pixie-qa は、コンテキスト、トレース、eval結果をユーザーに表示するために、バックグラウンドでWebサーバーを実行します。これは setup.sh スクリプトによって自動的に起動されます（`pixie start` を経由し、切り離されたバックグラウンドプロセスを起動してすぐ戻ります）。
+
+eval-driven-dev ワークフローが終了したら、Webサーバーはまだ実行中であることをユーザーに伝え、次のコマンドでクリーンアップできると案内してください:
 
 ```bash
 pixie stop
 ```
 
-IMPORTANT: after the web server is stopped, the web UI becomes inaccessible. So only stop the server if the user confirms they're done with all web UI features. If they want to keep using the web UI, do NOT stop the server.
+重要: Webサーバーを停止した後は、Web UI にはアクセスできなくなります。したがって、すべてのWeb UI機能を使い終わったことをユーザーが確認した場合にのみサーバーを停止してください。Web UI を引き続き使いたい場合は、サーバーを停止しないでください。
 
-And whenever you restart the workflow, always run the setup.sh script in resources again to ensure the web server is running:
+そして、ワークフローを再開するたびに、Webサーバーが動作していることを確認するために、resources の setup.sh スクリプトをもう一度実行してください:

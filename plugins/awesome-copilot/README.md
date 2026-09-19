@@ -1,20 +1,20 @@
-# Awesome Copilot Plugin
+# Awesome Copilot プラグイン
 
-Meta prompts that help you discover and generate curated GitHub Copilot agents, collections, instructions, prompts, and skills.
+厳選された GitHub Copilot の agents、collections、instructions、prompts、skills を見つけて生成するためのメタプロンプトです。
 
-## Installation
+## インストール
 
 ```bash
 # Using Copilot CLI
 copilot plugin install awesome-copilot@awesome-copilot
 ```
 
-## Prerequisites
+## 前提条件
 
 - [Docker](https://www.docker.com/) must be installed and available on your `PATH`.
 - The plugin starts its bundled MCP server by running `docker run ... ghcr.io/microsoft/mcp-dotnet-samples/awesome-copilot:latest`.
 
-## What's Included
+## 含まれるもの
 
 ### Commands (Slash Commands)
 
@@ -33,12 +33,12 @@ copilot plugin install awesome-copilot@awesome-copilot
 
 ### MCP server
 
-This plugin includes the `awesome-copilot` MCP server configured in [`./mcp.json`](./mcp.json). If Docker is unavailable, MCP startup will fail.
+このプラグインには [`./mcp.json`](./mcp.json) で構成された `awesome-copilot` MCP server が含まれます。Docker を利用できない場合、MCP の起動に失敗します。
 
-## Source
+## ソース
 
-This plugin is part of [Awesome Copilot](https://github.com/github/awesome-copilot), a community-driven collection of GitHub Copilot extensions.
+このプラグインは、コミュニティ主導の GitHub Copilot 拡張機能コレクションである [Awesome Copilot](https://github.com/github/awesome-copilot) の一部です。
 
-## License
+## ライセンス
 
 MIT

@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "typespec-m365-copilot",
-  "description": "Comprehensive collection of prompts, instructions, and resources for building declarative agents and API plugins using TypeSpec for Microsoft 365 Copilot extensibility.",
+  "description": "Microsoft 365 Copilotの拡張機能向けに、TypeSpecを使って宣言型エージェントとAPIプラグインを構築するためのプロンプト、指示、リソースの総合コレクションです。",
   "version": "1.0.0",
   "author": {
     "name": "Awesome Copilot Community"

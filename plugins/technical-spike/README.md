@@ -1,8 +1,8 @@
 # Technical Spike Plugin
 
-Tools for creation, management and research of technical spikes to reduce unknowns and assumptions before proceeding to specification and implementation of solutions.
+ソリューションの仕様策定と実装へ進む前に、不明点や仮定を減らすための技術スパイクを作成、管理、調査するツールです。
 
-## Installation
+## インストール
 
 ```bash
 # Using Copilot CLI

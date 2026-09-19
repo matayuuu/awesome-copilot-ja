@@ -1,31 +1,31 @@
 ---
 name: conventional-commit
-description: 'Prompt and workflow for generating conventional commit messages using a structured XML format. Guides users to create standardized, descriptive commit messages in line with the Conventional Commits specification, including instructions, examples, and validation.'
+description: '構造化されたXML形式を使用してConventional Commitメッセージを生成するためのプロンプトとワークフロー。手順、例、検証を含め、Conventional Commits仕様に沿った標準的で説明的なコミットメッセージの作成を支援する。'
 ---
 
-### Instructions
+### 手順
 
 ```xml
 	<description>This file contains a prompt template for generating conventional commit messages. It provides instructions, examples, and formatting guidelines to help users write standardized, descriptive commit messages in accordance with the Conventional Commits specification.</description>
 ```
 
-### Workflow
+### ワークフロー
 
-**Follow these steps:**
+**次の手順に従ってください:**
 
-1. Run `git status` to review changed files.
-2. Run `git diff` or `git diff --cached` to inspect changes.
-3. Stage your changes with `git add <file>`.
-4. Construct your commit message using the following XML structure.
-5. After generating your commit message, Copilot will automatically run the following command in your integrated terminal (no confirmation needed):
+1. `git status`を実行して変更されたファイルを確認する。
+2. `git diff`または`git diff --cached`を実行して変更内容を調べる。
+3. `git add <file>`で変更をステージする。
+4. 次のXML構造を使用してコミットメッセージを組み立てる。
+5. コミットメッセージの生成後、Copilotは統合ターミナルで次のコマンドを自動実行する（確認不要）:
 
 ```bash
 git commit -m "type(scope): description"
 ```
 
-6. Just execute this prompt and Copilot will handle the commit for you in the terminal.
+6. このプロンプトを実行するだけで、Copilotがターミナルでコミットを処理する。
 
-### Commit Message Structure
+### コミットメッセージの構造
 
 ```xml
 <commit-message>
@@ -37,7 +37,7 @@ git commit -m "type(scope): description"
 </commit-message>
 ```
 
-### Examples
+### 例
 
 ```xml
 <examples>
@@ -50,7 +50,7 @@ git commit -m "type(scope): description"
 </examples>
 ```
 
-### Validation
+### 検証
 
 ```xml
 <validation>
@@ -62,7 +62,7 @@ git commit -m "type(scope): description"
 </validation>
 ```
 
-### Final Step
+### 最終ステップ
 
 ```xml
 <final-step>

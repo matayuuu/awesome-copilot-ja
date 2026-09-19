@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "release-notes-showcase",
-  "description": "Compose and refine launch-ready release notes with contributor callouts and export-friendly output.",
+  "description": "貢献者への謝辞とエクスポートしやすい出力を備えた、公開準備済みリリースノートを作成・推敲します。",
   "version": "1.0.2",
   "author": {
     "name": "Kayla Cinnamon",

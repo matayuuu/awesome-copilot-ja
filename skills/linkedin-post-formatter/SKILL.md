@@ -1,25 +1,25 @@
 ---
 name: linkedin-post-formatter
-description: 'Format and draft compelling LinkedIn posts using Unicode bold/italic styling, visual separators, structured sections, and engagement-optimized patterns. USE FOR: draft LinkedIn post, format text for LinkedIn, create social media post, write thought leadership post, convert content to LinkedIn format, LinkedIn carousel text, Unicode bold italic formatting.'
+description: 'Unicodeの太字/斜体、視覚的な区切り、構造化されたセクション、エンゲージメントに最適化したパターンを使い、魅力的なLinkedIn投稿を整形・下書きする。LinkedIn投稿の下書き、LinkedIn向けのテキスト整形、ソーシャルメディア投稿の作成、ソートリーダーシップ投稿、LinkedIn形式への変換、LinkedInカルーセル文、Unicodeの太字斜体整形に使う。'
 ---
 
-# LinkedIn Post Formatter
+# LinkedIn投稿フォーマッター
 
-Transform raw content, ideas, or technical material into polished, engagement-optimized LinkedIn posts using Unicode typography and proven structural patterns.
+Unicodeタイポグラフィと実績のある構成パターンを使い、素材のコンテンツ、アイデア、技術資料を洗練されたエンゲージメント最適化済みのLinkedIn投稿に変換する。
 
-## Overview
+## 概要
 
-LinkedIn only supports plain text — no Markdown rendering, no rich formatting. This skill uses Unicode Mathematical Alphanumeric Symbols to simulate bold, italic, and bold-italic text that renders natively in the LinkedIn editor without any external tools.
+LinkedInはプレーンテキストのみをサポートし、Markdownのレンダリングやリッチフォーマットには対応しない。このSkillはUnicode Mathematical Alphanumeric Symbolsを使い、外部ツールなしでLinkedInエディターにネイティブ表示される太字、斜体、太字斜体のテキストを再現する。
 
-## Unicode Typography Reference
+## Unicodeタイポグラフィリファレンス
 
-When converting plain text into Unicode-styled LinkedIn text, first load and use `references/unicode-charmap.md` as the authoritative character mapping reference.
+プレーンテキストをUnicodeスタイルのLinkedInテキストへ変換するときは、まず`references/unicode-charmap.md`を文字マッピングの正本として読み込み、使う。
 
-Apply these character mappings to create visual emphasis in plain text:
+次の文字マッピングをプレーンテキストに適用して、視覚的な強調を作る。
 
-### Bold (Mathematical Sans-Serif Bold)
+### 太字（Mathematical Sans-Serif Bold）
 
-Use bold for key phrases, section headers, and emphasis words.
+重要なフレーズ、セクション見出し、強調語に太字を使う。
 
 | Plain | Unicode Bold |
 |-------|-------------|
@@ -27,37 +27,37 @@ Use bold for key phrases, section headers, and emphasis words.
 | a-z   | 𝗮-𝘇         |
 | 0-9   | 𝟬-𝟵         |
 
-### Italic (Mathematical Sans-Serif Italic)
+### 斜体（Mathematical Sans-Serif Italic）
 
-Use italic for subtle emphasis, technical terms, or quotes.
+控えめな強調、技術用語、引用に斜体を使う。
 
 | Plain | Unicode Italic |
 |-------|---------------|
 | A-Z   | 𝘈-𝘡           |
 | a-z   | 𝘢-𝘻           |
 
-### Bold-Italic (Mathematical Sans-Serif Bold Italic)
+### 太字斜体（Mathematical Sans-Serif Bold Italic）
 
-Use sparingly for maximum emphasis.
+最大限の強調が必要な場合に、控えめに使う。
 
 | Plain | Unicode Bold-Italic |
 |-------|-------------------|
 | A-Z   | 𝘼-𝙕               |
 | a-z   | 𝙖-𝙯               |
 
-## Visual Separators
+## 視覚的な区切り
 
-Use these characters to create visual structure:
+次の文字を使って視覚的な構造を作る。
 
-- **Section divider**: `━━━━━━━━━━━━━━━━━━━━━━` (box-drawing heavy horizontal)
-- **Bullet points**: `◈` (diamond with dot) or `◎` (bullseye)
-- **Arrow flow**: `↓` for vertical flow, `→` for horizontal continuation
-- **Sub-points**: `↳` for indented sub-items
-- **Numbered items**: Use bold Unicode digits `𝟭. 𝟮. 𝟯.` etc.
+- **セクション区切り**: `━━━━━━━━━━━━━━━━━━━━━━`（太い罫線）
+- **箇条書き**: `◈`（点付きひし形）または`◎`（二重丸）
+- **矢印の流れ**: 縦方向の流れには`↓`、横方向の継続には`→`
+- **サブ項目**: インデントした項目には`↳`
+- **番号付き項目**: 太字のUnicode数字`𝟭. 𝟮. 𝟯.`などを使う。
 
-## Post Structure Patterns
+## 投稿構成のパターン
 
-### Pattern 1: Hook → Content → CTA (General Purpose)
+### パターン1: フック → 内容 → CTA（汎用）
 
 ```
 [Bold hook line — provocative statement or question]
@@ -78,7 +78,7 @@ Use these characters to create visual structure:
 #Hashtags
 ```
 
-### Pattern 2: Listicle (Numbered Insights)
+### パターン2: リスト形式（番号付きの洞察）
 
 ```
 [Bold opening line with a strong claim]
@@ -98,7 +98,7 @@ Use these characters to create visual structure:
 #Hashtags
 ```
 
-### Pattern 3: Story → Lesson (Thought Leadership)
+### パターン3: ストーリー → 学び（ソートリーダーシップ）
 
 ```
 [Italic opening with a personal or observed moment]
@@ -116,7 +116,7 @@ Use these characters to create visual structure:
 #Hashtags
 ```
 
-### Pattern 4: Resource Share (Cheatsheet/Guide/Tool)
+### パターン4: リソース共有（チートシート/ガイド/ツール）
 
 ```
 [Hook: "If you do X, you cannot miss this..."]
@@ -140,32 +140,32 @@ Use these characters to create visual structure:
 #Hashtags
 ```
 
-## Formatting Rules
+## 整形ルール
 
-1. **Line breaks matter**: LinkedIn collapses multiple blank lines. Use single blank lines between paragraphs.
-2. **Hook above the fold**: The first 2-3 lines must compel the reader to click "see more." Front-load value.
-3. **Short paragraphs**: 1-3 sentences max per paragraph. Wall of text kills engagement.
-4. **Bold sparingly**: Bold key phrases and headers, not entire paragraphs.
-5. **Italic for nuance**: Use italic for technical terms, internal thoughts, or subtle emphasis.
-6. **Hashtags at the end**: 5-8 relevant hashtags on the last line. No mid-post hashtags.
-7. **No emojis in body** unless the user explicitly requests them. Exception: one strategic emoji in CTA (♻️ for repost).
-8. **Character limit**: LinkedIn posts can be up to 3000 characters. Aim for 1500-2500 for optimal engagement.
-9. **No URLs in body**: LinkedIn suppresses reach for posts with links. Add links in comments instead. Mention "link in comments" or "grab it below" as CTA.
+1. **改行が重要:** LinkedInは複数の空行をまとめる。段落間には空行を1つだけ使う。
+2. **ファーストビューにフック:** 最初の2〜3行で読者が「さらに表示」をクリックしたくなるようにする。価値を前方に置く。
+3. **短い段落:** 1段落は最大1〜3文。文章の壁はエンゲージメントを失わせる。
+4. **太字は控えめに:** 段落全体ではなく、重要なフレーズと見出しを太字にする。
+5. **ニュアンスには斜体:** 技術用語、内心、控えめな強調に斜体を使う。
+6. **ハッシュタグは末尾:** 最終行に関連するハッシュタグを5〜8個置く。投稿途中には置かない。
+7. **本文に絵文字を入れない:** ユーザーが明示的に求めた場合を除く。例外として、CTAには戦略的な絵文字を1つ使える（再投稿を示す♻️）。
+8. **文字数制限:** LinkedIn投稿は最大3000文字。最適なエンゲージメントのため1500〜2500文字を目指す。
+9. **本文にURLを入れない:** LinkedInはリンクを含む投稿のリーチを抑制する。代わりにコメントへリンクを追加する。「コメントにリンク」や「下から取得」をCTAで伝える。
 
-## Engagement Optimization
+## エンゲージメントの最適化
 
-- **Opening hooks that work**: Questions, bold claims, "If you do X...", contrarian takes, surprising stats.
-- **Closing CTAs that work**: "♻️ 𝗥𝗲𝗽𝗼𝘀𝘁 if...", "Save this for later", "Tag someone who needs this", "What's your take? 👇"
-- **Whitespace is your friend**: Dense text gets scrolled past. Airy, scannable layout wins.
-- **The "see more" hook**: LinkedIn truncates posts after ~210 characters on desktop. Make sure the first 2 lines create enough curiosity to click.
+- **効果的な冒頭フック:** 質問、強い主張、「Xをするなら…」、逆張りの見解、意外な統計。
+- **効果的な締めのCTA:** 「♻️ 𝗥𝗲𝗽𝗼𝘀𝘁 if...」、「後で見るために保存」、「必要な人をタグ付け」、「あなたはどう思う？ 👇」
+- **余白を味方にする:** 密集した文章は読み飛ばされる。余裕があり、ざっと読めるレイアウトが効果的である。
+- **「さらに表示」フック:** LinkedInはデスクトップで約210文字を超えると投稿を省略する。最初の2行でクリックしたくなる十分な好奇心を生む。
 
-## Process
+## プロセス
 
-1. Analyze the source content (text, HTML, image, or idea).
-2. Identify the best post structure pattern (Hook→Content→CTA, Listicle, Story→Lesson, Resource Share).
-3. Extract the core message and 3-5 key points.
-4. Apply Unicode bold/italic formatting to headers and emphasis words using `references/unicode-charmap.md`.
-5. Add visual separators between sections.
-6. Write a compelling hook for the opening.
-7. Add a CTA and hashtags at the end.
-8. Verify the post is copy-paste ready for LinkedIn.
+1. 元のコンテンツ（テキスト、HTML、画像、アイデア）を分析する。
+2. 最適な投稿構成パターン（フック→内容→CTA、リスト形式、ストーリー→学び、リソース共有）を特定する。
+3. 中核メッセージと3〜5個の重要ポイントを抽出する。
+4. `references/unicode-charmap.md`を使い、見出しと強調語にUnicodeの太字/斜体整形を適用する。
+5. セクション間に視覚的な区切りを追加する。
+6. 冒頭に魅力的なフックを書く。
+7. 末尾にCTAとハッシュタグを追加する。
+8. 投稿がLinkedInにコピー＆ペーストできる状態であることを確認する。

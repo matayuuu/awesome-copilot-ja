@@ -1,6 +1,6 @@
 ---
 name: playwright-automation-fill-in-form
-description: 'Automate filling in a form using Playwright MCP'
+description: 'playwright-automation-fill-in-form に関する作業を支援する Skill です。対象のファイルや設定を確認し、必要な手順、検証方法、注意点を案内します。対象技術の調査、実装、運用、トラブルシューティングに使用します。'
 ---
 
 # Automating Filling in a Form with Playwright MCP
@@ -23,6 +23,6 @@ Navigate to https://forms.microsoft.com/url-of-my-form
 
 5. Upload image: /Users/myuserName/Downloads/my-image.png
 
-DO NOT SUBMIT THE FORM. 
+DO NOT SUBMIT THE FORM.
 
 Ask for a review of the form before submitting it.

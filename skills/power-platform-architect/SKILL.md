@@ -1,6 +1,6 @@
 ---
 name: power-platform-architect
-description: Use this skill when the user needs to transform business requirements, use case descriptions, or meeting transcripts into a technical Power Platform solution architecture, including component selection and Mermaid.js diagrams.
+description: 'power-platform-architect に関する作業を支援する Skill です。対象のファイルや設定を確認し、必要な手順、検証方法、注意点を案内します。対象技術の調査、実装、運用、トラブルシューティングに使用します。'
 license: MIT
 metadata:
   author: Tim Hanewich
@@ -85,7 +85,7 @@ If the user is *not* available (or refuses to answer), give it your best guess b
 ### PHASE 3: Component Recommendation
 Next, you will review what information you have about the use case, both what was originally provided and what information you now have after asking your follow up questions.
 
-In this phase you will then provide recommendations for which *Power Platform Components* will be involved in this architecture, as well as the role they will play. 
+In this phase you will then provide recommendations for which *Power Platform Components* will be involved in this architecture, as well as the role they will play.
 
 Note: the goal is *not* to just include as many as possible. The goal is to provide a functional architecture. Each component you select must play a true role with a unique purpose.
 
@@ -116,12 +116,12 @@ graph LR
     AzurePortal[Azure Container Apps<br/>Portal]
     Dataverse[(Dataverse<br/>Database)]
     PowerApp[Power App<br/>Candidate Hub]
-    
+
     %% Automation & AI
     PA_Val[Power Automate<br/>Validation]
     PA_Eval[Power Automate<br/>Candidate Evaluation]
     Foundry[Foundry<br/>AI Models]
-    
+
     %% Communication
     Outlook[Outlook<br/>Follow Up Request]
 
@@ -131,12 +131,12 @@ graph LR
     Dataverse <--> PowerApp
     Dataverse <--> PA_Val
     Dataverse <--> PA_Eval
-    
+
     PA_Val --> Outlook
     Outlook -.->|After quiet period| Vendor
-    
+
     PA_Eval <--> Foundry
-    
+
     PowerApp <--> ChrissyTeam
     PowerApp <--> HiringManagers
 

@@ -1,33 +1,32 @@
 ---
 name: screen-recording
-description: 'Create annotated animated GIF demos and screen recordings for pull requests and documentation. Covers frame capture, timing, imageio-based GIF creation, and per-frame annotation workflows.'
+description: 'pull requestやdocumentation向けに、annotation付きanimated GIF demoとscreen recordingを作成します。frame capture、timing、imageioベースのGIF作成、frameごとのannotation workflowを扱います。'
 ---
+# 画面録画
 
-# Screen Recording
+featureやworkflowの動作を示す、annotation、可変timing、適切なpacingを備えたanimated GIF demoを作成します。PR description、documentation、release noteに役立ちます。
 
-Create animated GIF demos that show a feature or workflow in action — with annotations, variable timing, and proper pacing. Useful for PR descriptions, documentation, and release notes.
+## このSkillを使う場面
 
-## When to Use This Skill
+次の作業が必要なときにこのSkillを使います。
 
-Use this skill when you need to:
+- 複数stepのUI interactionをanimated GIFとして記録する
+- before/after behaviorを示すdemoを作成する
+- documentationやrelease note用のannotation付きwalkthroughを作る
+- bugの再現や修正の動作を示す
 
-- Record a multi-step UI interaction as an animated GIF
-- Create a demo showing before/after behavior
-- Build annotated walkthroughs for documentation or release notes
-- Show a bug reproduction or fix in action
-
-## Prerequisites
+## 前提条件
 
 ```bash
 pip install playwright Pillow imageio numpy scipy mss -q
 playwright install chromium
 ```
 
-## Core Workflow
+## 基本Workflow
 
-### 1. Capture frames
+### 1. frameを取得する
 
-Use Playwright to step through the interaction and capture each frame:
+Playwrightでinteractionを順に実行し、各frameを取得します。
 
 ```python
 from playwright.async_api import async_playwright
@@ -51,9 +50,9 @@ async def record_frames(url, steps, width=1400, height=900):
         await browser.close()
 ```
 
-### 2. Assemble GIF with imageio
+### 2. imageioでGIFを組み立てる
 
-**Use imageio, not PIL, for GIF writing** — PIL's GIF encoder merges visually similar frames, which kills animations.
+**GIFの書き出しにはPILではなくimageioを使います** — PILのGIF encoderは見た目が似たframeを統合し、animationを壊します。
 
 ```python
 import imageio.v3 as iio
@@ -71,19 +70,19 @@ for frame_path, duration_ms in frame_list:
 iio.imwrite("demo.gif", frames, duration=durations, loop=0)
 ```
 
-### 3. Variable frame timing
+### 3. frame timingを可変にする
 
-Uniform timing makes everything feel either too fast or too slow. Use variable durations:
+均一なtimingでは、すべてが速すぎるか遅すぎるように感じられます。可変durationを使います。
 
-| Phase | Duration | Why |
+| 段階 | 期間 | 理由 |
 |-------|----------|-----|
-| Fast action (typing, clicking) | 100ms | Feels natural, keeps energy |
-| Pause after action | 600-800ms | Let the viewer process what happened |
-| Hero/final message | 500ms+ | Main takeaway needs time to land |
+| 高速な操作（typing、clicking） | 100ms | 自然に感じられ、勢いを保てる |
+| 操作後のpause | 600-800ms | viewerが起きたことを理解する時間を確保 |
+| 主役となる最終メッセージ | 500ms以上 | main takeawayが伝わる時間を確保 |
 
-### 4. Annotate frames
+### 4. frameにannotationを付ける
 
-Apply annotations to specific frames using the `image-annotations` skill:
+`image-annotations` skillを使って特定のframeにannotationを適用します。
 
 ```python
 from PIL import Image, ImageDraw, ImageFont
@@ -99,9 +98,9 @@ def annotate_frame(frame_path, annotations, out_path):
     img.save(out_path)
 ```
 
-### 5. Fade-in annotations
+### 5. annotationをfade-inする
 
-For smooth annotation appearance:
+annotationを滑らかに表示するには次を使います。
 
 ```python
 def apply_fade(base_frame, annotation_layer, alpha):
@@ -120,15 +119,15 @@ faded_frames = [
 ]
 ```
 
-At 10fps, use 2 fade frames (0.2s total). At 30fps, use 3-4 frames. Easing curves look bad at low FPS — simple pop-in is snappier and more readable.
+10fpsでは2つのfade frame（合計0.2s）を使います。30fpsでは3-4 frameを使います。低FPSではeasing curveの見た目が悪くなるため、simple pop-inの方が素早く読みやすくなります。
 
-## Build as a Script
+## scriptとして構築する
 
-The annotation logic gets complex for anything beyond trivial demos. Write a dedicated script (e.g., `annotate_gif.py`) with functions instead of inline code. You'll iterate on timing and placement.
+単純なdemoを超えるとannotation logicは複雑になります。inline codeではなく、functionを持つ専用script（例: `annotate_gif.py`）を書きます。timingと配置を反復調整できます。
 
-## Testing Animations
+## Animationのテスト
 
-**Always test in isolation first** — don't rebuild the full demo to test a fade tweak:
+**必ず最初に単独でテストします** — fadeの微調整を試すためにfull demoを再構築しないでください。
 
 ```python
 # Small test GIF: 10 bare frames → fade frames → 15 hold frames
@@ -137,9 +136,9 @@ draw.text((10, height - 30), f"F{i}/{total} a={alpha:.0%} FADE",
           fill="white", font=small_font)
 ```
 
-## Desktop Screen Recording (mss)
+## desktop screen recording（mss）
 
-For recording desktop apps, terminals, or anything outside a browser. Uses `mss` for fast screen capture.
+desktop app、terminal、browser外の対象を記録します。高速なscreen captureには`mss`を使います。
 
 ```python
 import mss
@@ -167,11 +166,11 @@ def record_gif(output_path, region=None, duration=5, fps=8):
 record_gif('demo.gif', region={'left': 0, 'top': 0, 'width': 800, 'height': 500}, duration=3)
 ```
 
-Tested: 3s at 8fps → 24 frames, ~31KB. Keep fps ≤ 10 for reasonable file sizes.
+検証結果: 8fpsで3秒の場合は24 frame、約31KBです。妥当なfile sizeにするためfpsは10以下にします。
 
-**Note:** `PIL.save(save_all=True)` works for simple recordings but merges visually similar frames. For annotated GIFs with fade effects, use `imageio.v3.imwrite` instead.
+**注意:** `PIL.save(save_all=True)`は単純なrecordingでは動作しますが、見た目が似たframeを統合します。fade effect付きのannotation GIFには代わりに`imageio.v3.imwrite`を使います。
 
-### Combining with window capture
+### window captureと組み合わせる
 
 ```python
 # Find window rect, then record it as a GIF
@@ -190,9 +189,9 @@ region = {'left': rect.left, 'top': rect.top,
 record_gif('app-demo.gif', region=region, duration=5, fps=8)
 ```
 
-## Diff-Based Cluster Detection
+## 差分ベースのcluster検出
 
-Programmatically find changed regions between frames to decide what to annotate:
+frame間の変更領域をprogrammaticallyに見つけ、annotation対象を決めます。
 
 ```python
 import numpy as np
@@ -213,26 +212,26 @@ def find_changed_clusters(frame_a, frame_b, threshold=30, min_pixels=300, dilate
     return sorted(clusters, key=lambda c: -c[4])  # largest first
 ```
 
-## Format Compatibility
+## formatの互換性
 
-| Format | VS Code Preview | GitHub | Browser |
+| format | VS Code Preview | GitHub | Browser（ブラウザー） |
 |--------|----------------|--------|---------|
-| GIF | ✅ Animates | ✅ | ✅ |
-| WebP | ⚠️ Static only | ✅ | ✅ |
-| MP4 | ❌ Broken | ⚠️ | ✅ |
+| GIF | ✅ animation対応 | ✅ | ✅ |
+| WebP | ⚠️ staticのみ | ✅ | ✅ |
+| MP4 | ❌ 非対応 | ⚠️ | ✅ |
 
-**GIF is the only universally supported animated format** across VS Code preview, GitHub markdown, and browsers.
+**GIFはVS Code preview、GitHub markdown、browserで普遍的に対応される唯一のanimated formatです**。
 
-## Guidelines
+## ガイドライン
 
-1. **Type → pause → annotate** — during fast action, show NO annotation. Pause first, then annotate
-2. **Hero message gets the biggest font** — 64pt+ for the main takeaway, 38pt for details
-3. **GIF palette does NOT kill gradients** — 20 distinct alpha steps survive 256-color palette
-4. **10fps minimum** for typing/interaction — lower looks stuttery
-5. **Build iteratively** — get the frame sequence right first, add annotations second, tune timing last
+1. **Type → pause → annotate** — fast action中はannotationを表示しない。まずpauseし、その後annotationを付ける
+2. **Hero messageは最大fontにする** — main takeawayは64pt以上、detailは38pt
+3. **GIF paletteはgradientを壊さない** — 20段階のalphaなら256-color paletteでも維持される
+4. typing/interactionは**最低10fps** — それ未満では動きがぎこちない
+5. **反復的に構築する** — 最初にframe sequence、次にannotation、最後にtimingを調整する
 
-## Limitations
+## 制限
 
-- GIF is limited to 256 colors per frame — fine for UI screenshots, may show banding on photographic content
-- Large GIFs (50+ frames at high resolution) can be several MB — consider cropping to the relevant area
-- No audio support in GIF — use MP4 for narrated demos (but lose VS Code preview support)
+- GIFはframeごとに256色に制限される — UI screenshotには適するが、写真ではbandingが出る場合がある
+- 高解像度で50+ frameのlarge GIFは数MBになることがある — relevant areaへのcropを検討する
+- GIFはaudioをサポートしない — narration付きdemoにはMP4を使う（ただしVS Code preview対応を失う）

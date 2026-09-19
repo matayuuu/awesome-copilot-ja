@@ -1,8 +1,8 @@
 # Pr Artifact Explorer Plugin
 
-Navigate pull requests and securely explore GitHub Actions artifacts, including test results, static sites, terminal recordings, and source files.
+プルリクエストを確認し、テスト結果、静的サイト、ターミナル録画、ソースファイルなどのGitHub Actions成果物を安全に探索します。
 
-## Installation
+## インストール
 
 ``bash
 copilot plugin install pr-artifact-explorer@awesome-copilot

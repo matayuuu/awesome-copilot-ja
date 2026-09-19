@@ -1,17 +1,17 @@
-# Java Modernization Studio Plugin
+# Java Modernization Studio プラグイン
 
-Drive the GitHub Copilot App Modernization for Java workflow from an interactive canvas: environment readiness, repo assessment, prioritized plan and progress, validation gates, and one-click predefined-task runs grounded in the repo's real artifacts.
+インタラクティブな canvas から GitHub Copilot App Modernization for Java ワークフローを操作します。環境の準備状況、リポジトリ評価、優先順位付き計画と進捗、検証ゲート、リポジトリの実際の成果物に基づく定義済みタスクのワンクリック実行を提供します。
 
-## Installation
+## インストール
 
 ``bash
 copilot plugin install java-modernization-studio@awesome-copilot
 ``
 
-## Source
+## ソース
 
-This plugin is part of [Awesome Copilot](https://github.com/github/awesome-copilot).
+このプラグインは [Awesome Copilot](https://github.com/github/awesome-copilot) の一部です。
 
-## License
+## ライセンス
 
 MIT

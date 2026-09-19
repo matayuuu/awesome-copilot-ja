@@ -1,8 +1,8 @@
 # TypeSpec for Microsoft 365 Copilot Plugin
 
-Comprehensive collection of prompts, instructions, and resources for building declarative agents and API plugins using TypeSpec for Microsoft 365 Copilot extensibility.
+Microsoft 365 Copilotの拡張機能向けに、TypeSpecを使って宣言型エージェントとAPIプラグインを構築するためのプロンプト、指示、リソースの総合コレクションです。
 
-## Installation
+## インストール
 
 ```bash
 # Using Copilot CLI

@@ -1,66 +1,66 @@
 ---
 name: breakdown-epic-arch
-description: 'Prompt for creating the high-level technical architecture for an Epic, based on a Product Requirements Document.'
+description: 'Product Requirements Document に基づいて、エピックの高レベルな技術アーキテクチャを作成するプロンプト。'
 ---
 
-# Epic Architecture Specification Prompt
+# エピックアーキテクチャ仕様プロンプト
 
-## Goal
+## 目的
 
-Act as a Senior Software Architect. Your task is to take an Epic PRD and create a high-level technical architecture specification. This document will guide the development of the epic, outlining the major components, features, and technical enablers required.
+Senior Software Architect として行動します。タスクは、Epic PRD を基に高レベルな技術アーキテクチャ仕様を作成することです。この文書は、必要な主要コンポーネント、機能、技術的イネーブラーを示し、エピックの開発を導きます。
 
-## Context Considerations
+## コンテキスト上の考慮事項
 
-- The Epic PRD from the Product Manager.
-- **Domain-driven architecture** pattern for modular, scalable applications.
-- **Self-hosted and SaaS deployment** requirements.
-- **Docker containerization** for all services.
-- **TypeScript/Next.js** stack with App Router.
-- **Turborepo monorepo** patterns.
-- **tRPC** for type-safe APIs.
-- **Stack Auth** for authentication.
+- Product Manager による Epic PRD。
+- モジュール型かつスケーラブルなアプリケーション向けの **Domain-driven architecture** パターン。
+- **Self-hosted and SaaS deployment** の要件。
+- すべてのサービスに対する **Docker containerization**。
+- App Router を備えた **TypeScript/Next.js** スタック。
+- **Turborepo monorepo** パターン。
+- 型安全な API のための **tRPC**。
+- 認証のための **Stack Auth**。
 
-**Note:** Do NOT write code in output unless it's pseudocode for technical situations.
+**注記:** 技術的な状況を表す疑似コード以外は、出力にコードを書かないでください。
 
-## Output Format
+## 出力形式
 
-The output should be a complete Epic Architecture Specification in Markdown format, saved to `/docs/ways-of-work/plan/{epic-name}/arch.md`.
+出力は完全な Epic Architecture Specification の Markdown 形式とし、`/docs/ways-of-work/plan/{epic-name}/arch.md` に保存します。
 
-### Specification Structure
+### 仕様の構成
 
-#### 1. Epic Architecture Overview
+#### 1. エピックアーキテクチャの概要
 
-- A brief summary of the technical approach for the epic.
+- エピックの技術的アプローチの簡潔な要約。
 
-#### 2. System Architecture Diagram
+#### 2. システムアーキテクチャ図
 
-Create a comprehensive Mermaid diagram that illustrates the complete system architecture for this epic. The diagram should include:
+このエピックの完全なシステムアーキテクチャを示す包括的な Mermaid 図を作成します。図には次を含めます。
 
-- **User Layer**: Show how different user types (web browsers, mobile apps, admin interfaces) interact with the system
-- **Application Layer**: Depict load balancers, application instances, and authentication services (Stack Auth)
-- **Service Layer**: Include tRPC APIs, background services, workflow engines (n8n), and any epic-specific services
-- **Data Layer**: Show databases (PostgreSQL), vector databases (Qdrant), caching layers (Redis), and external API integrations
-- **Infrastructure Layer**: Represent Docker containerization and deployment architecture
+- **User Layer**: 異なるユーザー種別（Web ブラウザー、モバイルアプリ、管理インターフェイス）がシステムとどのようにやり取りするかを示す
+- **Application Layer**: ロードバランサー、アプリケーションインスタンス、認証サービス（Stack Auth）を描く
+- **Service Layer**: tRPC API、バックグラウンドサービス、ワークフローエンジン（n8n）、およびエピック固有のサービスを含める
+- **Data Layer**: データベース（PostgreSQL）、ベクターデータベース（Qdrant）、キャッシュ層（Redis）、外部 API 統合を示す
+- **Infrastructure Layer**: Docker containerization とデプロイアーキテクチャを表す
 
-Use clear subgraphs to organize these layers, apply consistent color coding for different component types, and show the data flow between components. Include both synchronous request paths and asynchronous processing flows where relevant to the epic.
+明確なサブグラフでこれらの層を整理し、異なるコンポーネント種別には一貫した色分けを適用して、コンポーネント間のデータフローを示します。エピックに関連する同期リクエスト経路と非同期処理フローの両方を含めます。
 
-#### 3. High-Level Features & Technical Enablers
+#### 3. 高レベルの機能と技術的イネーブラー
 
-- A list of the high-level features to be built.
-- A list of technical enablers (e.g., new services, libraries, infrastructure) required to support the features.
+- 構築する高レベルな機能の一覧。
+- 機能を支えるために必要な技術的イネーブラー（例: 新しいサービス、ライブラリ、インフラストラクチャ）の一覧。
 
-#### 4. Technology Stack
+#### 4. テクノロジースタック
 
-- A list of the key technologies, frameworks, and libraries to be used.
+- 使用する主要なテクノロジー、フレームワーク、ライブラリの一覧。
 
-#### 5. Technical Value
+#### 5. 技術的価値
 
-- Estimate the technical value (e.g., High, Medium, Low) with a brief justification.
+- 簡潔な根拠とともに技術的価値（例: High、Medium、Low）を見積もります。
 
-#### 6. T-Shirt Size Estimate
+#### 6. T シャツサイズ見積もり
 
-- Provide a high-level t-shirt size estimate for the epic (e.g., S, M, L, XL).
+- エピックに対する高レベルな T シャツサイズ見積もり（例: S、M、L、XL）を示します。
 
-## Context Template
+## コンテキストテンプレート
 
-- **Epic PRD:** [The content of the Epic PRD markdown file]
+- **Epic PRD:** [Epic PRD Markdown ファイルの内容]

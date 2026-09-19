@@ -1,31 +1,31 @@
 ---
 name: git-flow-branch-creator
-description: 'Intelligent Git Flow branch creator that analyzes git status/diff and creates appropriate branches following the nvie Git Flow branching model.'
+description: 'git status/diff を分析して、nvie Git Flow のブランチモデルに沿って適切なブランチを作成する、インテリジェントな Git Flow ブランチ作成ツール。'
 ---
 
-### Instructions
+### ルール
 
 ```xml
 <instructions>
 	<title>Git Flow Branch Creator</title>
-	<description>This prompt analyzes your current git changes using git status and git diff (or git diff --cached), then intelligently determines the appropriate branch type according to the Git Flow branching model and creates a semantic branch name.</description>
+	<description>このプロンプトは、git status と git diff（または git diff --cached）を使って現在の git 変更を分析し、Git Flow ブランチモデルに従って適切なブランチ種別を判断し、意味のあるブランチ名を作成します。</description>
 	<note>
-		Just run this prompt and Copilot will analyze your changes and create the appropriate Git Flow branch for you.
+		このプロンプトを実行すると、Copilot が変更を分析して適切な Git Flow ブランチを自動的に作成します。
 	</note>
 </instructions>
 ```
 
-### Workflow
+### ワークフロー
 
-**Follow these steps:**
+**次の手順に従ってください:**
 
-1. Run `git status` to review the current repository state and changed files.
-2. Run `git diff` (for unstaged changes) or `git diff --cached` (for staged changes) to analyze the nature of changes.
-3. Analyze the changes using the Git Flow Branch Analysis Framework below.
-4. Determine the appropriate branch type based on the analysis.
-5. Generate a semantic branch name following Git Flow conventions.
-6. Create the branch and switch to it automatically.
-7. Provide a summary of the analysis and next steps.
+1. `git status` を実行して、現在のリポジトリ状態と変更ファイルを確認する。
+2. `git diff`（未ステージ変更用）または `git diff --cached`（ステージ済み変更用）を実行して、変更の性質を分析する。
+3. 下記の Git Flow Branch Analysis Framework を使って変更を分析する。
+4. 分析結果に基づいて適切なブランチ種別を決定する。
+5. Git Flow 規約に従って意味のあるブランチ名を生成する。
+6. ブランチを作成して自動的に切り替える。
+7. 分析結果と次のアクションの要約を提供する。
 
 ### Git Flow Branch Analysis Framework
 
@@ -33,53 +33,53 @@ description: 'Intelligent Git Flow branch creator that analyzes git status/diff 
 <analysis-framework>
 	<branch-types>
 		<feature>
-			<purpose>New features, enhancements, non-critical improvements</purpose>
+			<purpose>新機能、機能強化、重要でない改善</purpose>
 			<branch-from>develop</branch-from>
 			<merge-to>develop</merge-to>
-			<naming>feature/descriptive-name or feature/ticket-number-description</naming>
+			<naming>feature/descriptive-name または feature/ticket-number-description</naming>
 			<indicators>
-				<indicator>New functionality being added</indicator>
-				<indicator>UI/UX improvements</indicator>
-				<indicator>New API endpoints or methods</indicator>
-				<indicator>Database schema additions (non-breaking)</indicator>
-				<indicator>New configuration options</indicator>
-				<indicator>Performance improvements (non-critical)</indicator>
+				<indicator>新しい機能の追加</indicator>
+				<indicator>UI/UX の改善</indicator>
+				<indicator>新しい API エンドポイントやメソッド</indicator>
+				<indicator>データベーススキーマの追加（非破壊的）</indicator>
+				<indicator>新しい設定オプション</indicator>
+				<indicator>性能改善（重要でない）</indicator>
 			</indicators>
 		</feature>
 
 		<release>
-			<purpose>Release preparation, version bumps, final testing</purpose>
+			<purpose>リリース準備、バージョン更新、最終テスト</purpose>
 			<branch-from>develop</branch-from>
 			<merge-to>develop AND master</merge-to>
 			<naming>release-X.Y.Z</naming>
 			<indicators>
-				<indicator>Version number changes</indicator>
-				<indicator>Build configuration updates</indicator>
-				<indicator>Documentation finalization</indicator>
-				<indicator>Minor bug fixes before release</indicator>
-				<indicator>Release notes updates</indicator>
-				<indicator>Dependency version locks</indicator>
+				<indicator>バージョン番号の変更</indicator>
+				<indicator>ビルド設定の更新</indicator>
+				<indicator>ドキュメントの最終化</indicator>
+				<indicator>リリース前の小さな不具合修正</indicator>
+				<indicator>リリースノートの更新</indicator>
+				<indicator>依存関係バージョンの固定</indicator>
 			</indicators>
 		</release>
 
 		<hotfix>
-			<purpose>Critical production bug fixes requiring immediate deployment</purpose>
+			<purpose>即時デプロイが必要な重大な本番不具合修正</purpose>
 			<branch-from>master</branch-from>
 			<merge-to>develop AND master</merge-to>
-			<naming>hotfix-X.Y.Z or hotfix/critical-issue-description</naming>
+			<naming>hotfix-X.Y.Z または hotfix/critical-issue-description</naming>
 			<indicators>
-				<indicator>Security vulnerability fixes</indicator>
-				<indicator>Critical production bugs</indicator>
-				<indicator>Data corruption fixes</indicator>
-				<indicator>Service outage resolution</indicator>
-				<indicator>Emergency configuration changes</indicator>
+				<indicator>セキュリティ脆弱性の修正</indicator>
+				<indicator>重大な本番環境の不具合</indicator>
+				<indicator>データ破損の修正</indicator>
+				<indicator>サービス停止の回復</indicator>
+				<indicator>緊急の設定変更</indicator>
 			</indicators>
 		</hotfix>
 	</branch-types>
 </analysis-framework>
 ```
 
-### Branch Naming Conventions
+### ブランチ命名規約
 
 ```xml
 <naming-conventions>
@@ -114,104 +114,104 @@ description: 'Intelligent Git Flow branch creator that analyzes git status/diff 
 </naming-conventions>
 ```
 
-### Analysis Process
+### 分析プロセス
 
 ```xml
 <analysis-process>
 	<step-1>
-		<title>Change Nature Analysis</title>
-		<description>Examine the types of files modified and the nature of changes</description>
+		<title>変更の性質分析</title>
+		<description>変更されたファイル種別と変更内容の性質を調べる</description>
 		<criteria>
-			<files-modified>Look at file extensions, directory structure, and purpose</files-modified>
-			<change-scope>Determine if changes are additive, corrective, or preparatory</change-scope>
-			<urgency-level>Assess if changes address critical issues or are developmental</urgency-level>
+			<files-modified>ファイル拡張子、ディレクトリ構造、目的を確認する</files-modified>
+			<change-scope>変更が追加的、修正的、準備的なものかを判断する</change-scope>
+			<urgency-level>変更が重大な問題の解決なのか、開発的な改善なのかを評価する</urgency-level>
 		</criteria>
 	</step-1>
 
 	<step-2>
-		<title>Git Flow Classification</title>
-		<description>Map the changes to appropriate Git Flow branch type</description>
+		<title>Git Flow 分類</title>
+		<description>変更を適切な Git Flow ブランチ種別にマッピングする</description>
 		<decision-tree>
-			<question>Are these critical fixes for production issues?</question>
-			<if-yes>Consider hotfix branch</if-yes>
+			<question>本番環境に対する重要な修正ですか？</question>
+			<if-yes>hotfix ブランチを検討する</if-yes>
 			<if-no>
-				<question>Are these release preparation changes (version bumps, final tweaks)?</question>
-				<if-yes>Consider release branch</if-yes>
-				<if-no>Default to feature branch</if-no>
+				<question>これらはリリース準備の変更ですか？（バージョン更新、最終調整）</question>
+				<if-yes>release ブランチを検討する</if-yes>
+				<if-no>feature ブランチをデフォルトとする</if-no>
 			</if-no>
 		</decision-tree>
 	</step-2>
 
 	<step-3>
-		<title>Branch Name Generation</title>
-		<description>Create semantic, descriptive branch name</description>
+		<title>ブランチ名生成</title>
+		<description>意味のある説明的なブランチ名を作成する</description>
 		<guidelines>
-			<use-kebab-case>Use lowercase with hyphens</use-kebab-case>
-			<be-descriptive>Name should clearly indicate the purpose</be-descriptive>
-			<include-context>Add ticket numbers or project context when available</include-context>
-			<keep-concise>Avoid overly long names</keep-concise>
+			<use-kebab-case>小文字でハイフン区切りにする</use-kebab-case>
+			<be-descriptive>目的が明確に分かる名前にする</be-descriptive>
+			<include-context>可能ならチケット番号やプロジェクト文脈を含める</include-context>
+			<keep-concise>長すぎる名前は避ける</keep-concise>
 		</guidelines>
 	</step-3>
 </analysis-process>
 ```
 
-### Edge Cases and Validation
+### エッジケースと検証
 
 ```xml
 <edge-cases>
 	<mixed-changes>
-		<scenario>Changes include both features and bug fixes</scenario>
-		<resolution>Prioritize the most significant change type or suggest splitting into multiple branches</resolution>
+		<scenario>変更に feature と bug fix の両方が含まれる</scenario>
+		<resolution>最も重要な変更の種類を優先するか、複数ブランチに分割することを提案する</resolution>
 	</mixed-changes>
 
 	<no-changes>
-		<scenario>No changes detected in git status/diff</scenario>
-		<resolution>Inform user and suggest checking git status or making changes first</resolution>
+		<scenario>git status/diff で変更が検出されない</scenario>
+		<resolution>ユーザーに通知し、git status を確認するか、まず変更を行うよう案内する</resolution>
 	</no-changes>
 
 	<existing-branch>
-		<scenario>Already on a feature/hotfix/release branch</scenario>
-		<resolution>Analyze if new branch is needed or if current branch is appropriate</resolution>
+		<scenario>既に feature/hotfix/release ブランチ上にいる</scenario>
+		<resolution>新しいブランチが必要か、現在のブランチが適切かを分析する</resolution>
 	</existing-branch>
 
 	<conflicting-names>
-		<scenario>Suggested branch name already exists</scenario>
-		<resolution>Append incremental suffix or suggest alternative name</resolution>
+		<scenario>提案したブランチ名が既に存在する</scenario>
+		<resolution>連番サフィックスを付けるか、代替名を提案する</resolution>
 	</conflicting-names>
 </edge-cases>
 ```
 
-### Examples
+### 例示
 
 ```xml
 <examples>
 	<example-1>
-		<scenario>Added new user registration API endpoint</scenario>
-		<analysis>New functionality, additive changes, not critical</analysis>
+		<scenario>新しいユーザー登録 API エンドポイントを追加した</scenario>
+		<analysis>新機能、追加的変更、重大ではない</analysis>
 		<branch-type>feature</branch-type>
 		<branch-name>feature/user-registration-api</branch-name>
 		<command>git checkout -b feature/user-registration-api develop</command>
 	</example-1>
 
 	<example-2>
-		<scenario>Fixed critical security vulnerability in authentication</scenario>
-		<analysis>Security fix, critical for production, immediate deployment needed</analysis>
+		<scenario>認証における重大なセキュリティ脆弱性を修正した</scenario>
+		<analysis>セキュリティ修正、プロダクションで重大、即時デプロイが必要</analysis>
 		<branch-type>hotfix</branch-type>
 		<branch-name>hotfix/auth-security-patch</branch-name>
 		<command>git checkout -b hotfix/auth-security-patch master</command>
 	</example-2>
 
 	<example-3>
-		<scenario>Updated version to 2.1.0 and finalized release notes</scenario>
-		<analysis>Release preparation, version bump, documentation</analysis>
+		<scenario>バージョンを 2.1.0 に更新し、リリースノートを最終化した</scenario>
+		<analysis>リリース準備、バージョン更新、ドキュメント</analysis>
 		<branch-type>release</branch-type>
 		<branch-name>release-2.1.0</branch-name>
 		<command>git checkout -b release-2.1.0 develop</command>
 	</example-3>
 
 	<example-4>
-		<scenario>Improved database query performance and updated caching</scenario>
-		<analysis>Performance improvement, non-critical enhancement</analysis>
+		<scenario>データベースクエリの性能を改善し、キャッシュを更新した</scenario>
+		<analysis>性能改善、重大ではない機能強化</analysis>
 		<branch-type>feature</branch-type>
 		<branch-name>feature/database-performance-optimization</branch-name>
 		<command>git checkout -b feature/database-performance-optimization develop</command>
@@ -219,74 +219,74 @@ description: 'Intelligent Git Flow branch creator that analyzes git status/diff 
 </examples>
 ```
 
-### Validation Checklist
+### 検証チェックリスト
 
 ```xml
 <validation>
 	<pre-analysis>
-		<check>Repository is in a clean state (no uncommitted changes that would conflict)</check>
-		<check>Current branch is appropriate starting point (develop for features/releases, master for hotfixes)</check>
-		<check>Remote repository is up to date</check>
+		<check>リポジトリがクリーンな状態である（競合を起こす未コミット変更がない）</check>
+		<check>現在のブランチが適切な開始点である（feature/release は develop、hotfix は master）</check>
+		<check>リモートリポジトリが最新である</check>
 	</pre-analysis>
 
 	<analysis-quality>
-		<check>Change analysis covers all modified files</check>
-		<check>Branch type selection follows Git Flow principles</check>
-		<check>Branch name is semantic and follows conventions</check>
-		<check>Edge cases are considered and handled</check>
+		<check>変更分析が修正ファイルをすべてカバーしている</check>
+		<check>ブランチ種別の選定が Git Flow の原則に従っている</check>
+		<check>ブランチ名が意味があり、規約に従っている</check>
+		<check>エッジケースが考慮され、適切に処理されている</check>
 	</analysis-quality>
 
 	<execution-safety>
-		<check>Target branch (develop/master) exists and is accessible</check>
-		<check>Proposed branch name doesn't conflict with existing branches</check>
-		<check>User has appropriate permissions to create branches</check>
+		<check>対象ブランチ（develop/master）が存在し、アクセス可能である</check>
+		<check>提案したブランチ名が既存ブランチと競合しない</check>
+		<check>ユーザーがブランチ作成に対して適切な権限を持っている</check>
 	</execution-safety>
 </validation>
 ```
 
-### Final Execution
+### 最終実行
 
 ```xml
 <execution-protocol>
 	<analysis-summary>
-		<git-status>Output of git status command</git-status>
-		<git-diff>Relevant portions of git diff output</git-diff>
-		<change-analysis>Detailed analysis of what changes represent</change-analysis>
-		<branch-decision>Explanation of why specific branch type was chosen</branch-decision>
+		<git-status>git status コマンドの出力</git-status>
+		<git-diff>git diff の関連部分の出力</git-diff>
+		<change-analysis>変更が何を意味するかの詳細分析</change-analysis>
+		<branch-decision>なぜそのブランチ種別を選んだのかの説明</branch-decision>
 	</analysis-summary>
 
 	<branch-creation>
 		<command>git checkout -b [branch-name] [source-branch]</command>
-		<confirmation>Verify branch creation and current branch status</confirmation>
-		<next-steps>Provide guidance on next actions (commit changes, push branch, etc.)</next-steps>
+		<confirmation>ブランチ作成と現在のブランチ状態を確認する</confirmation>
+		<next-steps>次の行動（コミット、ブランチの push など）のガイダンスを提供する</next-steps>
 	</branch-creation>
 
 	<fallback-options>
-		<alternative-names>Suggest 2-3 alternative branch names if primary suggestion isn't suitable</alternative-names>
-		<manual-override>Allow user to specify different branch type if analysis seems incorrect</manual-override>
+		<alternative-names>主案が適切でない場合は 2〜3 個の代替ブランチ名を提案する</alternative-names>
+		<manual-override>分析が誤っている場合、ユーザーが別のブランチ種別を指定できるようにする</manual-override>
 	</fallback-options>
 </execution-protocol>
 ```
 
-### Git Flow Reference
+### Git Flow 参照
 
 ```xml
 <gitflow-reference>
 	<main-branches>
-		<master>Production-ready code, every commit is a release</master>
-		<develop>Integration branch for features, latest development changes</develop>
+		<master>本番環境向けコード、すべてのコミットがリリースとなる</master>
+		<develop>機能開発の統合ブランチ、最新の開発変更を含む</develop>
 	</main-branches>
 
 	<supporting-branches>
-		<feature>Branch from develop, merge back to develop</feature>
-		<release>Branch from develop, merge to both develop and master</release>
-		<hotfix>Branch from master, merge to both develop and master</hotfix>
+		<feature>develop から分岐し、develop にマージする</feature>
+		<release>develop から分岐し、develop と master の両方にマージする</release>
+		<hotfix>master から分岐し、develop と master の両方にマージする</hotfix>
 	</supporting-branches>
 
 	<merge-strategy>
-		<flag>Always use --no-ff flag to preserve branch history</flag>
-		<tagging>Tag releases on master branch</tagging>
-		<cleanup>Delete branches after successful merge</cleanup>
+		<flag>履歴を保持するために常に --no-ff フラグを使う</flag>
+		<tagging>master ブランチでリリースにタグを付ける</tagging>
+		<cleanup>マージが成功した後にブランチを削除する</cleanup>
 	</merge-strategy>
 </gitflow-reference>
 ```

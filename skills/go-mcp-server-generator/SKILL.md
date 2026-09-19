@@ -1,25 +1,25 @@
 ---
 name: go-mcp-server-generator
-description: 'Generate a complete Go MCP server project with proper structure, dependencies, and implementation using the official github.com/modelcontextprotocol/go-sdk.'
+description: '公式の github.com/modelcontextprotocol/go-sdk を使い、適切な構成、依存関係、実装を備えた完全な Go MCP サーバープロジェクトを生成する。'
 ---
 
-# Go MCP Server Project Generator
+# Go MCP サーバープロジェクト生成
 
-Generate a complete, production-ready Model Context Protocol (MCP) server project in Go.
+Go で完全な本番対応 Model Context Protocol (MCP) サーバープロジェクトを生成する。
 
-## Project Requirements
+## プロジェクト要件
 
-You will create a Go MCP server with:
+次の要素を備えた Go MCP サーバーを作成する。
 
-1. **Project Structure**: Proper Go module layout
-2. **Dependencies**: Official MCP SDK and necessary packages
-3. **Server Setup**: Configured MCP server with transports
-4. **Tools**: At least 2-3 useful tools with typed inputs/outputs
-5. **Error Handling**: Proper error handling and context usage
-6. **Documentation**: README with setup and usage instructions
-7. **Testing**: Basic test structure
+1. **プロジェクト構造**: 適切な Go モジュール構成
+2. **依存関係**: 公式 MCP SDK と必要なパッケージ
+3. **サーバー設定**: トランスポートを設定した MCP サーバー
+4. **ツール**: 型付き入出力を持つ、少なくとも 2～3 個の有用なツール
+5. **エラー処理**: 適切なエラー処理とコンテキスト利用
+6. **ドキュメント**: セットアップと使用方法を含む README
+7. **テスト**: 基本的なテスト構成
 
-## Template Structure
+## テンプレート構造
 
 ```
 myserver/
@@ -37,7 +37,7 @@ myserver/
 └── main_test.go
 ```
 
-## go.mod Template
+## go.mod テンプレート
 
 ```go
 module github.com/yourusername/{{PROJECT_NAME}}
@@ -49,7 +49,7 @@ require (
 )
 ```
 
-## main.go Template
+## main.go テンプレート
 
 ```go
 package main
@@ -72,7 +72,7 @@ func main() {
     ctx, cancel := context.WithCancel(context.Background())
     defer cancel()
 
-    // Handle graceful shutdown
+    // グレースフルシャットダウンを処理する
     sigCh := make(chan os.Signal, 1)
     signal.Notify(sigCh, os.Interrupt, syscall.SIGTERM)
     go func() {
@@ -81,7 +81,7 @@ func main() {
         cancel()
     }()
 
-    // Create server
+    // サーバーを作成する
     server := mcp.NewServer(
         &mcp.Implementation{
             Name:    cfg.ServerName,
@@ -96,10 +96,10 @@ func main() {
         },
     )
 
-    // Register tools
+    // ツールを登録する
     tools.RegisterTools(server)
 
-    // Run server
+    // サーバーを実行する
     transport := &mcp.StdioTransport{}
     if err := server.Run(ctx, transport); err != nil {
         log.Fatalf("Server error: %v", err)
@@ -107,7 +107,7 @@ func main() {
 }
 ```
 
-## tools/tool1.go Template
+## tools/tool1.go テンプレート
 
 ```go
 package tools
@@ -134,17 +134,17 @@ func Tool1Handler(ctx context.Context, req *mcp.CallToolRequest, input Tool1Inpu
     Tool1Output,
     error,
 ) {
-    // Validate input
+    // 入力を検証する
     if input.Param1 == "" {
         return nil, Tool1Output{}, fmt.Errorf("param1 is required")
     }
 
-    // Check context
+    // コンテキストを確認する
     if ctx.Err() != nil {
         return nil, Tool1Output{}, ctx.Err()
     }
 
-    // Perform operation
+    // 処理を実行する
     result := fmt.Sprintf("Processed: %s", input.Param1)
 
     return nil, Tool1Output{
@@ -157,14 +157,14 @@ func RegisterTool1(server *mcp.Server) {
     mcp.AddTool(server,
         &mcp.Tool{
             Name:        "tool1",
-            Description: "Description of what tool1 does",
+            Description: "tool1 の処理内容",
         },
         Tool1Handler,
     )
 }
 ```
 
-## tools/registry.go Template
+## tools/registry.go テンプレート
 
 ```go
 package tools
@@ -174,11 +174,11 @@ import "github.com/modelcontextprotocol/go-sdk/mcp"
 func RegisterTools(server *mcp.Server) {
     RegisterTool1(server)
     RegisterTool2(server)
-    // Register additional tools here
+    // 追加のツールはここに登録する
 }
 ```
 
-## config/config.go Template
+## config/config.go テンプレート
 
 ```go
 package config
@@ -207,7 +207,7 @@ func getEnv(key, defaultValue string) string {
 }
 ```
 
-## main_test.go Template
+## main_test.go テンプレート
 
 ```go
 package main
@@ -241,94 +241,94 @@ func TestTool1Handler(t *testing.T) {
 }
 ```
 
-## README.md Template
+## README.md テンプレート
 
 ```markdown
 # {{PROJECT_NAME}}
 
-A Model Context Protocol (MCP) server built with Go.
+Go で構築した Model Context Protocol (MCP) サーバー。
 
-## Description
+## 説明
 
 {{PROJECT_DESCRIPTION}}
 
-## Installation
+## インストール
 
 \`\`\`bash
 go mod download
 go build -o {{PROJECT_NAME}}
 \`\`\`
 
-## Usage
+## 使用方法
 
-Run the server with stdio transport:
+stdio トランスポートでサーバーを実行する。
 
 \`\`\`bash
 ./{{PROJECT_NAME}}
 \`\`\`
 
-## Configuration
+## 設定
 
-Configure via environment variables:
+環境変数で設定する。
 
-- `SERVER_NAME`: Server name (default: "{{PROJECT_NAME}}")
-- `VERSION`: Server version (default: "v1.0.0")
-- `LOG_LEVEL`: Logging level (default: "info")
+- `SERVER_NAME`: サーバー名（既定値: "{{PROJECT_NAME}}"）
+- `VERSION`: サーバーバージョン（既定値: "v1.0.0"）
+- `LOG_LEVEL`: ログレベル（既定値: "info"）
 
-## Available Tools
+## 利用可能なツール
 
 ### tool1
 {{TOOL1_DESCRIPTION}}
 
-**Input:**
-- `param1` (string, required): First parameter
-- `param2` (int, optional): Second parameter
+**入力:**
+- `param1` (string, required): 1 番目のパラメーター
+- `param2` (int, optional): 2 番目のパラメーター
 
-**Output:**
-- `result` (string): Operation result
-- `status` (string): Status of the operation
+**出力:**
+- `result` (string): 処理結果
+- `status` (string): 処理の状態
 
-## Development
+## 開発
 
-Run tests:
+テストを実行する。
 
 \`\`\`bash
 go test ./...
 \`\`\`
 
-Build:
+ビルドする。
 
 \`\`\`bash
 go build -o {{PROJECT_NAME}}
 \`\`\`
 
-## License
+## ライセンス
 
 MIT
 ```
 
-## Generation Instructions
+## 生成手順
 
-When generating a Go MCP server:
+Go MCP サーバーを生成するときは、次の手順に従う。
 
-1. **Initialize Module**: Create `go.mod` with proper module path
-2. **Structure**: Follow the template directory structure
-3. **Type Safety**: Use structs with JSON schema tags for all inputs/outputs
-4. **Error Handling**: Validate inputs, check context, wrap errors
-5. **Documentation**: Add clear descriptions and examples
-6. **Testing**: Include at least one test per tool
-7. **Configuration**: Use environment variables for config
-8. **Logging**: Use structured logging (log/slog)
-9. **Graceful Shutdown**: Handle signals properly
-10. **Transport**: Default to stdio, document alternatives
+1. **モジュールを初期化する**: 適切なモジュールパスで `go.mod` を作成する
+2. **構造**: テンプレートのディレクトリ構造に従う
+3. **型安全性**: すべての入出力に JSON スキーマタグ付きの構造体を使う
+4. **エラー処理**: 入力を検証し、コンテキストを確認し、エラーをラップする
+5. **ドキュメント**: 明確な説明と例を追加する
+6. **テスト**: 各ツールに少なくとも 1 つのテストを含める
+7. **設定**: 設定には環境変数を使う
+8. **ロギング**: 構造化ロギング（log/slog）を使う
+9. **グレースフルシャットダウン**: シグナルを適切に処理する
+10. **トランスポート**: 既定は stdio とし、代替手段を文書化する
 
-## Best Practices
+## ベストプラクティス
 
-- Keep tools focused and single-purpose
-- Use descriptive names for types and functions
-- Include JSON schema documentation in struct tags
-- Always respect context cancellation
-- Return descriptive errors
-- Keep main.go minimal, logic in packages
-- Write tests for tool handlers
-- Document all exported functions
+- ツールの責務を絞り、単一目的に保つ
+- 型と関数には説明的な名前を使う
+- struct タグに JSON スキーマの説明を含める
+- 常にコンテキストのキャンセルを尊重する
+- 説明的なエラーを返す
+- main.go は最小限にし、ロジックはパッケージへ分離する
+- ツールハンドラーのテストを書く
+- すべてのエクスポート関数を文書化する

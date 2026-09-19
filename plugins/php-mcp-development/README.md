@@ -1,8 +1,8 @@
 # PHP MCP Server Development Plugin
 
-Comprehensive resources for building Model Context Protocol servers using the official PHP SDK with attribute-based discovery, including best practices, project generation, and expert assistance
+公式PHP SDKを使い、属性ベースの検出に対応したModel Context Protocolサーバーを構築するための総合リソースです。ベストプラクティス、プロジェクト生成、専門家による支援を含みます。
 
-## Installation
+## インストール
 
 ```bash
 # Using Copilot CLI

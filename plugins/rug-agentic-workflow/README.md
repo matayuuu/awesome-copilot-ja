@@ -1,8 +1,8 @@
 # RUG Agentic Workflow Plugin
 
-Three-agent workflow for orchestrated software delivery with an orchestrator plus implementation and QA subagents.
+オーケストレーター、実装サブエージェント、QAサブエージェントで構成する、ソフトウェア提供を統合管理する3エージェントワークフローです。
 
-## Installation
+## インストール
 
 ```bash
 # Using Copilot CLI

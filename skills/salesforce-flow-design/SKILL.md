@@ -1,63 +1,62 @@
 ---
 name: salesforce-flow-design
-description: 'Salesforce Flow architecture decisions, flow type selection, bulk safety validation, and fault handling standards. Use this skill when designing or reviewing Record-Triggered, Screen, Autolaunched, Scheduled, or Platform Event flows to ensure correct type selection, no DML/Get Records in loops, proper fault connectors on all data-changing elements, and appropriate automation density checks before deployment.'
+description: 'Salesforce Flowのarchitecture判断、flow type選択、bulk safety検証、fault handling標準。Record-Triggered、Screen、Autolaunched、Scheduled、Platform Event flowを設計またはレビューし、正しいtype選択、loop内のDML/Get Records禁止、すべてのdata-changing elementへの適切なfault connector、deployment前のautomation density確認を確実にする場合に使用します。'
 ---
+# Salesforce Flow の設計と検証
 
-# Salesforce Flow Design and Validation
+設計、構築、レビューするすべてのFlowに、次のチェックを適用します。
 
-Apply these checks to every Flow you design, build, or review.
+## Step 1 — Flowが適切なToolか確認する
 
-## Step 1 — Confirm Flow Is the Right Tool
+Flowを設計する前に、より軽量なdeclarative optionで解決できないことを確認します。
 
-Before designing a Flow, verify that a lighter-weight declarative option cannot solve the problem:
-
-| Requirement | Best tool |
+| 要件 | 最適なTool |
 |---|---|
-| Calculate a field value with no side effects | Formula field |
-| Prevent a bad record save with a user message | Validation rule |
-| Sum or count child records on a parent | Roll-up Summary field |
-| Complex multi-object logic, callouts, or high volume | Apex (Queueable / Batch) — not Flow |
-| Everything else | Flow ✓ |
+| side effectなしでfield valueを計算する | Formula field |
+| user messageで不正なrecord saveを防止する | Validation rule |
+| parent上のchild recordをsumまたはcountする | Roll-up Summary field |
+| 複雑なmulti-object logic、callout、高volumeを扱う | Apex (Queueable / Batch) — Flowではない |
+| その他すべて | Flow ✓ |
 
-If you are building a Flow that could be replaced by a formula field or validation rule, ask the user to confirm the requirement is genuinely more complex.
+formula fieldまたはvalidation ruleで置き換えられるFlowを構築する場合、要件が本当に複雑であることをuserに確認します。
 
-## Step 2 — Select the Correct Flow Type
+## Step 2 — 正しいFlow typeを選択する
 
-| Use case | Flow type | Key constraint |
+| 用途 | Flow type | 主な制約 |
 |---|---|---|
-| Update a field on the same record before it is saved | Before-save Record-Triggered | Cannot send emails, make callouts, or change related records |
-| Create/update related records, emails, callouts | After-save Record-Triggered | Runs after commit — avoid recursion traps |
-| Guide a user through a multi-step UI process | Screen Flow | Cannot be triggered by a record event automatically |
-| Reusable background logic called from another Flow | Autolaunched (Subflow) | Input/output variables define the contract |
-| Logic invoked from Apex `@InvocableMethod` | Autolaunched (Invocable) | Must declare input/output variables |
-| Time-based batch processing | Scheduled Flow | Runs in batch context — respect governor limits |
-| Respond to events (Platform Events / CDC) | Platform Event–Triggered | Runs asynchronously — eventual consistency |
+| save前に同じrecordのfieldを更新 | Before-save Record-Triggered | email送信、callout、related record変更は不可 |
+| related record、email、calloutを作成・更新 | After-save Record-Triggered | commit後に実行 — recursion trapを避ける |
+| multi-step UI processをuserに案内 | Screen Flow | record eventで自動trigger不可 |
+| 別のFlowから呼ぶ再利用可能なbackground logic | Autolaunched (Subflow) | input/output variableがcontractを定義 |
+| Apex `@InvocableMethod`から呼ぶlogic | Autolaunched (Invocable) | input/output variableの宣言が必須 |
+| time-based batch processing | Scheduled Flow | batch contextで実行 — governor limitを守る |
+| event（Platform Events / CDC）に応答 | Platform Event–Triggered | asynchronousに実行 — eventual consistency |
 
-**Decision rule**: choose before-save when you only need to change the triggering record's own fields. Move to after-save the moment you need to touch related records, send emails, or make callouts.
+**判断ルール**: triggerされたrecord自身のfieldだけを変更するならbefore-saveを選びます。related recordに触れる、emailを送る、calloutを行う必要が生じた時点でafter-saveへ移します。
 
-## Step 3 — Bulk Safety Checklist
+## Step 3 — Bulk Safetyのチェックリスト
 
-These patterns are governor limit failures at scale. Check for all of them before the Flow is activated.
+これらのpatternはscale時にgovernor limit failureになります。Flowをactivateする前にすべて確認します。
 
-### DML in Loops — Automatic Fail
+### Loop内のDML — 自動的に不合格
 
 ```
 Loop element
   └── Create Records / Update Records / Delete Records  ← ❌ DML inside loop
 ```
 
-Fix: collect records inside the loop into a collection variable, then run the DML element **outside** the loop.
+修正: loop内でrecordをcollection variableに集め、DML elementをloopの**外側**で実行します。
 
-### Get Records in Loops — Automatic Fail
+### Loop内のGet Records — 自動的に不合格
 
 ```
 Loop element
   └── Get Records  ← ❌ SOQL inside loop
 ```
 
-Fix: perform the Get Records query **before** the loop, then loop over the collection variable.
+修正: Get Records queryをloopの**前**に実行し、その後collection variableをloopします。
 
-### Correct Bulk Pattern
+### 正しいBulk Pattern
 
 ```
 Get Records — collect all records in one query
@@ -66,70 +65,70 @@ Get Records — collect all records in one query
 └── After the loop: Create/Update/Delete Records — one DML operation
 ```
 
-### Transform vs Loop
-When the goal is reshaping a collection (e.g. mapping field values from one object to another), use the **Transform** element instead of a Loop + Assignment pattern. Transform is bulk-safe by design and produces cleaner Flow graphs.
+### TransformとLoopを比較する
+目的がcollectionの形を変えること（例: あるobjectから別のobjectへfield valueをmappingすること）なら、Loop + Assignment patternではなく**Transform** elementを使います。Transformは設計上bulk-safeで、より見やすいFlow graphを生成します。
 
-## Step 4 — Fault Path Requirements
+## Step 4 — Fault Pathの要件
 
-Every element that can fail at runtime must have a fault connector. Flows without fault paths surface raw system errors to users.
+runtimeで失敗する可能性があるすべてのelementにfault connectorを付けます。fault pathのないFlowはraw system errorをuserに表示します。
 
-### Elements That Require Fault Connectors
-- Create Records
-- Update Records
-- Delete Records
-- Get Records (when accessing a required record that might not exist)
-- Send Email
+### Fault Connectorが必要なElement
+- Create Records element
+- Update Records element
+- Delete Records element
+- Get Records（存在しない可能性があるrequired recordへアクセスする場合）
+- Send Email element
 - HTTP Callout / External Service action
-- Apex action (invocable)
-- Subflow (if the subflow can throw a fault)
+- Apex action（invocable）
+- Subflow（subflowがfaultをthrowする可能性がある場合）
 
-### Fault Handler Pattern
+### Fault Handlerのパターン
 ```
 Fault connector → Log Error (Create Records on a logging object or fire a Platform Event)
                → Screen element with user-friendly message (Screen Flows)
                → Stop / End element (Record-Triggered Flows)
 ```
 
-Never connect a fault path back to the same element that faulted — this creates an infinite loop.
+fault pathを、faultが発生した同じelementへ戻して接続しません — infinite loopになります。
 
-## Step 5 — Automation Density Check
+## Step 5 — Automation Densityを確認する
 
-Before deploying, verify there are no overlapping automations on the same object and trigger event:
+deployment前に、同じobjectとtrigger eventに重複するautomationがないことを確認します。
 
-- Other active Record-Triggered Flows on the same `Object` + `When to Run` combination
-- Legacy Process Builder rules still active on the same object
-- Workflow Rules that fire on the same field changes
-- Apex triggers that also run on the same `before insert` / `after update` context
+- 同じ`Object` + `When to Run`の組み合わせにある、その他のactiveなRecord-Triggered Flow
+- 同じobjectでまだactiveなLegacy Process Builder rule
+- 同じfield changeで発火するWorkflow Rule
+- 同じ`before insert` / `after update` contextで実行されるApex trigger
 
-Overlapping automations can cause unexpected ordering, recursion, and governor limit failures. Document the automation inventory for the object before activating.
+重複するautomationは予期しない順序、recursion、governor limit failureを引き起こします。activate前にobjectのautomation inventoryを文書化します。
 
-## Step 6 — Screen Flow UX Guidelines
+## Step 6 — Screen FlowのUXガイドライン
 
-- Every path through a Screen Flow must reach an **End** element — no orphan branches.
-- Provide a **Back** navigation option on multi-step flows unless back-navigation would corrupt data.
-- Use `lightning-input` and SLDS-compliant components for all user inputs — do not use HTML form elements.
-- Validate required inputs on the screen before the user can advance — use Flow validation rules on the screen.
-- Handle the **Pause** element if the flow may need to await user action across sessions.
+- Screen Flowのすべての経路が**End** elementに到達するようにし、孤立したbranchを残さない。
+- 戻る操作でdataが壊れない限り、multi-step flowには**Back** navigation optionを用意する。
+- すべてのuser inputには`lightning-input`とSLDS準拠のcomponentを使い、HTML form elementは使わない。
+- userが先へ進む前にscreen上でrequired inputを検証し、screenのFlow validation ruleを使う。
+- sessionをまたいでuser actionを待つ可能性がある場合は**Pause** elementを処理する。
 
-## Step 7 — Deployment Safety
+## Step 7 — Deploymentの安全性
 
 ```
 Deploy as Draft    →   Test with 1 record   →   Test with 200+ records   →   Activate
 ```
 
-- Always deploy as **Draft** first and test thoroughly before activation.
-- For Record-Triggered Flows: test with the exact entry conditions (e.g. `ISCHANGED(Status)` — ensure the test data actually triggers the condition).
-- For Scheduled Flows: test with a small batch in a sandbox before enabling in production.
-- Check the Automation Density score for the object — more than 3 active automations on a single object increases order-of-execution risk.
+- 常に最初は**Draft**としてdeploymentし、activation前に十分テストします。
+- Record-Triggered Flowでは、正確なentry conditionでテストします（例: `ISCHANGED(Status)` — test dataが実際にconditionをtriggerすることを確認）。
+- Scheduled Flowでは、productionでenableする前にsandboxで小さなbatchをテストします。
+- objectのAutomation Density scoreを確認します — 1つのobjectにactive automationが3つを超えるとorder-of-execution riskが高まります。
 
-## Quick Reference — Flow Anti-Patterns Summary
+## クイックリファレンス — Flowアンチパターンの概要
 
-| Anti-pattern | Risk | Fix |
+| Anti-pattern | リスク | 修正 |
 |---|---|---|
-| DML element inside a Loop | Governor limit exception | Move DML outside the loop |
-| Get Records inside a Loop | SOQL governor limit exception | Query before the loop |
-| No fault connector on DML/email/callout element | Unhandled exception surfaced to user | Add fault path to every such element |
-| Updating the triggering record in an after-save flow with no recursion guard | Infinite trigger loops | Add an entry condition or recursion guard variable |
-| Looping directly on `$Record` collection | Incorrect behaviour at scale | Assign to a collection variable first, then loop |
-| Process Builder still active alongside a new Flow | Double-execution, unexpected ordering | Deactivate Process Builder before activating the Flow |
-| Screen Flow with no End element on all branches | Runtime error or stuck user | Ensure every branch resolves to an End element |
+| Loop内のDML element | Governor limit exception | DMLをloopの外へ移動 |
+| Loop内のGet Records | SOQL governor limit exception | loop前にquery |
+| DML/email/callout elementにfault connectorがない | 未処理exceptionがuserに表示される | すべての該当elementにfault pathを追加 |
+| recursion guardなしでafter-save flowのtriggering recordを更新 | 無限trigger loop | entry conditionまたはrecursion guard variableを追加 |
+| `$Record` collectionを直接loop | scale時の誤動作 | 先にcollection variableへ割り当ててからloop |
+| 新しいFlowとProcess Builderが併存 | 二重実行、予期しない順序 | Flowをactivateする前にProcess Builderをdeactivate |
+| すべてのbranchにEnd elementがないScreen Flow | runtime errorまたはuserが停止 | すべてのbranchがEnd elementへ到達するようにする |

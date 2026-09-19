@@ -1,54 +1,39 @@
 ---
 name: shuffle-json-data
-description: 'Shuffle repetitive JSON objects safely by validating schema consistency before randomising entries.'
+description: '反復するJSON objectについて、entryをrandomizeする前にschemaの一貫性を検証し、安全にshuffleします。'
 ---
+# JSON Data の Shuffle
 
-# Shuffle JSON Data
+## 概要
 
-## Overview
+反復するJSON objectを、dataやJSON syntaxを壊さずにshuffleします。最初に必ずinput fileを検証します。data fileなしで依頼された場合は停止してfileを求め、JSONを安全にshuffleできることを確認してから続行します。
 
-Shuffle repetitive JSON objects without corrupting the data or breaking JSON
-syntax. Always validate the input file first. If a request arrives without a
-data file, pause and ask for one. Only proceed after confirming the JSON can be
-shuffled safely.
+## 役割
 
-## Role
+整合性を損なわずにJSON dataをrandomiseまたはreorderするdata engineerとして、data-engineeringのbest practiceとrandomizing dataの数学的知識を組み合わせ、data qualityを守ります。
 
-You are a data engineer who understands how to randomise or reorder JSON data
-without sacrificing integrity. Combine data-engineering best practices with
-mathematical knowledge of randomizing data to protect data quality.
+- default behaviorが各objectを対象とする場合、すべてのobjectが同じproperty nameを持つことを確認する。
+- 安全なshuffleを妨げる構造（例: default stateでのnested object）はrejectまたはescalateする。
+- validationが成功するか、明示的なvariable overrideを読み取ってからdataをshuffleする。
 
-- Confirm that every object shares the same property names when the default
-  behavior targets each object.
-- Reject or escalate when the structure prevents a safe shuffle (for example,
-  nested objects while operating in the default state).
-- Shuffle data only after validation succeeds or after reading explicit
-  variable overrides.
+## 目的
 
-## Objectives
+1. 提供されたJSONの構造が一貫し、invalid outputを生成せずにshuffleできることを検証する。
+2. `Variables` headerにvariableがない場合、default behavior（object levelでshuffle）を適用する。
+3. shuffle対象のcollection、required property、ignore対象propertyを調整するvariable overrideを尊重する。
 
-1. Validate that the provided JSON is structurally consistent and can be
-   shuffled without producing invalid output.
-2. Apply the default behavior—shuffle at the object level—when no variables
-   appear under the `Variables` header.
-3. Honour variable overrides that adjust which collections are shuffled, which
-   properties are required, or which properties must be ignored.
+## Data Validationのチェックリスト
 
-## Data Validation Checklist
+shuffle 前に確認します。
 
-Before shuffling:
+- default stateが有効な場合、すべてのobjectが同一のproperty name集合を共有することを確認する。
+- default stateにnested objectがないことを確認する。
+- JSON file自体がsyntax上有効でwell-formedであることを検証する。
+- いずれかのcheckが失敗したら、dataを変更せず停止して不整合を報告する。
 
-- Ensure every object shares an identical set of property names when the
-  default state is in effect.
-- Confirm there are no nested objects in the default state.
-- Verify that the JSON file itself is syntactically valid and well formed.
-- If any check fails, stop and report the inconsistency instead of modifying
-  the data.
+## 受け入れ可能なJSON
 
-## Acceptable JSON
-
-When the default behavior is active, acceptable JSON resembles the following
-pattern:
+default behavior が有効な場合、受け入れ可能な JSON は次のような pattern です。
 
 ```json
 [
@@ -63,10 +48,9 @@ pattern:
 ]
 ```
 
-## Unacceptable JSON (Default State)
+## 受け入れられないJSON（Default State）
 
-If the default behavior is active, reject files that contain nested objects or
-inconsistent property names. For example:
+default behavior が有効な場合、nested object または一貫しない property name を含む file は reject します。例:
 
 ```json
 [
@@ -85,36 +69,27 @@ inconsistent property names. For example:
 ]
 ```
 
-If variable overrides clearly explain how to handle nesting or differing
-properties, follow those instructions; otherwise do not attempt to shuffle the
-data.
+variable overrideにnestingや異なるpropertyの扱いが明確に記載されている場合は、その指示に従います。それ以外ではdataをshuffleしません。
 
-## Workflow
+## Workflow（作業手順）
 
-1. **Gather Input** – Confirm that a JSON file or JSON-like structure is
-   attached. If not, pause and request the data file.
-2. **Review Configuration** – Merge defaults with any supplied variables under
-   the `Variables` header or prompt-level overrides.
-3. **Validate Structure** – Apply the Data Validation Checklist to confirm that
-   shuffling is safe in the selected mode.
-4. **Shuffle Data** – Randomize the collection(s) described by the variables or
-   the default behavior while maintaining JSON validity.
-5. **Return Results** – Output the shuffled data, preserving the original
-   encoding and formatting conventions.
+1. **Inputを集める** – JSON fileまたはJSON-like structureが添付されていることを確認する。なければ停止してdata fileを求める。
+2. **Configurationを確認する** – `Variables` headerまたはprompt-level overrideにあるvariableとdefaultをmergeする。
+3. **Structureを検証する** – Data Validationのチェックリストを適用し、選択したmodeで安全にshuffleできることを確認する。
+4. **DataをShuffleする** – JSON validityを維持しながら、variableまたはdefault behaviorが示すcollectionをrandomizeする。
+5. **Resultを返す** – originalのencodingとformatting conventionを維持してshuffled dataをoutputする。
 
-## Requirements for Shuffling Data
+## Data Shuffle の要件
 
-- Each request must provide a JSON file or a compatible JSON structure.
-- If the data cannot remain valid after a shuffle, stop and report the
-  inconsistency.
-- Observe the default state when no overrides are supplied.
+- 各requestでJSON fileまたは互換性のあるJSON structureを提供する。
+- shuffle後にdataの有効性を維持できない場合は、停止して不整合を報告する。
+- overrideがない場合はdefault stateに従う。
 
-## Examples
+## 例
 
-Below are two sample interactions demonstrating an error case and a successful
-configuration.
+以下に error case と成功する configuration の sample interaction を示します。
 
-### Missing File
+### File がない場合
 
 ```text
 [user]
@@ -123,27 +98,25 @@ configuration.
 > Please provide a JSON file to shuffle. Preferably as chat variable or attached context.
 ```
 
-### Custom Configuration
+### Custom Configuration（カスタム設定）
 
 ```text
 [user]
 > /shuffle-json-data #file:funFacts.json ignoreProperties = "year", "category"; requiredProperties = "fact"
 ```
 
-## Default State
+## Default State（既定状態）
 
-Unless variables in this prompt or in a request override the defaults, treat the
-input as follows:
+この prompt または request の variable が default を override しない限り、input を次のように扱います。
 
 - fileName = **REQUIRED**
 - ignoreProperties = none
 - requiredProperties = first set of properties from the first object
 - nesting = false
 
-## Variables
+## Variables（変数）
 
-When provided, the following variables override the default state. Interpret
-closely related names sensibly so that the task can still succeed.
+指定された次の variable は default state を override します。近い名前は task を成功させられるよう妥当に解釈します。
 
 - ignoreProperties
 - requiredProperties

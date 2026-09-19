@@ -1,139 +1,139 @@
 ---
 name: game-engine
-description: 'Expert skill for building web-based game engines and games using HTML5, Canvas, WebGL, and JavaScript. Use when asked to create games, build game engines, implement game physics, handle collision detection, set up game loops, manage sprites, add game controls, or work with 2D/3D rendering. Covers techniques for platformers, breakout-style games, maze games, tilemaps, audio, multiplayer via WebRTC, and publishing games.'
+description: 'Webブラウザ向けのゲームエンジンとゲーム開発を、HTML5、Canvas、WebGL、JavaScriptで構築するための専門スキルです。ゲーム作成、ゲームエンジン開発、物理演算、衝突判定、ゲームループ、スプライト管理、ゲーム操作、2D/3D描画の実装で使います。プラットフォーマー、ブロック崩し系ゲーム、迷路ゲーム、タイルマップ、音声、WebRTCによるマルチプレイヤー、ゲーム公開までを扱います。'
 ---
 
-# Game Engine Skill
+# ゲームエンジンスキル
 
-Build web-based games and game engines using HTML5 Canvas, WebGL, and JavaScript. This skill includes starter templates, reference documentation, and step-by-step workflows for 2D and 3D game development with frameworks such as Phaser, Three.js, Babylon.js, and A-Frame.
+HTML5 Canvas、WebGL、JavaScript を使って Web ベースのゲームとゲームエンジンを構築します。このスキルには、2D/3D ゲーム開発向けのスターターテンプレート、リファレンス資料、段階的なワークフローが含まれています。Phaser、Three.js、Babylon.js、A-Frame などのフレームワークにも対応します。
 
-## When to Use This Skill
+## このスキルを使う場合
 
-- Building a game engine or game from scratch using web technologies
-- Implementing game loops, physics, collision detection, or rendering
-- Working with HTML5 Canvas, WebGL, or SVG for game graphics
-- Adding game controls (keyboard, mouse, touch, gamepad)
-- Creating 2D platformers, breakout-style games, maze games, or 3D experiences
-- Working with tilemaps, sprites, or animations
-- Adding audio to web games
-- Implementing multiplayer features with WebRTC or WebSockets
-- Optimizing game performance
-- Publishing and distributing web games
+- Web 技術を使ってゲームエンジンまたはゲームをゼロから構築する場合
+- ゲームループ、物理演算、衝突判定、描画の実装を行う場合
+- ゲームグラフィックとして HTML5 Canvas、WebGL、SVG を扱う場合
+- ゲーム操作（キーボード、マウス、タッチ、ゲームパッド）を追加する場合
+- 2D プラットフォーマー、ブロック崩し系ゲーム、迷路ゲーム、3D 体験を作る場合
+- タイルマップ、スプライト、アニメーションを扱う場合
+- Web ゲームに音声を追加する場合
+- WebRTC や WebSockets を使ってマルチプレイヤー機能を実装する場合
+- ゲームのパフォーマンスを最適化する場合
+- Web ゲームの配信と公開を行う場合
 
-## Prerequisites
+## 前提条件
 
-- Basic knowledge of HTML, CSS, and JavaScript
-- A modern web browser with Canvas/WebGL support
-- A text editor or IDE
-- Optional: Node.js for build tooling and local development servers
+- HTML、CSS、JavaScript の基礎知識
+- Canvas/WebGL をサポートするモダンな Web ブラウザ
+- テキストエディタまたは IDE
+- 任意: ビルドツールやローカル開発サーバー用の Node.js
 
-## Core Concepts
+## 核となる概念
 
-The following concepts form the foundation of every web-based game engine.
+以下の概念は、すべての Web ベースのゲームエンジンの基盤です。
 
-### Game Loop
+### ゲームループ
 
-Every game engine revolves around the game loop -- a continuous cycle of:
+すべてのゲームエンジンは、ゲームループを中心に回ります。これは次の継続的なサイクルです。
 
-1. **Process Input** - Read keyboard, mouse, touch, or gamepad input
-2. **Update State** - Update game object positions, physics, AI, and logic
-3. **Render** - Draw the current game state to the screen
+1. **入力を処理する** - キーボード、マウス、タッチ、ゲームパッドの入力を読む
+2. **状態を更新する** - ゲームオブジェクトの位置、物理演算、AI、ロジックを更新する
+3. **描画する** - 現在のゲーム状態を画面に描画する
 
-Use `requestAnimationFrame` for smooth, browser-optimized rendering.
+スムーズでブラウザに最適化された描画には `requestAnimationFrame` を使います。
 
-### Rendering
+### 描画
 
-- **Canvas 2D** - Best for 2D games, sprite-based rendering, and tilemaps
-- **WebGL** - Hardware-accelerated 3D and advanced 2D rendering
-- **SVG** - Vector-based graphics, good for UI elements
-- **CSS** - Useful for DOM-based game elements and transitions
+- **Canvas 2D** - 2D ゲーム、スプライト描画、タイルマップに最適
+- **WebGL** - ハードウェアアクセラレーションされた 3D と高度な 2D 描画
+- **SVG** - ベクターベースのグラフィックで、UI 要素に向く
+- **CSS** - DOM ベースのゲーム要素とトランジションに役立つ
 
-### Physics and Collision Detection
+### 物理演算と衝突判定
 
-- **2D Collision Detection** - AABB, circle, and SAT-based collision
-- **3D Collision Detection** - Bounding box, bounding sphere, and raycasting
-- **Velocity and Acceleration** - Basic Newtonian physics for movement
-- **Gravity** - Constant downward acceleration for platformers
+- **2D 衝突判定** - AABB、円、SAT ベースの衝突判定
+- **3D 衝突判定** - バウンディングボックス、バウンディングスフィア、レイキャスティング
+- **速度と加速度** - 移動のための基本的なニュートン物理
+- **重力** - プラットフォーマー向けの一定の下向き加速度
 
-### Controls
+### 操作
 
-- **Keyboard** - Arrow keys, WASD, and custom key bindings
-- **Mouse** - Click, move, and pointer lock for FPS-style controls
-- **Touch** - Mobile touch events and virtual joysticks
-- **Gamepad** - Gamepad API for controller support
+- **キーボード** - 矢印キー、WASD、カスタムキー割り当て
+- **マウス** - クリック、移動、FPS 風の操作用のポインタロック
+- **タッチ** - モバイルのタッチイベントと仮想ジョイスティック
+- **ゲームパッド** - コントローラー対応の Gamepad API
 
-### Audio
+### 音声
 
-- **Web Audio API** - Programmatic sound generation and spatial audio
-- **HTML5 Audio** - Simple audio playback for music and sound effects
+- **Web Audio API** - プログラム的な音生成と空間オーディオ
+- **HTML5 Audio** - 音楽や効果音のシンプルな再生
 
-## Step-by-Step Workflows
+## 段階的なワークフロー
 
-### Creating a Basic 2D Game
+### 基本的な 2D ゲームを作る
 
-1. Set up an HTML file with a `<canvas>` element
-2. Get the 2D rendering context
-3. Implement the game loop using `requestAnimationFrame`
-4. Create game objects with position, velocity, and size properties
-5. Handle keyboard/mouse input for player control
-6. Implement collision detection between game objects
-7. Add scoring, lives, and win/lose conditions
-8. Add sound effects and music
+1. `<canvas>` 要素を含む HTML ファイルを用意する
+2. 2D 描画コンテキストを取得する
+3. `requestAnimationFrame` を使ってゲームループを実装する
+4. 位置、速度、サイズを持つゲームオブジェクトを作る
+5. キーボード/マウス入力でプレイヤーを制御する
+6. ゲームオブジェクト間の衝突判定を実装する
+7. スコア、ライフ、勝敗条件を追加する
+8. 効果音と音楽を追加する
 
-### Building a 3D Game
+### 3D ゲームを作る
 
-1. Choose a framework (Three.js, Babylon.js, A-Frame, or PlayCanvas)
-2. Set up the scene, camera, and renderer
-3. Load or create 3D models and textures
-4. Implement lighting and shaders
-5. Add physics and collision detection
-6. Implement player controls and camera movement
-7. Add audio and visual effects
+1. フレームワークを選ぶ（Three.js、Babylon.js、A-Frame、PlayCanvas）
+2. シーン、カメラ、レンダラーをセットアップする
+3. 3D モデルとテクスチャを読み込むか作成する
+4. 照明とシェーダーを実装する
+5. 物理演算と衝突判定を追加する
+6. プレイヤー制御とカメラ移動を実装する
+7. 音声と視覚効果を追加する
 
-### Publishing a Game
+### ゲームを公開する
 
-1. Optimize assets (compress images, minify code)
-2. Test across browsers and devices
-3. Choose distribution platform (web, app stores, game portals)
-4. Implement monetization if needed
-5. Promote through game communities and social media
+1. アセットを最適化する（画像圧縮、コードの最小化）
+2. ブラウザとデバイス間でテストする
+3. 配信プラットフォームを選ぶ（Web、アプリストア、ゲームポータル）
+4. 必要に応じて収益化を実装する
+5. ゲームコミュニティやソーシャルメディアで宣伝する
 
-## Game Templates
+## ゲームテンプレート
 
-Starter templates are available in the `assets/` folder. Each template provides a complete, working example that can be used as a starting point for a new project.
+スターターテンプレートは `assets/` フォルダにあります。各テンプレートは、新しいプロジェクトの出発点として使える、完全に動作するサンプルを提供します。
 
-| Template | Description |
-|----------|-------------|
-| `paddle-game-template.md` | 2D Breakout-style game with pure JavaScript |
-| `2d-maze-game.md` | Maze game with device orientation controls |
-| `2d-platform-game.md` | Platformer game using Phaser framework |
-| `gameBase-template-repo.md` | Game base template repository structure |
-| `simple-2d-engine.md` | Simple 2D platformer engine with collisions |
+| テンプレート | 説明 |
+|----------|------|
+| `paddle-game-template.md` | 純粋な JavaScript による 2D ブロック崩し風ゲーム |
+| `2d-maze-game.md` | 端末の向き制御を使う迷路ゲーム |
+| `2d-platform-game.md` | Phaser フレームワークを使うプラットフォーマー |
+| `gameBase-template-repo.md` | ゲームベースのテンプレートリポジトリ構成 |
+| `simple-2d-engine.md` | 衝突判定付きのシンプルな 2D プラットフォームエンジン |
 
-## Reference Documentation
+## リファレンス資料
 
-Detailed reference material is available in the `references/` folder. Consult these files for in-depth coverage of specific topics.
+詳細なリファレンス資料は `references/` フォルダにあります。特定のトピックについて詳しく知りたいときは、これらのファイルを参照してください。
 
-| Reference | Topics Covered |
-|-----------|---------------|
-| `basics.md` | Game development introduction and anatomy |
-| `web-apis.md` | Canvas, WebGL, Web Audio, Gamepad, and other web APIs |
-| `techniques.md` | Collision detection, tilemaps, async scripts, audio |
-| `3d-web-games.md` | 3D theory, frameworks, shaders, WebXR |
-| `game-control-mechanisms.md` | Touch, keyboard, mouse, and gamepad controls |
-| `game-publishing.md` | Distribution, promotion, and monetization |
-| `algorithms.md` | Raycasting, collision, physics, vector math |
-| `terminology.md` | Game development glossary |
-| `game-engine-core-principles.md` | Core design principles for game engines |
+| リファレンス | 対象トピック |
+|-----------|--------------|
+| `basics.md` | ゲーム開発の入門と構造 |
+| `web-apis.md` | Canvas、WebGL、Web Audio、Gamepad などの Web API |
+| `techniques.md` | 衝突判定、タイルマップ、非同期スクリプト、音声 |
+| `3d-web-games.md` | 3D の理論、フレームワーク、シェーダー、WebXR |
+| `game-control-mechanisms.md` | タッチ、キーボード、マウス、ゲームパッドの制御 |
+| `game-publishing.md` | 配信、宣伝、収益化 |
+| `algorithms.md` | レイキャスティング、衝突判定、物理演算、ベクトル計算 |
+| `terminology.md` | ゲーム開発用語集 |
+| `game-engine-core-principles.md` | ゲームエンジン設計の基本原則 |
 
-## Troubleshooting
+## トラブルシューティング
 
-| Issue | Solution |
-|-------|----------|
-| Canvas is blank | Check that you are calling drawing methods after getting the context and inside the game loop |
-| Game runs at different speeds | Use delta time in update calculations instead of fixed values |
-| Collision detection is inconsistent | Use continuous collision detection or reduce time steps for fast-moving objects |
-| Audio does not play | Browsers require user interaction before playing audio; trigger playback from a click handler |
-| Performance is poor | Profile with browser dev tools, reduce draw calls, use object pooling, and optimize asset sizes |
-| Touch controls are unresponsive | Prevent default touch behavior and handle touch events separately from mouse events |
-| WebGL context lost | Handle the `webglcontextlost` event and restore state on `webglcontextrestored` |
+| 問題 | 解決策 |
+|------|--------|
+| Canvas が空白 | コンテキストを取得したあと、ゲームループ内で描画メソッドを呼んでいるか確認する |
+| ゲームの速度が一定でない | 更新計算でデルタタイムを使い、固定値に依存しない |
+| 衝突判定が一貫していない | 連続衝突判定を使うか、高速に動くオブジェクトではタイムステップを小さくする |
+| 音声が再生されない | ブラウザはユーザー操作がないと音声を再生できないため、クリックハンドラーから再生を起動する |
+| パフォーマンスが悪い | ブラウザの開発者ツールでプロファイルを確認し、描画回数を減らし、オブジェクトプーリングを使い、アセットサイズを最適化する |
+| タッチ操作が反応しない | タッチの既定動作を無効にし、マウスイベントとは別にタッチイベントを処理する |
+| WebGL コンテキストが失われた | `webglcontextlost` を処理し、`webglcontextrestored` で状態を復元する |

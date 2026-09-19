@@ -1,6 +1,6 @@
 ---
 name: performance-review-writer
-description: 'Draft performance reviews, self-assessments, peer reviews, and upward feedback in your own voice. Analyzes your contributions, emails, and meeting history via WorkIQ, then produces honest, impact-focused drafts using the STAR format. USE FOR: write my performance review, draft self-assessment, peer review, 360 feedback, annual review, mid-year review, upward feedback, write review for colleague, performance appraisal.'
+description: 'performance-review-writer に関する作業を支援する Skill です。対象のファイルや設定を確認し、必要な手順、検証方法、注意点を案内します。対象技術の調査、実装、運用、トラブルシューティングに使用します。'
 ---
 
 # Performance Review Writer
@@ -29,7 +29,7 @@ This skill handles three distinct types:
 
 ---
 
-## Workflow
+## ワークフロー
 
 ### Step 1 — Gather Context
 
@@ -209,7 +209,7 @@ A single, clear, actionable ask.
 
 ---
 
-## Requirements
+## 要件
 
 - **WorkIQ MCP tool** is recommended for surfacing contributions and communications (Microsoft 365 / Outlook / Teams)
 - Without WorkIQ, the skill still works — ask the user for 3–5 bullet points of key contributions as a starting point

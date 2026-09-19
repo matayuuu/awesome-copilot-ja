@@ -1,31 +1,31 @@
 ---
 name: create-spring-boot-kotlin-project
-description: 'Create Spring Boot Kotlin Project Skeleton'
+description: 'Spring Boot Kotlinプロジェクトのひな形を作成する。'
 ---
 
-# Create Spring Boot Kotlin project prompt
+# Spring Boot Kotlinプロジェクト作成プロンプト
 
-- Please make sure you have the following software installed on your system:
+- 次のソフトウェアがシステムにインストールされていることを確認する。
 
   - Java 21
   - Docker
   - Docker Compose
 
-- If you need to custom the project name, please change the `artifactId` and the `packageName` in [download-spring-boot-project-template](#download-spring-boot-project-template)
+- プロジェクト名をカスタマイズする場合は、[Spring Bootプロジェクトテンプレートのダウンロード](#download-spring-boot-project-template)にある `artifactId` と `packageName` を変更する。
 
-- If you need to update the Spring Boot version, please change the `bootVersion` in [download-spring-boot-project-template](#download-spring-boot-project-template)
+- Spring Bootのバージョンを更新する場合は、[Spring Bootプロジェクトテンプレートのダウンロード](#download-spring-boot-project-template)にある `bootVersion` を変更する。
 
-## Check Java version
+## Javaバージョンの確認
 
-- Run following command in terminal and check the version of Java
+- ターミナルで次のコマンドを実行し、Javaのバージョンを確認する。
 
 ```shell
 java -version
 ```
 
-## Download Spring Boot project template
+## Spring Bootプロジェクトテンプレートのダウンロード
 
-- Run following command in terminal to download a Spring Boot project template
+- ターミナルで次のコマンドを実行し、Spring Bootプロジェクトテンプレートをダウンロードする。
 
 ```shell
 curl https://start.spring.io/starter.zip \
@@ -40,33 +40,33 @@ curl https://start.spring.io/starter.zip \
   -o starter.zip
 ```
 
-## Unzip the downloaded file
+## ダウンロードしたファイルの展開
 
-- Run following command in terminal to unzip the downloaded file
+- ターミナルで次のコマンドを実行し、ダウンロードしたファイルを展開する。
 
 ```shell
 unzip starter.zip -d ./${input:projectName:demo-kotlin}
 ```
 
-## Remove the downloaded zip file
+## ダウンロードしたZIPファイルの削除
 
-- Run following command in terminal to delete the downloaded zip file
+- ターミナルで次のコマンドを実行し、ダウンロードしたZIPファイルを削除する。
 
 ```shell
 rm -f starter.zip
 ```
 
-## Unzip the downloaded file
+## ダウンロードしたファイルの展開
 
-- Run following command in terminal to unzip the downloaded file
+- ターミナルで次のコマンドを実行し、ダウンロードしたファイルを展開する。
 
 ```shell
 unzip starter.zip -d ./${input:projectName:demo-kotlin}
 ```
 
-## Add additional dependencies
+## 追加の依存関係
 
-- Insert `springdoc-openapi-starter-webmvc-ui` and `archunit-junit5` dependency into `build.gradle.kts` file
+- `build.gradle.kts` ファイルに `springdoc-openapi-starter-webmvc-ui` と `archunit-junit5` の依存関係を追加する。
 
 ```gradle.kts
 dependencies {
@@ -75,7 +75,7 @@ dependencies {
 }
 ```
 
-- Insert SpringDoc configurations into `application.properties` file
+- `application.properties` ファイルにSpringDocの構成を追加する。
 
 ```properties
 # SpringDoc configurations
@@ -84,7 +84,7 @@ springdoc.swagger-ui.operations-sorter=alpha
 springdoc.swagger-ui.tags-sorter=alpha
 ```
 
-- Insert Redis configurations into `application.properties` file
+- `application.properties` ファイルにRedisの構成を追加する。
 
 ```properties
 # Redis configurations
@@ -93,7 +93,7 @@ spring.data.redis.port=6379
 spring.data.redis.password=rootroot
 ```
 
-- Insert R2DBC configurations into `application.properties` file
+- `application.properties` ファイルにR2DBCの構成を追加する。
 
 ```properties
 # R2DBC configurations
@@ -106,7 +106,7 @@ spring.sql.init.platform=postgres
 spring.sql.init.continue-on-error=true
 ```
 
-- Insert MongoDB configurations into `application.properties` file
+- `application.properties` ファイルにMongoDBの構成を追加する。
 
 ```properties
 # MongoDB configurations
@@ -118,30 +118,30 @@ spring.data.mongodb.password=rootroot
 spring.data.mongodb.database=test
 ```
 
-- Create `docker-compose.yaml` at project root and add following services: `redis:6`, `postgresql:17` and `mongo:8`.
+- プロジェクトルートに `docker-compose.yaml` を作成し、`redis:6`、`postgresql:17`、`mongo:8` の各サービスを追加する。
 
-  - redis service should have
-    - password `rootroot`
-    - mapping port 6379 to 6379
-    - mounting volume `./redis_data` to `/data`
-  - postgresql service should have
-    - password `rootroot`
-    - mapping port 5432 to 5432
-    - mounting volume `./postgres_data` to `/var/lib/postgresql/data`
-  - mongo service should have
-    - initdb root username `root`
-    - initdb root password `rootroot`
-    - mapping port 27017 to 27017
-    - mounting volume `./mongo_data` to `/data/db`
+  - redisサービスには次を設定する
+    - パスワード `rootroot`
+    - ポート6379を6379へマッピング
+    - ボリューム `./redis_data` を `/data` へマウント
+  - postgresqlサービスには次を設定する
+    - パスワード `rootroot`
+    - ポート5432を5432へマッピング
+    - ボリューム `./postgres_data` を `/var/lib/postgresql/data` へマウント
+  - mongoサービスには次を設定する
+    - initdbのrootユーザー名 `root`
+    - initdbのrootパスワード `rootroot`
+    - ポート27017を27017へマッピング
+    - ボリューム `./mongo_data` を `/data/db` へマウント
 
-- Insert `redis_data`, `postgres_data` and `mongo_data` directories in `.gitignore` file
+- `.gitignore` ファイルに `redis_data`、`postgres_data`、`mongo_data` ディレクトリを追加する。
 
-- Run gradle clean test command to check if the project is working
+- Gradleのclean testコマンドを実行し、プロジェクトが動作することを確認する。
 
 ```shell
 ./gradlew clean test
 ```
 
-- (Optional) `docker-compose up -d` to start the services, `./gradlew spring-boot:run` to run the Spring Boot project, `docker-compose rm -sf` to stop the services.
+- （任意）`docker-compose up -d` でサービスを起動し、`./gradlew spring-boot:run` でSpring Bootプロジェクトを実行し、`docker-compose rm -sf` でサービスを停止する。
 
-Let's do this step by step.
+1ステップずつ進める。

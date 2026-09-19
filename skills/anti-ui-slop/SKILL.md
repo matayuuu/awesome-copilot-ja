@@ -1,58 +1,58 @@
 ---
 name: anti-ui-slop
-description: 'Stop coding agents from shipping generic UI. Use UIZZE''s 800,000+ real web and iOS screens to build product-specific interfaces, define a design contract, cover required states, and run a hard finish gate. Use when designing, implementing, redesigning, critiquing, or pre-ship reviewing a web or iOS interface in Codex, Claude Code, Cursor, Copilot, or another coding agent. Trigger with "anti-ui-slop", "stop UI slop", "ground this UI in real screens", or "run the UI finish gate".'
+description: 'コーディングエージェントが汎用的なUIを出荷しないようにします。UIZZEの実在する80万以上のWeb・iOS画面を使って製品固有のインターフェイスを構築し、デザイン契約を定義し、必要な状態を網羅して厳格な完了ゲートを実行します。Codex、Claude Code、Cursor、CopilotなどのコーディングエージェントでWebまたはiOSのインターフェイスを設計、実装、再設計、批評、出荷前レビューするときに使用します。「anti-ui-slop」、「stop UI slop」、「ground this UI in real screens」、「run the UI finish gate」で起動します。'
 license: MIT
 metadata:
   version: "1.2.13"
   author: "UIZZE <business@uizze.com>"
-  compatibility: "Designed for Claude Code, Codex, Cursor, and GitHub Copilot; works in any agent that can read project files and fetch a URL."
+  compatibility: "Claude Code、Codex、Cursor、GitHub Copilot 向けに設計されています。プロジェクトファイルの読み取りと URL の取得ができる任意のエージェントで動作します。"
   tags: "ui-design, design-system, design-review, frontend, web-ui, ios-ui"
 ---
 
-> **Stop AI coding agents from shipping generic UI.**
+> **AIコーディングエージェントが汎用的なUIを出荷しないようにします。**
 
-# Stop Making UI Slop
+# UIの凡庸化を止める
 
-Build product-specific UI with 800,000+ real web and iOS screens via [UIZZE](https://uizze.com).
+[UIZZE](https://uizze.com) を通じて、実在する80万以上のWeb・iOS画面を活用した製品固有のUIを構築します。
 
-![Stop Making UI Slop with UIZZE](https://uizze.com/landing/anti-ui-slop-skill-banner.png)
+![UIZZEでUIの凡庸化を止める](https://uizze.com/landing/anti-ui-slop-skill-banner.png)
 
-## Overview
+## 概要
 
-Use the product brief, existing UI, components, and local design system to make intentional interfaces. Uizze supplies focused design guidance and, when useful, a small number of relevant visual references.
+製品概要、既存UI、コンポーネント、ローカルのデザインシステムを利用して、意図のあるインターフェイスを作成します。Uizze は焦点を絞ったデザインガイダンスと、必要に応じて少数の関連する視覚的参照を提供します。
 
-## Prerequisites
+## 前提条件
 
-- A screen or component to build, redesign, or review — a file path or a short description.
-- The product's existing components, design tokens, and visual language, so the build extends them instead of inventing a new system.
-- Optional access to the paid Uizze MCP for focused references and hosted materials.
+- 構築、再設計、レビューする画面またはコンポーネント（ファイルパスまたは簡単な説明）。
+- 新しいシステムを発明するのではなく拡張できるよう、製品の既存コンポーネント、デザイントークン、視覚言語。
+- 焦点を絞った参照資料とホストされた素材のための、有料 Uizze MCP への任意のアクセス。
 
-## Authentication
+## 認証
 
-- The free skill and public catalogue work without an account, token, MCP connection, dependency, script, or executable.
-- The optional full UIZZE MCP may use the host's normal connection and authentication flow. Never claim it is connected without an actual host result.
+- 無料のスキルと公開カタログは、アカウント、トークン、MCP接続、依存関係、スクリプト、実行可能ファイルなしで動作します。
+- 任意の完全版 UIZZE MCP は、ホストの通常の接続・認証フローを使用することがあります。実際のホスト結果がない限り、接続済みであると主張してはいけません。
 
-## Work from the product
+## 製品を起点にする
 
-Read the brief, existing UI, components, tokens, and constraints before designing. They always outrank this skill. Keep familiar interaction conventions and make the product's own objects, workflow, and priorities visually clear. Do not add novelty for its own sake.
+設計前に、概要、既存UI、コンポーネント、トークン、制約を読みます。これらは常にこのスキルより優先されます。馴染みのある操作規則を保ち、製品固有のオブジェクト、ワークフロー、優先順位を視覚的に明確にします。目新しさだけを目的に追加してはいけません。
 
-## Load one playbook
+## プレイブックを1つ読み込む
 
-Choose at most one file for the current request:
+現在の依頼には、次のうち最大1ファイルを選びます。
 
-- New interface or major redesign: `reference/new-work.md`
-- Product or dashboard work: `reference/operate.md`
-- Refinement and polish: `reference/polish.md`
-- Simplification or distillation: `reference/distill.md`
-- Explicit audit: `reference/audit.md`
-- Native iOS work: `reference/ios.md`
+- 新しいインターフェイスまたは大規模な再設計: `reference/new-work.md`
+- 製品またはダッシュボードの作業: `reference/operate.md`
+- 改良と仕上げ: `reference/polish.md`
+- 簡素化または要約: `reference/distill.md`
+- 明示的な監査: `reference/audit.md`
+- ネイティブ iOS 作業: `reference/ios.md`
 
-Do not load a second playbook. Apply judgment rather than treating its examples as a checklist.
+2つ目のプレイブックを読み込んではいけません。例をチェックリストとして扱うのではなく、判断して適用します。
 
-## Optional Uizze evidence
+## 任意のUizze根拠
 
-Read `references/uizze-reference-policy.md` before using the paid MCP. It exposes exactly `find_ui_references` and `find_ui_materials`. Use them only when a concrete unresolved visual or material question would benefit from evidence. If they return nothing, continue silently.
+有料 MCP を使用する前に `references/uizze-reference-policy.md` を読みます。公開されるのは `find_ui_references` と `find_ui_materials` のみです。具体的で未解決の視覚的または素材に関する問いが、根拠によって改善される場合にのみ使用します。何も返されなければ、何も言わずに続行します。
 
-## Finish
+## 完了
 
-Complete the requested scope. When the environment supports it, render and inspect once. Fix observable breakage such as clipping, overlap, distorted media, inaccessible controls, or inert interactions. Keep the handoff concise.
+依頼された範囲を完了します。環境が対応している場合は、一度レンダリングして確認します。クリッピング、重なり、歪んだメディア、アクセスできないコントロール、反応しない操作などの観測可能な不具合を修正します。引き継ぎは簡潔にします。

@@ -1,9 +1,8 @@
 ---
 name: test-gap-audit
-description: Run a read-only audit for missing, weak, stale, or mis-scoped test coverage. If the user does not name a scope, audit the full repository and identify important code paths, routes, features, services, workflows, and contracts that lack proper tests. If the user names a feature, PR, branch, route, workflow, service, bug fix, API, security-sensitive path, or risky code change, focus only on that specific scope. Use when the user asks what tests are missing, whether coverage is enough, what regression tests to add, or how to prove a change is safe. This is not a general bug audit and not a security review; it evaluates whether behavior is covered by tests.
+description: '不足、弱い、古い、または対象範囲が不適切なテストカバレッジを読み取り専用で監査します。範囲が指定されなければリポジトリ全体を監査し、適切なテストがない重要なコードパス、ルート、機能、サービス、ワークフロー、契約を特定します。機能、PR、ブランチ、ルート、ワークフロー、サービス、バグ修正、API、セキュリティ上重要なパス、リスクの高い変更が指定された場合は、その範囲だけを対象にします。欠けているテスト、十分なカバレッジ、追加すべき回帰テスト、安全な変更の証明方法を尋ねられたときに使います。一般的なバグ監査やセキュリティレビューではなく、テストによる動作のカバー状況を評価します。'
 license: MIT
 ---
-
 # Test Gap Audit
 
 Find the tests that should exist but do not, or tests that exist but do not prove the important behavior. Produce concrete, prioritized test recommendations grounded in code paths, risk, and existing test conventions.

@@ -1,15 +1,15 @@
 ---
 name: excalidraw-diagram-generator
-description: 'Generate Excalidraw diagrams from natural language descriptions. Use when asked to "create a diagram", "make a flowchart", "visualize a process", "draw a system architecture", "create a mind map", or "generate an Excalidraw file". Supports flowcharts, relationship diagrams, mind maps, and system architecture diagrams. Outputs .excalidraw JSON files that can be opened directly in Excalidraw.'
+description: '自然言語の説明から Excalidraw 図を生成します。「図を作成」「フローチャートを作成」「プロセスを可視化」「システム アーキテクチャを描画」「マインドマップを作成」「Excalidraw ファイルを生成」などの依頼で使用します。フローチャート、関連図、マインドマップ、システム アーキテクチャ図に対応し、Excalidraw で直接開ける .excalidraw JSON ファイルを出力します。'
 ---
 
-# Excalidraw Diagram Generator
+# Excalidraw 図ジェネレーター
 
-A skill for generating Excalidraw-format diagrams from natural language descriptions. This skill helps create visual representations of processes, systems, relationships, and ideas without manual drawing.
+Excalidraw形式の図を自然言語の説明から生成するためのスキルです。このスキルを使うと、手作業で描くことなく、プロセス、システム、関係性、アイデアの視覚表現を作成できます。
 
-## When to Use This Skill
+## このスキルを使うとき
 
-Use this skill when users request:
+次のような依頼があった場合にこのスキルを使います。
 
 - "Create a diagram showing..."
 - "Make a flowchart for..."
@@ -20,125 +20,125 @@ Use this skill when users request:
 - "Show the relationship between..."
 - "Diagram the workflow of..."
 
-**Supported diagram types:**
-- 📊 **Flowcharts**: Sequential processes, workflows, decision trees
-- 🔗 **Relationship Diagrams**: Entity relationships, system components, dependencies
-- 🧠 **Mind Maps**: Concept hierarchies, brainstorming results, topic organization
-- 🏗️ **Architecture Diagrams**: System design, module interactions, data flow
-- 📈 **Data Flow Diagrams (DFD)**: Data flow visualization, data transformation processes
-- 🏊 **Business Flow (Swimlane)**: Cross-functional workflows, actor-based process flows
-- 📦 **Class Diagrams**: Object-oriented design, class structures and relationships
-- 🔄 **Sequence Diagrams**: Object interactions over time, message flows
-- 🗃️ **ER Diagrams**: Database entity relationships, data models
+**対応している図の種類:**
+- 📊 **フローチャート**: 連続したプロセス、ワークフロー、意思決定ツリー
+- 🔗 **関連図**: エンティティ間の関係、システム構成要素、依存関係
+- 🧠 **マインドマップ**: 概念の階層、ブレインストーミングの結果、トピックの整理
+- 🏗️ **アーキテクチャ図**: システム設計、モジュール間の相互作用、データフロー
+- 📈 **データフロー図 (DFD)**: データの流れの可視化、データ変換処理
+- 🏊 **ビジネスフロー (Swimlane)**: 部門横断のワークフロー、役割に基づくプロセスの流れ
+- 📦 **クラス図**: オブジェクト指向設計、クラス構造と関係
+- 🔄 **シーケンス図**: 時間の経過に伴うオブジェクト間の相互作用、メッセージの流れ
+- 🗃️ **ER図**: データベースのエンティティ関係、データモデル
 
-## Prerequisites
+## 前提条件
 
-- Clear description of what should be visualized
-- Identification of key entities, steps, or concepts
-- Understanding of relationships or flow between elements
+- 可視化したい内容の明確な説明
+- 主要なエンティティ、手順、または概念の特定
+- 要素間の関係や流れの理解
 
-## Step-by-Step Workflow
+## 手順に沿ったワークフロー
 
-### Step 1: Understand the Request
+### 手順 1: 要求を理解する
 
-Analyze the user's description to determine:
-1. **Diagram type** (flowchart, relationship, mind map, architecture)
-2. **Key elements** (entities, steps, concepts)
-3. **Relationships** (flow, connections, hierarchy)
-4. **Complexity** (number of elements)
+ユーザーの説明を分析し、次を判断します。
+1. **図の種類**（フローチャート、関係図、マインドマップ、アーキテクチャ）
+2. **主要な要素**（エンティティ、手順、概念）
+3. **関係性**（流れ、接続、階層）
+4. **複雑さ**（要素数）
 
-### Step 2: Choose the Appropriate Diagram Type
+### 手順 2: 適切な図の種類を選ぶ
 
-| User Intent | Diagram Type | Example Keywords |
+| ユーザーの意図 | 図の種類 | 例のキーワード |
 |-------------|--------------|------------------|
-| Process flow, steps, procedures | **Flowchart** | "workflow", "process", "steps", "procedure" |
-| Connections, dependencies, associations | **Relationship Diagram** | "relationship", "connections", "dependencies", "structure" |
-| Concept hierarchy, brainstorming | **Mind Map** | "mind map", "concepts", "ideas", "breakdown" |
-| System design, components | **Architecture Diagram** | "architecture", "system", "components", "modules" |
-| Data flow, transformation processes | **Data Flow Diagram (DFD)** | "data flow", "data processing", "data transformation" |
-| Cross-functional processes, actor responsibilities | **Business Flow (Swimlane)** | "business process", "swimlane", "actors", "responsibilities" |
-| Object-oriented design, class structures | **Class Diagram** | "class", "inheritance", "OOP", "object model" |
-| Interaction sequences, message flows | **Sequence Diagram** | "sequence", "interaction", "messages", "timeline" |
-| Database design, entity relationships | **ER Diagram** | "database", "entity", "relationship", "data model" |
+| プロセスの流れ、手順、手続き | **フローチャート** | "workflow", "process", "steps", "procedure" |
+| 接続、依存関係、関連付け | **関連図** | "relationship", "connections", "dependencies", "structure" |
+| 概念の階層、ブレインストーミング | **マインドマップ** | "mind map", "concepts", "ideas", "breakdown" |
+| システム設計、構成要素 | **アーキテクチャ図** | "architecture", "system", "components", "modules" |
+| データの流れ、変換処理 | **データフロー図 (DFD)** | "data flow", "data processing", "data transformation" |
+| 部門横断のプロセス、役割の責任 | **ビジネスフロー (Swimlane)** | "business process", "swimlane", "actors", "responsibilities" |
+| オブジェクト指向設計、クラス構造 | **クラス図** | "class", "inheritance", "OOP", "object model" |
+| 相互作用のシーケンス、メッセージの流れ | **シーケンス図** | "sequence", "interaction", "messages", "timeline" |
+| データベース設計、エンティティ間の関係 | **ER図** | "database", "entity", "relationship", "data model" |
 
-### Step 3: Extract Structured Information
+### 手順 3: 構造化された情報を抽出する
 
-**For Flowcharts:**
-- List of sequential steps
-- Decision points (if any)
-- Start and end points
+**フローチャートの場合:**
+- 連続した手順の一覧
+- 判断ポイント（ある場合）
+- 開始点と終了点
 
-**For Relationship Diagrams:**
-- Entities/nodes (name + optional description)
-- Relationships between entities (from → to, with label)
+**関連図の場合:**
+- エンティティ/ノード（名前 + 必要に応じた説明）
+- エンティティ間の関係（from → to、ラベル付き）
 
-**For Mind Maps:**
-- Central topic
-- Main branches (3-6 recommended)
-- Sub-topics for each branch (optional)
+**マインドマップの場合:**
+- 中心トピック
+- メインブランチ（3〜6程度を推奨）
+- 各ブランチのサブトピック（任意）
 
-**For Data Flow Diagrams (DFD):**
-- Data sources and destinations (external entities)
-- Processes (data transformations)
-- Data stores (databases, files)
-- Data flows (arrows showing data movement from left-to-right or from top-left to bottom-right)
-- **Important**: Do not represent process order, only data flow
+**データフロー図 (DFD) の場合:**
+- データソースと宛先（外部エンティティ）
+- プロセス（データ変換）
+- データストア（データベース、ファイル）
+- データフロー（左から右、または左上から右下への向きの矢印）
+- **重要**: プロセスの順序は表現せず、データフローのみを表現する
 
-**For Business Flow (Swimlane):**
-- Actors/roles (departments, systems, people) - displayed as header columns
-- Process lanes (vertical lanes under each actor)
-- Process boxes (activities within each lane)
-- Flow arrows (connecting process boxes, including cross-lane handoffs)
+**ビジネスフロー (Swimlane) の場合:**
+- 役割/アクター（部門、システム、人間）- ヘッダー列として表示
+- プロセスレーン（各アクターの下の縦レーン）
+- プロセスボックス（各レーン内のアクティビティ）
+- フロー矢印（プロセスボックス間を接続し、レーン横断の受け渡しを含む）
 
-**For Class Diagrams:**
-- Classes with names
-- Attributes with visibility (+, -, #)
-- Methods with visibility and parameters
-- Relationships: inheritance (solid line + white triangle), implementation (dashed line + white triangle), association (solid line), dependency (dashed line), aggregation (solid line + white diamond), composition (solid line + filled diamond)
-- Multiplicity notations (1, 0..1, 1..*, *)
+**クラス図の場合:**
+- 名前付きクラス
+- 可視性（+, -, #）付き属性
+- 可視性と引数付きメソッド
+- 関係: 継承（実線 + 白三角形）、実装（破線 + 白三角形）、関連（実線）、依存（破線）、集約（実線 + 白ダイヤモンド）、合成（実線 + 塗りつぶしダイヤモンド）
+- 多重度表記（1, 0..1, 1..*, *）
 
-**For Sequence Diagrams:**
-- Objects/actors (arranged horizontally at top)
-- Lifelines (vertical lines from each object)
-- Messages (horizontal arrows between lifelines)
-- Synchronous messages (solid arrow), asynchronous messages (dashed arrow)
-- Return values (dashed arrows)
-- Activation boxes (rectangles on lifelines during execution)
-- Time flows from top to bottom
+**シーケンス図の場合:**
+- オブジェクト/アクター（上部で横に配置）
+- ライフライン（各オブジェクトから伸びる縦線）
+- メッセージ（ライフライン間の横向き矢印）
+- 同期メッセージ（実線の矢印）、非同期メッセージ（破線の矢印）
+- 戻り値（破線の矢印）
+- アクティベーションボックス（実行中のライフライン上の矩形）
+- 時間の流れは上から下
 
-**For ER Diagrams:**
-- Entities (rectangles with entity names)
-- Attributes (listed inside entities)
-- Primary keys (underlined or marked with PK)
-- Foreign keys (marked with FK)
-- Relationships (lines connecting entities)
-- Cardinality: 1:1 (one-to-one), 1:N (one-to-many), N:M (many-to-many)
-- Junction/associative entities for many-to-many relationships (dashed rectangles)
+**ER図の場合:**
+- エンティティ（エンティティ名付きの矩形）
+- 属性（エンティティ内に列挙）
+- 主キー（下線または PK として表示）
+- 外部キー（FK として表示）
+- 関係（エンティティをつなぐ線）
+- カーディナリティ: 1:1（1対1）、1:N（1対多）、N:M（多対多）
+- 多対多関係のための接続テーブル/関連エンティティ（破線の矩形）
 
-### Step 4: Generate the Excalidraw JSON
+### 手順 4: Excalidraw JSON を生成する
 
-Create the `.excalidraw` file with appropriate elements:
+`.excalidraw` ファイルを作成し、適切な要素を配置します:
 
-**Available element types:**
-- `rectangle`: Boxes for entities, steps, concepts
-- `ellipse`: Alternative shapes for emphasis
-- `diamond`: Decision points
-- `arrow`: Directional connections
-- `text`: Labels and annotations
+**利用可能な要素の種類:**
+- `rectangle`: エンティティ、手順、概念のためのボックス
+- `ellipse`: 強調のための代替形状
+- `diamond`: 判断ポイント
+- `arrow`: 方向性のある接続
+- `text`: ラベルと注釈
 
-**Key properties to set:**
-- **Position**: `x`, `y` coordinates
-- **Size**: `width`, `height`
-- **Style**: `strokeColor`, `backgroundColor`, `fillStyle`
-- **Font**: `fontFamily: 5` (Excalifont - **required for all text elements**)
-- **Text**: Embedded text for labels
-- **Connections**: `points` array for arrows
+**設定する主なプロパティ:**
+- **位置**: `x`, `y` 座標
+- **サイズ**: `width`, `height`
+- **スタイル**: `strokeColor`, `backgroundColor`, `fillStyle`
+- **フォント**: `fontFamily: 5` (Excalifont - すべてのテキスト要素に必須)
+- **テキスト**: ラベル用の埋め込みテキスト
+- **接続**: `points` 配列で矢印を定義
 
-**Important**: All text elements must use `fontFamily: 5` (Excalifont) for consistent visual appearance.
+**重要**: すべてのテキスト要素は、一貫した視覚的な見た目を維持するために `fontFamily: 5` (Excalifont) を使用する必要があります。
 
-### Step 5: Format the Output
+### 手順 5: 出力を整形する
 
-Structure the complete Excalidraw file:
+完全な Excalidraw ファイルの構造を整えます:
 
 ```json
 {
@@ -156,48 +156,48 @@ Structure the complete Excalidraw file:
 }
 ```
 
-### Step 6: Save and Provide Instructions
+### 手順 6: 保存して案内する
 
-1. Save as `<descriptive-name>.excalidraw`
-2. Inform user how to open:
-   - Visit https://excalidraw.com
-   - Click "Open" or drag-and-drop the file
-   - Or use Excalidraw VS Code extension
+1. `<descriptive-name>.excalidraw` として保存する
+2. 開き方を案内する:
+   - https://excalidraw.com を開く
+   - 「Open」をクリックするか、ファイルをドラッグ＆ドロップする
+   - または Excalidraw の VS Code 拡張機能を使用する
 
-## Best Practices
+## ベストプラクティス
 
-### Element Count Guidelines
+### 要素数のガイドライン
 
-| Diagram Type | Recommended Count | Maximum |
-|--------------|-------------------|---------|
-| Flowchart steps | 3-10 | 15 |
-| Relationship entities | 3-8 | 12 |
-| Mind map branches | 4-6 | 8 |
-| Mind map sub-topics per branch | 2-4 | 6 |
+| 図の種類 | 推奨数 | 最大数 |
+|--------------|--------|--------|
+| フローチャートの手順 | 3-10 | 15 |
+| 関連図のエンティティ | 3-8 | 12 |
+| マインドマップのブランチ | 4-6 | 8 |
+| ブランチごとのマインドマップのサブトピック | 2-4 | 6 |
 
-### Layout Tips
+### レイアウトのコツ
 
-1. **Start positions**: Center important elements, use consistent spacing
-2. **Spacing**: 
-   - Horizontal gap: 200-300px between elements
-   - Vertical gap: 100-150px between rows
-3. **Colors**: Use consistent color scheme
-   - Primary elements: Light blue (`#a5d8ff`)
-   - Secondary elements: Light green (`#b2f2bb`)
-   - Important/Central: Yellow (`#ffd43b`)
-   - Alerts/Warnings: Light red (`#ffc9c9`)
-4. **Text sizing**: 16-24px for readability
-5. **Font**: Always use `fontFamily: 5` (Excalifont) for all text elements
-6. **Arrow style**: Use straight arrows for simple flows, curved for complex relationships
+1. **開始位置**: 重要な要素を中央に配置し、一貫した間隔を保つ
+2. **間隔**:
+   - 要素間の横方向のギャップ: 200-300px
+   - 行間の縦方向のギャップ: 100-150px
+3. **色**: 一貫した配色を使用する
+   - 基本要素: 薄い青色 (`#a5d8ff`)
+   - 副要素: 薄い緑色 (`#b2f2bb`)
+   - 重要/中心要素: 黄色 (`#ffd43b`)
+   - 警告/注意: 薄い赤色 (`#ffc9c9`)
+4. **文字サイズ**: 読みやすさのため 16-24px
+5. **フォント**: すべてのテキスト要素で `fontFamily: 5` (Excalifont) を使用する
+6. **矢印のスタイル**: 単純な流れには直線の矢印を使い、複雑な関係では曲線を使う
 
-### Complexity Management
+### 複雑さの管理
 
-**If user request has too many elements:**
-- Suggest breaking into multiple diagrams
-- Focus on main elements first
-- Offer to create detailed sub-diagrams
+**ユーザーの依頼に要素が多すぎる場合:**
+- 複数の図に分割することを提案する
+- まず主要な要素に絞る
+- 詳細なサブ図を作成する提案を行う
 
-**Example response:**
+**例の応答:**
 ```
 "Your request includes 15 components. For clarity, I recommend:
 1. High-level architecture diagram (6 main components)
@@ -206,77 +206,77 @@ Structure the complete Excalidraw file:
 Would you like me to start with the high-level view?"
 ```
 
-## Example Prompts and Responses
+## 例のプロンプトと応答
 
-### Example 1: Simple Flowchart
+### 例 1: シンプルなフローチャート
 
-**User:** "Create a flowchart for user registration"
+**ユーザー:** "Create a flowchart for user registration"
 
-**Agent generates:**
-1. Extract steps: "Enter email" → "Verify email" → "Set password" → "Complete"
-2. Create flowchart with 4 rectangles + 3 arrows
-3. Save as `user-registration-flow.excalidraw`
+**エージェントが生成する内容:**
+1. 手順を抽出: "Enter email" → "Verify email" → "Set password" → "Complete"
+2. 4つの矩形 + 3つの矢印でフローチャートを作成
+3. `user-registration-flow.excalidraw` として保存
 
-### Example 2: Relationship Diagram
+### 例 2: 関連図
 
-**User:** "Diagram the relationship between User, Post, and Comment entities"
+**ユーザー:** "Diagram the relationship between User, Post, and Comment entities"
 
-**Agent generates:**
-1. Entities: User, Post, Comment
-2. Relationships: User → Post ("creates"), User → Comment ("writes"), Post → Comment ("contains")
-3. Save as `user-content-relationships.excalidraw`
+**エージェントが生成する内容:**
+1. エンティティ: User, Post, Comment
+2. 関係: User → Post ("creates"), User → Comment ("writes"), Post → Comment ("contains")
+3. `user-content-relationships.excalidraw` として保存
 
-### Example 3: Mind Map
+### 例 3: マインドマップ
 
-**User:** "Mind map about machine learning concepts"
+**ユーザー:** "Mind map about machine learning concepts"
 
-**Agent generates:**
-1. Center: "Machine Learning"
-2. Branches: Supervised Learning, Unsupervised Learning, Reinforcement Learning, Deep Learning
-3. Sub-topics under each branch
-4. Save as `machine-learning-mindmap.excalidraw`
+**エージェントが生成する内容:**
+1. 中心: "Machine Learning"
+2. ブランチ: Supervised Learning, Unsupervised Learning, Reinforcement Learning, Deep Learning
+3. 各ブランチのサブトピック
+4. `machine-learning-mindmap.excalidraw` として保存
 
-## Troubleshooting
+## トラブルシューティング
 
-| Issue | Solution |
+| 問題 | 対処法 |
 |-------|----------|
-| Elements overlap | Increase spacing between coordinates |
-| Text doesn't fit in boxes | Increase box width or reduce font size |
-| Too many elements | Break into multiple diagrams |
-| Unclear layout | Use grid layout (rows/columns) or radial layout (mind maps) |
-| Colors inconsistent | Define color palette upfront based on element types |
+| 要素が重なる | 座標間の余白を増やす |
+| ボックス内にテキストが収まらない | ボックス幅を広げるか、フォントサイズを小さくする |
+| 要素が多すぎる | 複数の図に分割する |
+| レイアウトが不明瞭 | グリッドレイアウト（行/列）または放射状レイアウト（マインドマップ）を使う |
+| 色が一貫しない | 要素の種類に基づいて配色を事前に定義する |
 
-## Advanced Techniques
+## 高度な技術
 
-### Grid Layout (for Relationship Diagrams)
+### グリッドレイアウト（関係図向け）
 ```javascript
 const columns = Math.ceil(Math.sqrt(entityCount));
 const x = startX + (index % columns) * horizontalGap;
 const y = startY + Math.floor(index / columns) * verticalGap;
 ```
 
-### Radial Layout (for Mind Maps)
+### 放射状レイアウト（マインドマップ向け）
 ```javascript
 const angle = (2 * Math.PI * index) / branchCount;
 const x = centerX + radius * Math.cos(angle);
 const y = centerY + radius * Math.sin(angle);
 ```
 
-### Auto-generated IDs
-Use timestamp + random string for unique IDs:
+### 自動生成ID
+一意なIDを作成するには、タイムスタンプとランダム文字列を使います:
 ```javascript
 const id = Date.now().toString(36) + Math.random().toString(36).substr(2);
 ```
 
-## Output Format
+## 出力形式
 
-Always provide:
-1. ✅ Complete `.excalidraw` JSON file
-2. 📊 Summary of what was created
-3. 📝 Element count
-4. 💡 Instructions for opening/editing
+常に次を提供します:
+1. ✅ 完全な `.excalidraw` JSON ファイル
+2. 📊 作成した内容の要約
+3. 📝 要素数
+4. 💡 開く/編集するための手順
 
-**Example summary:**
+**例の要約:**
 ```
 Created: user-workflow.excalidraw
 Type: Flowchart
@@ -289,29 +289,29 @@ To view:
 3. Or use File → Open in Excalidraw VS Code extension
 ```
 
-## Validation Checklist
+## 検証チェックリスト
 
-Before delivering the diagram:
-- [ ] All elements have unique IDs
-- [ ] Coordinates prevent overlapping
-- [ ] Text is readable (font size 16+)
-- [ ] **All text elements use `fontFamily: 5` (Excalifont)**
-- [ ] Arrows connect logically
-- [ ] Colors follow consistent scheme
-- [ ] File is valid JSON
-- [ ] Element count is reasonable (<20 for clarity)
+図を納品する前に:
+- [ ] すべての要素に一意のIDがある
+- [ ] 座標が重なり合わないように設定されている
+- [ ] テキストが読みやすい（フォントサイズ 16 以上）
+- [ ] **すべてのテキスト要素は `fontFamily: 5` (Excalifont) を使用している**
+- [ ] 矢印が論理的に接続されている
+- [ ] 色が一貫した配色に従っている
+- [ ] ファイルが有効な JSON である
+- [ ] 要素数が妥当である（明確さのため 20 未満）
 
-## Icon Libraries (Optional Enhancement)
+## アイコンライブラリ（任意の強化機能）
 
-For specialized diagrams (e.g., AWS/GCP/Azure architecture diagrams), you can use pre-made icon libraries from Excalidraw. This provides professional, standardized icons instead of basic shapes.
+特化した図（例: AWS/GCP/Azure のアーキテクチャ図）では、Excalidraw の既製アイコンライブラリを使うことができます。これにより、基本的な図形ではなく、プロフェッショナルで標準化されたアイコンを使えます。
 
-### When User Requests Icons
+### ユーザーがアイコンを要求した場合
 
-**If user asks for AWS/cloud architecture diagrams or mentions wanting to use specific icons:**
+**ユーザーが AWS/cloud アーキテクチャ図を依頼し、特定のアイコンの使用を希望した場合:**
 
-1. **Check if library exists**: Look for `libraries/<library-name>/reference.md`
-2. **If library exists**: Proceed to use icons (see AI Assistant Workflow below)
-3. **If library does NOT exist**: Respond with setup instructions:
+1. **ライブラリが存在するか確認**: `libraries/<library-name>/reference.md` を確認する
+2. **ライブラリが存在する場合**: アイコンを使って進める（以下の AI Assistant Workflow を参照）
+3. **ライブラリが存在しない場合**: セットアップ手順を伝える:
 
    ```
    To use [AWS/GCP/Azure/etc.] architecture icons, please follow these steps:
@@ -330,33 +330,33 @@ For specialized diagrams (e.g., AWS/GCP/Azure architecture diagrams), you can us
    which you can later replace with icons manually in Excalidraw.
    ```
 
-### User Setup Instructions (Detailed)
+### ユーザー向けセットアップ手順（詳細）
 
-**Step 1: Create Library Directory**
+**手順 1: ライブラリ用ディレクトリを作成**
 ```bash
 mkdir -p skills/excalidraw-diagram-generator/libraries/aws-architecture-icons
 ```
 
-**Step 2: Download Library**
-- Visit: https://libraries.excalidraw.com/
-- Search for your desired icon set (e.g., "AWS Architecture Icons")
-- Click download to get the `.excalidrawlib` file
-- Example categories (availability varies; confirm on the site):
+**手順 2: ライブラリをダウンロード**
+- アクセス先: https://libraries.excalidraw.com/
+- 目的のアイコンセット（例: "AWS Architecture Icons"）を検索する
+- ダウンロードして `.excalidrawlib` ファイルを取得する
+- 例のカテゴリ（利用状況は変動するため、サイトで確認）:
    - Cloud service icons
    - UI/Material icons
    - Flowchart symbols
 
-**Step 3: Place Library File**
-- Rename the downloaded file to match the directory name (e.g., `aws-architecture-icons.excalidrawlib`)
-- Move it to the directory created in Step 1
+**手順 3: ライブラリファイルを配置**
+- ダウンロードしたファイル名を、作成したディレクトリ名に合わせて変更する（例: `aws-architecture-icons.excalidrawlib`）
+- 手順 1 で作成したディレクトリに移動する
 
-**Step 4: Run Splitter Script**
+**手順 4: 分割スクリプトを実行**
 ```bash
 python skills/excalidraw-diagram-generator/scripts/split-excalidraw-library.py skills/excalidraw-diagram-generator/libraries/aws-architecture-icons/
 ```
 
-**Step 5: Verify Setup**
-After running the script, verify the following structure exists:
+**手順 5: セットアップを確認**
+スクリプト実行後、次の構造が存在することを確認します:
 ```
 skills/excalidraw-diagram-generator/libraries/aws-architecture-icons/
   aws-architecture-icons.excalidrawlib  (original)
@@ -371,26 +371,26 @@ skills/excalidraw-diagram-generator/libraries/aws-architecture-icons/
     ...
 ```
 
-### AI Assistant Workflow
+### AI アシスタントのワークフロー
 
-**When icon libraries are available in `libraries/`:**
+**`libraries/` にアイコンライブラリがある場合:**
 
-**RECOMMENDED APPROACH: Use Python Scripts (Efficient & Reliable)**
+**推奨アプローチ: Python スクリプトを使用する（効率的かつ信頼性が高い）**
 
-The repository includes Python scripts that handle icon integration automatically:
+リポジトリには、アイコンの統合を自動で処理する Python スクリプトが含まれています:
 
-1. **Create base diagram structure**:
-   - Create `.excalidraw` file with basic layout (title, boxes, regions)
-   - This establishes the canvas and overall structure
+1. **ベースとなる図の構造を作成**:
+   - 基本レイアウト（タイトル、ボックス、領域）を含む `.excalidraw` ファイルを作成する
+   - キャンバスと全体構造を確立する
 
-2. **Add icons using Python script**:
+2. **Python スクリプトでアイコンを追加**:
    ```bash
    python skills/excalidraw-diagram-generator/scripts/add-icon-to-diagram.py \
      <diagram-path> <icon-name> <x> <y> [--label "Text"] [--library-path PATH]
    ```
-   - Edit via `.excalidraw.edit` is enabled by default to avoid overwrite issues; pass `--no-use-edit-suffix` to disable.
-   
-   **Examples**:
+   - 上書きの問題を避けるため、`.excalidraw.edit` による編集をデフォルトで有効にする。上書きを無効にするには `--no-use-edit-suffix` を渡す。
+
+   **例**:
    ```bash
    # Add EC2 icon at position (400, 300) with label
    python scripts/add-icon-to-diagram.py diagram.excalidraw EC2 400 300 --label "Web Server"
@@ -403,14 +403,14 @@ The repository includes Python scripts that handle icon integration automaticall
      --library-path libraries/gcp-icons --label "API Server"
    ```
 
-3. **Add connecting arrows**:
+3. **接続矢印を追加**:
    ```bash
    python skills/excalidraw-diagram-generator/scripts/add-arrow.py \
      <diagram-path> <from-x> <from-y> <to-x> <to-y> [--label "Text"] [--style solid|dashed|dotted] [--color HEX]
    ```
-   - Edit via `.excalidraw.edit` is enabled by default to avoid overwrite issues; pass `--no-use-edit-suffix` to disable.
-   
-   **Examples**:
+   - 上書きの問題を避けるため、`.excalidraw.edit` による編集をデフォルトで有効にする。上書きを無効にするには `--no-use-edit-suffix` を渡す。
+
+   **例**:
    ```bash
    # Simple arrow from (300, 250) to (500, 300)
    python scripts/add-arrow.py diagram.excalidraw 300 250 500 300
@@ -422,7 +422,7 @@ The repository includes Python scripts that handle icon integration automaticall
    python scripts/add-arrow.py diagram.excalidraw 400 350 600 400 --style dashed --color "#7950f2"
    ```
 
-4. **Workflow summary**:
+4. **ワークフローの要約**:
    ```bash
    # Step 1: Create base diagram with title and structure
    # (Create .excalidraw file with initial elements)
@@ -441,37 +441,37 @@ The repository includes Python scripts that handle icon integration automaticall
    python scripts/add-arrow.py my-diagram.excalidraw 500 380 600 400  # EC2 → RDS
    ```
 
-**Benefits of Python Script Approach**:
-- ✅ **No token consumption**: Icon JSON data (200-1000 lines each) never enters AI context
-- ✅ **Accurate transformations**: Coordinate calculations handled deterministically
-- ✅ **ID management**: Automatic UUID generation prevents conflicts
-- ✅ **Reliable**: No risk of coordinate miscalculation or ID collision
-- ✅ **Fast**: Direct file manipulation, no parsing overhead
-- ✅ **Reusable**: Works with any Excalidraw library you provide
+**Python スクリプト方式の利点**:
+- ✅ **トークン消費なし**: アイコン JSON データ（1件あたり 200-1000 行）は AI コンテキストに入らない
+- ✅ **正確な変換**: 座標計算が決定論的に処理される
+- ✅ **ID 管理**: 自動の UUID 生成で競合を防ぐ
+- ✅ **信頼性が高い**: 座標の誤計算や ID 衝突のリスクがない
+- ✅ **高速**: 直接ファイル操作で、解析オーバーヘッドがない
+- ✅ **再利用可能**: 提供した任意の Excalidraw ライブラリで動作する
 
-**ALTERNATIVE: Manual Icon Integration (Not Recommended)**
+**代替手段: 手動でアイコンを統合する（推奨しない）**
 
-Only use this if Python scripts are unavailable:
+この方法は Python スクリプトが利用できない場合のみ使用します:
 
-1. **Check for libraries**: 
+1. **ライブラリを確認**:
    ```
    List directory: skills/excalidraw-diagram-generator/libraries/
    Look for subdirectories containing reference.md files
    ```
 
-2. **Read reference.md**:
+2. **reference.md を読み込む**:
    ```
    Open: libraries/<library-name>/reference.md
    This is lightweight (typically <300 lines) and lists all available icons
    ```
 
-3. **Find relevant icons**:
+3. **関連するアイコンを探す**:
    ```
    Search the reference.md table for icon names matching diagram needs
    Example: For AWS diagram with EC2, S3, Lambda → Find "EC2", "S3", "Lambda" in table
    ```
 
-4. **Load specific icon data** (WARNING: Large files):
+4. **必要なアイコンデータを読み込む**（警告: 大容量）:
    ```
    Read ONLY the needed icon files:
    - libraries/aws-architecture-icons/icons/EC2.json (200-300 lines)
@@ -480,7 +480,7 @@ Only use this if Python scripts are unavailable:
    Note: Each icon file is 200-1000 lines - this consumes significant tokens
    ```
 
-5. **Extract and transform elements**:
+5. **要素を抽出して変換**:
    ```
    Each icon JSON contains an "elements" array
    Calculate bounding box (min_x, min_y, max_x, max_y)
@@ -490,27 +490,27 @@ Only use this if Python scripts are unavailable:
    Copy transformed elements into your diagram
    ```
 
-6. **Position icons and add connections**:
+6. **アイコンを配置し、接続を追加**:
    ```
    Adjust x/y coordinates to position icons correctly in the diagram
    Update IDs to ensure uniqueness across diagram
    Add connecting arrows and labels as needed
    ```
 
-**Manual Integration Challenges**:
-- ⚠️ High token consumption (200-1000 lines per icon × number of icons)
-- ⚠️ Complex coordinate transformation calculations
-- ⚠️ Risk of ID collision if not handled carefully
-- ⚠️ Time-consuming for diagrams with many icons
+**手動統合の課題**:
+- ⚠️ 高いトークン消費（1アイコンあたり 200-1000 行 × アイコン数）
+- ⚠️ 複雑な座標変換計算
+- ⚠️ 適切に処理しないと ID が衝突するリスク
+- ⚠️ 多くのアイコンを含む図では時間がかかる
 
-### Example: Creating AWS Diagram with Icons
+### AWS 図をアイコン付きで作成する例
 
-**Request**: "Create an AWS architecture diagram with Internet Gateway, VPC, ELB, EC2, and RDS"
+**依頼**: "Create an AWS architecture diagram with Internet Gateway, VPC, ELB, EC2, and RDS"
 
-**Recommended Workflow (using Python scripts)**:
-**Request**: "Create an AWS architecture diagram with Internet Gateway, VPC, ELB, EC2, and RDS"
+**推奨ワークフロー（Python スクリプト使用）**:
+**依頼**: "Create an AWS architecture diagram with Internet Gateway, VPC, ELB, EC2, and RDS"
 
-**Recommended Workflow (using Python scripts)**:
+**推奨ワークフロー（Python スクリプト使用）**:
 
 ```bash
 # Step 1: Create base diagram file with title
@@ -536,85 +536,85 @@ python scripts/add-arrow.py my-aws-diagram.excalidraw 565 330 650 350 --label "S
 # Result: Complete diagram with professional AWS icons, labels, and connections
 ```
 
-**Benefits**:
-- No manual coordinate calculation
-- No token consumption for icon data
-- Deterministic, reliable results
-- Easy to iterate and adjust positions
+**利点**:
+- 座標計算を手作業で行わない
+- アイコンデータのトークン消費がない
+- 決定論的で信頼性が高い
+- 位置調整を簡単に繰り返せる
 
-**Alternative Workflow (manual, if scripts unavailable)**:
-1. Check: `libraries/aws-architecture-icons/reference.md` exists → Yes
-2. Read reference.md → Find entries for Internet-gateway, VPC, ELB, EC2, RDS
-3. Load:
-   - `icons/Internet-gateway.json` (298 lines)
-   - `icons/VPC.json` (550 lines)
-   - `icons/ELB.json` (363 lines)
-   - `icons/EC2.json` (231 lines) 
-   - `icons/RDS.json` (similar size)
-   **Total: ~2000+ lines of JSON to process**
-4. Extract elements from each JSON
-5. Calculate bounding boxes and offsets for each icon
-6. Transform all coordinates (x, y) for positioning
-7. Generate unique IDs for all elements
-8. Add arrows showing data flow
-9. Add text labels
-10. Generate final `.excalidraw` file
+**代替ワークフロー（手動、スクリプトが使えない場合）**:
+1. 確認: `libraries/aws-architecture-icons/reference.md` が存在する → はい
+2. reference.md を読み込む → Internet-gateway, VPC, ELB, EC2, RDS の項目を探す
+3. 読み込む:
+   - `icons/Internet-gateway.json` (298 行)
+   - `icons/VPC.json` (550 行)
+   - `icons/ELB.json` (363 行)
+   - `icons/EC2.json` (231 行)
+   - `icons/RDS.json` (同程度)
+   **合計: 2000 行以上の JSON を処理**
+4. 各 JSON から要素を抽出
+5. 各アイコンの境界ボックスとオフセットを計算
+6. 位置決めのためにすべての x/y 座標を変換
+7. すべての要素に一意の ID を生成
+8. データフローを示す矢印を追加
+9. テキストラベルを追加
+10. 最終的な `.excalidraw` ファイルを生成
 
-**Challenges with manual approach**:
-- High token consumption (~2000-5000 lines)
-- Complex coordinate math
-- Risk of ID conflicts
+**手動アプローチの課題**:
+- 高いトークン消費（約 2000-5000 行）
+- 複雑な座標計算
+- ID 衝突のリスク
 
-### Supported Icon Libraries (Examples — verify availability)
+### サポート対象のアイコンライブラリ（例 - 利用可能性を確認）
 
-- This workflow works with any valid `.excalidrawlib` file you provide.
-- Examples of library categories you may find on https://libraries.excalidraw.com/:
+- このワークフローは、提供された有効な `.excalidrawlib` ファイルで動作します。
+- https://libraries.excalidraw.com/: で見つかる可能性があるライブラリカテゴリの例:
    - Cloud service icons
    - Kubernetes / infrastructure icons
    - UI / Material icons
    - Flowchart / diagram symbols
    - Network diagram icons
-- Availability and naming can change; verify exact library names on the site before use.
+- 利用可能性と命名は変更される場合があるため、使用前にサイトで正確なライブラリ名を確認してください。
 
-### Fallback: No Icons Available
+### 代替手段: アイコンライブラリがない場合
 
-**If no icon libraries are set up:**
-- Create diagrams using basic shapes (rectangles, ellipses, arrows)
-- Use color coding and text labels to distinguish components
-- Inform user they can add icons later or set up libraries for future diagrams
-- The diagram will still be functional and clear, just less visually polished
+**アイコンライブラリが未設定の場合:**
+- 基本的な図形（矩形、楕円、矢印）で図を作成する
+- 色分けとテキストラベルを使って構成要素を区別する
+- 後でアイコンを追加できること、または将来の図のためにライブラリをセットアップできることをユーザーに伝える
+- 図は機能的で明確なままですが、視覚的にはやや簡素になる
 
-## References
+## 参考資料
 
-See bundled references for:
-- `references/excalidraw-schema.md` - Complete Excalidraw JSON schema
-- `references/element-types.md` - Detailed element type specifications
-- `templates/flowchart-template.excalidraw` - Basic flowchart starter
-- `templates/relationship-template.excalidraw` - Relationship diagram starter
-- `templates/mindmap-template.excalidraw` - Mind map starter
-- `templates/business-flow-swimlane-template.excalidraw` - Business flow swimlane starter
-- `templates/class-diagram-template.excalidraw` - Class diagram starter
-- `templates/data-flow-diagram-template.excalidraw` - Data flow diagram starter
-- `templates/er-diagram-template.excalidraw` - Entity-relationship diagram starter
-- `templates/sequence-diagram-template.excalidraw` - Sequence diagram starter
-- `scripts/add-icon-to-diagram.py` - Add icons from Excalidraw libraries to diagrams
-- `scripts/add-arrow.py` - Add arrows (connections) between elements in diagrams
-- `scripts/split-excalidraw-library.py` - Tool to split `.excalidrawlib` files
-- `scripts/README.md` - Documentation for library tools
-- `scripts/.gitignore` - Prevents local Python artifacts from being committed
+関連する参考資料:
+- `references/excalidraw-schema.md` - 完全な Excalidraw JSON スキーマ
+- `references/element-types.md` - 詳細な要素型の仕様
+- `templates/flowchart-template.excalidraw` - 基本的なフローチャートのスターター
+- `templates/relationship-template.excalidraw` - 関連図のスターター
+- `templates/mindmap-template.excalidraw` - マインドマップのスターター
+- `templates/business-flow-swimlane-template.excalidraw` - ビジネスフローの swimlane スターター
+- `templates/class-diagram-template.excalidraw` - クラス図のスターター
+- `templates/data-flow-diagram-template.excalidraw` - データフロー図のスターター
+- `templates/er-diagram-template.excalidraw` - エンティティ関係図のスターター
+- `templates/sequence-diagram-template.excalidraw` - シーケンス図のスターター
+- `scripts/add-icon-to-diagram.py` - Excalidraw ライブラリから図へのアイコン追加
+- `scripts/add-arrow.py` - 図内の要素間に矢印（接続）を追加
+- `scripts/split-excalidraw-library.py` - `.excalidrawlib` ファイルを分割するためのツール
+- `scripts/README.md` - ライブラリツールのドキュメント
+- `scripts/.gitignore` - ローカルの Python アーティファクトをコミットしないようにする
 
-## Limitations
+## 制約事項
 
-- Complex curves are simplified to straight/basic curved lines
-- Hand-drawn roughness is set to default (1)
-- No embedded images support in auto-generation
-- Maximum recommended elements: 20 per diagram
-- No automatic collision detection (use spacing guidelines)
+- 複雑な曲線は、直線/基本的な曲線に簡略化される
+- 手描きの粗さはデフォルト値（1）に設定される
+- 自動生成では埋め込み画像のサポートはない
+- 推奨される最大要素数: 1図あたり 20 個
+- 自動衝突検出はない（間隔ガイドラインを使用する）
 
-## Future Enhancements
+## 今後の拡張予定
 
-Potential improvements:
-- Auto-layout optimization algorithms
-- Import from Mermaid/PlantUML syntax
-- Template library expansion
-- Interactive editing after generation
+将来の改善案:
+- 自動レイアウト最適化アルゴリズム
+- Mermaid/PlantUML 構文からのインポート
+- テンプレートライブラリの拡張
+- 生成後の対話的な編集

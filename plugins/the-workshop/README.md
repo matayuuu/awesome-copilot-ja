@@ -1,8 +1,8 @@
 # The Workshop
 
-Stop being the switchboard between your AI agents — direct a team.
+AIエージェント間の取り次ぎ役をやめて、チームを直接指揮しましょう。
 
-## Install
+## インストール
 
 ```
 copilot plugin install the-workshop@awesome-copilot

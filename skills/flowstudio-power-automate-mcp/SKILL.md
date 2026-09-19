@@ -1,94 +1,75 @@
 ---
 name: flowstudio-power-automate-mcp
-description: >-
-  Foundation skill for Power Automate via FlowStudio MCP — auth setup, the
-  reusable MCP helper (Python + Node.js), tool discovery via `list_skills` /
-  `tool_search`, and oversized-response handling. Load this skill first when
-  connecting an agent to Power Automate. For specialized workflows, load
-  `flowstudio-power-automate-build`, `flowstudio-power-automate-debug`, `flowstudio-power-automate-monitoring`
-  (Pro+), or `flowstudio-power-automate-governance` (Pro+) — each contains the workflow
-  narrative, this skill provides the plumbing they all rely on. Requires a
-  FlowStudio MCP subscription or compatible server — see https://mcp.flowstudio.app
+description: 'FlowStudio MCP 経由で Power Automate を扱うための基盤スキルです。認証設定、再利用可能な MCP ヘルパー（Python + Node.js）、`list_skills` / `tool_search` によるツール検出、巨大な応答の処理を扱います。エージェントを Power Automate に接続するときに最初に読み込みます。専門ワークフローでは `flowstudio-power-automate-build`、`flowstudio-power-automate-debug`、`flowstudio-power-automate-monitoring`（Pro+）、または `flowstudio-power-automate-governance`（Pro+）を読み込みます。各スキルはワークフローの説明を含み、このスキルはそれらすべてが依存する基盤を提供します。FlowStudio MCP サブスクリプションまたは互換サーバーが必要です（https://mcp.flowstudio.app を参照）。'
 ---
 
-# Power Automate via FlowStudio MCP — Foundation
+# FlowStudio MCP 経由の Power Automate — 基盤
 
-This skill is the **plumbing layer**. It gives an AI agent a reliable way to
-talk to a FlowStudio MCP server, discover what tools are available, and handle
-the responses cleanly. The actual workflow narratives live in four specialized
-skills that all build on this one.
+このスキルは**基盤レイヤー**です。AI エージェントが FlowStudio MCP サーバーと
+確実に通信し、利用可能なツールを検出して、応答を適切に処理するための手段を提供します。実際のワークフローの説明は、すべてこのスキルを基盤とする 4 つの専門スキルにあります。
 
-> **Real debugging examples**: [Expression error in child flow](https://github.com/ninihen1/power-automate-mcp-skills/blob/main/examples/fix-expression-error.md) |
-> [Data entry, not a flow bug](https://github.com/ninihen1/power-automate-mcp-skills/blob/main/examples/data-not-flow.md) |
-> [Null value crashes child flow](https://github.com/ninihen1/power-automate-mcp-skills/blob/main/examples/null-child-flow.md)
+> **実際のデバッグ例**: [子フローの式エラー](https://github.com/ninihen1/power-automate-mcp-skills/blob/main/examples/fix-expression-error.md) |
+> [フローのバグではなくデータ入力](https://github.com/ninihen1/power-automate-mcp-skills/blob/main/examples/data-not-flow.md) |
+> [Null 値によって子フローがクラッシュ](https://github.com/ninihen1/power-automate-mcp-skills/blob/main/examples/null-child-flow.md)
 
-> **Requires:** A [FlowStudio](https://mcp.flowstudio.app) MCP subscription (or
-> compatible Power Automate MCP server). You will need:
-> - MCP endpoint: `https://mcp.flowstudio.app/mcp` (same for all subscribers)
-> - API key / JWT token (`x-api-key` header — NOT Bearer)
-> - In ChatGPT or claude.ai there is no key: add `https://mcp.flowstudio.app/mcp/oauth`
->   as a connector and sign in with Microsoft — see the
->   [ChatGPT walkthrough](https://learn.flowstudio.app/chatgpt-power-automate)
-> - Power Platform environment name (e.g. `Default-<tenant-guid>`)
+> **必要なもの:** [FlowStudio](https://mcp.flowstudio.app) MCP サブスクリプション（または
+> 互換性のある Power Automate MCP サーバー）。必要なもの:
+> - MCP エンドポイント: `https://mcp.flowstudio.app/mcp`（すべてのサブスクライバーで共通）
+> - API キー / JWT トークン（`x-api-key` ヘッダー — Bearer ではない）
+> - ChatGPT または claude.ai ではキーは不要です: `https://mcp.flowstudio.app/mcp/oauth` を
+>   コネクタとして追加し、Microsoft でサインインしてください。詳細は
+>   [ChatGPT のチュートリアル](https://learn.flowstudio.app/chatgpt-power-automate)を参照してください
+> - Power Platform 環境名（例: `Default-<tenant-guid>`）
 
 ---
 
-## Which Skill to Use When
+## 使用するスキルの選び方
 
-Skills are organized by **use-case intent**, not by which tools they call.
-Multiple skills reuse the same underlying tools — pick by what the user is
-trying to accomplish.
+スキルは、呼び出すツールではなく**ユースケースの意図**によって整理されています。
+複数のスキルが同じ基盤ツールを再利用します。ユーザーが達成しようとしていることに基づいて選んでください。
 
-| The user wants to… | Load this skill |
+| ユーザーがしたいこと… | 読み込むスキル |
 |---|---|
-| Make or change a flow (build new, modify existing, fix a bug, deploy) | **`flowstudio-power-automate-build`** |
-| Diagnose why a flow failed (root cause analysis on a failing run) | **`flowstudio-power-automate-debug`** |
-| See tenant-wide flow health, failure rates, asset inventory | **`flowstudio-power-automate-monitoring`** *(Pro+)* |
-| Tag, audit, classify, score, or offboard flows | **`flowstudio-power-automate-governance`** *(Pro+)* |
-| Just connect, set up auth, write the helper, parse responses | this skill (foundation) |
+| フローを作成または変更する（新規作成、既存の変更、バグ修正、デプロイ） | **`flowstudio-power-automate-build`** |
+| フローが失敗した理由を診断する（失敗した実行の根本原因分析） | **`flowstudio-power-automate-debug`** |
+| テナント全体のフロー正常性、失敗率、資産インベントリを確認する | **`flowstudio-power-automate-monitoring`** *(Pro+)* |
+| フローのタグ付け、監査、分類、スコアリング、またはオフボードを行う | **`flowstudio-power-automate-governance`** *(Pro+)* |
+| 接続、認証設定、ヘルパーの作成、応答の解析のみを行う | このスキル（基盤） |
 
-**Same tools, different lenses.** `flowstudio-power-automate-build` and `flowstudio-power-automate-debug`
-both call `update_live_flow`, `get_live_flow`, and the run-error tools — they
-differ in *direction* (forward vs backward) and *intent* (compose vs diagnose).
-`flowstudio-power-automate-monitoring` and `flowstudio-power-automate-governance` both call the Store
-tools — they differ in *audience* (ops vs compliance) and *outcome* (read
-health vs write metadata). Don't try to memorize "which tools belong to which
-skill"; pick the skill by what the user is doing.
+**同じツール、異なる視点。** `flowstudio-power-automate-build` と `flowstudio-power-automate-debug` はどちらも
+`update_live_flow`、`get_live_flow`、および実行エラーツールを呼び出します。ただし、
+*方向性*（前向き vs 後ろ向き）と*意図*（作成 vs 診断）が異なります。
+`flowstudio-power-automate-monitoring` と `flowstudio-power-automate-governance` はどちらも Store
+ツールを呼び出します。ただし、*対象者*（運用担当 vs コンプライアンス）と*成果*（正常性の読み取り vs メタデータの書き込み）が異なります。「どのツールがどのスキルに属するか」を暗記しようとせず、ユーザーが何をしているかでスキルを選んでください。
 
 ---
 
-## Source of Truth
+## 信頼できる情報源
 
-| Priority | Source | Covers |
+| 優先順位 | 情報源 | 対象 |
 |----------|--------|--------|
-| 1 | **Real API response** | Always trust what the server actually returns |
-| 2 | **`tool_search` / `list_skills`** | Authoritative tool schemas, parameter names, types, required flags |
-| 3 | **SKILL docs & reference files** | Workflow narrative, response shapes, non-obvious behaviors |
+| 1 | **実際の API 応答** | サーバーが実際に返す内容を常に信頼する |
+| 2 | **`tool_search` / `list_skills`** | 正式なツール スキーマ、パラメーター名、型、必須フラグ |
+| 3 | **SKILL ドキュメントと参照ファイル** | ワークフローの説明、応答形式、自明ではない動作 |
 
-If documentation disagrees with a real API response, the API wins. Tool schemas
-in this skill (or any other) may lag the server — call `tool_search` to confirm
-the current shape before invoking a tool you haven't used recently.
+ドキュメントが実際の API 応答と一致しない場合は、API を優先します。このスキル
+（または他のスキル）のツール スキーマはサーバーより遅れている可能性があります。最近使用していないツールを呼び出す前に、`tool_search` を呼び出して現在の形式を確認してください。
 
 ---
 
-## How Agents Discover Tools
+## エージェントによるツールの検出
 
-The FlowStudio MCP server (v1.1.5+) exposes two **non-billable** meta-tools that
-let an agent load only the tools relevant to the current task. Use these in
-preference to `tools/list` (which loads all 30+ schemas at once) or guessing
-tool names.
+FlowStudio MCP サーバー（v1.1.5 以降）は、エージェントが現在のタスクに関連するツールだけを読み込めるようにする、**課金対象外**の 2 つのメタツールを公開しています。`tools/list`（30 個以上のスキーマを一度にすべて読み込む）やツール名の推測よりも、こちらを優先して使用してください。
 
-| Meta-tool | When to call |
+| メタツール | 呼び出すタイミング |
 |---|---|
-| `list_skills` | Cold start — see the available bundles (`build-flow`, `create-flow`, `debug-flow`, `monitor-flow`, `discover`, `governance`) and pick one |
-| `tool_search` with `query: "skill:<name>"` | Load the full schema set for one bundle (e.g. `skill:debug-flow`) |
-| `tool_search` with `query: "select:tool1,tool2"` | Load specific tools by name (e.g. when chaining across bundles) |
-| `tool_search` with `query: "<keywords>"` | Free-text search when the user request is ambiguous (e.g. `"cancel run"`) |
+| `list_skills` | コールド スタート — 利用可能なバンドル（`build-flow`、`create-flow`、`debug-flow`、`monitor-flow`、`discover`、`governance`）を確認して 1 つ選ぶ |
+| `tool_search` と `query: "skill:<name>"` | 1 つのバンドルの完全なスキーマ セットを読み込む（例: `skill:debug-flow`） |
+| `tool_search` と `query: "select:tool1,tool2"` | 名前で特定のツールを読み込む（例: バンドルをまたいでチェーンする場合） |
+| `tool_search` と `query: "<keywords>"` | ユーザーの要求が曖昧な場合に自由形式で検索する（例: `"cancel run"`） |
 
-The server's `tool_search` bundles are intentionally **narrower than this
-skill family** — they're starter packs of the most-likely-needed tools per
-intent. A workflow skill (e.g. `flowstudio-power-automate-debug`) may pull a bundle and
-then call `tool_search` again for additional tools as the workflow progresses.
+サーバーの `tool_search` バンドルは、意図的にこの
+スキル ファミリーより**狭い範囲**にされています。意図ごとに、必要となる可能性が最も高いツールのスターター パックです。ワークフロー スキル（例: `flowstudio-power-automate-debug`）はバンドルを取得した後、ワークフローの進行に合わせて追加ツール用に `tool_search` を再度呼び出す場合があります。
 
 ```python
 # Cold start — pick a bundle by intent
@@ -100,42 +81,40 @@ skills = mcp("list_skills", {})
 debug_tools = mcp("tool_search", {"query": "skill:debug-flow"})
 ```
 
-Current common bundles:
+現在よく使用されるバンドル:
 
-| Bundle | Use when |
+| バンドル | 使用する場面 |
 |---|---|
-| `create-flow` | Creating a brand-new flow; includes environment/connection discovery, connector description, dynamic options, and `update_live_flow` |
-| `build-flow` | Reading or modifying an existing flow definition |
-| `debug-flow` | Investigating failed runs and action-level inputs/outputs |
-| `monitor-flow` | Starting/stopping, triggering, cancelling, or resubmitting runs |
-| `discover` | Enumerating environments, flows, and connections |
-| `governance` | Pro+ cached-store tagging, maker audit, and metadata updates |
+| `create-flow` | 新しいフローを作成する場合。環境/接続の検出、コネクタの説明、動的オプション、および `update_live_flow` が含まれる |
+| `build-flow` | 既存のフロー定義を読み取りまたは変更する場合 |
+| `debug-flow` | 失敗した実行とアクション レベルの入力/出力を調査する場合 |
+| `monitor-flow` | 実行の開始/停止、トリガー、キャンセル、または再送信を行う場合 |
+| `discover` | 環境、フロー、接続を列挙する場合 |
+| `governance` | Pro+ のキャッシュ ストアのタグ付け、作成者監査、メタデータ更新を行う場合 |
 
 ---
 
-## Recommended Language: Python or Node.js
+## 推奨言語: Python または Node.js
 
-All examples in this skill family use **Python with `urllib.request`**
-(stdlib — no `pip install` needed). **Node.js** is an equally valid choice:
-`fetch` is built-in from Node 18+, JSON handling is native, and async/await
-maps cleanly onto the request-response pattern of MCP tool calls — making it
-a natural fit for teams already working in a JavaScript/TypeScript stack.
+このスキル ファミリーのすべての例では、**`urllib.request` を使用する Python**
+（stdlib — `pip install` は不要）を使用します。**Node.js** も同様に有効な選択肢です:
+`fetch` は Node 18+ で組み込まれており、JSON 処理はネイティブで、async/await は
+MCP ツール呼び出しのリクエスト/レスポンス パターンに自然に対応します。そのため、すでに JavaScript/TypeScript スタックで作業しているチームに適しています。
 
-| Language | Verdict | Notes |
+| 言語 | 評価 | 注記 |
 |---|---|---|
-| **Python** | Recommended | Clean JSON handling, no escaping issues, all skill examples use it |
-| **Node.js (≥ 18)** | Recommended | Native `fetch` + `JSON.stringify`/`JSON.parse`; no extra packages |
-| PowerShell | Avoid for flow operations | `ConvertTo-Json -Depth` silently truncates nested definitions; quoting and escaping break complex payloads. Acceptable for a quick connectivity smoke-test but not for building or updating flows. |
-| cURL / Bash | Possible but fragile | Shell-escaping nested JSON is error-prone; no native JSON parser |
+| **Python** | 推奨 | JSON 処理が明確でエスケープの問題がなく、すべてのスキル例で使用する |
+| **Node.js (≥ 18)** | 推奨 | ネイティブの `fetch` + `JSON.stringify`/`JSON.parse`。追加パッケージ不要 |
+| PowerShell | フロー操作には避ける | `ConvertTo-Json -Depth` はネストされた定義を暗黙に切り詰める。クォートとエスケープにより複雑なペイロードは壊れる。簡単な接続スモークテストには使用可能だが、フローの作成または更新には適さない。 |
+| cURL / Bash | 可能だが脆弱 | ネストされた JSON のシェル エスケープはエラーを起こしやすく、ネイティブ JSON パーサーがない |
 
-> **TL;DR — use the Core MCP Helper (Python or Node.js) below.** Both handle
-> JSON-RPC framing, auth, and response parsing in a single reusable function.
+> **要約 — 以下の Core MCP Helper（Python または Node.js）を使用してください。** どちらも JSON-RPC のフレーミング、認証、応答解析を単一の再利用可能な関数で処理します。
 
 ---
 
-## Core MCP Helper (Python)
+## 中核 MCP ヘルパー（Python）
 
-Use this helper throughout all subsequent operations:
+以降のすべての操作では、このヘルパーを使用してください:
 
 ```python
 import json, urllib.request
@@ -161,16 +140,16 @@ def mcp(tool, args, cid=1):
     return json.loads(text)
 ```
 
-> **Common auth errors:**
-> - HTTP 401/403 → token is missing, expired, or malformed. Get a fresh JWT from [mcp.flowstudio.app](https://mcp.flowstudio.app).
-> - HTTP 400 → malformed JSON-RPC payload. Check `Content-Type: application/json` and body structure.
-> - `MCP error: {"code": -32602, ...}` → wrong or missing tool arguments. Call `tool_search` with `select:<toolname>` to confirm the schema.
+> **よくある認証エラー:**
+> - HTTP 401/403 → トークンがない、期限切れ、または形式が不正です。[mcp.flowstudio.app](https://mcp.flowstudio.app) から新しい JWT を取得してください。
+> - HTTP 400 → JSON-RPC ペイロードの形式が不正です。`Content-Type: application/json` と本文の構造を確認してください。
+> - `MCP error: {"code": -32602, ...}` → ツール引数が誤っているか、不足しています。`tool_search` を `select:<toolname>` とともに呼び出して、スキーマを確認してください。
 
 ---
 
-## Core MCP Helper (Node.js)
+## 中核 MCP ヘルパー（Node.js）
 
-Equivalent helper for Node.js 18+ (built-in `fetch` — no packages required):
+Node.js 18+ 向けの同等のヘルパーです（組み込みの `fetch` — パッケージ不要）:
 
 ```js
 const TOKEN = "<YOUR_JWT_TOKEN>";
@@ -202,14 +181,13 @@ async function mcp(tool, args, cid = 1) {
 }
 ```
 
-> Requires Node.js 18+. For older Node, replace `fetch` with `https.request`
-> from the stdlib or install `node-fetch`.
+> Node.js 18+ が必要です。古い Node では、`fetch` を stdlib の `https.request` に置き換えるか、`node-fetch` をインストールしてください。
 
 ---
 
-## Verify the Connection
+## 接続の検証
 
-A 3-line smoke test that confirms the token, endpoint, and helper all work:
+トークン、エンドポイント、ヘルパーがすべて動作することを確認する 3 行のスモークテスト:
 
 ```python
 skills = mcp("list_skills", {})
@@ -217,41 +195,39 @@ print(f"Connected — {len(skills)} skill bundles available:",
       [s["name"] for s in skills])
 ```
 
-Expected output:
+想定される出力:
 
 ```text
 Connected — 6 skill bundles available: ['build-flow', 'create-flow', 'debug-flow', 'monitor-flow', 'discover', 'governance']
 ```
 
-If this fails, see the **Common auth errors** note above. If it succeeds, hand
-off to the workflow skill matching the user's intent.
+これが失敗する場合は、上記の**よくある認証エラー**の注記を参照してください。成功した場合は、ユーザーの意図に合うワークフロー スキルへ引き渡してください。
 
 ---
 
-## Handling Oversized Responses
+## サイズ超過の応答の処理
 
-Some MCP tool responses are large enough to overflow the agent's context window:
+一部の MCP ツール応答は、エージェントのコンテキスト ウィンドウを超えるほど大きくなります:
 
-| Tool | Typical size | Cause |
+| ツール | 一般的なサイズ | 原因 |
 |---|---|---|
-| `describe_live_connector` | 100-600 KB | Full Swagger spec for a connector |
-| `get_live_dynamic_properties` | 50-500 KB | Dynamic connector field schemas such as SharePoint list columns |
-| `get_live_flow_run_action_outputs` (no `actionName`) | 50 KB – several MB | Top-level action outputs; with an action in a foreach, every repetition can be returned |
-| `get_live_flow` (large flows) | 50-500 KB | Deeply nested branches |
-| `list_live_flows` (large tenants) | 50-200 KB | Hundreds of flow records |
+| `describe_live_connector` | 100-600 KB | コネクタの完全な Swagger 仕様 |
+| `get_live_dynamic_properties` | 50-500 KB | SharePoint リスト列などの動的コネクタ フィールド スキーマ |
+| `get_live_flow_run_action_outputs`（`actionName` なし） | 50 KB ～ 数 MB | トップレベル アクションの出力。foreach 内のアクションでは、すべての繰り返しが返される場合がある |
+| `get_live_flow`（大規模フロー） | 50-500 KB | 深くネストされた分岐 |
+| `list_live_flows`（大規模テナント） | 50-200 KB | 数百件のフロー レコード |
 
-### When the harness spills to a file
+### ハーネスがファイルへ退避する場合
 
-Agent harnesses (Claude Code, VS Code Copilot, etc.) save oversized responses
-to a temp file (e.g. `tool-results/mcp-flowstudio-describe_live_connector-NNNN.txt`)
-and return the path instead of the inline JSON. The file is **double-wrapped** —
-the outer MCP envelope plus the inner JSON-escaped payload:
+エージェント ハーネス（Claude Code、VS Code Copilot など）は、サイズ超過の応答を一時ファイル
+（例: `tool-results/mcp-flowstudio-describe_live_connector-NNNN.txt`）
+に保存し、インライン JSON の代わりにパスを返します。このファイルは**二重にラップ**されています。外側の MCP エンベロープと、内側の JSON エスケープされたペイロードです:
 
 ```text
 [{"type":"text","text":"<JSON-escaped payload>"}]
 ```
 
-Two parses to reach a usable object:
+使用可能なオブジェクトに到達するには 2 回の解析が必要です:
 
 ```python
 import json
@@ -264,13 +240,13 @@ payload = json.loads(raw[0]["text"])
 $payload = ((Get-Content $path -Raw | ConvertFrom-Json)[0].text) | ConvertFrom-Json
 ```
 
-### Rules of thumb
+### 経験則
 
-1. **Extract, don't echo.** Pull the specific field(s) you need (one `operationId`, one action's outputs) and discard the rest before reasoning about it.
-2. **Always pass `actionName` to `get_live_flow_run_action_outputs`.** Omitting it fetches all top-level actions. For actions inside a foreach, passing `actionName` without `iterationIndex` can return every repetition of that action.
-3. **Reuse the spill file within a session.** Refetching the same connector swagger costs 30+ seconds and produces another spill — cache the path.
-4. **Don't grep the spill file for JSON keys directly.** Strings are JSON-escaped inside the file (`\"OperationId\":`), so a plain grep for `"OperationId":` will not match. Parse first, then filter.
-5. **Summarize tool output to the user.** Echo `name + state + trigger` for flow lists and `actionName + status + code` for run errors — not raw JSON, unless asked.
+1. **出力せず抽出する。** 必要な特定フィールド（1 つの `operationId`、1 つのアクションの出力）を取得し、それ以外は推論前に破棄してください。
+2. **`get_live_flow_run_action_outputs` には常に `actionName` を渡す。** 省略すると、すべてのトップレベル アクションを取得します。foreach 内のアクションでは、`iterationIndex` なしで `actionName` を渡すと、そのアクションのすべての繰り返しが返される場合があります。
+3. **セッション内で退避ファイルを再利用する。** 同じコネクタの swagger を再取得すると 30 秒以上かかり、別の退避ファイルが生成されます。パスをキャッシュしてください。
+4. **退避ファイルを JSON キーで直接 grep しない。** 文字列はファイル内で JSON エスケープされています（`\"OperationId\":`）ので、`"OperationId":` を通常の grep で検索しても一致しません。先に解析してからフィルターしてください。
+5. **ツール出力をユーザー向けに要約する。** フロー一覧には `name + state + trigger` を、実行エラーには `actionName + status + code` を出力してください。要求されない限り、生の JSON は出力しないでください。
 
 ```python
 # Good — drill into one operation in a connector swagger
@@ -284,20 +260,20 @@ print(json.dumps(conn, indent=2))   # don't do this
 
 ---
 
-## Auth & Connection Notes
+## 認証と接続に関する注記
 
-| Field | Value |
+| フィールド | 値 |
 |---|---|
-| Auth header | `x-api-key: <JWT>` — **not** `Authorization: Bearer` |
-| Token format | Plain JWT — do not strip, alter, or prefix it |
-| Timeout | Use ≥ 120 s for `get_live_flow_run_action_outputs` (large outputs) |
-| Environment name | `Default-<tenant-guid>` (find it via `list_live_environments` or `list_live_flows` response) |
+| 認証ヘッダー | `x-api-key: <JWT>` — `Authorization: Bearer` では**ない** |
+| トークン形式 | プレーン JWT — 削除、変更、接頭辞の追加をしない |
+| タイムアウト | `get_live_flow_run_action_outputs`（大きな出力）には 120 秒以上を使用する |
+| 環境名 | `Default-<tenant-guid>`（`list_live_environments` または `list_live_flows` の応答で確認） |
 
 ---
 
-## Reference Files
+## 参照ファイル
 
-- [MCP-BOOTSTRAP.md](references/MCP-BOOTSTRAP.md) — endpoint, auth, request/response format (read this first)
-- [tool-reference.md](references/tool-reference.md) — response shapes and behavioral notes (parameters are in `tool_search`)
-- [action-types.md](references/action-types.md) — Power Automate action type patterns
-- [connection-references.md](references/connection-references.md) — connector reference guide
+- [MCP-BOOTSTRAP.md](references/MCP-BOOTSTRAP.md) — エンドポイント、認証、リクエスト/応答形式（最初に読んでください）
+- [tool-reference.md](references/tool-reference.md) — 応答形式と動作に関する注記（パラメーターは `tool_search` にあります）
+- [action-types.md](references/action-types.md) — Power Automate アクション タイプのパターン
+- [connection-references.md](references/connection-references.md) — コネクタ参照ガイド

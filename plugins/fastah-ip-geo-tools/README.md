@@ -1,8 +1,8 @@
-# IP Geolocation Tools by Fastah Inc.
+# Fastah Inc. の IP Geolocation Tools
 
-This plugin is for network operations engineers who wish to tune and publish IP geolocation feeds in RFC 8805 format. It consists of an AI Skill and an associated MCP server that geocodes geolocation place names to real cities for accuracy.
+RFC 8805 形式の IP 地理位置情報フィードを調整・公開したいネットワーク運用エンジニア向けのプラグインです。地理位置情報の地名を実在する都市へジオコードして精度を高める AI Skill と、関連する MCP server で構成されています。
 
-## Installation
+## インストール
 
 ```sh
 # Using Copilot CLI

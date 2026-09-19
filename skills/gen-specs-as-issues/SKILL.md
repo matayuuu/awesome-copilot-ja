@@ -1,101 +1,101 @@
 ---
 name: gen-specs-as-issues
-description: 'This workflow guides you through a systematic approach to identify missing features, prioritize them, and create detailed specifications for implementation.'
+description: 'このワークフローは、欠落している機能を特定し、優先順位付けし、実装のための詳細な仕様を作成するための体系的なアプローチを案内します。'
 ---
 
-# Product Manager Assistant: Feature Identification and Specification
+# プロダクトマネージャー補助: 機能特定と仕様策定
 
-This workflow guides you through a systematic approach to identify missing features, prioritize them, and create detailed specifications for implementation.
+このワークフローは、欠落している機能を特定し、優先順位付けし、実装のための詳細な仕様を作成するための体系的なアプローチをガイドします。
 
-## 1. Project Understanding Phase
+## 1. プロジェクト理解フェーズ
 
-- Review the project structure to understand its organization
-- Read the README.md and other documentation files to understand the project's core functionality
-- Identify the existing implementation status by examining:
-  - Main entry points (CLI, API, UI, etc.)
-  - Core modules and their functionality
-  - Tests to understand expected behavior
-  - Any placeholder implementations
+- プロジェクト構造を確認して、その編成を理解する
+- README.md やその他のドキュメントを読み、プロジェクトの中心機能を理解する
+- 次を確認して、既存の実装状況を特定する:
+  - 主な入口点（CLI、API、UI など）
+  - コアモジュールとその機能
+  - 期待される動作を理解するためのテスト
+  - プレースホルダーの実装があれば確認する
 
-**Guiding Questions:**
-- What is the primary purpose of this project?
-- What user problems does it solve?
-- What patterns exist in the current implementation?
-- Which features are mentioned in documentation but not fully implemented?
+**ガイドとなる質問:**
+- このプロジェクトの主な目的は何ですか？
+- どのようなユーザー課題を解決しますか？
+- 現在の実装にはどのようなパターンがありますか？
+- ドキュメントには記載されているが、十分に実装されていない機能はどれですか？
 
-## 2. Gap Analysis Phase
+## 2. ギャップ分析フェーズ
 
-- Compare the documented capabilities ONLY against the actual implementation
-- Identify "placeholder" code that lacks real functionality
-- Look for features mentioned in documentation but missing robust implementation
-- Consider the user journey and identify broken or missing steps
-- Focus on core functionality first (not nice-to-have features)
+- ドキュメントに記載されている機能と実際の実装だけを比較する
+- 実際の機能がない「プレースホルダー」コードを特定する
+- ドキュメントにはあるが、堅牢な実装が欠けている機能を探す
+- ユーザーの旅路を考え、壊れているまたは不足しているステップを特定する
+- まずは本命機能に集中し、付加価値の高くない機能にはこだわらない
 
-**Output Creation:**
-- Create a list of potential missing features (5-7 items)
-- For each feature, note:
-  - Current implementation status
-  - References in documentation
-  - Impact on user experience if missing
+**成果物の作成:**
+- 潜在的に不足している機能の一覧を作成する（5〜7項目）
+- 各機能について次をメモする:
+  - 現在の実装状況
+  - ドキュメント内の参照
+  - 欠落した場合のユーザー体験への影響
 
-## 3. Prioritization Phase
+## 3. 優先順位付けフェーズ
 
-- Apply a score to each identified gap:
+- 特定したギャップにスコアを適用する:
 
-**Scoring Matrix (1-5 scale):**
-- User Impact: How many users benefit?
-- Strategic Alignment: Fits core mission?
-- Implementation Feasibility: Technical complexity?
-- Resource Requirements: Development effort needed?
-- Risk Level: Potential negative impacts?
+**スコアリング行列（1〜5段階）:**
+- ユーザー影響度: 誰がどれくらい恩恵を受けるか
+- 戦略的整合性: 中核ミッションに合っているか
+- 実装実現性: 技術的な複雑さはどの程度か
+- リソース要件: 必要な開発工数
+- リスクレベル: 潜在的な悪影響
 
-**Priority = (User Impact × Strategic Alignment) / (Implementation Effort × Risk Level)**
+**優先度 = (ユーザー影響度 × 戦略的整合性) / (実装工数 × リスクレベル)**
 
-**Output Creation:**
-- Present the top 3 highest-priority missing features based on the scoring
-- For each, provide:
-  - Feature name
-  - Current status
-  - Impact if not implemented
-  - Dependencies on other features
+**成果物の作成:**
+- スコアリングに基づいて、最優先の上位3つの不足機能を提示する
+- 各機能について次を提供する:
+  - 機能名
+  - 現在の状況
+  - 実装しない場合の影響
+  - 他機能への依存関係
 
-## 4. Specification Development Phase
+## 4. 仕様書作成フェーズ
 
-- For each prioritized feature, develop a detailed but practical specification:
-  - Begin with the philosophical approach: simplicity over complexity
-  - Focus on MVP functionality first
-  - Consider the developer experience
-  - Keep the specification implementation-friendly
+- 優先順位の高い各機能について、詳細かつ実用的な仕様を作成する:
+  - 哲学的なアプローチから始める: 複雑さよりもシンプルさを優先
+  - まずは MVP 機能に集中する
+  - 開発者体験を考慮する
+  - 仕様を実装に適した形に保つ
 
-**For Each Feature Specification:**
-1. **Overview & Scope**
-   - What problem does it solve?
-   - What's included and what's explicitly excluded?
+**各機能の仕様について:**
+1. **概要と範囲**
+   - どの問題を解決するのか？
+   - 含めるものと明示的に除外するものは何か？
 
-2. **Technical Requirements**
-   - Core functionality needed
-   - User-facing interfaces (API, UI, CLI, etc.)
-   - Integration points with existing code
+2. **技術要件**
+   - 必要なコア機能
+   - ユーザー向けインターフェース（API、UI、CLI など）
+   - 既存コードとの統合ポイント
 
-3. **Implementation Plan**
-   - Key modules/files to create or modify
-   - Simple code examples showing the approach
-   - Clear data structures and interfaces
+3. **実装計画**
+   - 変更または作成する主要モジュール/ファイル
+   - アプローチを示す簡単なコード例
+   - 明確なデータ構造とインターフェース
 
-4. **Acceptance Criteria**
-   - How will we know when it's done?
-   - What specific functionality must work?
-   - What tests should pass?
+4. **受け入れ基準**
+   - いつ完了と判断するか
+   - どの機能が必ず動作しなければならないか
+   - どのテストが通るべきか
 
-## 5. GitHub Issue Creation Phase
+## 5. GitHub Issue 作成フェーズ
 
-- For each specification, create a GitHub issue:
-  - Clear, descriptive title
-  - Comprehensive specification in the body
-  - Appropriate labels (enhancement, high-priority, etc.)
-  - Explicitly mention MVP philosophy where relevant
+- 各仕様について GitHub issue を作成する:
+  - 明確で説明的なタイトル
+  - 本文に詳細な仕様
+  - 適切なラベル（enhancement、high-priority など）
+  - 必要に応じて MVP の考え方を明示する
 
-**Issue Template Structure:**
+**Issue テンプレート構造:**
 
 # [Feature Name]
 
@@ -126,40 +126,40 @@ This workflow guides you through a systematic approach to identify missing featu
 - **Sub-issues:** [Links to sub-issues if this is a parent issue]
 
 
-## 5.5 Work Distribution Optimization
+## 5.5 作業分配最適化
 
-- **Independence Analysis**
-  - Review each specification to identify truly independent components
-  - Refactor specifications to maximize independent work streams
-  - Create clear boundaries between interdependent components
+- **独立性分析**
+  - 各仕様を確認し、真に独立したコンポーネントを特定する
+  - 仕様をリファクタして、独立した作業ストリームを最大化する
+  - 相互依存するコンポーネントの境界を明確にする
 
-- **Dependency Mapping**
-  - For features with unavoidable dependencies, establish clear issue hierarchies
-  - Create parent issues for the overall feature with sub-issues for components
-  - Explicitly document "blocked by" and "blocks" relationships
+- **依存関係のマッピング**
+  - どうしても依存がある機能では、明確な issue 階層を確立する
+  - 全体機能の親 issue を作成し、コンポーネント用のサブ issue を用意する
+  - 明示的に「blocked by」と「blocks」の関係を記録する
 
-- **Workload Balancing**
-  - Break down large specifications into smaller, manageable sub-issues
-  - Ensure each sub-issue represents 1-3 days of development work
-  - Include sub-issue specific acceptance criteria
+- **ワークロードのバランス調整**
+  - 大きな仕様を小さく管理しやすいサブ issue に分割する
+  - 各サブ issue が 1〜3 日の開発作業を表すようにする
+  - サブ issue ごとに受け入れ基準を含める
 
-**Implementation Guidelines:**
-- Use GitHub issue linking syntax to create explicit relationships
-- Add labels to indicate dependency status (e.g., "blocked", "prerequisite")
-- Include estimated complexity/effort for each issue to aid sprint planning
+**実装ガイドライン:**
+- GitHub issue のリンク構文を使って明示的な関係を作る
+- 依存状態を示すラベルを付ける（例: "blocked", "prerequisite"）
+- スプリント計画に役立つように、各 issue の見積もり複雑さ/工数を含める
 
-## 6. Final Review Phase
+## 6. 最終レビューフェーズ
 
-- Summarize all created specifications
-- Highlight implementation dependencies between features
-- Suggest a logical implementation order
-- Note any potential challenges or considerations
+- すべての作成した仕様を要約する
+- 機能間の実装依存関係を強調する
+- 論理的な実装順序を提案する
+- 潜在的な課題や留意事項を記す
 
-Remember throughout this process:
-- Favor simplicity over complexity
-- Start with minimal viable implementations that work
-- Focus on developer experience
-- Build a foundation that can be extended later
-- Consider the open-source community and contribution model
+このプロセスを通じて常に次を心がける:
+- 複雑さよりもシンプルさを優先する
+- まずは動作する最小限の実装から始める
+- 開発者体験を重視する
+- 後で拡張できる基盤を構築する
+- オープンソースコミュニティと貢献モデルを考慮する
 
-This workflow embodiment of our approach should help maintain consistency in how features are specified and prioritized, ensuring that software projects evolve in a thoughtful, user-centered way.
+このワークフローの具現化により、機能がどう仕様化・優先順位付けされるかの一貫性を保ち、ソフトウェアプロジェクトが思慮深く、ユーザー中心の方法で進化していくことを支援します。

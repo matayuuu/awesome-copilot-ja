@@ -1,8 +1,8 @@
 # Power Apps Component Framework (PCF) Development Plugin
 
-Complete toolkit for developing custom code components using Power Apps Component Framework for model-driven and canvas apps
+モデル駆動型アプリとキャンバスアプリ向けに、Power Apps Component Frameworkを使ったカスタムコードコンポーネントを開発するための総合ツールキットです。
 
-## Installation
+## インストール
 
 ```bash
 # Using Copilot CLI

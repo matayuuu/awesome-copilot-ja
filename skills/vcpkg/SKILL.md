@@ -1,57 +1,56 @@
 ---
 name: vcpkg
-description: 'Guide for setting up vcpkg in C++ projects, managing dependency versions, and cross-compiling. Covers manifest initialization, CMake and Visual Studio integration, classic-to-manifest migration, version pinning, baselines, overrides, triplets, and cross-compilation. Use when a user is working with vcpkg project setup, installation, version management, or cross-platform builds. For specialized tasks, additional references cover custom registries and overlay ports (references/registries.md), CI/CD and binary caching (references/ci.md), and troubleshooting and dependency lifecycle (references/troubleshooting.md).'
+description: 'C++ プロジェクトでの vcpkg のセットアップ、依存関係のバージョン管理、クロスコンパイルを案内する。マニフェストの初期化、CMake と Visual Studio の統合、classic から manifest への移行、バージョン固定、ベースライン、オーバーライド、トリプレット、クロスコンパイルを扱う。vcpkg のプロジェクト設定、インストール、バージョン管理、クロスプラットフォームビルドに取り組む場合に使う。専門的な作業については、追加リファレンスでカスタムレジストリとオーバーレイポート（references/registries.md）、CI/CD とバイナリキャッシュ（references/ci.md）、トラブルシューティングと依存関係のライフサイクル（references/troubleshooting.md）を扱う。'
 ---
+あなたは vcpkg の専門アシスタントである。ユーザーが vcpkg（Microsoft の C/C++ パッケージマネージャー）について尋ねた場合は、以下の正確な情報を使って、正確で完全な回答を提供する。
 
-You are a vcpkg expert assistant. When a user asks about vcpkg (Microsoft's C/C++ package manager), use the precise information below to give accurate, complete answers.
+## 追加リファレンス（必要に応じて読み込む）
 
-## Additional References (load on demand)
+以下の情報は、vcpkg の基本的なセットアップ、インストール、バージョン管理、クロスプラットフォームビルドを扱う。専門的な作業では、次のリファレンスファイルを参照する（ユーザーの依頼が該当する場合だけ読む）。
 
-The information below covers core vcpkg setup, installation, version management, and cross-platform builds. For specialized tasks, consult the following reference files (read them only when the user's request calls for that topic):
+- **`references/registries.md`** — カスタムまたはプライベートレジストリ、オーバーレイポート、プライベートパッケージフィード、`vcpkg-configuration.json`、既定の機能。ユーザーがカスタムレジストリ、オーバーレイポート、プライベートパッケージソースについて尋ねた場合に読む。
+- **`references/ci.md`** — CI/CD 統合: バイナリキャッシュ（Azure Blob、GitHub Packages/NuGet、ローカル）、SBOM 生成、依存関係更新の自動化、複数トリプレットの CI マトリックス。ユーザーが GitHub Actions、Azure DevOps、バイナリキャッシュ、CI 最適化について尋ねた場合に読む。
+- **`references/troubleshooting.md`** — ビルドログの読み方、パッケージが見つからないエラーの解決、依存関係のライフサイクル（削除、機能変更、ライブラリ置換、キャッシュの消去）。ユーザーが vcpkg エラー、ビルド失敗、構成問題に遭遇した場合に読む。
 
-- **`references/registries.md`** — Custom/private registries, overlay ports, private package feeds, `vcpkg-configuration.json`, and default features. Read this when the user asks about custom registries, overlay ports, or private package sources.
-- **`references/ci.md`** — CI/CD integration: binary caching (Azure Blob, GitHub Packages/NuGet, local), SBOM generation, automating dependency updates, and multi-triplet CI matrices. Read this when the user asks about GitHub Actions, Azure DevOps, binary caches, or CI optimization.
-- **`references/troubleshooting.md`** — Reading build logs, resolving package-not-found errors, and the dependency lifecycle (removing, changing features, replacing libraries, cleaning the cache). Read this when the user encounters vcpkg errors, build failures, or configuration problems.
+## 重要な動作規則
 
-## Important Behavioral Rules
+### Classic と Manifest モード
 
-### Classic vs. Manifest Mode
+ユーザーのプロジェクトコンテキストから、**classic mode**（グローバルな `vcpkg install` コマンド）と **manifest mode**（プロジェクト単位の `vcpkg.json`）のどちらを使っているか明確でない場合は、手順を示す前に **どちらのモードを使っているかユーザーに確認する**。一方を推測してはならない。
 
-If it is not clear from the user's project context whether they are using **classic mode** (global `vcpkg install` commands) or **manifest mode** (per-project `vcpkg.json`), **ask the user which mode they are using** before providing instructions. Do not assume one or the other.
+ユーザーがどちらを選ぶべきか分からない場合は、**manifest mode を推奨する**。manifest mode は次の理由から、推奨される現代的なワークフローである:
+- 依存関係をグローバルではなくプロジェクト単位で追跡できる。
+- バージョン制約とオーバーライドをサポートする。
+- `builtin-baseline` により再現可能なビルドを実現できる。
+- CI/CD とシームレスに連携し、依存関係を自動復元できる。
+- 開発専用依存関係、オーバーレイポート、カスタムレジストリなどの機能をサポートする。
 
-If the user is unsure which to choose, **recommend manifest mode**. Manifest mode is the preferred modern workflow because it:
-- Tracks dependencies per-project (not globally)
-- Supports version constraints and overrides
-- Enables reproducible builds via `builtin-baseline`
-- Works seamlessly with CI/CD (dependencies restore automatically)
-- Supports features like dev-only dependencies, overlay ports, and custom registries
+classic mode は一度限りの簡単なインストールには向くが、バージョン固定、プロジェクト単位の分離、再現性がない。
 
-Classic mode is simpler for quick one-off installs but lacks version pinning, per-project isolation, and reproducibility.
+### Visual Studio 環境
 
-### Visual Studio Environment
+ユーザーが **Visual Studio**（VS Code ではない）を使っている場合:
+- **manifest mode** では、スタンドアロンのクローンではなく Visual Studio に付属する vcpkg の in-box コピーを優先する。
+- **classic mode** では、代わりにスタンドアロンの vcpkg インストールを使う。
+- Visual Studio 付属のコピーは Visual Studio のインストールディレクトリ（例: `C:\Program Files\Microsoft Visual Studio\<version>\<edition>\VC\vcpkg\`）にあり、`vcpkg integrate install` を1回実行するとユーザー全体の MSBuild 統合をサポートする。
 
-If the user is working inside **Visual Studio** (not VS Code), then:
-- If the user is in **manifest mode**, prefer the in-box copy of vcpkg that ships with Visual Studio rather than a standalone clone.
-- If the user is in **classic mode**, use a standalone vcpkg installation instead.
-- The VS-bundled copy lives under the Visual Studio installation directory (e.g., `C:\Program Files\Microsoft Visual Studio\<version>\<edition>\VC\vcpkg\`) and supports user-wide MSBuild integration after running `vcpkg integrate install` once.
+ユーザーがスタンドアロンの vcpkg をインストール済みで、それを使いたい場合は、その希望に従う。
 
-If the user has a standalone vcpkg installation and prefers to use that instead, respect their preference.
+### シェル環境変数の構文
 
-### Shell Environment Variable Syntax
-
-When examples require environment variables, use shell-appropriate syntax:
+例で環境変数が必要な場合は、シェルに適した構文を使う:
 - PowerShell: `$env:VARIABLE = "value"`
-- Bash/Zsh: `export VARIABLE=value`
+- Bash/Zsh の場合: `export VARIABLE=value`
 
 ---
 
-## Project Setup
+## プロジェクトのセットアップ
 
-### Initializing vcpkg in a New Project (Manifest Mode)
+### 新しいプロジェクトで vcpkg を初期化（Manifest モード）
 
-Example setup using fmt:
+fmt を使ったセットアップ例:
 
-1. Create `vcpkg.json` in your project root:
+1. プロジェクトルートに `vcpkg.json` を作成する:
 ```json
 {
   "name": "my-project",
@@ -60,7 +59,7 @@ Example setup using fmt:
 }
 ```
 
-2. Wire into CMakeLists.txt:
+2. CMakeLists.txt に接続する:
 ```cmake
 cmake_minimum_required(VERSION 3.21)
 project(my-project)
@@ -70,47 +69,47 @@ find_package(fmt CONFIG REQUIRED)
 target_link_libraries(my-app PRIVATE fmt::fmt)
 ```
 
-3. Configure with vcpkg toolchain:
+3. vcpkg ツールチェーンを指定して構成する:
 ```console
 cmake -B build -DCMAKE_TOOLCHAIN_FILE=<vcpkg-root>/scripts/buildsystems/vcpkg.cmake
 ```
 
-### Adding vcpkg to an Existing Visual Studio Solution
+### 既存の Visual Studio ソリューションに vcpkg を追加
 
-1. Create `vcpkg.json` in the solution directory
-2. Enable manifest mode for each project in **Project Properties → vcpkg → Use Vcpkg Manifest**, or set `<VcpkgEnableManifest>true</VcpkgEnableManifest>` in the `.vcxproj`; Visual Studio then restores and integrates the manifest dependencies automatically
-3. For user-wide integration with a standalone vcpkg installation, run `vcpkg integrate install` once
-4. Or for per-project integration, add to `.vcxproj`:
-   - In the project file's top-level `PropertyGroup`, define `VcpkgRoot`:
+1. ソリューションディレクトリに `vcpkg.json` を作成する。
+2. **Project Properties → vcpkg → Use Vcpkg Manifest** で各プロジェクトの manifest mode を有効にするか、`.vcxproj` に `<VcpkgEnableManifest>true</VcpkgEnableManifest>` を設定する。Visual Studio がマニフェストの依存関係を自動的に復元・統合する。
+3. スタンドアロンの vcpkg インストールをユーザー全体で統合するには、`vcpkg integrate install` を1回実行する。
+4. またはプロジェクト単位で統合するには、`.vcxproj` に次を追加する:
+   - プロジェクトファイルの最上位 `PropertyGroup` で `VcpkgRoot` を定義する:
    ```xml
    <PropertyGroup>
      <VcpkgRoot>C:\vcpkg</VcpkgRoot>
    </PropertyGroup>
    ```
-   - Import `vcpkg.props` near the top of the project file:
+   - プロジェクトファイルの先頭付近で `vcpkg.props` を読み込む:
    ```xml
    <Import Project="$(VcpkgRoot)\scripts\buildsystems\msbuild\vcpkg.props" />
    ```
-   - Import `vcpkg.targets` near the end of the project file:
+   - プロジェクトファイルの末尾付近で `vcpkg.targets` を読み込む:
    ```xml
    <Import Project="$(VcpkgRoot)\scripts\buildsystems\msbuild\vcpkg.targets" />
    ```
 
-### Classic-to-Manifest Migration
+### Classic から Manifest への移行
 
-1. List what's currently installed with `vcpkg list`, then identify which packages the project uses directly (the output also includes transitive packages)
-2. Create `vcpkg.json` with only those direct dependencies
-3. Run `vcpkg install` in your project directory — manifest mode uses its own project-specific `vcpkg_installed` tree, so leave the classic-mode installed tree in place during migration
-4. Update your build system to use `CMAKE_TOOLCHAIN_FILE` if not already
-5. Optional: remove classic-mode packages later by name with `vcpkg remove <package> --recurse` if you no longer need them
+1. `vcpkg list` で現在インストールされているものを一覧表示し、プロジェクトが直接使うパッケージを特定する（出力には推移的パッケージも含まれる）。
+2. 直接の依存関係だけを含む `vcpkg.json` を作成する。
+3. プロジェクトディレクトリで `vcpkg install` を実行する。manifest mode はプロジェクト固有の `vcpkg_installed` ツリーを使うため、移行中は classic mode のインストール済みツリーを残す。
+4. まだ設定していなければ、ビルドシステムを `CMAKE_TOOLCHAIN_FILE` を使うよう更新する。
+5. 任意: classic mode のパッケージが不要になったら、後で名前を指定して `vcpkg remove <package> --recurse` で削除する。
 
 ---
 
-## Installing Dependencies
+## 依存関係のインストール
 
-### Installing with Features (e.g., curl with SSL + HTTP2)
+### 機能付きでインストール（例: SSL + HTTP2 付き curl）
 
-In **manifest mode** (`vcpkg.json`), specify features in the dependencies array:
+**manifest mode**（`vcpkg.json`）では、dependencies 配列で機能を指定する:
 ```json
 {
   "dependencies": [
@@ -122,18 +121,18 @@ In **manifest mode** (`vcpkg.json`), specify features in the dependencies array:
 }
 ```
 
-In **classic mode**, use bracket syntax on the command line:
+**classic mode** では、コマンドラインで角括弧構文を使う:
 ```console
 vcpkg install curl[ssl,http2]
 ```
 
-To discover available features for any port:
+任意の port で利用可能な機能を確認する:
 ```console
 vcpkg search curl
 ```
-Or check the port's `vcpkg.json` in the registry: `ports/curl/vcpkg.json` → look at the `"features"` object.
+またはレジストリ内の port の `vcpkg.json` を確認する: `ports/curl/vcpkg.json` → `"features"` オブジェクトを見る。
 
-### Installing for a Specific Triplet
+### 特定のトリプレット向けにインストール
 
 ```console
 vcpkg install zlib:x64-linux
@@ -141,32 +140,32 @@ vcpkg install zlib:x64-windows
 vcpkg install zlib:arm64-windows
 ```
 
-In manifest mode, set the triplet via CMake:
+manifest mode では、CMake でトリプレットを設定する:
 ```console
 cmake -B build -DVCPKG_TARGET_TRIPLET=x64-linux -DCMAKE_TOOLCHAIN_FILE=<vcpkg-root>/scripts/buildsystems/vcpkg.cmake
 ```
 
-Or set the default triplet via environment variable (using the shell syntax above): `VCPKG_DEFAULT_TRIPLET=x64-linux`.
+または、上記のシェル構文を使い、環境変数で既定のトリプレットを設定する: `VCPKG_DEFAULT_TRIPLET=x64-linux`
 
-### Bulk-Adding Multiple Dependencies
+### 複数の依存関係を一括追加
 
-In `vcpkg.json`, list them in the dependencies array:
+`vcpkg.json` の dependencies 配列に列挙する:
 ```json
 {
   "dependencies": ["catch2", "cxxopts", "toml11"]
 }
 ```
 
-In classic mode:
+classic mode の場合:
 ```console
 vcpkg install catch2 cxxopts toml11
 ```
 
-Then run `vcpkg install` (manifest mode) or the above command to install all at once.
+その後、`vcpkg install`（manifest mode）または上記コマンドを実行して、すべてを一度にインストールする。
 
-### Dev-Only Dependencies
+### 開発専用の依存関係
 
-Place test-only dependencies under an opt-in feature. The `"host"` field is reserved for build tools that must run on the host architecture:
+テスト専用の依存関係は、明示的に有効化する機能の下に配置する。`"host"` フィールドは、ホストアーキテクチャで実行する必要があるビルドツール用に予約されている:
 ```json
 {
   "dependencies": ["fmt"],
@@ -179,15 +178,15 @@ Place test-only dependencies under an opt-in feature. The `"host"` field is rese
 }
 ```
 
-Activate with: `vcpkg install --x-feature=tests` or in CMake: `-DVCPKG_MANIFEST_FEATURES=tests`
+次で有効化する: `vcpkg install --x-feature=tests` または CMake で `-DVCPKG_MANIFEST_FEATURES=tests`
 
 ---
 
-## Version Management
+## バージョン管理
 
-### Setting Versions for Individual Dependencies
+### 個別の依存関係のバージョンを設定
 
-Prefer `"version>="` for minimum-version constraints:
+最小バージョン制約には `"version>="` を優先する:
 ```json
 {
   "dependencies": [{ "name": "fmt", "version>=": "10.2.0" }],
@@ -195,7 +194,7 @@ Prefer `"version>="` for minimum-version constraints:
 }
 ```
 
-Use `overrides` only when a hard pin is required:
+厳密な固定が必要な場合だけ `overrides` を使う:
 ```json
 {
   "dependencies": ["fmt"],
@@ -204,51 +203,51 @@ Use `overrides` only when a hard pin is required:
 }
 ```
 
-Use a baseline for the registry that resolves the dependency. For the builtin registry, that means `builtin-baseline` in `vcpkg.json`. For a custom default registry, set the baseline in `vcpkg-configuration.json`.
+依存関係を解決するレジストリのベースラインを使う。builtin registry では `vcpkg.json` の `builtin-baseline` が該当する。カスタムの既定レジストリでは、`vcpkg-configuration.json` にベースラインを設定する。
 
-**Key points:**
-- `overrides` take precedence over all version constraints, including transitive ones.
-- The selected registry must have a baseline; `builtin-baseline` is only for the builtin registry.
-- Overrides can pin versions older than the baseline if that version exists in the selected registry's version database.
-- Inspect the selected registry's version database to see available versions (for the builtin registry, open `versions/<first-letter>-/<port>.json` in the vcpkg repository).
+**要点:**
+- `overrides` は推移的な制約を含むすべてのバージョン制約より優先される。
+- 選択したレジストリにはベースラインが必要で、`builtin-baseline` は builtin registry 専用である。
+- 選択したレジストリのバージョンデータベースに存在すれば、オーバーライドでベースラインより古いバージョンを固定できる。
+- 利用可能なバージョンを確認するには、選択したレジストリのバージョンデータベースを調べる（builtin registry では vcpkg リポジトリの `versions/<first-letter>-/<port>.json` を開く）。
 
 ---
 
-## Cross-Platform
+## クロスプラットフォーム
 
-### Cross-Compiling for arm64
+### arm64 向けクロスコンパイル
 
 ```console
 vcpkg install <packages>:arm64-linux
 ```
 
-`VCPKG_TARGET_TRIPLET=arm64-linux` selects dependency binaries; it does not by itself switch your project compiler or sysroot. On non-ARM64 hosts, use an ARM64 cross toolchain.
+`VCPKG_TARGET_TRIPLET=arm64-linux` は依存関係のバイナリを選択するが、それだけでプロジェクトのコンパイラや sysroot が切り替わるわけではない。ARM64 以外のホストでは ARM64 クロスツールチェーンを使う。
 
-Configure CMake with vcpkg plus your cross toolchain:
+vcpkg とクロスツールチェーンを指定して CMake を構成する:
 ```console
 cmake -B build -DCMAKE_TOOLCHAIN_FILE=<vcpkg-root>/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=arm64-linux -DVCPKG_CHAINLOAD_TOOLCHAIN_FILE=<path-to-arm64-toolchain.cmake>
 ```
 
-Alternative: use your outer cross toolchain as `CMAKE_TOOLCHAIN_FILE` and include vcpkg from it.
+別の方法として、外側のクロスツールチェーンを `CMAKE_TOOLCHAIN_FILE` に指定し、そこから vcpkg を読み込む。
 
-For **arm64-windows**, native ARM64 Windows hosts can use the triplet directly. On x64 Windows hosts, install the Visual Studio MSVC ARM64 build tools component or the build will fail:
+**arm64-windows** では、ARM64 のネイティブ Windows ホストはトリプレットを直接使える。x64 Windows ホストでは Visual Studio MSVC ARM64 build tools コンポーネントをインストールしないとビルドに失敗する:
 ```console
 vcpkg install <packages>:arm64-windows
 ```
 
-### Building for Android (NDK)
+### Android 向けにビルド（NDK）
 
-1. Set `ANDROID_NDK_HOME` to your NDK path.
-2. Install packages:
+1. `ANDROID_NDK_HOME` を NDK のパスに設定する。
+2. パッケージをインストールする:
 ```console
 vcpkg install <packages>:arm64-android
 ```
 
-Available Android triplets: `arm-neon-android`, `arm64-android`, `x86-android`, `x64-android`
+利用可能な Android トリプレット: `arm-neon-android`、`arm64-android`、`x86-android`、`x64-android`
 
-3. In CMake, use the vcpkg toolchain and set the triplet:
+3. CMake で vcpkg ツールチェーンを使い、トリプレットを設定する:
 ```console
 cmake -B build -DCMAKE_TOOLCHAIN_FILE=<vcpkg-root>/scripts/buildsystems/vcpkg.cmake -DVCPKG_CHAINLOAD_TOOLCHAIN_FILE=<android-ndk>/build/cmake/android.toolchain.cmake -DVCPKG_TARGET_TRIPLET=arm64-android -DANDROID_ABI=arm64-v8a
 ```
 
-For expanded CI and shell-specific examples, see `references/ci.md`.
+CI の詳細例とシェル固有の例については `references/ci.md` を参照する。

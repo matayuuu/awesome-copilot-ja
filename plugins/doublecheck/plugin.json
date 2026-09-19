@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "doublecheck",
-  "description": "Three-layer verification pipeline for AI output. Extracts claims, finds sources, and flags hallucination risks so humans can verify before acting.",
+  "description": "AI 出力を検証する 3 層パイプラインです。主張を抽出し、情報源を探し、幻覚のリスクにフラグを付けることで、人が行動する前に確認できるようにします。",
   "version": "1.0.0",
   "author": {
     "name": "Awesome Copilot Community"

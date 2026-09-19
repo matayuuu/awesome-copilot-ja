@@ -1,6 +1,6 @@
 ---
 name: copilot-pr-autopilot
-description: 'Copilot left 14 review comments on your PR — half are nits. Hours of fix → reply → resolve → re-request, and each round lands MORE comments. This skill runs loop engineering: auto-triggers Copilot Code Review via GraphQL (no @copilot mention), triages every open thread (Copilot, humans, advanced-security) with a fix / decline / escalate rubric, dispatches parallel fix sub-agents that obey the repo build/test/lint conventions, commits per iteration, replies+resolves citing the pushed SHA, then re-triggers until HEAD is reviewed with zero threads awaiting the agent''s reply (remaining open threads are explicit hand-offs to the human — escalated declines, design tradeoffs). You merge a clean PR; the bot runs it. Trigger phrases: "address copilot comments", "run a copilot review loop", "fix this PR", "iterate on copilot feedback". Repo-agnostic, gh CLI + PowerShell. Full autopilot needs repo Triage/Write; external PR authors get single-iteration mode plus manual re-trigger (UI 🔄 or substantive-commit push).'
+description: 'CopilotがPRに多数のレビューコメントを残し、修正、返信、解決、再依頼を繰り返すたびに新たなコメントが増える状況で、レビュー対応ループを自動運転する。GraphQLでCopilot Code Reviewを自動起動し、すべての未解決スレッドを修正、却下、エスカレーションの基準で分類する。リポジトリのbuild、test、lint規約に従う修正サブエージェントを並列実行し、反復ごとにコミットして、push済みSHAを示しながら返信と解決を行う。HEADのレビューが完了し、エージェントの返信待ちスレッドがゼロになるまで再起動する。リポジトリ非依存で、gh CLIとPowerShellを使用する。完全自動運転にはTriageまたはWrite権限が必要で、外部PR作成者は単一反復モードと手動再起動を使う。'
 ---
 
 # Copilot PR Autopilot

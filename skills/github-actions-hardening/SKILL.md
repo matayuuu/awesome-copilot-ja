@@ -1,160 +1,126 @@
 ---
 name: github-actions-hardening
-description: Security hardening reviewer for GitHub Actions workflow files (.github/workflows/*.yml). Reasons about the Actions threat model that pattern matchers and general code linters miss — untrusted-input script injection, privileged triggers running fork code, mutable action references, and over-scoped tokens. Use this skill when asked to review, audit, harden, or secure a GitHub Actions workflow, when writing a new workflow, or for any request like "is this workflow safe?", "review my CI for security issues", "why is pull_request_target dangerous here?", "pin my actions", or "lock down GITHUB_TOKEN permissions". Covers script injection via ${{ }} interpolation, pull_request_target / workflow_run privilege escalation, SHA-pinning of third-party actions, least-privilege permissions, GITHUB_ENV/GITHUB_OUTPUT injection, secret exposure, OIDC over long-lived credentials, and self-hosted runner exposure on public repositories.
+description: GitHub Actionsワークフローファイル（.github/workflows/*.yml）のセキュリティ強化レビュー担当。パターンマッチャーや一般的なコードリンターでは見逃される、信頼されていない入力によるスクリプトインジェクション、フォークコードを実行する特権トリガー、可変なアクション参照、過剰なトークン権限を分析する。ワークフローのレビュー、監査、強化、新規ワークフロー作成、または「このワークフローは安全か」「CIのセキュリティ問題をレビューして」「なぜここでpull_request_targetは危険なのか」「アクションをピン留めして」「GITHUB_TOKENの権限を制限して」のような依頼で使用する。${{ }}補間によるスクリプトインジェクション、pull_request_target / workflow_runの権限昇格、第三者アクションのコミットSHA固定、最小権限、GITHUB_ENV/GITHUB_OUTPUTインジェクション、シークレット漏えい、長期認証情報の代わりのOIDC、パブリックリポジトリでのセルフホステッドランナーの露出を対象とする。
 ---
 
 # GitHub Actions Hardening
 
-A focused security reviewer for GitHub Actions workflows. It reasons about the *Actions-specific*
-threat model — where trust boundaries live in trigger types, token scopes, and string
-interpolation — rather than the application-code vulnerabilities a general security scanner looks
-for. Most workflow risks are invisible to language linters because the dangerous code is the YAML
-itself and the way GitHub expands `${{ }}` expressions into a shell before your script runs.
+GitHub Actionsワークフローに特化したセキュリティレビュアー。一般的なセキュリティスキャナーが見るアプリケーションコードの脆弱性ではなく、トリガー種別、トークンのスコープ、文字列補間に存在するActions固有の脅威モデルを分析する。多くのワークフローリスクは、危険なコードがYAMLそのものにあり、GitHubが`${{ }}`式をシェル実行前に展開するため、言語リンターには見えない。
 
-## When to Use This Skill
+## このSkillを使用する場面
 
-Use this skill when the request involves:
+このSkillは次の依頼で使用する。
 
-* Reviewing, auditing, or hardening any file under `.github/workflows/`
-* Authoring a new workflow and wanting it secure by default
-* A workflow that uses `pull_request_target`, `workflow_run`, or `issue_comment` triggers
-* Questions about `GITHUB_TOKEN` permissions or the `permissions:` key
-* Pinning actions to commit SHAs vs tags vs branches
-* Handling untrusted input (issue titles, PR bodies, branch names, commit messages) in `run:` steps
-* OIDC / cloud authentication from Actions, or secret handling in CI
-* Self-hosted runners on public repositories
-* Any request like "is this workflow safe?", "secure my CI", or "review this GitHub Action"
+* `.github/workflows/`配下のファイルをレビュー、監査、強化する場合
+* 新しいワークフローを作成し、安全なデフォルトを求める場合
+* `pull_request_target`、`workflow_run`、`issue_comment`トリガーを使用するワークフロー
+* `GITHUB_TOKEN`の権限または`permissions:`キーについての質問
+* アクションをコミットSHA、タグ、ブランチのいずれかに固定する場合
+* `run:`ステップで信頼されていない入力（issueのタイトル、PR本文、ブランチ名、コミットメッセージ）を扱う場合
+* ActionsからのOIDC / クラウド認証、またはCIでのシークレット処理
+* パブリックリポジトリ上のセルフホステッドランナー
+* 「このワークフローは安全か」「CIを安全にして」「このGitHub Actionをレビューして」のような依頼
 
-## The Core Insight
+## 核となる洞察
 
-In a workflow, **`${{ <expr> }}` is expanded by the runner into the script *before* the shell
-executes it.** So a step like:
+ワークフローでは、**`${{ <expr> }}`はシェルが実行する前に、ランナーによってスクリプトへ展開される。**そのため、次のステップは変数を渡しているのではなく、攻撃者が制御できるテキストをシェルコマンドへ直接貼り付けている。
 
 ```yaml
 - run: echo "Title: ${{ github.event.issue.title }}"
 ```
 
-is not passing a variable — it is *pasting attacker-controlled text directly into your shell
-command*. An issue titled `"; <attacker-command> #` is concatenated into the script and executed.
-This single mechanism is the most common real-world Actions vulnerability, and models routinely
-generate it. Treat every
-`${{ }}` that contains data an outside contributor can influence as a code-injection sink.
+issueのタイトルが`"; <attacker-command> #`であると、この文字列がスクリプトへ連結され、実行される。この仕組みは、実際のActions脆弱性で最も一般的なものの一つであり、モデルが繰り返し生成する。外部コントリビューターが影響を与えられるデータを含む`${{ }}`はすべて、コードインジェクションの入り口として扱う。
 
-## Execution Workflow
+## 実行手順
 
-Follow these steps **in order** for every workflow reviewed.
+レビューするすべてのワークフローで、次の手順を順番どおりに実行する。
 
-### Step 1 — Map the Triggers and Trust Level
+### 手順1 — トリガーと信頼レベルを把握する
 
-Read every `on:` trigger and classify the workflow's privilege:
+すべての`on:`トリガーを読み、ワークフローの権限を分類する。
 
-* `push`, `pull_request` (from same repo) → runs with the contributor's own trust
-* `pull_request` from a **fork** → runs with a **read-only** token, **no secrets** (safe by design)
-* `pull_request_target`, `workflow_run`, `issue_comment`, `issues` → run in the context of the
-  **base repository** with a **read/write token and full access to secrets**, but can be
-  **triggered by outside contributors**. These are the dangerous triggers.
+* `push`、`pull_request`（同じリポジトリから） → コントリビューター自身の信頼レベルで実行
+* **フォークからの**`pull_request` → 読み取り専用トークン、**シークレットなし**（設計上安全）
+* `pull_request_target`、`workflow_run`、`issue_comment`、`issues` → ベースリポジトリのコンテキストで実行され、**読み書きトークンとシークレットへの完全なアクセス権**を持つが、外部コントリビューターからトリガーできる。これらは危険なトリガーである。
 
-Read `references/triggers-and-privilege.md` for the full trust matrix.
+詳細な信頼マトリックスは`references/triggers-and-privilege.md`を読む。
 
-### Step 2 — Hunt for Script Injection
+### 手順2 — スクリプトインジェクションを探す
 
-For every `run:` block, every `script:` in `actions/github-script`, and every input to a custom
-action, list the `${{ }}` expressions and check whether any resolve to attacker-controllable data.
-High-risk contexts include:
+すべての`run:`ブロック、`actions/github-script`のすべての`script:`、カスタムアクションへのすべての入力について、`${{ }}`式を列挙し、外部の攻撃者が制御できるデータへ解決されるか確認する。高リスクのコンテキストには次が含まれる。
 
-* `github.event.issue.title`, `github.event.issue.body`
-* `github.event.pull_request.title`, `github.event.pull_request.body`, `.head.ref`, `.head.label`
-* `github.event.comment.body`, `github.event.review.body`
-* `github.event.pages.*.page_name`, `github.event.commits.*.message`, `github.event.head_commit.*`
-* `github.head_ref` and any `github.event.*` field a fork author can set
+* `github.event.issue.title`、`github.event.issue.body`
+* `github.event.pull_request.title`、`github.event.pull_request.body`、`.head.ref`、`.head.label`
+* `github.event.comment.body`、`github.event.review.body`
+* `github.event.pages.*.page_name`、`github.event.commits.*.message`、`github.event.head_commit.*`
+* `github.head_ref`およびフォーク作成者が設定できる`github.event.*`フィールド
 
-Read `references/injection.md` for the complete sink list and the safe-pattern fixes.
+完全な入り口一覧と安全なパターンによる修正方法は`references/injection.md`を読む。
 
-### Step 3 — Check Privileged Triggers Don't Execute Untrusted Code
+### 手順3 — 特権トリガーが信頼されていないコードを実行しないことを確認する
 
-If a `pull_request_target` or `workflow_run` workflow checks out PR/fork code
-(`ref: ${{ github.event.pull_request.head.sha }}`) **and then runs it** (build, test, install
-scripts, `npm install` with lifecycle scripts, etc.), that is remote code execution against a
-privileged token. Flag it as CRITICAL. The safe pattern is to split into two workflows: an
-unprivileged `pull_request` workflow that runs the untrusted code, and a privileged
-`workflow_run` workflow that only consumes its results.
+`pull_request_target`または`workflow_run`ワークフローがPR/フォークのコードをチェックアウトし（`ref: ${{ github.event.pull_request.head.sha }}`）、その後で実行する（ビルド、テスト、インストールスクリプト、ライフサイクルスクリプト付きの`npm install`など）場合、これは特権トークンに対するリモートコード実行であるため、CRITICALとして指摘する。安全なパターンは、信頼されていないコードを実行する非特権の`pull_request`ワークフローと、その結果だけを消費する特権の`workflow_run`ワークフローに分割することである。
 
-### Step 4 — Audit `permissions:`
+### 手順4 — `permissions:`を監査する
 
-* If there is **no** `permissions:` block, the workflow inherits the repository default, which may
-  be read/write to everything. Flag it.
-* Recommend a top-level `permissions: {}` (deny-all) or `contents: read`, then grant the minimum
-  per job (e.g. `pull-requests: write` only on the job that comments).
-* Flag any `permissions: write-all` or broad `write` scopes that the steps don't actually need.
+* `permissions:`ブロックがない場合、ワークフローはリポジトリのデフォルトを継承し、すべてに対する読み書き権限になる可能性がある。指摘する。
+* トップレベルに`permissions: {}`（全拒否）または`contents: read`を設定し、ジョブ単位で最小限を付与することを推奨する（例：コメントを投稿するジョブだけに`pull-requests: write`）。
+* ステップが実際には必要としていない`permissions: write-all`や広範な`write`スコープを指摘する。
 
-Read `references/permissions-and-tokens.md` for the per-scope guidance and OIDC setup.
+スコープごとの指針とクラウド認証用OIDCの設定は`references/permissions-and-tokens.md`を読む。
 
-### Step 5 — Audit Action References (Supply Chain)
+### 手順5 — アクション参照（サプライチェーン）を監査する
 
-For every `uses:`:
+すべての`uses:`について次を確認する。
 
-* **Third-party actions** (not `actions/*` or `github/*`) MUST be pinned to a full 40-character
-  commit SHA, not a tag or branch. Tags and branches are mutable; a compromised upstream action
-  can rewrite `v1` to malicious code that runs with your token and secrets.
-* First-party `actions/*` are lower risk but SHA-pinning is still the hardened recommendation.
-* Flag `@main`, `@master`, or any branch reference as HIGH — that is "latest" and can change under
-  you at any time.
-* Note the human-readable version in a trailing comment: `uses: foo/bar@<sha> # v2.1.0`.
+* **第三者アクション**（`actions/*`または`github/*`以外）は、タグやブランチではなく、完全な40文字のコミットSHAに**必ず**固定する。タグとブランチは可変であり、侵害された上流アクションが`v1`を書き換えると、トークンとシークレットを使って悪意あるコードを実行できる。
+* 第一者の`actions/*`はリスクが低いが、SHA固定は依然として強化策として推奨する。
+* `@main`、`@master`、またはブランチ参照をHIGHとして指摘する — これは「最新版」であり、いつでも変更できる。
+*人間が読めるバージョンを、末尾コメントとして固定SHAの横に記載することを提案する：`uses: foo/bar@<sha> # v2.1.0`
 
-Read `references/supply-chain.md` for pinning, Dependabot for actions, and artifact/cache risks.
+固定、Actions用Dependabot、アーティファクト／キャッシュのリスクは`references/supply-chain.md`を読む。
 
-### Step 6 — Check Secret and Output Handling
+### 手順6 — シークレットと出力の扱いを確認する
 
-* No secrets echoed, printed, or written to logs; no `set -x` / `bash -x` in steps that touch
-  secrets.
-* Secrets must not be passed to steps that run untrusted code or to untrusted third-party actions.
-* Untrusted multiline data written to `$GITHUB_ENV` or `$GITHUB_OUTPUT` can inject environment
-  variables or step outputs — use the random-delimiter heredoc form and never write raw user input.
-* `actions/checkout` leaves a token on disk by default; set `persist-credentials: false` when the
-  job later runs untrusted code.
+* シークレットをログへエコー、表示、書き込みしない。シークレットに触れるステップで`set -x` / `bash -x`を使用しない。
+* 信頼されていないコードや信頼されていない第三者アクションを実行するステップへシークレットを渡さない。
+* `$GITHUB_ENV`または`$GITHUB_OUTPUT`へ書き込む信頼されていない複数行データは、環境変数やステップ出力をインジェクトできる — ランダムな区切り文字を使うheredoc形式を使用し、ユーザー入力をそのまま書き込まない。
+* `actions/checkout`はデフォルトでトークンをディスクへ残す。ジョブが後で信頼されていないコードを実行する場合は、`persist-credentials: false`を設定する。
 
-### Step 7 — Produce the Report
+### 手順7 — レポートを作成する
 
-Output findings using the format in `references/report-format.md`: a severity summary table first,
-then grouped findings with file, the exact offending YAML, the risk in plain English, and a
-concrete before/after fix. Never auto-apply changes — present them for review.
+`references/report-format.md`の形式で指摘を出力する。最初に重大度の概要表を置き、その後にファイル、問題のあるYAMLの正確な内容、平易な言葉でのリスク、具体的な修正前／修正後を含む指摘を、問題種別ごとにまとめる。自動的に変更を適用せず、レビューのために提示する。
 
-## Severity Guide
+## 重大度の指針
 
-| Severity | Meaning | Example |
+| 重大度 | 意味 | 例 |
 | --- | --- | --- |
-| 🔴 CRITICAL | Token/secret theft or RCE reachable by an outside contributor | `pull_request_target` checking out and running fork code; `${{ github.event.* }}` in a `run:` on a privileged trigger |
-| 🟠 HIGH | Exploitable supply-chain or scope problem | Third-party action on a mutable tag/branch; `write-all` permissions; injection sink on `issue_comment` |
-| 🟡 MEDIUM | Risk under conditions or chaining | Missing `permissions:` block; secret reachable by a non-fork PR author |
-| 🔵 LOW | Hardening gap, low direct risk | First-party action not SHA-pinned; `persist-credentials` left default on a non-privileged job |
-| ⚪ INFO | Observation, not a vulnerability | Version comment missing next to a pinned SHA |
+| 🔴 CRITICAL | 外部コントリビューターが到達できるトークン／シークレット窃取またはRCE | `pull_request_target`がフォークコードをチェックアウトして実行する；特権トリガーの`run`内に`${{ github.event.* }}`がある |
+| 🟠 HIGH | 悪用可能なサプライチェーンまたはスコープの問題 | 可変タグ／ブランチの第三者アクション；`write-all`権限；`issue_comment`でのインジェクション入り口 |
+| 🟡 MEDIUM | 条件または連鎖によるリスク | `permissions:`ブロックの欠落；フォークでないPR作成者からアクセス可能なシークレット |
+| 🔵 LOW | 強化の不足、直接的なリスクは低い | SHA固定されていない第一者アクション；非特権ジョブで`persist-credentials`がデフォルトのまま |
+| ⚪ INFO | 脆弱性ではなく観察事項 | 固定SHAの横にバージョンコメントがない |
 
-## Output Rules
+## 出力規則
 
-* **Always** show a findings summary table (counts by severity) first.
-* **Group by issue type**, not by file.
-* **Be exact** — quote the offending line and give the line location.
-* **Always** pair every CRITICAL/HIGH with a concrete corrected YAML snippet.
-* **Never** claim a fork `pull_request` is dangerous just because it runs untrusted code — it has
-  no secrets and a read-only token. Reserve CRITICAL for the privileged triggers.
-* If the workflow is already hardened, say so and list what was checked.
+* **必ず**最初に重大度別の件数を示す指摘概要表を表示する。
+* **ファイル別ではなく、問題種別ごとに**まとめる。
+* **正確に** — 問題のある行を引用し、行位置を示す。
+* CRITICAL/HIGHには**必ず**具体的な修正後YAMLスニペットを添える。
+* フォークの`pull_request`は、信頼されていないコードを実行するというだけで危険だと主張しない — シークレットはなく、トークンは読み取り専用である。CRITICALは特権トリガーに限定する。
+* ワークフローがすでに強化されている場合は、その旨を述べ、確認した項目を列挙する。
 
-## Reference Files
+## 参照ファイル
 
-Load these as needed:
+必要に応じて次を読み込む。
 
-* `references/triggers-and-privilege.md` — Trust matrix for every trigger, why `pull_request_target`
-  and `workflow_run` are privileged, and the two-workflow safe pattern.
-  + Search patterns: `pull_request_target`, `workflow_run`, `issue_comment`, `fork`, `secrets`, `read-only token`, `trust boundary`
-* `references/injection.md` — Full list of attacker-controllable `${{ }}` contexts and the
-  `env:`-variable safe pattern for each sink (`run`, `github-script`, action inputs).
-  + Search patterns: `script injection`, `github.event`, `head_ref`, `issue title`, `env`, `intermediate variable`, `actions/github-script`
-* `references/permissions-and-tokens.md` — `GITHUB_TOKEN` scopes, least-privilege `permissions:`
-  recipes per job type, and OIDC for cloud auth instead of long-lived secrets.
-  + Search patterns: `permissions`, `GITHUB_TOKEN`, `write-all`, `contents: read`, `id-token`, `OIDC`, `least privilege`
-* `references/supply-chain.md` — SHA-pinning third-party actions, Dependabot for `github-actions`,
-  artifact and cache poisoning across `workflow_run`, and self-hosted runner exposure.
-  + Search patterns: `SHA pin`, `uses`, `mutable tag`, `Dependabot`, `download-artifact`, `cache`, `self-hosted runner`
-* `references/report-format.md` — Output template: summary table, finding cards, and before/after
-  remediation blocks.
-  + Search patterns: `report`, `format`, `finding`, `summary`, `remediation`, `before`, `after`
+* `references/triggers-and-privilege.md` — すべてのトリガーの信頼マトリックス、特権トリガーである`pull_request_target`と`workflow_run`の理由、2ワークフローによる安全なパターン。
+  + 検索パターン：`pull_request_target`、`workflow_run`、`issue_comment`、`fork`、`secrets`、`read-only token`、`trust boundary`
+* `references/injection.md` — 攻撃者が制御できる`${{ }}`コンテキストの完全な一覧と、各入り口（`run`、`github-script`、アクション入力）に対する`env:`変数の安全なパターン。
+  + 検索パターン：`script injection`、`github.event`、`head_ref`、`issue title`、`env`、`intermediate variable`、`actions/github-script`
+* `references/permissions-and-tokens.md` — `GITHUB_TOKEN`のスコープ、ジョブ種別ごとの最小権限`permissions:`レシピ、長期シークレットの代わりのクラウド認証用OIDC。
+  + 検索パターン：`permissions`、`GITHUB_TOKEN`、`write-all`、`contents: read`、`id-token`、`OIDC`、`least privilege`
+* `references/supply-chain.md` — 第三者アクションのSHA固定、Actions用Dependabot、`workflow_run`におけるアーティファクトとキャッシュの汚染、セルフホステッドランナーの露出。
+  + 検索パターン：`SHA pin`、`uses`、`mutable tag`、`Dependabot`、`download-artifact`、`cache`、`self-hosted runner`
+* `references/report-format.md` — 出力テンプレート：概要、指摘カード、修正前／修正後のブロック。
+  + 検索パターン：`report`、`format`、`finding`、`summary`、`remediation`、`before`、`after`

@@ -1,8 +1,8 @@
 # Visual PR Plugin
 
-When you change how something looks — a layout, a chart, a form — the PR description should show the change. Not describe it in words. Show it. A before/after screenshot tells your reviewer exactly what happened, and they don't have to check out the branch to see it.
+レイアウト、グラフ、フォームなど見た目を変更したときは、PRの説明で変更を示すべきです。言葉で説明するのではなく、実際に見せましょう。変更前後のスクリーンショットなら何が起きたかをレビュー担当者に正確に伝えられ、ブランチをチェックアウトする必要もありません。
 
-This plugin teaches Copilot to capture screenshots of your web app (or any UI), annotate them with callouts, and embed them in the PR description. Once you get used to having up-to-date screenshots on every visual change, going back to text-only PRs feels like reviewing code with your eyes closed.
+このプラグインは、Webアプリ（または任意のUI）のスクリーンショットをキャプチャし、吹き出しで注釈を付け、PRの説明に埋め込む方法をCopilotに教えます。見た目の変更ごとに最新のスクリーンショットがある状態に慣れると、文章だけのPRに戻るのは目を閉じてコードをレビューするように感じられます。
 
 ## Demo 🎬
 

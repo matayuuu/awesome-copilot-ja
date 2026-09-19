@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "backlog-swipe-triage",
-  "description": "Quickly swipe through backlog issues to triage decisions like assign, needs-info, defer, close, or ignore.",
+  "description": "バックログの issue をすばやくスワイプし、assign、needs-info、defer、close、ignore などのトリアージ判断を行います。",
   "version": "1.0.2",
   "author": {
     "name": "James Montemagno",

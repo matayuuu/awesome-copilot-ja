@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "react19-upgrade",
-  "description": "Enterprise React 19 migration toolkit with specialized agents and skills for upgrading React 18 codebases to React 19. Includes auditor, dependency surgeon, source code migrator, and test guardian. Handles removal of deprecated APIs including ReactDOM.render, forwardRef, defaultProps, legacy context, string refs, and more.",
+  "description": "React 18のコードベースをReact 19へアップグレードするための、専門エージェントとSkillを備えたエンタープライズ向け移行ツールキット。監査、依存関係、ソースコード移行、テストを担当する機能を含みます。ReactDOM.render、forwardRef、defaultProps、レガシーコンテキスト、文字列refなどの非推奨APIの削除に対応します。",
   "version": "1.0.0",
   "keywords": [
     "react19",

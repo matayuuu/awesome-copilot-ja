@@ -1,28 +1,21 @@
 ---
 name: fluentui-blazor
-description: >
-  Guide for using the Microsoft Fluent UI Blazor component library
-  (Microsoft.FluentUI.AspNetCore.Components NuGet package) in Blazor applications.
-  Use this when the user is building a Blazor app with Fluent UI components,
-  setting up the library, using FluentUI components like FluentButton, FluentDataGrid,
-  FluentDialog, FluentToast, FluentNavMenu, FluentTextField, FluentSelect,
-  FluentAutocomplete, FluentDesignTheme, or any component prefixed with "Fluent".
-  Also use when troubleshooting missing providers, JS interop issues, or theming.
+description: 'Blazor アプリケーションで Microsoft Fluent UI Blazor コンポーネント ライブラリ（Microsoft.FluentUI.AspNetCore.Components NuGet パッケージ）を使用するためのガイドです。Fluent UI コンポーネントを使った Blazor アプリの構築、ライブラリの設定、FluentButton、FluentDataGrid、FluentDialog、FluentToast、FluentNavMenu、FluentTextField、FluentSelect、FluentAutocomplete、FluentDesignTheme、または "Fluent" で始まるコンポーネントの使用時に利用します。プロバイダー不足、JS 相互運用の問題、テーマ設定のトラブルシューティングにも使用します。'
 ---
 
-# Fluent UI Blazor — Consumer Usage Guide
+# Fluent UI Blazor — 利用ガイド
 
-This skill teaches how to correctly use the **Microsoft.FluentUI.AspNetCore.Components** (version 4) NuGet package in Blazor applications.
+このスキルでは、Blazor アプリケーションで **Microsoft.FluentUI.AspNetCore.Components**（バージョン 4）の NuGet パッケージを正しく使う方法を説明します。
 
-## Critical Rules
+## 重要なルール
 
-### 1. No manual `<script>` or `<link>` tags needed
+### 1. 手動で `<script>` または `<link>` タグを追加する必要はありません
 
-The library auto-loads all CSS and JS via Blazor's static web assets and JS initializers. **Never tell users to add `<script>` or `<link>` tags for the core library.**
+このライブラリは、Blazor の静的 Web アセットと JS 初期化を通じて CSS と JS を自動的に読み込みます。**コア ライブラリに対して `<script>` または `<link>` タグを追加するようユーザーに案内してはいけません。**
 
-### 2. Providers are mandatory for service-based components
+### 2. サービス ベースのコンポーネントにはプロバイダーが必須です
 
-These provider components **MUST** be added to the root layout (e.g. `MainLayout.razor`) for their corresponding services to work. Without them, service calls **fail silently** (no error, no UI).
+これらのプロバイダー コンポーネントは、対応するサービスを機能させるために、ルート レイアウト（例: `MainLayout.razor`）に追加する必要があります。これがないと、サービス呼び出しは**黙って失敗**します（エラーも UI も表示されません）。
 
 ```razor
 <FluentToastProvider />
@@ -32,7 +25,7 @@ These provider components **MUST** be added to the root layout (e.g. `MainLayout
 <FluentKeyCodeProvider />
 ```
 
-### 3. Service registration in Program.cs
+### 3. Program.cs でのサービス登録
 
 ```csharp
 builder.Services.AddFluentUIComponents();
@@ -45,18 +38,18 @@ builder.Services.AddFluentUIComponents(options =>
 });
 ```
 
-**ServiceLifetime rules:**
-- `ServiceLifetime.Scoped` — for Blazor Server / Interactive (default)
-- `ServiceLifetime.Singleton` — for Blazor WebAssembly standalone
-- `ServiceLifetime.Transient` — **throws `NotSupportedException`**
+**ServiceLifetime のルール:**
+- `ServiceLifetime.Scoped` — Blazor Server / Interactive 用（既定）
+- `ServiceLifetime.Singleton` — Blazor WebAssembly スタンドアロン用
+- `ServiceLifetime.Transient` — **`NotSupportedException` をスローする**
 
-### 4. Icons require a separate NuGet package
+### 4. アイコンには別の NuGet パッケージが必要です
 
 ```
 dotnet add package Microsoft.FluentUI.AspNetCore.Components.Icons
 ```
 
-Usage with a `@using` alias:
+`@using` エイリアスを使った使用例:
 
 ```razor
 @using Icons = Microsoft.FluentUI.AspNetCore.Components.Icons
@@ -65,23 +58,23 @@ Usage with a `@using` alias:
 <FluentIcon Value="@(Icons.Filled.Size20.Delete)" Color="@Color.Error" />
 ```
 
-Pattern: `Icons.[Variant].[Size].[Name]`
-- Variants: `Regular`, `Filled`
-- Sizes: `Size12`, `Size16`, `Size20`, `Size24`, `Size28`, `Size32`, `Size48`
+パターン: `Icons.[Variant].[Size].[Name]`
+- バリエーション: `Regular`、`Filled`
+- サイズ: `Size12`、`Size16`、`Size20`、`Size24`、`Size28`、`Size32`、`Size48`
 
-Custom image: `Icon.FromImageUrl("/path/to/image.png")`
+カスタム画像: `Icon.FromImageUrl("/path/to/image.png")`
 
-**Never use string-based icon names** — icons are strongly-typed classes.
+**文字列ベースのアイコン名は使用しないでください** — アイコンは厳密に型付けされたクラスです。
 
-### 5. List component binding model
+### 5. リスト コンポーネントのバインディング モデル
 
-`FluentSelect<TOption>`, `FluentCombobox<TOption>`, `FluentListbox<TOption>`, and `FluentAutocomplete<TOption>` do NOT work like `<InputSelect>`. They use:
+`FluentSelect<TOption>`、`FluentCombobox<TOption>`、`FluentListbox<TOption>`、`FluentAutocomplete<TOption>` は `<InputSelect>` のようには動作しません。これらは次を使用します:
 
-- `Items` — the data source (`IEnumerable<TOption>`)
-- `OptionText` — `Func<TOption, string?>` to extract display text
-- `OptionValue` — `Func<TOption, string?>` to extract the value string
-- `SelectedOption` / `SelectedOptionChanged` — for single selection binding
-- `SelectedOptions` / `SelectedOptionsChanged` — for multi-selection binding
+- `Items` — データ ソース（`IEnumerable<TOption>`）
+- `OptionText` — 表示テキストを抽出するための `Func<TOption, string?>`
+- `OptionValue` — 値文字列を抽出するための `Func<TOption, string?>`
+- `SelectedOption` / `SelectedOptionChanged` — 単一選択バインディング用
+- `SelectedOptions` / `SelectedOptionsChanged` — 複数選択バインディング用
 
 ```razor
 <FluentSelect Items="@countries"
@@ -91,7 +84,7 @@ Custom image: `Icon.FromImageUrl("/path/to/image.png")`
               Label="Country" />
 ```
 
-**NOT** like this (wrong pattern):
+**このようにはしません（間違ったパターン）:**
 ```razor
 @* WRONG — do not use InputSelect pattern *@
 <FluentSelect @bind-Value="@selectedValue">
@@ -99,11 +92,11 @@ Custom image: `Icon.FromImageUrl("/path/to/image.png")`
 </FluentSelect>
 ```
 
-### 6. FluentAutocomplete specifics
+### 6. FluentAutocomplete の仕様
 
-- Use `ValueText` (NOT `Value` — it's obsolete) for the search input text
-- `OnOptionsSearch` is the required callback to filter options
-- Default is `Multiple="true"`
+- 検索入力テキストには `ValueText` を使用します（`Value` は使わないでください — 非推奨です）
+- `OnOptionsSearch` はオプションを絞り込むための必須コールバックです
+- 既定値は `Multiple="true"` です
 
 ```razor
 <FluentAutocomplete TOption="Person"
@@ -121,11 +114,11 @@ Custom image: `Icon.FromImageUrl("/path/to/image.png")`
 }
 ```
 
-### 7. Dialog service pattern
+### 7. ダイアログ サービス パターン
 
-**Do NOT toggle visibility of `<FluentDialog>` tags.** The service pattern is:
+**`<FluentDialog>` タグの表示状態を切り替えてはいけません。** サービス パターンは次のとおりです:
 
-1. Create a content component implementing `IDialogContentComponent<TData>`:
+1. `IDialogContentComponent<TData>` を実装するコンテンツ コンポーネントを作成します:
 
 ```csharp
 public partial class EditPersonDialog : IDialogContentComponent<Person>
@@ -146,7 +139,7 @@ public partial class EditPersonDialog : IDialogContentComponent<Person>
 }
 ```
 
-2. Show the dialog via `IDialogService`:
+2. `IDialogService` を使ってダイアログを表示します:
 
 ```csharp
 [Inject] private IDialogService DialogService { get; set; } = default!;
@@ -172,14 +165,14 @@ private async Task ShowEditDialog()
 }
 ```
 
-For convenience dialogs:
+簡易ダイアログの場合:
 ```csharp
 await DialogService.ShowConfirmationAsync("Are you sure?", "Yes", "No");
 await DialogService.ShowSuccessAsync("Done!");
 await DialogService.ShowErrorAsync("Something went wrong.");
 ```
 
-### 8. Toast notifications
+### 8. トースト通知
 
 ```csharp
 [Inject] private IToastService ToastService { get; set; } = default!;
@@ -190,11 +183,11 @@ ToastService.ShowWarning("Check your input");
 ToastService.ShowInfo("New update available");
 ```
 
-`FluentToastProvider` parameters: `Position` (default `TopRight`), `Timeout` (default 7000ms), `MaxToastCount` (default 4).
+`FluentToastProvider` パラメーター: `Position`（既定値: `TopRight`）、`Timeout`（既定値 7000ms）、`MaxToastCount`（既定値 4）
 
-### 9. Design tokens and themes work only after render
+### 9. デザイン トークンとテーマはレンダリング後にのみ機能します
 
-Design tokens rely on JS interop. **Never set them in `OnInitialized`** — use `OnAfterRenderAsync`.
+デザイン トークンは JS 相互運用に依存します。**`OnInitialized` では設定しないでください** — `OnAfterRenderAsync` を使用してください。
 
 ```razor
 <FluentDesignTheme Mode="DesignThemeModes.System"
@@ -202,9 +195,9 @@ Design tokens rely on JS interop. **Never set them in `OnInitialized`** — use 
                    StorageName="mytheme" />
 ```
 
-### 10. FluentEditForm vs EditForm
+### 10. FluentEditForm と EditForm
 
-`FluentEditForm` is only needed inside `FluentWizard` steps (per-step validation). For regular forms, use standard `EditForm` with Fluent form components:
+`FluentEditForm` は `FluentWizard` ステップ内でのみ必要です（ステップごとの検証）。通常のフォームでは、Fluent フォーム コンポーネントとともに標準の `EditForm` を使用します:
 
 ```razor
 <EditForm Model="@model" OnValidSubmit="HandleSubmit">
@@ -219,13 +212,13 @@ Design tokens rely on JS interop. **Never set them in `OnInitialized`** — use 
 </EditForm>
 ```
 
-Use `FluentValidationMessage` and `FluentValidationSummary` instead of standard Blazor validation components for Fluent styling.
+Fluent のスタイルを使用するには、標準の Blazor 検証コンポーネントではなく `FluentValidationMessage` と `FluentValidationSummary` を使用します。
 
-## Reference files
+## 参照ファイル
 
-For detailed guidance on specific topics, see:
+特定のトピックに関する詳しいガイダンスについては、次を参照してください:
 
-- [Setup and configuration](references/SETUP.md)
-- [Layout and navigation](references/LAYOUT-AND-NAVIGATION.md)
-- [Data grid](references/DATAGRID.md)
-- [Theming](references/THEMING.md)
+- [セットアップと構成](references/SETUP.md)
+- [レイアウトとナビゲーション](references/LAYOUT-AND-NAVIGATION.md)
+- [データ グリッド](references/DATAGRID.md)
+- [テーマ設定](references/THEMING.md)

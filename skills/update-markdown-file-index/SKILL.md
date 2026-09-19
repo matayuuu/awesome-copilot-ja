@@ -1,30 +1,29 @@
 ---
 name: update-markdown-file-index
-description: 'Update a markdown file section with an index/table of files from a specified folder.'
+description: '指定フォルダー内のファイル一覧をインデックスまたは表としてMarkdownファイルのセクションに反映します。'
 ---
+# Markdownファイルインデックスの更新
 
-# Update Markdown File Index
+`${input:folder}` フォルダー内のファイル一覧をインデックスまたは表としてMarkdownファイル `${file}` に反映します。
 
-Update markdown file `${file}` with an index/table of files from folder `${input:folder}`.
+## プロセス
 
-## Process
+1. **スキャン**: 対象Markdownファイル `${file}` を読み、既存の構造を理解する
+2. **検出**: 指定フォルダー `${input:folder}` でパターン `${input:pattern}` に一致するすべてのファイルを一覧化する
+3. **分析**: 更新対象の既存の表/インデックスセクションを特定するか、新しい構造を作る
+4. **構成**: ファイル種別と既存内容に基づき、適切な表またはリスト形式を生成する
+5. **更新**: 既存セクションを置き換えるか、ファイルインデックスを含む新しいセクションを追加する
+6. **検証**: Markdown構文が有効で、書式が一貫していることを確認する
 
-1. **Scan**: Read the target markdown file `${file}` to understand existing structure
-2. **Discover**: List all files in the specified folder `${input:folder}` matching pattern `${input:pattern}`
-3. **Analyze**: Identify if an existing table/index section exists to update, or create new structure
-4. **Structure**: Generate appropriate table/list format based on file types and existing content
-5. **Update**: Replace existing section or add new section with file index
-6. **Validate**: Ensure markdown syntax is valid and formatting is consistent
+## ファイル分析
 
-## File Analysis
+検出した各ファイルから次の情報を抽出します。
 
-For each discovered file, extract:
-
-- **Name**: Filename with or without extension based on context
-- **Type**: File extension and category (e.g., `.md`, `.js`, `.py`)
-- **Description**: First line comment, header, or inferred purpose
-- **Size**: File size for reference (optional)
-- **Modified**: Last modified date (optional)
+- **Name**: 状況に応じた拡張子付きまたは拡張子なしのファイル名
+- **Type**: ファイル拡張子とカテゴリ（例: `.md`、`.js`、`.py`）
+- **Description**: 1行目のコメント、ヘッダー、または推定した用途
+- **Size**: 参照用のファイルサイズ（任意）
+- **Modified**: 最終更新日時（任意）
 
 ## Table Structure Options
 
@@ -52,27 +51,27 @@ Choose format based on file types and existing content:
 
 Group files by type/category with separate sections or sub-tables.
 
-## Update Strategy
+## 更新戦略
 
-- 🔄 **Update existing**: If table/index section exists, replace content while preserving structure
-- ➕ **Add new**: If no existing section, create new section using best-fit format
-- 📋 **Preserve**: Maintain existing markdown formatting, heading levels, and document flow
-- 🔗 **Links**: Use relative paths for file links within the repository
+- 🔄 **既存を更新**: 表/インデックスセクションがあれば、構造を保ったまま内容を置き換える
+- ➕ **新規追加**: 既存セクションがなければ、最適な形式で新しいセクションを作る
+- 📋 **保持**: 既存のMarkdown書式、見出しレベル、文書の流れを維持する
+- 🔗 **リンク**: リポジトリ内のファイルリンクには相対パスを使う
 
-## Section Identification
+## セクションの識別
 
-Look for existing sections with these patterns:
+次のパターンに該当する既存セクションを探します。
 
-- Headings containing: "index", "files", "contents", "directory", "list"
-- Tables with file-related columns
-- Lists with file links
-- HTML comments marking file index sections
+- "index"、"files"、"contents"、"directory"、"list" を含む見出し
+- ファイル関連の列を持つ表
+- ファイルリンクを含むリスト
+- ファイルインデックスセクションを示すHTMLコメント
 
-## Requirements
+## 要件
 
-- Preserve existing markdown structure and formatting
-- Use relative paths for file links
-- Include file descriptions when available
-- Sort files alphabetically by default
-- Handle special characters in filenames
-- Validate all generated markdown syntax
+- 既存のMarkdown構造と書式を保持する
+- ファイルリンクには相対パスを使う
+- 取得できる場合はファイルの説明を含める
+- 既定ではファイルをアルファベット順に並べる
+- ファイル名の特殊文字を処理する
+- 生成したすべてのMarkdown構文を検証する

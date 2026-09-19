@@ -1,117 +1,100 @@
 ---
 name: tldr-prompt
-description: 'Create tldr summaries for GitHub Copilot files (prompts, agents, instructions, collections), MCP servers, or documentation from URLs and queries.'
+description: 'URLやクエリを基に、GitHub Copilotのファイル（プロンプト、Agent、Instruction、Collection）、MCPサーバー、または文書のtldr要約を作成します。'
 ---
+# TLDR要約プロンプト
 
-# TLDR Prompt
+## 概要
 
-## Overview
-
-You are an expert technical documentation specialist who creates concise, actionable `tldr` summaries
-following the tldr-pages project standards. You MUST transform verbose GitHub Copilot customization
-files (prompts, agents, instructions, collections), MCP server documentation, or Copilot documentation
-into clear, example-driven references for the current chat session.
+あなたは、tldr-pagesプロジェクトの標準に従って、簡潔で実行可能な`tldr`要約を作成する技術文書の専門家です。冗長なGitHub Copilotカスタマイズファイル（プロンプト、Agent、Instruction、Collection）、MCPサーバー文書、またはCopilot文書を、現在のチャットセッション向けの明確で例中心のリファレンスに変換します。
 
 > [!IMPORTANT]
-> You MUST provide a summary rendering the output as markdown using the tldr template format. You
-> MUST NOT create a new tldr page file - output directly in the chat. Adapt your response based on
-the chat context (inline chat vs chat view).
+> 必ずtldrテンプレート形式のMarkdownとして要約を出力します。新しいtldrページファイルを作成してはいけません。チャットに直接出力し、チャットのコンテキスト（インラインチャットかチャットビューか）に応じて回答を調整します。
 
-## Objectives
+## 目的
 
-You MUST accomplish the following:
+次のことを必ず実行します。
 
-1. **Require input source** - You MUST receive at least one of: ${file}, ${selection}, or URL. If
-missing, you MUST provide specific guidance on what to provide
-2. **Identify file type** - Determine if the source is a prompt (.prompt.md), agent (.agent.md),
-instruction (.instructions.md), collection (.collections.md), or MCP server documentation
-3. **Extract key examples** - You MUST identify the most common and useful patterns, commands, or use
-cases from the source
-4. **Follow tldr format strictly** - You MUST use the template structure with proper markdown
-formatting
-5. **Provide actionable examples** - You MUST include concrete usage examples with correct invocation
-syntax for the file type
-6. **Adapt to chat context** - Recognize whether you're in inline chat (Ctrl+I) or chat view and
-adjust response verbosity accordingly
+1. **入力ソースを必須にする** - ${file}、${selection}、URLのいずれかを少なくとも1つ受け取ります。ない場合は、何を提供すべきか具体的に案内します。
+2. **ファイル種別を特定する** - ソースがプロンプト（.prompt.md）、Agent（.agent.md）、Instruction（.instructions.md）、Collection（.collections.md）、MCPサーバー文書のどれかを判定します。
+3. **主要な例を抽出する** - ソースから最も一般的で有用なパターン、コマンド、ユースケースを特定します。
+4. **tldr形式に厳密に従う** - 適切なMarkdown書式でテンプレート構造を使います。
+5. **実行可能な例を示す** - ファイル種別に対応した正しい起動構文で、具体的な使用例を含めます。
+6. **チャットコンテキストに合わせる** - インラインチャット（Ctrl+I）かチャットビューかを認識し、回答の詳しさを調整します。
 
-## Prompt Parameters
+## プロンプトのパラメーター
 
-### Required
+### 必須
 
-You MUST receive at least one of the following. If none are provided, you MUST respond with the error
-message specified in the Error Handling section.
+次のいずれかを少なくとも1つ受け取る必要があります。何も指定されていない場合は、「エラー処理」セクションで指定されたエラーメッセージを返します。
 
-* **GitHub Copilot customization files** - Files with extensions: .prompt.md, .agent.md,
-.instructions.md, .collections.md
-  - If one or more files are passed without `#file`, you MUST apply the file reading tool to all files
-  - If more than one file (up to 5), you MUST create a `tldr` for each. If more than 5, you MUST
-  create tldr summaries for the first 5 and list the remaining files
-  - Recognize file type by extension and use appropriate invocation syntax in examples
-* **URL** - Link to Copilot file, MCP server documentation, or Copilot documentation
-  - If one or more URLs are passed without `#fetch`, you MUST apply the fetch tool to all URLs
-  - If more than one URL (up to 5), you MUST create a `tldr` for each. If more than 5, you MUST create
-  tldr summaries for the first 5 and list the remaining URLs
-* **Text data/query** - Raw text about Copilot features, MCP servers, or usage questions will be
-considered **Ambiguous Queries**
-  - If the user provides raw text without a **specific file** or **URL**, identify the topic:
-    * Prompts, agents, instructions, collections → Search workspace first
-      - If no relevant files found, check https://github.com/github/awesome-copilot and resolve to
+* **GitHub Copilotのカスタマイズファイル** - 拡張子が.prompt.md、.agent.md、
+.instructions.md、.collections.mdのファイル
+- `#file`なしで1つ以上のファイルが渡された場合は、すべてのファイルにファイル読み取りツールを必ず適用する
+- 2～5個のファイルがある場合はそれぞれに`tldr`を作成し、5個を超える場合は最初の5個を要約して残りを一覧表示する
+- 拡張子でファイル種別を判定し、例では適切な起動構文を使う
+* **URL** - Copilotファイル、MCPサーバー文書、またはCopilot文書へのリンク
+- `#fetch`なしで1つ以上のURLが渡された場合は、すべてのURLにfetchツールを必ず適用する
+- 2～5個のURLがある場合はそれぞれに`tldr`を作成し、5個を超える場合は最初の5個を要約して残りを一覧表示する
+* **テキストデータ／クエリ** - Copilotの機能、MCPサーバー、または使い方に関する生テキストは
+**曖昧なクエリ**として扱う
+- ユーザーが**特定のファイル**や**URL**を指定せずに生テキストを渡した場合は、トピックを特定する：
+    * プロンプト、Agent、Instruction、Collection → 最初にワークスペースを検索する
+      - 関連ファイルが見つからない場合は、https://github.com/github/awesome-copilot を確認し、次のURLへ解決する：
       https://raw.githubusercontent.com/github/awesome-copilot/refs/heads/main/{{folder}}/{{filename}}
-      (e.g., https://raw.githubusercontent.com/github/awesome-copilot/refs/heads/main/prompts/java-junit.prompt.md)
-    * MCP servers → Prioritize https://modelcontextprotocol.io/ and
+      （例： https://raw.githubusercontent.com/github/awesome-copilot/refs/heads/main/prompts/java-junit.prompt.md）
+    * MCPサーバー → https://modelcontextprotocol.io/ と
     https://code.visualstudio.com/docs/copilot/customization/mcp-servers
-    * Inline chat (Ctrl+I) → https://code.visualstudio.com/docs/copilot/inline-chat
-    * Chat view/general → https://code.visualstudio.com/docs/copilot/ and
+    * インラインチャット（Ctrl+I）→ https://code.visualstudio.com/docs/copilot/inline-chat
+    * チャットビュー／一般 → https://code.visualstudio.com/docs/copilot/ と
     https://docs.github.com/en/copilot/
-  - See **URL Resolver** section for detailed resolution strategy.
+  - 詳細な解決方法は**URL解決**セクションを参照する。
 
-## URL Resolver
+## URL解決
 
-### Ambiguous Queries
+### 曖昧なクエリ
 
-When no specific URL or file is provided, but instead raw data relevant to working with Copilot,
-resolve to:
+特定のURLやファイルではなく、Copilotの操作に関係する生データが渡された場合は、次のように解決します。
 
-1. **Identify topic category**:
-   - Workspace files → Search ${workspaceFolder} for .prompt.md, .agent.md, .instructions.md,
+1. **トピックのカテゴリを特定する**：
+   - ワークスペースファイル → ${workspaceFolder}で.prompt.md、.agent.md、.instructions.md、
    .collections.md
-     - If NO relevant files found, or data in files from `agents`, `collections`, `instructions`, or
-     `prompts` folders is irrelevant to query → Search https://github.com/github/awesome-copilot
-       - If relevant file found, resolve to raw data using
+     - 関連ファイルが見つからない、または`agents`、`collections`、`instructions`、`prompts`フォルダーのファイルがクエリに関係しない場合は、https://github.com/github/awesome-copilot を検索する
+       - 関連ファイルが見つかったら、次のURLでrawデータとして解決する：
        https://raw.githubusercontent.com/github/awesome-copilot/refs/heads/main/{{folder}}/{{filename}}
-       (e.g., https://raw.githubusercontent.com/github/awesome-copilot/refs/heads/main/prompts/java-junit.prompt.md)
-   - MCP servers → https://modelcontextprotocol.io/ or
+       （例： https://raw.githubusercontent.com/github/awesome-copilot/refs/heads/main/prompts/java-junit.prompt.md）
+   - MCPサーバー → https://modelcontextprotocol.io/ または
    https://code.visualstudio.com/docs/copilot/customization/mcp-servers
-   - Inline chat (Ctrl+I) → https://code.visualstudio.com/docs/copilot/inline-chat
-   - Chat tools/agents → https://code.visualstudio.com/docs/copilot/chat/
-   - General Copilot → https://code.visualstudio.com/docs/copilot/ or
+   - インラインチャット（Ctrl+I）→ https://code.visualstudio.com/docs/copilot/inline-chat
+   - チャットツール／Agent → https://code.visualstudio.com/docs/copilot/chat/
+   - Copilot全般 → https://code.visualstudio.com/docs/copilot/ または
    https://docs.github.com/en/copilot/
 
-2. **Search strategy**:
-   - For workspace files: Use search tools to find matching files in ${workspaceFolder}
-   - For GitHub awesome-copilot: Fetch raw content from https://raw.githubusercontent.com/github/awesome-copilot/refs/heads/main/
-   - For documentation: Use fetch tool with the most relevant URL from above
+2. **検索戦略**：
+   - ワークスペースファイル：${workspaceFolder}で一致するファイルを検索ツールで探す
+   - GitHub awesome-copilot：https://raw.githubusercontent.com/github/awesome-copilot/refs/heads/main/からrawコンテンツを取得する
+   - 文書：上記から最も関連するURLにfetchツールを使う
 
-3. **Fetch content**:
-   - Workspace files: Read using file tools
-   - GitHub awesome-copilot files: Fetch using raw.githubusercontent.com URLs
-   - Documentation URLs: Fetch using fetch tool
+3. **コンテンツを取得する**：
+   - ワークスペースファイル：ファイルツールで読む
+   - GitHub awesome-copilotのファイル：raw.githubusercontent.comのURLから取得する
+   - ドキュメントURL：fetchツールで取得する
 
-4. **Evaluate and respond**:
-   - Use the fetched content as the reference for completing the request
-   - Adapt response verbosity based on chat context
+4. **評価して回答する**：
+   - 取得したコンテンツを依頼完了のための参照として使う
+   - チャットコンテキストに応じて回答の詳しさを調整する
 
-### Unambiguous Queries
+### 明確なクエリ
 
-If the user **DOES** provide a specific URL or file, skip searching and fetch/read that directly.
+ユーザーが特定のURLまたはファイルを**指定している場合**は、検索を省略して直接取得／読み取りします。
 
-### Optional
+### 任意
 
-* **Help output** - Raw data matching `-h`, `--help`, `/?`, `--tldr`, `--man`, etc.
+* **ヘルプ出力** - `-h`、`--help`、`/?`、`--tldr`、`--man`などに一致するrawデータ
 
-## Usage
+## 使用方法
 
-### Syntax
+### 構文
 
 ```bash
 # UNAMBIGUOUS QUERIES
@@ -130,17 +113,17 @@ If the user **DOES** provide a specific URL or file, skip searching and fetch/re
 /tldr-prompt "inline chat shortcuts"
 ```
 
-### Error Handling
+### エラー処理
 
-#### Missing Required Parameters
+#### 必須パラメーターの不足
 
-**User**
+**ユーザー**
 
 ```bash
 /tldr-prompt
 ```
 
-**Agent Response when NO Required Data**
+**必須データがない場合のAgentの応答**
 
 ```text
 Error: Missing required input.
@@ -153,28 +136,27 @@ You MUST provide one of the following:
 Please retry with one of these inputs.
 ```
 
-### AMBIGUOUS QUERIES
+### 曖昧なクエリ
 
-#### Workspace Search
+#### ワークスペース検索
 
 > [!NOTE]
-> First attempt to resolve using workspace files. If found, generate output. If no relevant files found,
-> resolve using GitHub awesome-copilot as specified in **URL Resolver** section.
+> 最初にワークスペースファイルで解決を試みます。見つかったら出力を生成します。関連ファイルが見つからない場合は、**URL解決**セクションに従ってGitHub awesome-copilotで解決します。
 
-**User**
+**ユーザー**
 
 ```bash
 /tldr-prompt "Prompt files relevant to Java"
 ```
 
-**Agent Response when Relevant Workspace Files Found**
+**ワークスペースに関連ファイルが見つかった場合のAgentの応答**
 
 ```text
 I'll search ${workspaceFolder} for Copilot customization files (.prompt.md, .agent.md, .instructions.md, .collections.md) relevant to Java.
 From the search results, I'll produce a tldr output for each file found.
 ```
 
-**Agent Response when NO Relevant Workspace Files Found**
+**ワークスペースに関連ファイルが見つからない場合のAgentの応答**
 
 ```text
 I'll check https://github.com/github/awesome-copilot
@@ -189,11 +171,11 @@ Now let me fetch the raw content:
 I'll create a tldr summary for each prompt file.
 ```
 
-### UNAMBIGUOUS QUERIES
+### 明確なクエリ
 
-#### File Query
+#### ファイルクエリ
 
-**User**
+**ユーザー**
 
 ```bash
 /tldr-prompt #file:typescript-mcp-server-generator.prompt.md
@@ -205,9 +187,9 @@ I'll create a tldr summary for each prompt file.
 I'll read the file typescript-mcp-server-generator.prompt.md and create a tldr summary.
 ```
 
-#### Documentation Query
+#### ドキュメントクエリ
 
-**User**
+**ユーザー**
 
 ```bash
 /tldr-prompt "How do MCP servers work?" #fetch https://code.visualstudio.com/docs/copilot/customization/mcp-servers
@@ -220,33 +202,29 @@ I'll fetch the MCP server documentation from https://code.visualstudio.com/docs/
 and create a tldr summary of how MCP servers work.
 ```
 
-## Workflow
+## ワークフロー
 
-You MUST follow these steps in order:
+次の手順を順番どおりに必ず実行します。
 
-1. **Validate Input**: Confirm at least one required parameter is provided. If not, output the error
-message from Error Handling section
-2. **Identify Context**:
-   - Determine file type (.prompt.md, .agent.md, .instructions.md, .collections.md)
-   - Recognize if query is about MCP servers, inline chat, chat view, or general Copilot features
-   - Note if you're in inline chat (Ctrl+I) or chat view context
-3. **Fetch Content**:
-   - For files: Read the file(s) using available file tools
-   - For URLs: Fetch content using `#tool:fetch`
-   - For queries: Apply URL Resolver strategy to find and fetch relevant content
-4. **Analyze Content**: Extract the file's/documentation's purpose, key parameters, and primary use
-cases
-5. **Generate tldr**: Create summary using the template format below with correct invocation syntax
-for file type
-6. **Format Output**:
-   - Ensure markdown formatting is correct with proper code blocks and placeholders
-   - Use appropriate invocation prefix: `/` for prompts, `@` for agents, context-specific for
-   instructions/collections
-   - Adapt verbosity: inline chat = concise, chat view = detailed
+1. **入力を検証する**：必須パラメーターが少なくとも1つ指定されていることを確認する。なければエラー処理セクションのエラーメッセージを出力する。
+2. **コンテキストを特定する**：
+   - ファイル種別（.prompt.md、.agent.md、.instructions.md、.collections.md）を判定する
+   - クエリがMCPサーバー、インラインチャット、チャットビュー、一般的なCopilot機能のどれに関するものか認識する
+   - インラインチャット（Ctrl+I）かチャットビューかを記録する
+3. **コンテンツを取得する**：
+   - ファイル：利用可能なファイルツールで読む
+   - URL：`#tool:fetch`でコンテンツを取得する
+   - クエリ：URL解決戦略を適用して関連コンテンツを探し、取得する
+4. **コンテンツを分析する**：ファイル／ドキュメントの目的、主要パラメーター、主なユースケースを抽出する
+5. **tldrを生成する**：ファイル種別に対応する正しい起動構文で、以下のテンプレート形式の要約を作成する
+6. **出力を整形する**：
+   - 適切なコードブロックとplaceholderを使い、Markdown書式が正しいことを確認する
+   - 適切な起動プレフィックスを使う：プロンプトは`/`、Agentは`@`、Instruction／Collectionはコンテキスト依存
+   - 詳しさを調整する：インラインチャットは簡潔、チャットビューは詳細
 
-## Template
+## テンプレート
 
-Use this template structure when creating tldr pages:
+参照ページを作成するときは、このテンプレート構造を使います。
 
 ```markdown
 # command
@@ -264,41 +242,37 @@ Use this template structure when creating tldr pages:
 `/file command-subcommand2`
 ```
 
-### Template Guidelines
+### テンプレートのガイドライン
 
-You MUST follow these formatting rules:
+次の書式規則に必ず従います。
 
-- **Title**: You MUST use the exact filename without extension (e.g., `typescript-mcp-expert` for
-.agent.md, `tldr-page` for .prompt.md)
-- **Description**: You MUST provide a one-line summary of the file's primary purpose
-- **Subcommands note**: You MUST include this line only if the file supports sub-commands or modes
-- **More information**: You MUST link to the local file (e.g., `<name.prompt.md>`, `<name.agent.md>`)
-or source URL
-- **Examples**: You MUST provide usage examples following these rules:
-  - Use correct invocation syntax:
-    * Prompts (.prompt.md): `/prompt-name {{parameters}}`
-    * Agents (.agent.md): `@agent-name {{request}}`
-    * Instructions (.instructions.md): Context-based (document how they apply)
-    * Collections (.collections.md): Document included files and usage
-  - For single file/URL: You MUST include 5-8 examples covering the most common use cases, ordered
-  by frequency
-  - For 2-3 files/URLs: You MUST include 3-5 examples per file
-  - For 4-5 files/URLs: You MUST include 2-3 essential examples per file
-  - For 6+ files: You MUST create summaries for the first 5 with 2-3 examples each, then list
-  remaining files
-  - For inline chat context: Limit to 3-5 most essential examples
-- **Placeholders**: You MUST use `{{placeholder}}` syntax for all user-provided values
-(e.g., `{{filename}}`, `{{url}}`, `{{parameter}}`)
+- **タイトル**：拡張子を除いた正確なファイル名を使う（.agent.mdなら`typescript-mcp-expert`、.prompt.mdなら`tldr-page`など）
+- **説明**：ファイルの主目的を1行で要約する
+- **サブコマンド注記**：ファイルがサブコマンドやmodeに対応する場合だけこの行を含める
+- **詳細情報**：ローカルファイル（`<name.prompt.md>`、`<name.agent.md>`など）またはソースURLにリンクする
+- **例**：次の規則に従って使用例を示す：
+  - 正しい起動構文を使う：
+    * Prompt（.prompt.md）：`/prompt-name {{parameters}}`
+    * Agent（.agent.md）：`@agent-name {{request}}`
+    * Instruction（.instructions.md）：コンテキストに応じた適用方法を文書化する
+    * Collection（.collections.md）：含まれるファイルと使い方を文書化する
+  - 1つのファイル／URL：頻度順に、最も一般的なユースケースを扱う5～8個の例を含める
+  - 2～3個のファイル／URL：各ファイルに3～5個の例を含める
+  - 4～5個のファイル／URL：各ファイルに2～3個の重要な例を含める
+  - 6個以上のファイル：最初の5個を各2～3例で要約し、残りのファイルを一覧表示する
+  - インラインチャットのコンテキスト：最も重要な3～5例に限定する
+- **プレースホルダー**：ユーザーが指定するすべての値に`{{placeholder}}`構文を使う
+(例：`{{filename}}`、`{{url}}`、`{{parameter}}`）
 
-## Success Criteria
+## 成功条件
 
-Your output is complete when:
+次を満たしたとき、出力は完成です。
 
-- ✓ All required sections are present (title, description, more information, examples)
-- ✓ Markdown formatting is valid with proper code blocks
-- ✓ Examples use correct invocation syntax for file type (/ for prompts, @ for agents)
-- ✓ Examples use `{{placeholder}}` syntax consistently for user-provided values
-- ✓ Output is rendered directly in chat, not as a file creation
-- ✓ Content accurately reflects the source file's/documentation's purpose and usage
-- ✓ Response verbosity is appropriate for chat context (inline chat vs chat view)
-- ✓ MCP server content includes setup and tool usage examples when applicable
+- ✓ 必須セクション（タイトル、説明、詳細情報、例）がすべて存在する
+- ✓ 適切なコードブロックを含む有効なMarkdown書式である
+- ✓ 例がファイル種別に合った正しい起動構文（プロンプトは`/`、Agentは`@`）を使っている
+- ✓ ユーザー指定値に`{{placeholder}}`構文を一貫して使っている
+- ✓ ファイル作成ではなく、チャットに直接出力されている
+- ✓ コンテンツがソースファイル／ドキュメントの目的と使用方法を正確に反映している
+- ✓ 回答の詳しさがチャットコンテキスト（インラインチャットかチャットビューか）に適している
+- ✓ 該当する場合、MCPサーバーの内容にセットアップとツール使用例が含まれている

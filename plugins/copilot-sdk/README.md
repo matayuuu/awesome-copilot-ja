@@ -1,8 +1,8 @@
-# Copilot SDK Plugin
+# Copilot SDK プラグイン
 
-Build applications with the GitHub Copilot SDK across multiple programming languages. Includes comprehensive instructions for C#, Go, Node.js/TypeScript, and Python to help you create AI-powered applications.
+複数のプログラミング言語で GitHub Copilot SDK を使ったアプリケーションを構築します。AI 搭載アプリケーションの作成に役立つ C#、Go、Node.js/TypeScript、Python 向けの包括的な instructions を含みます。
 
-## Installation
+## インストール
 
 ```bash
 # Using Copilot CLI

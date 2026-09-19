@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "rust-mcp-development",
-  "description": "Build high-performance Model Context Protocol servers in Rust using the official rmcp SDK with async/await, procedural macros, and type-safe implementations.",
+  "description": "公式rmcp SDKを使い、async/await、手続き型マクロ、型安全な実装に対応した高性能なModel Context ProtocolサーバーをRustで構築します。",
   "version": "1.0.0",
   "author": {
     "name": "Awesome Copilot Community"

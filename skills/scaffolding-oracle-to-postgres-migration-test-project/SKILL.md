@@ -1,13 +1,12 @@
 ---
 name: scaffolding-oracle-to-postgres-migration-test-project
-description: 'Scaffolds an xUnit integration test project targeting Oracle in .NET solutions. Creates the test project, transaction-rollback base class, and seed data manager. Use only during Phase 3, before writing Oracle baseline integration tests. Do not invoke during Phase 6 — the PostgreSQL test project is produced by migrating this project, not by running this skill again.'
+description: '.NET solution内でOracleをtargetとするxUnit integration test projectをscaffoldします。test project、transaction-rollback base class、seed data managerを作成します。Oracle baseline integration testを書く前のPhase 3だけで使用します。Phase 6では呼び出さないでください — PostgreSQL test projectはこのprojectをmigrationして作成し、このSkillを再実行して作るものではありません。'
 ---
+# Oracle-to-PostgreSQL migration 用 Integration Test Project の scaffold
 
-# Scaffolding an Integration Test Project for Oracle-to-PostgreSQL Migration
+単一のtarget project向けに、transaction managementとseed data infrastructureを備えた、compile可能な空のxUnit test projectを作成します。testを書く前にprojectごとに1回実行します。
 
-Creates a compilable, empty xUnit test project with transaction management and seed data infrastructure for a single target project. Run once per project before writing tests.
-
-## Workflow
+## Workflow（作業手順）
 
 ```
 Progress:
@@ -18,37 +17,37 @@ Progress:
 - [ ] Step 5: Verify the project compiles
 ```
 
-**Step 1: Inspect the target project**
+**Step 1: target projectを調査する**
 
-Read the target project's `.csproj` to determine the .NET version and existing package references. Match these versions exactly — do not upgrade.
+target projectの`.csproj`を読み、.NET versionと既存のpackage referenceを確認します。versionは正確に合わせ、upgradeしません。
 
-**Step 2: Create the xUnit test project**
+**Step 2: xUnit test projectを作成する**
 
-- Target the same .NET version as the application under test.
-- Add NuGet packages for Oracle database connectivity (`Oracle.ManagedDataAccess.Core`) and xUnit.
-- Add a project reference to the target project only — no other application projects.
-- Add an `appsettings.json` configured for Oracle database connectivity.
+- test対象applicationと同じ.NET versionをtargetにする。
+- Oracle database connectivity（`Oracle.ManagedDataAccess.Core`）とxUnitのNuGet packageを追加する。
+- target projectだけへのproject referenceを追加する — 他のapplication projectは追加しない。
+- Oracle database connectivity用に設定した`appsettings.json`を追加する。
 
-**Step 3: Implement transaction-rollback base class**
+**Step 3: transaction-rollback base classを実装する**
 
-- Create a base test class that opens a transaction before each test and rolls it back after.
-- Catch and handle all exceptions to guarantee rollback.
-- Make the pattern inheritable by all downstream test classes.
+- 各testの前にtransactionを開き、後でrollbackするbase test classを作成する。
+- rollbackを保証するため、すべてのexceptionをcatchして処理する。
+- downstreamのすべてのtest classが継承できるpatternにする。
 
-**Step 4: Implement seed data manager**
+**Step 4: seed data managerを実装する**
 
-- Create a global seed manager for loading test data within the transaction scope.
-- Do not commit seed data — transactions roll back after each test.
-- Do not use `TRUNCATE TABLE` — preserve existing database data.
-- Establish a naming convention for seed file location that downstream test creation will follow.
+- transaction scope内でtest dataをloadするglobal seed managerを作成する。
+- seed dataをcommitしない — 各test後にtransactionがrollbackする。
+- `TRUNCATE TABLE`を使わない — 既存のdatabase dataを保持する。
+- downstream test creationが従うseed file locationのnaming conventionを定める。
 
-**Step 5: Verify the project compiles**
+**Step 5: projectのcompileを検証する**
 
-Build the test project and confirm it compiles with zero errors before finishing.
+test projectをbuildし、終了前にerrorなしでcompileできることを確認します。
 
-## Key Constraints
+## 主な制約
 
-- **Phase 3 only** — this skill scaffolds the Oracle-targeting test project. The PostgreSQL test project (Phase 6) is created by copying and migrating this project; do not run this skill again at that point.
-- Oracle is the golden behavior source — scaffold for Oracle only, not PostgreSQL.
-- Keep to existing .NET and C# versions; do not introduce newer language or runtime features.
-- Output is an empty test project with infrastructure only — no test cases.
+- **Phase 3 only** — このSkillはOracle-targeting test projectをscaffoldする。PostgreSQL test project（Phase 6）はこのprojectをcopyしてmigrateして作成するため、その時点でこのSkillを再実行しない。
+- Oracleがgolden behavior source — Oracle用だけをscaffoldし、PostgreSQL用にはしない。
+- 既存の.NETとC# versionを維持し、新しいlanguage featureやruntime featureを導入しない。
+- outputはinfrastructureだけを含む空のtest project — test caseは含めない。

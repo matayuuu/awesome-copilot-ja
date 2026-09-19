@@ -1,283 +1,282 @@
 ---
 name: gdpr-compliant
-description: 'Apply GDPR-compliant engineering practices across your codebase. Use this skill whenever you are designing APIs, writing data models, building authentication flows, implementing logging, handling user data, writing retention/deletion jobs, designing cloud infrastructure, or reviewing pull requests for privacy compliance. Trigger this skill for any task involving personal data, user accounts, cookies, analytics, emails, audit logs, encryption, pseudonymization, anonymization, data exports, breach response, CI/CD pipelines that process real data, or any question framed as "is this GDPR-compliant?". Inspired by CNIL developer guidance and GDPR Articles 5, 25, 32, 33, 35.'
+description: 'コードベース全体で GDPR に準拠したエンジニアリング実践を適用します。API 設計、データモデルの記述、認証フローの構築、ログ実装、ユーザーデータの処理、保持/削除ジョブ、クラウド基盤の設計、プライバシー適合性レビューのためのプルリクエストに関わる作業で使います。個人データ、ユーザーアカウント、Cookie、分析、メール、監査ログ、暗号化、疑似化、匿名化、データエクスポート、breach 対応、実データを扱う CI/CD パイプライン、または「これは GDPR に準拠しているか？」といった質問が発生した場合にこのスキルを起動します。CNIL の開発者向けガイダンスと GDPR の第 5、25、32、33、35 条に基づいています。'
 ---
 
-# GDPR Engineering Skill
+# GDPR エンジニアリングスキル
 
-Actionable GDPR reference for engineers, architects, DevOps, and tech leads.
-Inspired by CNIL developer guidance and GDPR Articles 5, 25, 32, 33, 35.
+エンジニア、アーキテクト、DevOps、技術リード向けの、実務的な GDPR リファレンスです。
+CNIL の開発者向けガイダンスと GDPR の第 5、25、32、33、35 条に触発されています。
 
-> **Golden Rule:** Collect less. Store less. Expose less. Retain less.
+> **黄金律:** 収集する量を減らし、保存する量を減らし、公開する量を減らし、保持期間を短くします。
 
-For deep dives, read the reference files in `references/`:
-- `references/data-rights.md` — user rights endpoints, DSR workflow, RoPA
-- `references/security.md` — encryption, hashing, secrets, anonymization
-- `references/operations.md` — cloud, CI/CD, incident response, architecture patterns
+詳細な調査が必要な場合は、`references/` 配下の参照ファイルを読みます。
+- `references/data-rights.md` — ユーザー権利のエンドポイント、DSR ワークフロー、RoPA
+- `references/security.md` — 暗号化、ハッシュ化、シークレット、匿名化
+- `references/operations.md` — クラウド、CI/CD、インシデント対応、アーキテクチャパターン
 
 ---
 
-## 1. Core GDPR Principles (Article 5)
+## 1. GDPR の基本原則（第 5 条）
 
-| Principle | Engineering obligation |
+| 原則 | エンジニアリング上の義務 |
 |---|---|
-| Lawfulness, fairness, transparency | Document legal basis for every processing activity in the RoPA |
-| Purpose limitation | Data collected for purpose A **MUST NOT** be reused for purpose B without a new legal basis |
-| Data minimization | Collect only fields with a documented business need today |
-| Accuracy | Provide update endpoints; propagate corrections to downstream stores |
-| Storage limitation | Define TTL at schema design time — never after |
-| Integrity & confidentiality | Encrypt at rest and in transit; restrict and audit access |
-| Accountability | Maintain evidence of compliance; RoPA ready for DPA inspection at any time |
+| 合法性、公平性、透明性 | すべての処理活動に対して RoPA に法的根拠を記録する |
+| 目的制限 | 目的 A のために収集したデータを、新しい法的根拠がない限り目的 B に再利用してはならない |
+| 最小限データ収集 | 現在の事業上の必要性が文書化されたフィールドだけを収集する |
+| 正確性 | 更新エンドポイントを用意し、ダウンストリームの保存先に修正を伝播する |
+| 保管期間の制限 | スキーマ設計時に TTL を定義し、後から決めてはならない |
+| 完全性と機密性 | 保存時と転送時に暗号化し、アクセス制限と監査を行う |
+| 責任 | コンプライアンスの証跡を保持し、DPA 調査に備えて RoPA を常に準備しておく |
 
 ---
 
-## 2. Privacy by Design & by Default
+## 2. プライバシー by Design / by Default
 
-**MUST**
-- Add `CreatedAt`, `RetentionExpiresAt` to every table holding personal data at creation time.
-- Default all optional data collection to **off**. Users opt in; they never opt out of a default-on setting.
-- Conduct a **DPIA** before building high-risk processing (biometrics, health data, large-scale profiling, systematic monitoring).
-- Update the **RoPA** with every new feature that introduces a processing activity.
-- Sign a **DPA** with every sub-processor before data flows to them.
+**必須**
+- 個人データを保持するすべてのテーブルに `CreatedAt` と `RetentionExpiresAt` を作成時に追加する。
+- すべての任意のデータ収集を既定で **オフ** にする。ユーザーが opt in し、デフォルトオンの設定からは opt out できない。
+- バイオメトリクス、健康データ、大規模なプロファイリング、体系的な監視など、高リスクな処理を行う前に **DPIA** を実施する。
+- 新機能で処理活動が増えるたびに **RoPA** を更新する。
+- データがサブプロセッサーに流れる前に、すべてのサブプロセッサーと **DPA** を締結する。
 
-**MUST NOT**
-- Ship a new data collection feature without a documented legal basis.
-- Enable analytics, tracking, or telemetry by default without explicit consent.
-- Store personal data in a system not listed in the RoPA.
-
----
-
-## 3. Data Minimization
-
-**MUST**
-- Map every DTO/model field to a concrete business need. Remove undocumented fields.
-- Use **separate DTOs** for create, read, and update — never reuse the same object.
-- Return only what the caller is authorized to see — use response projections.
-- Mask sensitive values at the edge: return `****1234` for card numbers, never the full value.
-- Exclude sensitive fields (DOB, national ID, health) from default list/search projections.
-
-**MUST NOT**
-- Log full request/response bodies if they may contain personal data.
-- Include personal data in URL path segments or query parameters (CDN logs, browser history).
-- Collect `dateOfBirth`, national ID, or health data without an explicit legal basis.
+**禁止**
+- 文書化された法的根拠のない新しいデータ収集機能をリリースしない。
+- 明示的な同意なしに分析、追跡、テレメトリをデフォルトで有効化しない。
+- RoPA に記載されていないシステムに個人データを保存しない。
 
 ---
 
-## 4. Purpose Limitation
+## 3. 最小限データ収集
 
-**MUST**
-- Document the purpose of every processing activity in code comments and in the RoPA.
-- Obtain a new legal basis or perform a compatibility analysis before reusing data for a secondary purpose.
+**必須**
+- すべての DTO / モデルのフィールドを具体的な事業上の必要性にマッピングし、文書化されていないフィールドを削除する。
+- 作成用、読み取り用、更新用で **別々の DTO** を使う。同じオブジェクトを再利用しない。
+- 呼び出し元に許可された範囲だけを返す。レスポンスの投影を使う。
+- エッジで機密値をマスクする: カード番号は `****1234` のように返し、元の値を返さない。
+- 機密フィールド（DOB、国民ID、健康情報）は既定の一覧/検索プロジェクションから除外する。
 
-**MUST NOT**
-- Share personal data collected for service delivery with advertising networks without explicit consent.
-- Use support ticket content to train ML models without a separate legal basis and user notice.
+**禁止**
+- 個人データを含みうる完全なリクエスト/レスポンス本文をログに残さない。
+- URL のパスやクエリに個人データを含めない（CDN ログ、ブラウザ履歴）。
+- 明示的な法的根拠がない場合に `dateOfBirth`、国民ID、健康データを収集しない。
 
 ---
 
-## 5. Storage Limitation & Retention
+## 4. 目的制限
 
-**MUST**
-- Every table holding personal data **MUST** have a defined retention period.
-- Enforce retention automatically via a scheduled job (Hangfire, cron) — never a manual process.
-- Anonymize or delete data when retention expires — never leave expired data silently in production.
+**必須**
+- コードコメントと RoPA に、各処理活動の目的を文書化する。
+- 二次目的でデータを再利用する前に、新しい法的根拠を取得するか、互換性分析を実施する。
 
-**Recommended defaults**
+**禁止**
+- サービス提供のために収集した個人データを、明示的な同意なしに広告ネットワークと共有しない。
+- サポートチケットの内容を、別の法的根拠やユーザー通知なしに ML の学習に使わない。
 
-| Data type | Max retention |
+---
+
+## 5. 保管期間の制限と保持
+
+**必須**
+- 個人データを保持するテーブルには、必ず定義された保持期間がある。
+- 保持期間の強制は定期ジョブ（Hangfire、cron）で実施する。手動プロセスにはしない。
+- 保持期間が満了したら匿名化または削除する。期限切れデータを本番で黙って残してはならない。
+
+**推奨デフォルト**
+
+| データ種別 | 最大保持期間 |
 |---|---|
-| Auth / audit logs | 12–24 months |
-| Session / refresh tokens | 30–90 days |
-| Email / notification logs | 6 months |
-| Inactive user accounts | 12 months after last login → notify → delete |
-| Payment records | As required by tax law (7–10 years), minimized |
-| Analytics events | 13 months |
+| 認証 / 監査ログ | 12–24 か月 |
+| セッション / リフレッシュトークン | 30–90 日 |
+| メール / 通知ログ | 6 か月 |
+| 非アクティブユーザーアカウント | 最終ログインから 12 か月後 → 通知 → 削除 |
+| 決済記録 | 税法要件に応じて（7–10 年）、最小化 |
+| 分析イベント | 13 か月 |
 
-**SHOULD**
-- Add `RetentionExpiresAt` column — compute at insert time.
-- Use soft-delete (`DeletedAt`) with a scheduled hard-delete after the erasure request window (30 days).
+**推奨**
+- `RetentionExpiresAt` 列を追加する — 挿入時に計算する。
+- ソフトデリート（`DeletedAt`）を使い、削除要求の猶予期間（30 日）の後に定期的にハードデリートする。
 
-**MUST NOT**
-- Retain personal data indefinitely "in case it becomes useful later."
+**禁止**
+- 「将来役に立つかもしれないから」といって、個人データを無期限に保持しない。
 
 ---
 
-## 6. API Design Rules
+## 6. API 設計ルール
 
-**MUST**
-- MUST NOT include personal data in URL paths or query parameters.
+**必須**
+- 個人データを URL のパスやクエリに含めない。
   - `GET /users/{userId}`
-- Authenticate all endpoints that return or accept personal data.
-- Extract the acting user's identity from the JWT — never from the request body.
-- Validate ownership on every resource: `if (resource.OwnerId != currentUserId) return 403`.
-- Use UUIDs or opaque identifiers — never sequential integers as public resource IDs.
+- 個人データを返す/受け取るすべてのエンドポイントを認証する。
+- JWT から実行ユーザーの識別を取得し、リクエスト本文から取得してはならない。
+- すべてのリソースに対して所有権を検証する: `if (resource.OwnerId != currentUserId) return 403`。
+- 公開用リソース ID には連番ではなく UUID または不透明な識別子を使う。
 
-**SHOULD**
-- Rate-limit sensitive endpoints (login, data export, password reset).
-- Set `Referrer-Policy: no-referrer` and an explicit `CORS` allowlist.
+**推奨**
+- ログイン、データエクスポート、パスワード再設定などの機密エンドポイントにレート制限を設ける。
+- `Referrer-Policy: no-referrer` と明示的な `CORS` 許可リストを設定する。
 
-**MUST NOT**
-- Return stack traces, internal paths, or database errors in API responses.
-- Use `Access-Control-Allow-Origin: *` on authenticated APIs.
+**禁止**
+- スタックトレース、内部パス、データベースエラーを API レスポンスに返さない。
+- 認証済み API に `Access-Control-Allow-Origin: *` を使わない。
 
 ---
 
-## 7. Logging Rules
+## 7. ログ記録ルール
 
-**MUST**
-- Anonymize IPs in application logs — mask last octet (IPv4) or last 80 bits (IPv6).
+**必須**
+- アプリケーションログの IP を匿名化する — 最後のオクテットをマスク（IPv4）または最後の 80 ビットをマスク（IPv6）。
   - `192.168.1.xxx`
-- MUST NOT log: passwords, tokens, session IDs, credentials, card numbers, national IDs, health data.
-- MUST NOT log full request/response bodies where PII may be present.
-- Enforce log retention — purge automatically after the defined period.
+- パスワード、トークン、セッション ID、認証情報、カード番号、国民ID、健康データをログに残してはならない。
+- PII が含まれる可能性がある場合、完全なリクエスト/レスポンス本文はログに残さない。
+- ログ保持期間を強制し、定義した期間後に自動で削除する。
 
-**SHOULD**
-- Log **events** not data: `"User {UserId} updated email"` not `"Email changed from a@b.com to c@d.com"`.
-- Use structured logging (JSON) with `userId` as an internal identifier, not the email address.
-- Separate audit logs (sensitive access, admin actions) from application logs — different retention and ACLs.
+**推奨**
+- データそのものではなく「イベント」をログに残す: `"User {UserId} updated email"` のようにして、`"Email changed from a@b.com to c@d.com"` のように個人情報を残さない。
+- 構造化ログ（JSON）で `userId` をメールアドレスではなく内部識別子として使う。
+- 監査ログ（機密なアクセス、管理者操作）をアプリケーションログと分離する — 保持期間と ACL が異なる。
 
 ---
 
-## 8. Error Handling
+## 8. エラー処理
 
-**MUST**
-- Return generic error messages — never expose stack traces, internal paths, or DB errors.
+**必須**
+- 一般的なエラーメッセージだけを返し、スタックトレース、内部パス、DB エラーを漏らさない。
   - `"Column 'email' violates unique constraint on table 'users'"`
   - `"A user with this email address already exists."`
-- Use **Problem Details (RFC 7807)** for all error responses.
-- Log the full error server-side with a correlation ID; return only the correlation ID to the client.
+- すべてのエラーレスポンスで **Problem Details (RFC 7807)** を使う。
+- サーバー側では完全なエラーをログに残し、相関 ID を付け、クライアントには相関 ID だけを返す。
 
-**MUST NOT**
-- Include file paths, class names, or line numbers in error responses.
-- Include personal data in error messages (e.g., "User john@example.com not found").
+**禁止**
+- エラーレスポンスにファイルパス、クラス名、行番号を含めない。
+- `User john@example.com not found` のように個人データをエラーメッセージに含めない。
 
 ---
 
-## 9. Encryption (summary — see `references/security.md` for full detail)
+## 9. 暗号化（要約 — 詳細は `references/security.md` を参照）
 
-| Scope | Minimum standard |
+| 範囲 | 最低基準 |
 |---|---|
-| Standard personal data | AES-256 disk/volume encryption |
-| Sensitive data (health, financial, biometric) | AES-256 **column-level** + envelope encryption via KMS |
-| In transit | TLS 1.2+ (prefer 1.3); HSTS enforced |
-| Keys | HSM-backed KMS; rotate DEKs annually |
+| 通常の個人データ | AES-256 によるディスク/ボリューム暗号化 |
+| 機密データ（健康、金融、生体情報） | AES-256 による **カラム単位** 暗号化 + KMS を使った envelope encryption |
+| 通信時 | TLS 1.2+（1.3 を優先）；HSTS を適用 |
+| 鍵 | HSM ベースの KMS; DEK は年次でローテーション |
 
-**MUST NOT** allow TLS 1.0/1.1, null cipher suites, or hardcoded encryption keys.
-
----
-
-## 10. Password Hashing
-
-**MUST**
-- Use **Argon2id** (recommended) or **bcrypt** (cost ≥ 12). Never MD5, SHA-1, or SHA-256.
-- Use a unique salt per password. Store only the hash.
-
-**MUST NOT**
-- Log passwords in any form. Transmit passwords in URLs. Store reset tokens in plaintext.
+**禁止** TLS 1.0/1.1、null cipher suite、ハードコードされた暗号化キーを許可すること。
 
 ---
 
-## 11. Secrets Management
+## 10. パスワードハッシュ化
 
-**MUST**
-- Store all secrets in a KMS: Azure Key Vault, AWS Secrets Manager, GCP Secret Manager, or HashiCorp Vault.
-- Use pre-commit hooks (`gitleaks`, `detect-secrets`) to prevent secret commits.
-- Rotate secrets on developer offboarding, annual schedule, or suspected compromise.
+**必須**
+- **Argon2id**（推奨）または **bcrypt**（cost ≥ 12）を使う。MD5、SHA-1、SHA-256 は使わない。
+- 各パスワードごとに一意の salt を使い、ハッシュだけを保存する。
 
-**`.gitignore` MUST include:** `.env`, `.env.*`, `*.pem`, `*.key`, `*.pfx`, `*.p12`, `secrets/`
-
-**MUST NOT**
-- Commit secrets to source code. Store secrets as plain-text environment variable defaults.
+**禁止**
+- どの形式でもパスワードをログに残さない。URL にパスワードを送信しない。リセットトークンを平文で保存しない。
 
 ---
 
-## 12. Anonymization & Pseudonymization (summary — see `references/security.md`)
+## 11. シークレット管理
 
-- **Anonymization** = irreversible → falls outside GDPR scope. Use for retained records after erasure.
-- **Pseudonymization** = reversible with a key → still personal data, reduced risk.
-- When erasing a user, anonymize records that must be retained (financial, audit) rather than deleting them.
-- Store the pseudonymization key in the KMS — never in the same database as the pseudonymized data.
+**必須**
+- すべてのシークレットを KMS に保管する: Azure Key Vault、AWS Secrets Manager、GCP Secret Manager、HashiCorp Vault。
+- コミット時に秘密情報を防ぐために pre-commit hook（`gitleaks`、`detect-secrets`）を使う。
+- 開発者の離職時、年次更新時、または侵害の疑いがあるときにシークレットをローテーションする。
 
-**MUST NOT** call data "anonymized" if re-identification is possible through linkage attacks.
+**`.gitignore` には次を含める必要があります:** `.env`, `.env.*`, `*.pem`, `*.key`, `*.pfx`, `*.p12`, `secrets/`
 
----
-
-## 13. Testing with Fake Data
-
-**MUST**
-- MUST NOT use production personal data in dev, staging, or CI environments.
-- MUST NOT restore production DB backups to non-production without scrubbing PII first.
-- Use synthetic data generators: `Bogus` (.NET), `Faker` (JS/Python/Ruby).
-- Use `@example.com` for all test email addresses.
+**禁止**
+- シークレットをソースコードにコミットしない。平文の環境変数のデフォルト値として保管しない。
 
 ---
 
-## 14. Anti-Patterns
+## 12. 匿名化と疑似化（要約 — 詳細は `references/security.md` を参照）
 
-| Anti-pattern | Correct approach |
+- **匿名化** = 不可逆 → GDPR の対象外。削除後に保持が必要なレコードに使う。
+- **疑似化** = 鍵があれば可逆 → まだ個人データであり、リスクは低減される。
+- ユーザーを削除するとき、金融データや監査データのように保持が必要なレコードは削除ではなく匿名化する。
+- 疑似化キーは KMS に保存する。疑似化したデータと同じデータベースに置いてはならない。
+
+**禁止** 連結攻撃で再識別可能な場合に、データを「匿名化済み」と呼ばない。
+
+---
+
+## 13. 偽データを使ったテスト
+
+**必須**
+- 本番の個人データを開発、ステージング、CI 環境で使ってはならない。
+- 本番データベースのバックアップを PII を事前に消去せずに非本番環境へ復元してはならない。
+- 合成データ生成器を使う: `.NET` の `Bogus`、`JS/Python/Ruby` の `Faker`。
+- テスト用メールアドレスには `@example.com` を使う。
+
+---
+
+## 14. アンチパターン
+
+| アンチパターン | 正しいアプローチ |
 |---|---|
-| PII in URLs | Opaque UUIDs as public identifiers |
-| Logging full request bodies | Log structured event metadata only |
-| "Keep forever" schema | TTL defined at design time |
-| Production data in dev/test | Synthetic data + scrubbing pipeline |
-| Shared credentials across teams | Individual accounts + RBAC |
-| Hardcoded secrets | KMS + secret manager |
-| `Access-Control-Allow-Origin: *` on auth APIs | Explicit CORS allowlist |
-| Storing consent with profile data | Dedicated consent store |
-| PII in GET query params | POST body or authenticated session |
-| Sequential integer IDs in public URLs | UUIDs |
-| "Anonymized" data with quasi-identifiers | Apply k-anonymity, test linkage resistance |
-| Mixing backup regions outside EEA | Explicit region lockdown on backup jobs |
+| URL に PII を含める | 公開識別子として不透明な UUID を使う |
+| リクエスト本文全体をログに残す | 構造化されたイベントメタデータだけを記録する |
+| 「永遠に保持する」スキーマ | デザイン時に TTL を定義する |
+| 本番データを dev/test に置く | 合成データ + スクラブ処理パイプライン |
+| チーム横断で共有される認証情報 | 個別アカウント + RBAC |
+| ハードコードされたシークレット | KMS + シークレットマネージャー |
+| 認証 API に `Access-Control-Allow-Origin: *` を使う | 明示的な CORS 許可リスト |
+| 同意情報をプロファイルデータと混在させる | 専用の同意ストアを使う |
+| GET クエリに PII を含める | POST 本文または認証済みセッション |
+| 公開 URL に連番の ID を使う | UUID を使う |
+| 準識別子が残るデータを「匿名化済み」と呼ぶ | k-匿名性を適用し、連結攻撃耐性をテストする |
+| EEA 外のバックアップリージョンを混在させる | バックアップジョブに明示的なリージョン制限をかける |
 
 ---
 
-## 15. PR Review Checklist
+## 15. PR レビューのチェックリスト
 
-### Data model
-- Every new PII column has a documented purpose and retention period.
-- Sensitive fields (health, financial, national ID) use column-level encryption.
-- No sequential integer PKs as public-facing identifiers.
+### データモデル
+- 新しい PII カラムには文書化された目的と保持期間があるか。
+- 機密フィールド（健康、金融、国民ID）はカラムレベルの暗号化を使っているか。
+- 公開向けの識別子として連番の整数 PK を使っていないか。
 
 ### API
-- No PII in URL paths or query parameters.
-- All endpoints returning personal data are authenticated.
-- Ownership checks present — user cannot access another user's resource.
-- Rate limiting applied to sensitive endpoints.
+- URL のパスやクエリに PII が含まれていないか。
+- 個人データを返すすべてのエンドポイントが認証されているか。
+- 所有権チェックがあり、ユーザーが他人のリソースにアクセスできないか。
+- 機密エンドポイントにレート制限がかけられているか。
 
-### Logging
-- No passwords, tokens, or credentials logged.
-- IPs anonymized (last octet masked).
-- No full request/response bodies logged where PII may be present.
+### ログ
+- パスワード、トークン、認証情報がログに残っていないか。
+- IP が匿名化されているか（最後のオクテットをマスク）。
+- PII が含まれる可能性のある場合、リクエスト/レスポンス本文全体をログに残していないか。
 
-### Infrastructure
-- No public storage buckets or public-IP databases.
-- New cloud resources tagged with `DataClassification`.
-- Encryption at rest enabled for new storage resources.
-- New geographic regions for data storage are EEA-compliant or covered by SCCs.
+### インフラ
+- 公開ストレージバケットや公開 IP のデータベースがないか。
+- 新しいクラウドリソースに `DataClassification` タグが付いているか。
+- 新しい保存リソースで保存時暗号化が有効か。
+- データ保存先の新しいリージョンが EEA 準拠または SCC の対象になっているか。
 
-### Secrets & CI/CD
-- No secrets in source code or committed config files.
-- New secrets added to KMS and secrets inventory document.
-- CI/CD secrets masked in pipeline logs.
+### シークレットと CI/CD
+- ソースコードやコミット済み設定ファイルにシークレットがないか。
+- 新しいシークレットが KMS とシークレット一覧の文書に追加されているか。
+- CI/CD のシークレットがパイプラインログでマスクされているか。
 
-### Retention & erasure
-- Retention enforcement job or policy covers new data store or field.
-- Erasure pipeline updated to cover new data store.
+### 保持期間と消去
+- 保持期間の強制ジョブまたはポリシーが新しいデータストアまたはフィールドをカバーしているか。
+- 消去パイプラインが新しいデータストアを対象に更新されているか。
 
-### User rights & governance
-- Data export endpoint includes any new personal data field.
-- RoPA updated if a new processing activity is introduced.
-- New sub-processors have a signed DPA and a RoPA entry.
-- DPIA triggered if the change involves high-risk processing.
+### ユーザー権利とガバナンス
+- データエクスポートエンドポイントに新しい個人データフィールドが含まれているか。
+- 新しい処理活動が発生した場合、RoPA が更新されているか。
+- 新しいサブプロセッサーが署名済み DPA と RoPA 登録を持っているか。
+- 変更が高リスク処理を含む場合、DPIA が発火しているか。
 
 ---
 
-> **Golden Rule:** Collect less. Store less. Expose less. Retain less.
+> **黄金律:** 収集する量を減らし、保存する量を減らし、公開する量を減らし、保持期間を短くします。
 >
-> Every byte of personal data you do not collect is a byte you cannot lose,
-> cannot breach, and cannot be held liable for.
+> 収集しない 1 バイトの個人データは、失うことができず、漏洩することもできず、責任を負うこともないバイトです。
 
 ---
 
-*Inspired by CNIL developer GDPR guidance, GDPR Articles 5, 25, 32, 33, 35,
-ENISA, OWASP, and NIST engineering best practices.*
+*CNIL の開発者向け GDPR ガイダンス、GDPR の第 5、25、32、33、35 条、
+ENISA、OWASP、NIST のエンジニアリングベストプラクティスに触発されました。*

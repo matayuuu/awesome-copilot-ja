@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "edge-ai-tasks",
-  "description": "Task Researcher and Task Planner for intermediate to expert users and large codebases - Brought to you by microsoft/edge-ai",
+  "description": "中級者から上級者、および大規模コードベース向けの Task Researcher と Task Planner。microsoft/edge-ai が提供します。",
   "version": "1.0.0",
   "author": {
     "name": "Awesome Copilot Community"

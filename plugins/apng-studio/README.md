@@ -1,17 +1,17 @@
-# Apng Studio Plugin
+# Apng Studio プラグイン
 
-Interactive GitHub Copilot app canvas extension for building Animated PNG (APNG) files from frames. Draw or upload frames, tune per-frame timing and compositing, preview live, send the result to your phone by QR, and export an animated .png.
+フレームから Animated PNG（APNG）を作成するインタラクティブな GitHub Copilot app canvas 拡張機能です。フレームの描画またはアップロード、フレームごとのタイミングと合成の調整、ライブプレビュー、QR によるスマートフォンへの送信、アニメーション .png のエクスポートに対応します。
 
-## Installation
+## インストール
 
 ``bash
 copilot plugin install apng-studio@awesome-copilot
 ``
 
-## Source
+## ソース
 
-This plugin is part of [Awesome Copilot](https://github.com/github/awesome-copilot).
+このプラグインは [Awesome Copilot](https://github.com/github/awesome-copilot) の一部です。
 
-## License
+## ライセンス
 
 MIT

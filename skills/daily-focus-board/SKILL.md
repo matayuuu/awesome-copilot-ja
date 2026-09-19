@@ -1,42 +1,29 @@
 ---
 name: daily-focus-board
-description: 'Spin up a personal, motivating daily focus board that renders in a browser canvas and that the user drives by talking to their AI partner. Tasks track status (to-do → in progress → done) with timestamped progress notes and roll up into a "today''s momentum" feed; numeric-goal tasks (pages, pomodoros, reps) render as progress-bar counters. Executive-function / neurodivergent-friendly by design: Focus mode, kind "not today" carryover (no overdue-shaming), a brain-dump box, reduced-motion, and gentle deadline countdowns. Add, reorder, and relabel tasks live, assign Eisenhower priority (Do first / Schedule / Delegate / Later), open with an above/below-the-line check-in and a daily mantra, and save an end-of-day recap. Use when someone wants to plan their day, stay focused, kick off a work session, or track progress. Progress persists in the browser (localStorage).'
+description: 'ブラウザー canvas に表示し、ユーザーが AI パートナーとの会話で操作する、個人向けの意欲を高める日次フォーカスボードを作成する。タスクの状態（未着手 → 進行中 → 完了）と時刻付き進捗メモを追跡して「今日の勢い」フィードに集約し、数値目標のタスクは進捗バー付きカウンターで表示する。Focus mode、責めない「今日はしない」繰り越し、brain-dump、動きの軽減、穏やかな期限カウントダウンを備え、実行機能やニューロダイバーシティに配慮する。タスクの追加、並べ替え、ラベル変更、Eisenhower 優先度の設定、チェックインと日次マントラ、終業時の振り返り保存を行える。一日の計画、集中、作業開始、進捗追跡に使用する。進捗はブラウザーの localStorage に保持される。'
 ---
 
-# Daily Focus Board
+# 日次フォーカスボード
 
-A warm, visual "let's go" board for a person's day — rendered from a self-contained HTML
-template, opened in a browser (ideally a side-panel **canvas** in the GitHub Copilot app), and
-kept current *by conversation*: the human tells you what they finished, you update the board.
+一日を前向きに始めるための温かみある視覚的なボードです。自己完結型 HTML テンプレートから表示し、ブラウザー（理想的には GitHub Copilot app のサイドパネル **canvas**）で開きます。人が完了した内容を伝え、あなたがボードを更新するという*会話*によって最新状態を保ちます。
 
-This is Ember partnership in daily practice: not a static to-do list, a thing you run *with*
-your AI. Keep it light, encouraging, and honest — celebrate real progress, don't inflate it.
+これは日々実践する Ember パートナーシップです。静的な ToDo リストではなく、AI と*一緒に*運用するものです。軽やかで励みになり、誠実なものにし、実際の進捗を称え、誇張しないでください。
 
-## When to use it
+## 使用する場面
 
-Trigger when the user wants to: plan today, "get organized / stay focused," start a work
-session, or track progress on a set of tasks they list. If they just mention a pile of things
-to do, offer the board.
+ユーザーが今日の計画を立てたい、整理して集中したい、作業セッションを始めたい、列挙したタスクの進捗を追跡したい場合に使用します。やることを大量に挙げただけの場合も、このボードを提案します。
 
-## How to build it (3 steps)
+## 作成方法（3 ステップ）
 
-**1. Gather the tasks.** Ask for (or lift from what they already said) their handful of tasks
-for the day. For each, capture: a short title, an optional emoji, an optional one-line
-sub-note, and an optional tag. If a task is a *count toward a number* (steps, pages,
-pomodoros, reps), make it a **counter** with a numeric `goal`. Keep it to ~4–9 items — a focus
-board, not a backlog.
+**1. タスクを集める。** 一日の少数のタスクを尋ねるか、既に話した内容から抽出します。各タスクについて、短いタイトル、任意の絵文字、任意の 1 行補足、任意のタグを記録します。歩数、ページ数、ポモドーロ数、反復回数など、数値を積み上げるタスクは、数値の `goal` を持つ**カウンター**にします。項目は 4～9 件程度に抑えます。これはバックログではなくフォーカスボードです。
 
-**2. Generate the board.** Copy `assets/board.template.html` to a working file (e.g.
-`focus-board.html` in a scratch/working dir — NOT into a source repo unless asked). In the copy,
-find this line near the top:
+**2. ボードを生成する。** `assets/board.template.html` を作業ファイルへコピーします（例: 一時/作業ディレクトリの `focus-board.html`。依頼されない限りソースリポジトリには置かない）。コピー先の冒頭付近にある次の行を見つけます。
 
 ```html
 <script>window.__BOARD__ = null; /* SKILL: replace null with the config object above */</script>
 ```
 
-Replace `null` with the config object. **Inject it as JSON with `<` escaped** so a task's text
-can never break out of the `<script>` — e.g. `JSON.stringify(config).replace(/</g, "\\u003c")` —
-never hand-concatenate raw user-provided text. Schema:
+`null` を config オブジェクトに置き換えます。タスクの文章が `<script>` の外へ抜け出せないよう、**`<` をエスケープした JSON として挿入**します。例: `JSON.stringify(config).replace(/</g, "\\u003c")`。ユーザーが入力した生の文字列を手作業で連結しないでください。スキーマ:
 
 ```js
 {
@@ -56,114 +43,54 @@ never hand-concatenate raw user-provided text. Schema:
 }
 ```
 
-- `id` must be unique and stable, using only letters, digits, hyphens, or underscores
-  (`[A-Za-z0-9_-]`) — it's embedded in HTML attributes, CSS selectors, storage keys, and
-  colon-delimited note keys, so avoid quotes, colons, brackets, and spaces. `tagc` is an optional color class:
-  `new` (green), `deadline` (red/pink), `career` (purple); omit for the default grey.
-- Counter tasks: `goal` (a **positive integer**), `start` (default 0), `inc` (default
-  `max(1, round(goal/10))`), `unit` (label). Everything else is a status task. Carryover
-  ("not today") is for status tasks — counters are progress you dial down, not defer.
-- `due` (optional, ISO local datetime) shows a **gentle** live countdown on the card, and after
-  the time passes says "was due 5:00pm — still worth doing" in soft amber (never angry red). Use
-  it for the one real anchor, not everything.
-- `quad` (optional) sets a task's Eisenhower priority: `iu` (important & urgent → *Do first*),
-  `ins` (important, not urgent → *Schedule*), `niu` (urgent, not important → *Delegate*), `ninu`
-  (neither → *Later*). Renders as a colored accent; the person can change it on the board.
-- `mantra` / `checkin` (both optional, top-level) seed today's intention and the above/below-the-line
-  arrival check-in. Set these from the conversation, or leave them for the person to set/tap.
-- **Built-in, no config needed:** the "how are you arriving?" check-in + daily mantra (with 🔄
-  suggestions), ➕ **add-a-task** live, **drag-to-reorder** (⠿ handle) + **sort by priority**, a
-  🧭 priority guide, **editable labels** per tile, a gentle **overload nudge**, an **end-of-day
-  save** (download/copy a recap), Focus mode, "not today" carryover, the 🧠 brain-dump box, the
-  reduced-motion toggle, and the live clock. Just set good tasks; the rest comes for free.
+- `id` は一意で安定した値にし、英字、数字、ハイフン、アンダースコア（`[A-Za-z0-9_-]`）だけを使います。HTML 属性、CSS セレクター、ストレージキー、コロン区切りのメモキーに埋め込まれるため、引用符、コロン、角かっこ、空白を避けます。`tagc` は任意の色クラスで、`new`（緑）、`deadline`（赤/ピンク）、`career`（紫）を指定でき、省略時は既定の灰色です。
+- カウンタータスク: `goal`（**正の整数**）、`start`（既定値 0）、`inc`（既定値 `max(1, round(goal/10))`）、`unit`（ラベル）。それ以外は状態タスクです。「今日はしない」繰り越しは状態タスク用です。カウンターは延期するのではなく、進捗値を調整します。
+- `due`（任意、ISO ローカル日時）はカードに**穏やかな**ライブカウントダウンを表示し、時刻を過ぎると柔らかな琥珀色で「期限は午後 5 時でしたが、今からでも取り組む価値があります」と表示します。怒りを示す赤は使いません。すべてではなく、重要な軸となる 1 件に使います。
+- `quad`（任意）はタスクの Eisenhower 優先度を設定します。`iu`（重要かつ緊急 → *最優先*）、`ins`（重要だが緊急でない → *予定化*）、`niu`（緊急だが重要でない → *委任*）、`ninu`（どちらでもない → *後回し*）。色付きアクセントとして表示され、本人がボード上で変更できます。
+- `mantra` / `checkin`（どちらも任意のトップレベル項目）は、今日の意図と、ラインの上/下で表す開始時チェックインの初期値です。会話から設定するか、本人が設定/タップできるよう空けておきます。
+- **組み込み済みで構成不要:** 「今どんな状態で来ましたか？」というチェックイン、日次マントラ（🔄 の候補付き）、➕ **タスクのライブ追加**、**ドラッグで並べ替え**（⠿ ハンドル）と**優先度順の並べ替え**、🧭 優先度ガイド、タイルごとの**編集可能なラベル**、穏やかな**過負荷の注意**、**一日の終わりの保存**（振り返りのダウンロード/コピー）、Focus mode、「今日はしない」繰り越し、🧠 brain-dump、動きの軽減切り替え、ライブ時計。良いタスクを設定すれば、残りは自動で利用できます。
 
-**3. Serve + open it.** localStorage needs an `http://` origin, so serve the folder rather than
-opening the file path directly:
+**3. 配信して開く。** localStorage には `http://` の origin が必要なため、ファイルパスを直接開かず、フォルダーを配信します。
 
-- Serve (loopback only): `python -m http.server 8799 --bind 127.0.0.1` from the board's folder
-  (or `scripts/serve-board.ps1`). Binding to `127.0.0.1` keeps a board of personal tasks off the
-  local network.
-  If Python isn't available, any static file server works — you just need an `http://` origin.
-- Open: prefer a **browser canvas** side-panel if the host supports one (best experience —
-  it sits next to the chat). Otherwise open `http://localhost:8799/focus-board.html` in the
-  default browser.
-- If you truly can't serve, opening the file directly still works in most browsers; just note
-  that some restrict localStorage on `file://`, so progress may not persist.
+- 配信（ループバックのみ）: ボードのフォルダーで `python -m http.server 8799 --bind 127.0.0.1`（または `scripts/serve-board.ps1`）を実行します。`127.0.0.1` にバインドすると、個人タスクのボードがローカルネットワークへ公開されません。Python がない場合は、`http://` origin を提供できる任意の静的ファイルサーバーを使えます。
+- 開く: ホストが対応している場合は、チャットの横に表示できるサイドパネルの **browser canvas** を優先します。それ以外は、既定のブラウザーで `http://localhost:8799/focus-board.html` を開きます。
+- 配信できない場合も、多くのブラウザーではファイルを直接開けます。ただし、`file://` で localStorage を制限するブラウザーがあり、進捗が保持されない可能性があります。
 
-## How to drive it (the partnership part)
+## 運用方法（パートナーシップ）
 
-Once it's up, keep it current **through conversation** — this is the whole point:
+起動後は**会話を通じて**最新状態を保ちます。これがこの仕組みの中心です。
 
-- When the user says they finished / started something, either (a) tell them the one-tap move
-  ("tap the pill on the design-doc card to mark it done"), or (b) regenerate the board only when
-  the *task list itself* changes (add/rename tasks) — status and notes live in the browser
-  (localStorage) and are set by tapping, not by config; a regenerate with the same `dateKey`
-  preserves existing progress. Clicking is faster for live updates.
-- Encourage logging **incremental notes** ("all three desks up and running") — momentum is
-  built from small logged wins, and the momentum feed becomes the story of their day.
-- The board is the artifact; you are the partner. Check in, nudge the anchor task (the one with
-  a deadline), celebrate real completion, and protect against overload (too many cards = not a
-  focus board).
+- ユーザーが何かを完了または開始したと言ったら、(a) 1 回のタップで行える操作を伝えるか、(b) *タスクリスト自体*が変わる場合（追加/名前変更）だけボードを再生成します。状態とメモはブラウザーの localStorage にあり、構成ではなくタップで設定します。同じ `dateKey` で再生成すれば既存の進捗は保持されます。ライブ更新にはクリックの方が速くなります。
+- **途中経過のメモ**（「3 台のデスクがすべて稼働」など）を残すよう促します。記録された小さな達成が勢いを作り、そのフィードが一日の物語になります。
+- ボードが成果物であり、あなたはパートナーです。チェックインし、期限のある軸タスクを穏やかに促し、本当の完了を称え、過負荷を防ぎます。カードが多すぎるものはフォーカスボードではありません。
 
-## Executive-function-friendly behavior (how to show up)
+## 実行機能に配慮した振る舞い
 
-The board's UI has EF/neurodivergent affordances, but **the biggest help is how you, the
-partner, behave.** This matters for everyone and is essential for people with ADHD or executive-function challenges.
-Bake these in — they're not optional politeness, they're the point:
+ボードの UI は実行機能やニューロダイバーシティに配慮していますが、**最大の支援はパートナーであるあなたの振る舞いです。** これは誰にとっても重要で、ADHD や実行機能上の困難がある人には特に不可欠です。次を組み込んでください。任意の礼儀ではなく、この仕組みの目的です。
 
-- **You are a body-double.** The whole premise — "drive your board by talking to your AI" — is
-  body-doubling, a well-documented focus strategy. Stay present: check in, co-work, be the
-  gentle other-in-the-room. Don't just set up the board and vanish.
-- **Beat activation energy: shrink the first step.** When someone's stuck starting a task, don't
-  say "just do it." Offer *one tiny concrete first action* ("open the doc and write the ugliest
-  possible first sentence"). Starting is the wall; make the first step almost too small to refuse.
-- **Suggest ONE next thing, not the list.** When asked "what now?", name a single next action —
-  and offer Focus mode (dim the rest). A visible list of 8 is overwhelming; one is doable.
-- **Celebrate starting, not just finishing.** Moving a task to "in progress" is a real win. Log
-  it in the momentum feed. Dopamine on starting is what carries people with ADHD through.
-- **Never shame an incomplete.** No "you didn't finish." Offer **"not today"** carryover freely —
-  deciding *not* to do something is a valid, healthy choice, not a failure. Missing one task
-  should never threaten the whole system (all-or-nothing spirals are how these tools get abandoned).
-- **Externalize intrusive thoughts.** If they get pulled toward something mid-task, tell them to
-  **park it in the brain-dump box** and keep going — don't chase it now.
-- **Make time concrete.** Time blindness is real; reference the clock and the gentle countdowns,
-  and nudge the anchor task before its `due` — kindly, not as a threat.
-- **Protect against overload.** The board nudges gently when it passes ~9 active tasks; back it
-  up — help them carry things to tomorrow (⤳ not today). A focus board that's a backlog isn't a
-  focus board.
-- **Open with a check-in, not a task list.** Invite them to *locate* how they're arriving
-  (above / in-between / below the line — from Conscious Leadership). It's noticing without
-  judgment; below-the-line just means "be gentler, shrink the first step." Never diagnose it.
-- **Offer an intention (the mantra).** A short line for the day — theirs, or one you suggest that
-  fits the check-in (grounding when they're below the line, momentum when above). Keep it kind.
-- **Prioritize together, gently.** If everything feels equally urgent, walk the Eisenhower
-  quadrants with them (Do first / Schedule / Delegate / Later) and offer "sort by priority" — the
-  point is to make *Schedule* (important, not urgent) visible, not to cram more in.
-- **Close the day: save it.** At end of day, have them **download or copy the recap** — and if
-  they copy it, they can paste it to you to journal the day and set up tomorrow. Celebrate what
-  got done; frame carryover as a healthy choice, not a miss.
+- **body-double になる。** 「AI と話してボードを動かす」という前提そのものが、よく知られた集中戦略である body-doubling です。チェックインし、共同作業し、穏やかに同席してください。ボードを設定して消えないでください。
+- **着手のエネルギーを下げるため、最初の一歩を小さくする。** タスクを始められない人に「とにかくやって」と言わず、*具体的でごく小さな最初の行動*（「ドキュメントを開き、最悪でもよいので最初の一文を書く」）を示します。壁になるのは開始です。断る理由がないほど小さくします。
+- **リストではなく、次の 1 つを提案する。** 「次は何？」と聞かれたら、次の行動を 1 つだけ挙げ、ほかを暗くする Focus mode を提案します。8 件のリストは圧倒的でも、1 件なら実行できます。
+- **完了だけでなく開始も称える。** タスクを「進行中」に移すことも本当の達成です。勢いフィードに記録します。開始時の達成感が ADHD のある人の継続を支えます。
+- **未完了を責めない。** 「終わらなかった」と言わず、**「今日はしない」**繰り越しを気軽に提案します。何かを*しない*と決めることも健全で有効な選択であり、失敗ではありません。1 件の未完了で仕組み全体を否定させないでください。
+- **割り込む考えを外在化する。** タスク途中で別のことに引かれたら、今すぐ追わず、**brain-dump ボックスに置いて**続けるよう促します。
+- **時間を具体化する。** 時間感覚の難しさを考慮し、時計と穏やかなカウントダウンを参照し、`due` の前に軸タスクを優しく促します。脅しにしないでください。
+- **過負荷を防ぐ。** アクティブなタスクが約 9 件を超えるとボードが穏やかに注意するため、明日へ繰り越す（⤳ 今日はしない）支援をします。バックログになったフォーカスボードはフォーカスボードではありません。
+- **タスクリストではなくチェックインから始める。** Conscious Leadership のラインの上/中間/下を使い、どのような状態で来たかに気付いてもらいます。判断せず観察するもので、ラインの下は「より優しく、最初の一歩を小さくする」という意味にすぎません。診断しないでください。
+- **意図（マントラ）を提案する。** 本人の言葉、またはチェックインに合う提案を、一日の短い言葉にします。ラインの下なら落ち着きを、上なら勢いを意識し、優しい表現にします。
+- **一緒に穏やかに優先順位を付ける。** すべてが同じように緊急に見える場合は、Eisenhower の象限（最優先/予定化/委任/後回し）を一緒に確認し、「優先度順に並べる」を提案します。目的はタスクを詰め込むことではなく、*予定化*（重要だが緊急でない）を見えるようにすることです。
+- **一日を閉じて保存する。** 一日の終わりに**振り返りをダウンロードまたはコピー**してもらいます。コピーした内容を貼り付けてもらえば、一日の記録と明日の準備に使えます。できたことを称え、繰り越しを失敗ではなく健全な選択として扱います。
 
-Frame all of this as *executive-function-friendly design for everyone* — never diagnose, never
-assume someone is neurodivergent, and keep every affordance optional. See
-`references/neurodivergent-design.md` for the principles behind each feature.
+これらはすべて、*誰にとっても実行機能に配慮した設計*として扱います。診断せず、ニューロダイバーシティを決めつけず、すべての支援機能を任意にします。各機能の背景にある原則は `references/neurodivergent-design.md` を参照してください。
 
-## Honest limits (say these if relevant)
+## 正直に伝える制約
 
-- **State lives in the browser (localStorage).** It's per-browser and you (the agent) can't read
-  it back directly. The **end-of-day recap** (download/copy) bridges this: when they paste the
-  copied recap to you, you *can* journal and plan from it. For a fully automatic read/write loop,
-  see `references/customize.md` (file-backed state, v2).
-- **The polished side-panel experience needs a host with a browser canvas** (like the GitHub
-  Copilot app). Everywhere else it's a normal browser tab — same board, less integrated.
+- **状態はブラウザー（localStorage）に保存される。** ブラウザーごとの状態であり、エージェントは直接読み戻せません。**一日の終わりの振り返り**（ダウンロード/コピー）が橋渡しになります。コピーした振り返りを貼り付けてもらえば、それを基に記録や計画ができます。完全自動の読み書きループについては `references/customize.md`（ファイルベース状態、v2）を参照してください。
+- **洗練されたサイドパネル体験には browser canvas 対応ホストが必要です**（GitHub Copilot app など）。それ以外では通常のブラウザータブとなり、ボードは同じですが統合度は下がります。
 
-## References
+## 参照資料
 
-- `references/tutorial.md` — how to use the board in the GitHub Copilot app (browser canvas) or
-  directly through Ember: the daily loop (check-in → mantra → plan → work → end-of-day save).
-- `examples/sample-board.html` — a populated example board: open it to see the board in action,
-  or copy it as a starting point (it's this template with a sample config injected).
-- `references/neurodivergent-design.md` — the executive-function / ADHD design principles behind
-  each feature (task initiation, time blindness, working memory, overwhelm, reward, shame, capture,
-  body-doubling), and the "make it optional, don't medicalize" stance.
-- `references/customize.md` — theming, the file-backed-state upgrade (agent can read/write
-  progress), and the optional "shared signals" bridge for people who run a multi-agent workshop.
+- `references/tutorial.md` — GitHub Copilot app（browser canvas）または Ember から直接ボードを使う方法と、チェックイン → マントラ → 計画 → 作業 → 一日の終わりの保存という日次ループ。
+- `examples/sample-board.html` — データ入力済みのサンプルボード。実際の動作を確認するために開くか、開始点としてコピーできます。このテンプレートにサンプル構成を挿入したものです。
+- `references/neurodivergent-design.md` — 各機能の背景にある実行機能/ADHD に配慮した設計原則（タスク開始、時間感覚、ワーキングメモリ、圧倒感、報酬、羞恥心、記録、body-doubling）と、「任意にし、医療化しない」という方針。
+- `references/customize.md` — テーマ設定、ファイルベース状態へのアップグレード（エージェントが進捗を読み書き可能）、マルチエージェントワークショップ向けの任意の「共有シグナル」ブリッジ。

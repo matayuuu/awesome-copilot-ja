@@ -1,39 +1,39 @@
 ---
 name: gtm-ai-gtm
-description: Go-to-market strategy for AI products. Use when positioning AI products, handling "who is responsible when it breaks" objections, pricing variable-cost AI, choosing between copilot/agent/teammate framing, or selling autonomous tools into enterprises.
+description: AI 製品の Go-to-market 戦略。AI 製品のポジショニング、「壊れたとき誰が責任を負うのか」という反論への対応、変動コスト AI の価格設定、copilot/agent/teammate の表現選択、自律型ツールのエンタープライズ販売に使う。
 license: MIT
 metadata:
   author: Smit Patel (https://linkedin.com/in/smitkpatel)
   source: https://github.com/beingsmit/technical-product-gtm
 ---
 
-# AI Product GTM
+# AI 製品 GTM
 
 Go-to-market strategy for AI products. These aren't generic AI principles — they're patterns from selling autonomous AI agents into enterprises where "autonomous" scared buyers and "teammate" converted them.
 
-## When to Use
+## 使用する場面
 
-**Triggers:**
-- "How do we position this AI product?"
-- "Buyers say they're worried about AI breaking production"
-- "Should we call it autonomous or copilot?"
-- "How do we price AI when usage varies 10x by customer?"
-- "Enterprise security passed but ops rejected us — why?"
+**トリガー:**
+- 「この AI 製品をどうポジショニングするか」
+- 「購入者が AI による本番障害を心配している」
+- 「autonomous と copilot のどちらと呼ぶべきか」
+- 「顧客ごとに利用量が 10 倍違う AI の価格をどう決めるか」
+- 「エンタープライズのセキュリティは通ったのに運用部門に拒否された。なぜか」
 
-**Context:**
-- AI agent platforms (coding, support, ops)
-- LLM-based applications
-- Autonomous tools that *do* things (not just suggest)
-- AI infrastructure
-- Anything where the AI makes decisions
+**コンテキスト:**
+- AI Agent プラットフォーム（コーディング、サポート、運用）
+- LLM ベースのアプリケーション
+- 提案するだけでなく実行する自律型ツール
+- AI インフラストラクチャ
+- AI が判断を下すあらゆるもの
 
 ---
 
-## Core Frameworks
+## 中核フレームワーク
 
-### 1. The Real Enterprise AI Objection (It's Not What You Think)
+### 1. エンタープライズ AI の本当の反論（想像とは違う）
 
-**What I Learned Selling Autonomous AI Agents:**
+**自律型 AI Agent を販売して学んだこと:**
 
 Three months in, enterprise security reviews were passing fast. Good sign, right? Then the pattern emerged: security approved, but **operations rejected us**.
 
@@ -43,11 +43,11 @@ The objection wasn't "will the AI break production?" — they *assumed* it would
 
 Not "do we trust the agent?" — "do we trust our *team* to handle this?"
 
-**Why This Matters:**
+**これが重要な理由:**
 
 Autonomous agents create a new operational burden. You're not selling AI capability, you're selling organizational readiness. When your agent halts production at 2am, who gets paged? Who fixes it? Who explains it to the VP?
 
-**Framework: The Accountability Cascade**
+**フレームワーク: 責任のカスケード**
 
 Before deploying AI agents, enterprises need clear answers:
 
@@ -57,7 +57,7 @@ Before deploying AI agents, enterprises need clear answers:
 
 If you can't answer all three, **they won't buy**. Doesn't matter how good your AI is.
 
-**How This Changes Your Sales Process:**
+**これが営業プロセスを変える方法:**
 
 **Old approach:**
 - Demo the AI
@@ -71,17 +71,17 @@ If you can't answer all three, **they won't buy**. Doesn't matter how good your 
 - Walk through their incident response process
 - Map AI failures to their existing runbooks
 
-**The Qualification Question:**
+**評価の質問:**
 
 "Walk me through what happens when the agent takes an action that breaks a workflow. Who gets alerted? Who investigates? Who decides whether to roll back or fix forward?"
 
 If they can't answer, they're not ready. Pause the deal and help them build the process first.
 
-**Common Mistake:**
+**よくある失敗:**
 
 Treating this as a *product* objection ("we'll make the AI more accurate"). It's an *organizational* objection. More accuracy doesn't solve "who owns this at 2am?"
 
-**Pattern I've Seen Work:**
+**効果を確認したパターン:**
 
 Companies that succeed with AI agents already have:
 - On-call rotations for production systems
@@ -95,21 +95,21 @@ Companies that struggle:
 - No formal incident response
 - Blame-focused culture
 
-**Decision Criteria:**
+**判断基準:**
 
 Before demoing autonomous AI to enterprises, ask yourself: "If this breaks their production, who on *their* team owns the fix?" If you can't answer, they can't buy.
 
 ---
 
-### 2. Copilot vs Agent vs Teammate (Three Different GTM Motions)
+### 2. Copilot と Agent と Teammate（3 つの異なる GTM モーション）
 
-**The Positioning Trap:**
+**ポジショニングの罠:**
 
 Early enterprise conversations, we positioned as "autonomous AI agent." Buyers flinched. One word change — "autonomous" → "AI teammate" — and deal progression improved measurably.
 
 Why? **Word choice shapes buyer psychology.**
 
-**The Three Framings:**
+**3 つの表現:**
 
 **1. Copilot (Safest, Lowest Value)**
 - **What it means**: AI suggests, human decides every time
@@ -132,7 +132,7 @@ Why? **Word choice shapes buyer psychology.**
 - **Use case**: Most AI agent platforms
 - **Objection**: "How do we integrate this into our workflow?" (process question)
 
-**The Positioning Shift:**
+**ポジショニングの転換:**
 
 **Before:** "Autonomous AI agent that handles complex workflows end-to-end"
 - Developers: "Cool, but scary"
@@ -144,7 +144,7 @@ Why? **Word choice shapes buyer psychology.**
 - Managers: "This makes my team more productive"
 - Deal progression: Three enterprise deals that had stalled 4+ months closed within 8 weeks of the shift
 
-**Specific Language Choices That Mattered:**
+**重要だった具体的な言葉の選択:**
 
 ❌ **Don't say:**
 - "Autonomous" (scary)
@@ -158,7 +158,7 @@ Why? **Word choice shapes buyer psychology.**
 - "You stay in control" (reassuring)
 - "Handles the repetitive work" (specific value)
 
-**How to Choose Your Framing:**
+**表現の選び方:**
 
 ```
 Does your AI make decisions without human approval?
@@ -168,7 +168,7 @@ Does your AI make decisions without human approval?
 └─ No → "Copilot" framing (augmentation, not automation)
 ```
 
-**The Hard Truth:**
+**厳しい現実:**
 
 You can build an agent but position it as a copilot. You can't build a copilot and position it as an agent. **Product capabilities set a ceiling, positioning chooses where you land below it.**
 
@@ -178,7 +178,7 @@ Using "autonomous" because it sounds impressive. Impressive ≠ trusted. If buye
 
 ---
 
-### 3. The AI Pricing Problem (When Usage Varies 10x)
+### 3. AI の価格設定問題（利用量が 10 倍異なる場合）
 
 **The Pattern:**
 
@@ -235,7 +235,7 @@ Copying OpenAI's pricing ($0.01 per 1K tokens) because "that's what everyone doe
 
 ---
 
-### 4. The AI Trust Ladder (From Someone Who Climbed It)
+### 4. AI 信頼の梯子（実際に登った経験から）
 
 **The Pattern:**
 
@@ -291,7 +291,7 @@ If buyers ask "how does this work?" before you've demoed, you skipped transparen
 
 ---
 
-### 5. The Enterprise AI Demo (Show Failure, Not Just Success)
+### 5. エンタープライズ AI デモ（成功だけでなく失敗も見せる）
 
 **What Doesn't Work:**
 
@@ -343,7 +343,7 @@ Cherry-picking examples where AI is 100% accurate. Buyers know real-world data i
 
 ---
 
-### 6. The "Who Owns This?" Objection Handler
+### 6. 「誰が担当するのか」という反論への対応
 
 **The Objection:**
 
@@ -387,7 +387,7 @@ If a buyer demands 100% accuracy, walk away. They're not ready. Come back when t
 
 ---
 
-### 7. The AI Positioning Trap (Fighting Asymmetric Wars)
+### 7. AI ポジショニングの罠（非対称な戦いをする）
 
 **The Pattern:**
 
@@ -423,7 +423,7 @@ Claiming you're "better" at what everyone does. In AI, benchmarks change monthly
 
 ---
 
-### 8. Ceiling Moment Qualification (Finding High-Intent AI Buyers)
+### 8. 限界到達の瞬間による評価（意欲の高い AI 購入者を見つける）
 
 **The Pattern:**
 
@@ -466,9 +466,9 @@ Trying to convince tool-naive prospects to adopt AI agents. Bad conversion rates
 
 ---
 
-## Decision Trees
+## 判断ツリー
 
-### Which Positioning Should I Use?
+### どのポジショニングを使うべきか
 
 ```
 Does your AI act autonomously (no approval per action)?
@@ -478,7 +478,7 @@ Does your AI act autonomously (no approval per action)?
 └─ No → "Copilot" framing
 ```
 
-### Which Pricing Model Should I Use?
+### どの価格モデルを使うべきか
 
 ```
 Can you measure customer outcomes reliably?
@@ -490,7 +490,7 @@ Can you measure customer outcomes reliably?
     └─ No → Seat-based
 ```
 
-### Is This Buyer Ready for AI Agents?
+### この購入者は AI Agent を導入できる状態か
 
 ```
 Do they have incident response processes for tool failures?
@@ -504,7 +504,7 @@ Do they have incident response processes for tool failures?
 
 ---
 
-## Common Mistakes
+## よくある失敗
 
 **1. Using "autonomous" because it sounds impressive**
    - I've watched this slow deals. "Autonomous" scares enterprises. "Teammate" progresses faster.
@@ -529,7 +529,7 @@ Do they have incident response processes for tool failures?
 
 ---
 
-## Quick Reference
+## クイックリファレンス
 
 **Enterprise objection checklist:**
 - [ ] "Who gets paged when AI breaks production?" → Map to their on-call rotation
@@ -558,7 +558,7 @@ Do they have incident response processes for tool failures?
 
 ---
 
-## Related Skills
+## 関連 Skill
 
 - **positioning-strategy**: General positioning frameworks and testing
 - **technical-product-pricing**: Pricing models including AI-specific patterns

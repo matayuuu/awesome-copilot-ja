@@ -1,58 +1,58 @@
 ---
-name: 'Session Logger'
-description: 'Logs all Copilot coding agent session activity for audit and analysis'
+name: 'セッションロガー'
+description: '監査と分析のために、Copilot coding agent のセッション活動をすべて記録します'
 tags: ['logging', 'audit', 'analytics']
 ---
 
-# Session Logger Hook
+# セッションロガーフック
 
-Comprehensive logging for GitHub Copilot coding agent sessions, tracking session starts, ends, and user prompts for audit trails and usage analytics.
+GitHub Copilot coding agent のセッションについて、開始・終了・ユーザープロンプトを追跡し、監査証跡と利用分析のために包括的に記録します。
 
-## Overview
+## 概要
 
-This hook provides detailed logging of Copilot coding agent activity:
-- Session start/end times with working directory context
-- User prompt submission events
-- Configurable log levels
+このフックは Copilot coding agent の活動を詳細に記録します。
+- 作業ディレクトリのコンテキストを含むセッション開始・終了時刻
+- ユーザープロンプトの送信イベント
+- 設定可能なログレベル
 
-## Features
+## 機能
 
-- **Session Tracking**: Log session start and end events
-- **Prompt Logging**: Record when user prompts are submitted
-- **Structured Logging**: JSON format for easy parsing
-- **Privacy Aware**: Configurable to disable logging entirely
+- **セッション追跡**: セッションの開始・終了イベントを記録
+- **プロンプト記録**: ユーザープロンプトが送信された時点を記録
+- **構造化ログ**: 解析しやすい JSON 形式
+- **プライバシー配慮**: ログ全体を無効化できる設定
 
-## Installation
+## インストール
 
-1. Copy this hook folder to your repository's `.github/hooks/` directory:
+1. このフックフォルダーをリポジトリの `.github/hooks/` ディレクトリへコピーします。
    ```bash
    cp -r hooks/session-logger .github/hooks/
    ```
 
-2. Create the logs directory:
+2. ログディレクトリを作成します。
    ```bash
    mkdir -p logs/copilot
    ```
 
-3. Ensure scripts are executable:
+3. スクリプトに実行権限があることを確認します。
    ```bash
    chmod +x .github/hooks/session-logger/*.sh
    ```
 
-4. Commit the hook configuration to your repository's default branch
+4. フック設定をリポジトリのデフォルトブランチへコミットします。
 
-## Log Format
+## ログ形式
 
-Session events are written to `logs/copilot/session.log` and prompt events to `logs/copilot/prompts.log` in JSON format:
+セッションイベントは `logs/copilot/session.log` に、プロンプトイベントは `logs/copilot/prompts.log` に JSON 形式で書き込まれます。
 
 ```json
 {"timestamp":"2024-01-15T10:30:00Z","event":"sessionStart","cwd":"/workspace/project"}
 {"timestamp":"2024-01-15T10:35:00Z","event":"sessionEnd"}
 ```
 
-## Privacy & Security
+## プライバシーとセキュリティ
 
-- Add `logs/` to `.gitignore` to avoid committing session data
-- Use `LOG_LEVEL=ERROR` to only log errors
-- Set `SKIP_LOGGING=true` environment variable to disable
-- Logs are stored locally only
+- セッションデータをコミットしないよう `.gitignore` に `logs/` を追加します。
+- エラーだけを記録するには `LOG_LEVEL=ERROR` を使用します。
+- 無効化するには環境変数 `SKIP_LOGGING=true` を設定します。
+- ログはローカルにのみ保存されます。

@@ -1,45 +1,44 @@
 ---
 name: typespec-create-agent
-description: 'Generate a complete TypeSpec declarative agent with instructions, capabilities, and conversation starters for Microsoft 365 Copilot'
+description: 'Microsoft 365 Copilot向けに、指示、機能、会話スターターを備えた完全なTypeSpec宣言型Agentを生成します。'
 ---
+# TypeSpec宣言型Agentの作成
 
-# Create TypeSpec Declarative Agent
+次の構造を持つMicrosoft 365 Copilot向けの完全なTypeSpec宣言型Agentを作成します。
 
-Create a complete TypeSpec declarative agent for Microsoft 365 Copilot with the following structure:
+## 要件
 
-## Requirements
+次の内容を含む`main.tsp`ファイルを生成します。
 
-Generate a `main.tsp` file with:
+1. **Agent宣言**
+   - 説明的な名前と説明を持つ`@agent`デコレーターを使う
+   - 名前は100文字以内にする
+   - 説明は1,000文字以内にする
 
-1. **Agent Declaration**
-   - Use `@agent` decorator with a descriptive name and description
-   - Name should be 100 characters or less
-   - Description should be 1,000 characters or less
+2. **指示**
+   - 明確な行動指針を持つ`@instructions`デコレーターを使う
+   - Agentの役割、専門知識、人格を定義する
+   - Agentがすべきことと、すべきでないことを指定する
+   - 8,000文字未満に保つ
 
-2. **Instructions**
-   - Use `@instructions` decorator with clear behavioral guidelines
-   - Define the agent's role, expertise, and personality
-   - Specify what the agent should and shouldn't do
-   - Keep under 8,000 characters
+3. **会話スターター**
+   - 2～4個の`@conversationStarter`デコレーターを含める
+   - それぞれにタイトルとクエリ例を設定する
+   - 多様な内容にし、異なる機能を示す
 
-3. **Conversation Starters**
-   - Include 2-4 `@conversationStarter` decorators
-   - Each with a title and example query
-   - Make them diverse and showcase different capabilities
+4. **機能**（ユーザーのニーズに基づく）
+   - `WebSearch` - サイト範囲を任意に指定したWebコンテンツ検索
+   - `OneDriveAndSharePoint` - URLフィルター付きのドキュメントアクセス
+   - `TeamsMessages` - Teamsのチャネル／チャットへのアクセス
+   - `Email` - フォルダーのフィルター付きメールアクセス
+   - `People` - 組織内の人物検索
+   - `CodeInterpreter` - Pythonコードの実行
+   - `GraphicArt` - 画像生成
+   - `GraphConnectors` - Copilot connectorのコンテンツへのアクセス
+   - `Dataverse` - Dataverseデータへのアクセス
+   - `Meetings` - 会議コンテンツへのアクセス
 
-4. **Capabilities** (based on user needs)
-   - `WebSearch` - for web content with optional site scoping
-   - `OneDriveAndSharePoint` - for document access with URL filtering
-   - `TeamsMessages` - for Teams channel/chat access
-   - `Email` - for email access with folder filtering
-   - `People` - for organization people search
-   - `CodeInterpreter` - for Python code execution
-   - `GraphicArt` - for image generation
-   - `GraphConnectors` - for Copilot connector content
-   - `Dataverse` - for Dataverse data access
-   - `Meetings` - for meeting content access
-
-## Template Structure
+## テンプレート構造
 
 ```typescript
 import "@typespec/http";
@@ -70,22 +69,22 @@ namespace [AgentName] {
 }
 ```
 
-## Best Practices
+## ベストプラクティス
 
-- Use descriptive, role-based agent names (e.g., "Customer Support Assistant", "Research Helper")
-- Write instructions in second person ("You are...")
-- Be specific about the agent's expertise and limitations
-- Include diverse conversation starters that showcase different features
-- Only include capabilities the agent actually needs
-- Scope capabilities (URLs, folders, etc.) when possible for better performance
-- Use triple-quoted strings for multi-line instructions
+- 説明的で役割に基づくAgent名を使う（例：「カスタマーサポートアシスタント」「リサーチ支援」）
+- 指示は二人称で書く（「あなたは…です」）
+- Agentの専門知識と制限を具体的にする
+- 異なる機能を示す多様な会話スターターを含める
+- Agentが実際に必要とする機能だけを含める
+- 可能な場合は機能の範囲（URL、フォルダーなど）を限定して性能を高める
+- 複数行の指示には三重引用符の文字列を使う
 
-## Examples
+## 例
 
-Ask the user:
-1. What is the agent's purpose and role?
-2. What capabilities does it need?
-3. What knowledge sources should it access?
-4. What are typical user interactions?
+ユーザーに次の点を尋ねます。
+1. Agentの目的と役割は何か。
+2. どの機能が必要か。
+3. どの知識ソースにアクセスすべきか。
+4. 典型的なユーザーとのやり取りは何か。
 
-Then generate the complete TypeSpec agent definition.
+その後、完全なTypeSpec Agent定義を生成します。

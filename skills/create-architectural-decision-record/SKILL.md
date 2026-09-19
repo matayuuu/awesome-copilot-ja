@@ -1,36 +1,36 @@
 ---
 name: create-architectural-decision-record
-description: 'Create an Architectural Decision Record (ADR) document for AI-optimized decision documentation.'
+description: 'AIによる利用に最適化した意思決定文書として、Architecture Decision Record（ADR）を作成する。'
 ---
 
-# Create Architectural Decision Record
+# Architecture Decision Recordの作成
 
-Create an ADR document for `${input:DecisionTitle}` using structured formatting optimized for AI consumption and human readability.
+AIが利用しやすく、人にも読みやすい構造化形式で、`${input:DecisionTitle}` のADR文書を作成する。
 
-## Inputs
+## 入力
 
-- **Context**: `${input:Context}`
-- **Decision**: `${input:Decision}`
-- **Alternatives**: `${input:Alternatives}`
-- **Stakeholders**: `${input:Stakeholders}`
+- **背景**: `${input:Context}`
+- **決定**: `${input:Decision}`
+- **代替案**: `${input:Alternatives}`
+- **ステークホルダー**: `${input:Stakeholders}`
 
-## Input Validation
-If any of the required inputs are not provided or cannot be determined from the conversation history, ask the user to provide the missing information before proceeding with ADR generation.
+## 入力の検証
+必須入力が提供されていない、または会話履歴から判断できない場合は、ADRの生成へ進む前に、不足情報をユーザーへ確認する。
 
-## Requirements
+## 要件
 
-- Use precise, unambiguous language
-- Follow standardized ADR format with front matter
-- Include both positive and negative consequences
-- Document alternatives with rejection rationale
-- Structure for machine parsing and human reference
-- Use coded bullet points (3-4 letter codes + 3-digit numbers) for multi-item sections
+- 正確で曖昧さのない言葉を使う
+- front matterを含む標準化されたADR形式に従う
+- 肯定的影響と否定的影響の両方を含める
+- 代替案と却下理由を記録する
+- 機械解析と人による参照の両方に適した構造にする
+- 複数項目のセクションでは、コード付き箇条書き（3～4文字のコードと3桁の数字）を使う
 
-The ADR must be saved in the `/docs/adr/` directory using the naming convention: `adr-NNNN-[title-slug].md`, where NNNN is the next sequential 4-digit number (e.g., `adr-0001-database-selection.md`).
+ADRは `/docs/adr/` ディレクトリへ保存し、`adr-NNNN-[title-slug].md` の命名規則を使う。NNNNには次の連番となる4桁の数字を入れる（例: `adr-0001-database-selection.md`）。
 
-## Required Documentation Structure
+## 必須の文書構造
 
-The documentation file must follow the template below, ensuring that all sections are filled out appropriately. The front matter for the markdown should be structured correctly as per the example following:
+文書ファイルは次のテンプレートに従い、すべてのセクションを適切に記入する。Markdownのfront matterは、次の例どおり正しく構造化する。
 
 ```md
 ---

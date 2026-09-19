@@ -1,10 +1,10 @@
 ---
-name: 'Fix Broken Links'
-description: 'Checks changed web files for broken hyperlinks and SEO anchor issues after each Copilot tool use.'
+name: '壊れたリンクの修正'
+description: 'Copilot の各ツール使用後に、変更された Web ファイルのリンク切れと SEO のアンカー問題を確認します。'
 tags: ['links', 'seo', 'html', 'markdown', 'post-tool-use']
 ---
 
-# Fix Broken Links Hook
+# 壊れたリンクの修正フック
 
 Scans recently-changed web files for broken hyperlinks after each GitHub Copilot
 tool use. For each broken URL the hook tries common spelling variations, then hands
@@ -12,7 +12,7 @@ the link to the Copilot CLI agent for suggested replacements, and presents an
 interactive fix menu. Generic anchor text (`click here`, `read more`, etc.) is
 flagged as an SEO issue.
 
-## Overview
+## 概要
 
 Broken links accumulate silently in web projects. Running on the `postToolUse`
 event, this hook checks the web files the agent just edited — and only those —
@@ -27,7 +27,7 @@ The hook has two modes:
 - **With no file arguments**: it simply lists the broken links it finds — no
   replacement lookups and no prompts.
 
-## Features
+## 機能
 
 - **Self-contained core**: bash and PowerShell ports — no runtime to install (the optional agent
  hand-off reuses the Copilot CLI you already have)
@@ -45,7 +45,7 @@ The hook has two modes:
  skip
 - **Standard tools only**: `curl`, `grep`, `sed` — present on any POSIX system
 
-## Installation
+## インストール
 
 1. Copy the hook folder to your repository:
 
@@ -82,7 +82,7 @@ The hook is configured in `hooks.json` to run on the `postToolUse` event:
 }
 ```
 
-## Supported Source Types
+## 対応するソース種別
 
 Links are found by scanning each file for `http(s)://` URLs, so the same logic
 covers every format that embeds absolute URLs:
@@ -101,7 +101,7 @@ The `d` (remove) action understands HTML `<a>` wrappers and Markdown `[text](url
 links specifically, keeping the visible text. Other source types support
 `r` (replace) and `c` (custom) via literal URL substitution.
 
-## Fix Options
+## 修正オプション
 
 For each broken link:
 
@@ -112,7 +112,7 @@ For each broken link:
 | `c` | Enter a custom replacement URL |
 | `s` | Skip |
 
-## Example Output
+## 出力例
 
 ```text
   Checking 2 link(s) in docs/guide.md ...
@@ -145,7 +145,7 @@ For each broken link:
 With no file arguments (or when the edited file carries no checkable links) the
 hook stops after the broken-link list — the menu above is skipped.
 
-## Requirements
+## 要件
 
 - `curl` — HTTP status checks (the hook exits quietly if absent)
 - `grep`, `sed` — link extraction (standard on any POSIX system)
@@ -156,7 +156,7 @@ hook stops after the broken-link list — the menu above is skipped.
  only verified spelling variations are offered
 - `git` is used for changed-file discovery; the hook falls back to a full repo scan without it
 
-## File Structure
+## ファイル構成
 
 ```
 .github/hooks/fix-broken-links/
@@ -166,7 +166,7 @@ hook stops after the broken-link list — the menu above is skipped.
 └── README.md       This file
 ```
 
-## Limitations
+## 制限事項
 
 - Only checks absolute `http://` and `https://` URLs; relative paths require a running server
 - Dynamic links generated at runtime from database queries are not detectable from source alone

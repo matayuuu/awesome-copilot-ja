@@ -1,8 +1,8 @@
 # UIZZE Plugin
 
-Stop generic UI from shipping. UIZZE helps GitHub Copilot build product-specific interfaces and finish the states that make them usable.
+ありきたりなUIをそのまま出荷するのはやめましょう。UIZZEは、GitHub Copilotが製品固有のインターフェイスを構築し、使いやすさを決める各状態まで仕上げるのを支援します。
 
-## Installation
+## インストール
 
 ```bash
 copilot plugin install uizze@awesome-copilot

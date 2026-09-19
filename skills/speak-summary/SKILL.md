@@ -1,138 +1,125 @@
 ---
 name: speak-summary
-description: 'Convert text, markdown, or a summary produced by another skill into a listenable MP3 using local CPU-only neural text-to-speech. Rewrites written prose for the ear before synthesising. Use when the user asks to "read this out", "turn this into audio", "make an MP3", "I want to listen to this", "podcast version", or wants a spoken digest for a commute or breakfast.'
+description: 'テキスト、Markdown、または別の Skill が作成した要約を、ローカル CPU のみで動作するニューラル音声合成により、聴きやすい MP3 に変換する。合成前に耳で聴くための文章に書き直す。「読み上げて」「音声にして」「MP3 を作って」「聴きたい」「ポッドキャスト版」や、通勤・朝食中に聴く要約を求められたときに使用する。'
 ---
+# 要約を読み上げる
 
-# Speak Summary
+書かれたテキストを、実際に聴きたくなる音声へ変換します。
 
-Turn written text into audio someone will actually want to listen to.
+この Skill は意図的に**連携の最終段階**です。別の Skill（またはあなた）がテキストを作成し、
+この Skill が聴きやすくします。`roundup`、`daily-prep`、`meeting-minutes` などの要約作業と自然に組み合わせられます。
 
-This skill is deliberately a **terminal step in a chain**. Another skill (or you)
-produces the text; this one makes it listenable. It pairs naturally with
-`roundup`, `daily-prep`, `meeting-minutes`, or any summarisation work.
+すべてローカル CPU で実行します。テキストをクラウド音声サービスへ送らないため、機密内容にも適しています。
+また、ノート PC と同じようにヘッドレスのクラウドエージェントや CI コンテナーでも動作します。
 
-Everything runs locally on CPU. No text is sent to a cloud speech service, which
-matters when the content is confidential, and it means the skill works in a
-headless cloud agent or CI container just as well as on a laptop.
+## 前提条件
 
-## Prerequisites
+合成エンジンは、CPU で動作するよう設計された小型ニューラル TTS モデル、
+[Kyutai `pocket-tts`](https://github.com/kyutai-labs/pocket-tts) です。
 
-The synthesis engine is [Kyutai `pocket-tts`](https://github.com/kyutai-labs/pocket-tts),
-a small neural TTS model designed to run on CPUs.
-
-The bundled script installs it automatically into a cached virtualenv on first
-use, so usually you need do nothing. To install it explicitly:
+同梱スクリプトは初回使用時にキャッシュ済み virtualenv へ自動インストールするため、通常は何もする必要がありません。
+明示的にインストールするには次を実行します。
 
 ```bash
 pip install pocket-tts          # any platform
 brew install pocket-tts         # macOS, if preferred
 ```
 
-`pocket-tts` requires **Python >=3.10 and <3.15**. The script searches for a
-compatible interpreter rather than assuming `python3` is one — worth knowing if
-you are on a very new Python, where installation would otherwise fail.
+`pocket-tts` には **Python >=3.10 and <3.15** が必要です。スクリプトは `python3` が適合すると
+仮定せず、互換性のあるインタープリターを探します。非常に新しい Python を使っている場合に重要です。
 
-You also need an encoder. `ffmpeg` is strongly preferred (`brew install ffmpeg`
-or `apt-get install -y ffmpeg`); on macOS the script falls back to the built-in
-`afconvert` and emits `.m4a` instead of `.mp3`.
+エンコーダーも必要です。`ffmpeg` を強く推奨します（`brew install ffmpeg` または
+`apt-get install -y ffmpeg`）。macOS ではスクリプトが組み込みの `afconvert` にフォールバックし、
+`.mp3` の代わりに `.m4a` を出力します。
 
-The first run downloads the model (~1GB) from Hugging Face. After that it is
-fully offline and synthesises roughly 6x faster than real-time.
+初回実行時に Hugging Face からモデル（約 1GB）をダウンロードします。その後は完全オフラインで、
+実時間の約 6 倍の速度で合成します。
 
-## The important step: rewrite for the ear
+## 重要な手順: 耳で聴くために書き直す
 
-**Do not feed written text straight into the synthesiser.** Prose that reads well
-on screen is tiring to listen to. Rewriting it first is what separates a useful
-audio digest from an unlistenable one.
+**書かれたテキストをそのまま合成器に入力しないでください。** 画面で読みやすい prose は、
+聴くと疲れます。先に書き直すことが、役に立つ音声要約と聴きづらい音声を分けます。
 
-Produce a spoken script that:
+次の条件を満たす読み上げ原稿を作成します。
 
-- **Opens with orientation.** What this is, what it covers, roughly how long it runs.
-- **Replaces bullets with connective prose.** "First… The bigger one is… Finally…" — a listener has no visual structure to lean on, so carry it in the language.
-- **Expands abbreviations on first use.** "PR" becomes "pull request", "CI" becomes "continuous integration". Acronyms that read fine are noise when spoken.
-- **Speaks dates and numbers naturally.** "the twentieth of August", not "2026-08-20". "About three thousand", not "2,847".
-- **Never reads URLs aloud.** Say "linked in the written version" instead.
-- **Uses short sentences.** Split anything past roughly 25 words.
-- **Signposts transitions.** "Turning to the product side…", "Two things need your attention…".
-- **Ends with the actions.** Recap what the listener should do, since that is what they need to retain and they cannot scroll back.
-- **Drops anything purely visual.** Tables, code blocks, and diagrams should be summarised in a sentence or omitted, never read out.
+- **導入で方向を示す。** 何について何を扱い、所要時間がどの程度かを示す。
+- **箇条書きを接続した prose に置き換える。** 聴き手には頼れる視覚構造がないため、言葉で構造を伝える。
+- **略語は初出で展開する。** 「PR」は「プルリクエスト」、「CI」は「継続的インテグレーション」とする。読むと自然な頭字語も、音声ではノイズになる。
+- **日付と数字を自然に読み上げる。** 「8月20日」のように読み、「2026-08-20」のままにしない。「約3,000」のように読み、「2,847」のままにしない。
+- **URL は決して読み上げない。** 代わりに「書面版にリンクがあります」と言う。
+- **短い文を使う。** およそ 25 語を超える文は分割する。
+- **遷移を示す。** 「製品側に話を移すと…」「注意が必要なのは 2 点です…」など。
+- **行動で終える。** 聴き手が覚える必要があり、後からスクロールできないため、何をすべきかを振り返る。
+- **視覚だけの情報を省く。** 表、コードブロック、図は一文で要約するか省略し、決して読み上げない。
 
-Write this spoken script to its own `.txt` file. Keep the original written
-version with its links intact — the audio is a companion to it, not a
-replacement. The user will want to click through later.
+この読み上げ原稿は独自の `.txt` ファイルに書き込みます。リンクを含む元の文書版は保持します。
+音声は代替ではなく補助であり、ユーザーは後でリンクをクリックします。
 
-## Synthesise
+## 合成
 
 ```bash
 ./scripts/tts.sh <input.txt> <output.mp3> [voice.safetensors]
 ```
 
-The script strips any residual markdown, splits the text on sentence boundaries
-into ~600 character chunks (quality degrades on long single inputs), synthesises
-each chunk, and concatenates the result into a mono MP3 at 96kbps — small enough
-to sync to a phone, good enough for speech.
+スクリプトは残った Markdown を除去し、文の境界で約 600 文字のチャンクに分割します
+（長い単一入力では品質が低下します）。各チャンクを合成し、結果を 96kbps のモノラル MP3 に結合します。
+携帯電話との同期に十分小さく、音声として十分な品質です。
 
-Environment overrides:
+環境変数による上書き:
 
-| Variable | Purpose |
+| 変数 | 用途 |
 |---|---|
-| `SPEAK_TTS_BIN` | Path to a specific `pocket-tts` binary; skips all auto-detection. |
-| `SPEAK_TTS_HOME` | Where to create/find the cached virtualenv. Default `~/.cache/speak-summary/venv`. |
+| `SPEAK_TTS_BIN` | 特定の `pocket-tts` バイナリのパス。自動検出をすべて省略する。 |
+| `SPEAK_TTS_HOME` | キャッシュ済み virtualenv の作成先または検索先。既定値は `~/.cache/speak-summary/venv`。 |
 
-## Voices
+## 音声
 
-The default English voice is `alba`. To use a different one, `pocket-tts`
-supports voice cloning from a short clean audio sample:
+既定の英語音声は `alba` です。別の音声を使う場合、`pocket-tts` は短く明瞭な音声サンプルからの音声クローンに対応しています。
 
 ```bash
 pocket-tts export-voice --help
 ```
 
-Pass the resulting `.safetensors` file as the third argument to the script.
+生成された `.safetensors` ファイルをスクリプトの 3 番目の引数として渡します。
 
-Only clone a voice you have the rights to use. Do not clone a real person's
-voice — colleague, customer, or public figure — without their explicit consent.
+使用権のある音声だけをクローンしてください。明示的な同意なしに、同僚、顧客、公人など実在人物の声をクローンしないでください。
 
-## Output
+## 出力
 
-- Default to `~/Music/Briefings/` unless the user says otherwise; it is easy to point a phone or podcast app at.
-- Name files `<subject>-<YYYY-MM-DD>.mp3`.
-- Report the path, duration, and size.
-- Offer to play it: `afplay <path>` on macOS, `ffplay -nodisp -autoexit <path>` elsewhere.
+- ユーザーの指定がなければ `~/Music/Briefings/` を既定にする。携帯電話やポッドキャストアプリから指定しやすい。
+- ファイル名は `<subject>-<YYYY-MM-DD>.mp3` とする。
+- パス、長さ、サイズを報告する。
+- macOS では `afplay <path>`、それ以外では `ffplay -nodisp -autoexit <path>` で再生できることを案内する。
 
-## Length guidance
+## 長さの目安
 
-Aim for 4–6 minutes for a routine digest, which is roughly 600–900 spoken words
-at a natural pace. If the source would run past about 10 minutes, say so and
-offer either a tighter edit or a split into multiple files — attention drops off
-sharply beyond that for informational audio.
+通常の要約は 4～6 分を目標にします。自然な速度で読み上げて約 600～900 語です。
+元の内容が約 10 分を超えそうなら、その旨を伝え、より短く編集するか複数ファイルに分割するかを提案します。
+情報音声ではそれを超えると集中力が急激に低下します。
 
-## Chaining onto other skills
+## 他の Skill との連携
 
-The natural pattern is *gather → summarise → speak*:
+自然な流れは *収集 → 要約 → 読み上げ* です。
 
-- `roundup` → `speak-summary` — a spoken version of the status briefing.
-- `daily-prep` → `speak-summary` — tomorrow's schedule, listened to tonight.
-- `meeting-minutes` → `speak-summary` — catch up on a meeting you missed.
+- `roundup` → `speak-summary` — ステータス報告の読み上げ版。
+- `daily-prep` → `speak-summary` — 今夜聴く明日の予定。
+- `meeting-minutes` → `speak-summary` — 欠席した会議のキャッチアップ。
 
-When invoked as part of a chain, do not re-summarise. The upstream skill owns
-what to say; this skill owns how it sounds. Take its output, rewrite it for the
-ear, and synthesise.
+連携の一部として呼び出された場合は、再要約しません。何を言うかは上流の Skill が担当し、
+この Skill はどう聞こえるかを担当します。その出力を耳で聴くために書き直し、合成します。
 
-To run unattended (a briefing waiting before breakfast), schedule the upstream
-skill with a workflow and have it finish by calling this one.
+無人で実行する場合（朝食前に報告を準備する場合）は、workflow で上流の Skill をスケジュールし、
+最後にこの Skill を呼び出すようにします。
 
-## Troubleshooting
+## トラブルシューティング
 
-**Audio cuts off mid-sentence.** A chunk exceeded the model's comfortable length.
-Shorten the sentences in the spoken script.
+**音声が文の途中で切れる。** チャンクがモデルの扱いやすい長さを超えています。読み上げ原稿の文を短くしてください。
 
-**Words mispronounced.** Spell them phonetically in the input — "Kubernetes" as
-"koo-ber-net-eez". This is a normal part of preparing a spoken script.
+**単語の発音が誤る。** 入力に発音どおりの綴りを使います。「Kubernetes」なら
+「koo-ber-net-eez」のようにします。これは読み上げ原稿の準備では通常の作業です。
 
-**First run is slow.** That is the one-off model download. Later runs start in
-about a second.
+**初回実行が遅い。** 一度だけモデルをダウンロードするためです。次回以降は約 1 秒で開始します。
 
-**`pocket-tts` not found after install.** The virtualenv may be stale, or your
-`python3` may be outside the supported 3.10–3.14 range. Delete
-`~/.cache/speak-summary/venv` and re-run, or point `SPEAK_TTS_BIN` at a known binary.
+**インストール後に `pocket-tts` が見つからない。** virtualenv が古いか、
+`python3` が対応する 3.10～3.14 の範囲外の可能性があります。
+`~/.cache/speak-summary/venv` を削除して再実行するか、`SPEAK_TTS_BIN` に既知のバイナリを指定します。

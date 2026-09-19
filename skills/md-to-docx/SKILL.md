@@ -1,66 +1,66 @@
 ---
 name: md-to-docx
-description: Convert Markdown files to professionally formatted Word (.docx) documents with embedded PNG images — pure JavaScript, no external tools required
+description: Markdown ファイルを、埋め込み PNG 画像付きのプロフェッショナルな Word (.docx) ドキュメントへ変換する — 純粋な JavaScript で、外部ツールを使わない
 ---
 
-# Markdown to Word (.docx) Skill
+# Markdown を Word (.docx) に変換するスキル
 
-Convert Markdown (`.md`) files into professionally formatted Word (`.docx`) documents with embedded PNG images. Uses **pure JavaScript** via the `docx` and `marked` npm packages — no Pandoc, LibreOffice, or any native binary required.
+Markdown (`.md`) ファイルを、埋め込み PNG 画像付きのプロフェッショナルな Word (`.docx`) ドキュメントへ変換します。`docx` と `marked` の npm パッケージを使った **純粋な JavaScript** で実装されており、Pandoc、LibreOffice、その他のネイティブ バイナリは不要です。
 
-## How to Convert
+## 変換方法
 
 ```bash
-# Install dependencies (one-time, from the scripts folder)
+# 依存関係をインストール（初回のみ、scripts フォルダー内で実行）
 cd skills/md-to-docx/scripts && npm install
 
-# Convert (run from workspace root)
+# 変換（ワークスペースのルートから実行）
 node skills/md-to-docx/scripts/md-to-docx.mjs <input.md> [output.docx]
 ```
 
-If `output.docx` is omitted, it defaults to `<input-basename>.docx` in the current directory.
+`output.docx` を省略した場合、現在のディレクトリに `<input-basename>.docx` が既定の出力先になります。
 
-## Skill Folder Contents
+## スキル フォルダーの内容
 
-| File | Purpose |
+| ファイル | 用途 |
 |------|---------|
-| `SKILL.md` | This instruction file |
-| `scripts/md-to-docx.mjs` | Node.js Markdown-to-Word converter |
-| `scripts/package.json` | Dependencies (`docx`, `marked`) |
+| `SKILL.md` | この指示ファイル |
+| `scripts/md-to-docx.mjs` | Node.js の Markdown から Word への変換器 |
+| `scripts/package.json` | 依存関係（`docx`、`marked`） |
 
-## Prerequisites
+## 前提条件
 
-| Requirement | Version | Notes |
+| 要件 | バージョン | 備考 |
 |-------------|---------|-------|
-| **Node.js** | 18+ | Required runtime |
-| **`docx`** | 9+ | Pure JS Word document generator |
-| **`marked`** | 15+ | Markdown parser |
+| **Node.js** | 18+ | 必須ランタイム |
+| **`docx`** | 9+ | 純粋な JavaScript の Word ドキュメント生成ライブラリ |
+| **`marked`** | 15+ | Markdown パーサー |
 
-No native binaries. No system-level installs. Works on Windows, macOS, and Linux.
+ネイティブ バイナリは不要です。システム レベルのインストールも不要です。Windows、macOS、Linux で動作します。
 
-## Features
+## 機能
 
-The converter:
+変換器は次を行います。
 
-- **Extracts YAML front-matter** — uses `title`, `date`, `version`, `audience` for the title page
-- **Generates a title page** — with project name, subtitle, date, version, and audience
-- **Generates a table of contents** — built from H1-H3 headings
-- **Embeds PNG images** — resolves `![alt](path)` references relative to the input `.md` file, reads the PNG, and embeds it inline in the Word document
-- **Styled output** — Calibri font, colored headings (`#1F3864`), styled tables with alternating row colors, code blocks in Consolas
-- **Handles all Markdown elements** — headings, paragraphs, tables, code blocks, lists, images, links, horizontal rules
+- **YAML フロントマターを抽出** — `title`、`date`、`version`、`audience` を使ってタイトル ページを生成
+- **タイトル ページを生成** — プロジェクト名、サブタイトル、日付、バージョン、対象読者を含む
+- **目次を生成** — H1-H3 の見出しから作成
+- **PNG 画像を埋め込み** — Markdown 内の `![alt](path)` 参照を入力 `.md` ファイルを基準に解決し、PNG を読み取り、Word ドキュメント内にインラインで埋め込む
+- **スタイル付きの出力** — Calibri フォント、色付き見出し（`#1F3864`）、交互の行色を持つスタイル付き表、Consolas のコード ブロック
+- **Markdown のすべての要素を処理** — 見出し、段落、表、コード ブロック、リスト、画像、リンク、水平線
 
-## Image Embedding
+## 画像の埋め込み
 
-The converter automatically embeds PNG images referenced in the Markdown:
+変換器は、Markdown 内で参照されている PNG 画像を自動的に埋め込みます。
 
 ```markdown
 ![High-Level Architecture](diagrams/high-level-architecture.drawio.png)
 ```
 
-The image path is resolved **relative to the input Markdown file**. The PNG is read, dimensions are extracted from the PNG header, and the image is scaled to fit within 6 inches width while preserving aspect ratio.
+画像パスは、入力した Markdown ファイルを基準に **相対パスで解決** されます。PNG を読み取り、PNG ヘッダーから寸法を抽出し、縦横比を維持したまま 6 インチ幅以内に収まるように拡大縮小されます。
 
-If an image file is not found, a placeholder `[Image not found: <path>]` is inserted.
+画像ファイルが見つからない場合は、プレースホルダー `[Image not found: <path>]` が挿入されます。
 
-## Front-Matter Format
+## フロントマター形式
 
 ```yaml
 ---
@@ -71,4 +71,4 @@ audience: Engineering Team, Architects, Stakeholders
 ---
 ```
 
-The title is split on `—` or `–` into main title and subtitle for the title page.
+タイトルは `—` または `–` で区切られ、タイトル ページ用のメイン タイトルとサブタイトルに分割されます。

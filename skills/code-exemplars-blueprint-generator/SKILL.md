@@ -1,126 +1,126 @@
 ---
 name: code-exemplars-blueprint-generator
-description: 'Technology-agnostic prompt generator that creates customizable AI prompts for scanning codebases and identifying high-quality code exemplars. Supports multiple programming languages (.NET, Java, JavaScript, TypeScript, React, Angular, Python) with configurable analysis depth, categorization methods, and documentation formats to establish coding standards and maintain consistency across development teams.'
+description: 'コードベースを走査して高品質なコード例を特定する、カスタマイズ可能なAIプロンプトを作成する技術非依存のプロンプト生成ツール。コーディング標準を確立し、開発チーム間の一貫性を維持するため、複数のプログラミング言語（.NET、Java、JavaScript、TypeScript、React、Angular、Python）、構成可能な分析深度、分類方法、ドキュメント形式に対応する。'
 ---
 
-# Code Exemplars Blueprint Generator
+# コード例ブループリント生成ツール
 
-## Configuration Variables
-${PROJECT_TYPE="Auto-detect|.NET|Java|JavaScript|TypeScript|React|Angular|Python|Other"} <!-- Primary technology -->
-${SCAN_DEPTH="Basic|Standard|Comprehensive"} <!-- How deeply to analyze the codebase -->
-${INCLUDE_CODE_SNIPPETS=true|false} <!-- Include actual code snippets in addition to file references -->
-${CATEGORIZATION="Pattern Type|Architecture Layer|File Type"} <!-- How to organize exemplars -->
-${MAX_EXAMPLES_PER_CATEGORY=3} <!-- Maximum number of examples per category -->
-${INCLUDE_COMMENTS=true|false} <!-- Include explanatory comments for each exemplar -->
+## 構成変数
+${PROJECT_TYPE="Auto-detect|.NET|Java|JavaScript|TypeScript|React|Angular|Python|Other"} <!-- 主要技術 -->
+${SCAN_DEPTH="Basic|Standard|Comprehensive"} <!-- コードベースを分析する深さ -->
+${INCLUDE_CODE_SNIPPETS=true|false} <!-- ファイル参照に加えて実際のコードスニペットを含める -->
+${CATEGORIZATION="Pattern Type|Architecture Layer|File Type"} <!-- コード例を整理する方法 -->
+${MAX_EXAMPLES_PER_CATEGORY=3} <!-- カテゴリごとの最大例数 -->
+${INCLUDE_COMMENTS=true|false} <!-- 各コード例に説明コメントを含める -->
 
-## Generated Prompt
+## 生成されるプロンプト
 
-"Scan this codebase and generate an exemplars.md file that identifies high-quality, representative code examples. The exemplars should demonstrate our coding standards and patterns to help maintain consistency. Use the following approach:
+"このコードベースを走査し、高品質で代表的なコード例を特定するexemplars.mdファイルを生成してください。コード例は、一貫性の維持に役立つよう、私たちのコーディング標準とパターンを示す必要があります。次のアプローチを使用してください:
 
-### 1. Codebase Analysis Phase
-- ${PROJECT_TYPE == "Auto-detect" ? "Automatically detect primary programming languages and frameworks by scanning file extensions and configuration files" : `Focus on ${PROJECT_TYPE} code files`}
-- Identify files with high-quality implementation, good documentation, and clear structure
-- Look for commonly used patterns, architecture components, and well-structured implementations
-- Prioritize files that demonstrate best practices for our technology stack
-- Only reference actual files that exist in the codebase - no hypothetical examples
+### 1. コードベース分析フェーズ
+- ${PROJECT_TYPE == "Auto-detect" ? "ファイル拡張子と構成ファイルを走査して、主要なプログラミング言語とフレームワークを自動検出する" : `${PROJECT_TYPE}のコードファイルに注目する`}
+- 高品質な実装、優れたドキュメント、明確な構造を備えたファイルを特定する
+- 一般的に使用されているパターン、アーキテクチャコンポーネント、適切に構造化された実装を探す
+- 技術スタックのベストプラクティスを示すファイルを優先する
+- コードベースに実在するファイルだけを参照し、仮想的な例は使用しない
 
-### 2. Exemplar Identification Criteria
-- Well-structured, readable code with clear naming conventions
-- Comprehensive comments and documentation
-- Proper error handling and validation
-- Adherence to design patterns and architectural principles
-- Separation of concerns and single responsibility principle
-- Efficient implementation without code smells
-- Representative of our standard approaches
+### 2. コード例の特定基準
+- 明確な命名規則を持つ、構造化された読みやすいコード
+- 包括的なコメントとドキュメント
+- 適切なエラー処理と検証
+- 設計パターンとアーキテクチャ原則への準拠
+- 関心の分離と単一責任の原則
+- コードスメルのない効率的な実装
+- 標準的なアプローチを代表するもの
 
-### 3. Core Pattern Categories
+### 3. 主要パターンのカテゴリ
 
-${PROJECT_TYPE == ".NET" || PROJECT_TYPE == "Auto-detect" ? `#### .NET Exemplars (if detected)
-- **Domain Models**: Find entities that properly implement encapsulation and domain logic
-- **Repository Implementations**: Examples of our data access approach
-- **Service Layer Components**: Well-structured business logic implementations
-- **Controller Patterns**: Clean API controllers with proper validation and responses
-- **Dependency Injection Usage**: Good examples of DI configuration and usage
-- **Middleware Components**: Custom middleware implementations
-- **Unit Test Patterns**: Well-structured tests with proper arrangement and assertions` : ""}
+${PROJECT_TYPE == ".NET" || PROJECT_TYPE == "Auto-detect" ? `#### .NETのコード例（検出された場合）
+- **ドメインモデル**: カプセル化とドメインロジックを適切に実装したエンティティを探す
+- **Repository実装**: データアクセス手法の例
+- **サービス層コンポーネント**: 適切に構造化されたビジネスロジック実装
+- **Controllerパターン**: 適切な検証とレスポンスを備えた明確なAPI Controller
+- **Dependency Injectionの使用**: DI構成と使用方法の優れた例
+- **Middlewareコンポーネント**: カスタムMiddleware実装
+- **単体テストパターン**: 適切な準備とassertionを備えた構造化されたテスト` : ""}
 
-${(PROJECT_TYPE == "JavaScript" || PROJECT_TYPE == "TypeScript" || PROJECT_TYPE == "React" || PROJECT_TYPE == "Angular" || PROJECT_TYPE == "Auto-detect") ? `#### Frontend Exemplars (if detected)
-- **Component Structure**: Clean, well-structured components
-- **State Management**: Good examples of state handling
-- **API Integration**: Well-implemented service calls and data handling
-- **Form Handling**: Validation and submission patterns
-- **Routing Implementation**: Navigation and route configuration
-- **UI Components**: Reusable, well-structured UI elements
-- **Unit Test Examples**: Component and service tests` : ""}
+${(PROJECT_TYPE == "JavaScript" || PROJECT_TYPE == "TypeScript" || PROJECT_TYPE == "React" || PROJECT_TYPE == "Angular" || PROJECT_TYPE == "Auto-detect") ? `#### フロントエンドのコード例（検出された場合）
+- **コンポーネント構造**: 明確で適切に構造化されたコンポーネント
+- **状態管理**: 状態処理の優れた例
+- **API統合**: 適切に実装されたサービス呼び出しとデータ処理
+- **フォーム処理**: 検証と送信のパターン
+- **ルーティング実装**: ナビゲーションとルート構成
+- **UIコンポーネント**: 再利用可能で適切に構造化されたUI要素
+- **単体テスト例**: コンポーネントとサービスのテスト` : ""}
 
-${PROJECT_TYPE == "Java" || PROJECT_TYPE == "Auto-detect" ? `#### Java Exemplars (if detected)
-- **Entity Classes**: Well-designed JPA entities or domain models
-- **Service Implementations**: Clean service layer components
-- **Repository Patterns**: Data access implementations
-- **Controller/Resource Classes**: API endpoint implementations
-- **Configuration Classes**: Application configuration
-- **Unit Tests**: Well-structured JUnit tests` : ""}
+${PROJECT_TYPE == "Java" || PROJECT_TYPE == "Auto-detect" ? `#### Javaのコード例（検出された場合）
+- **Entityクラス**: 適切に設計されたJPA Entityまたはドメインモデル
+- **サービス実装**: 明確なサービス層コンポーネント
+- **Repositoryパターン**: データアクセス実装
+- **Controller／Resourceクラス**: APIエンドポイント実装
+- **構成クラス**: アプリケーション構成
+- **単体テスト**: 適切に構造化されたJUnitテスト` : ""}
 
-${PROJECT_TYPE == "Python" || PROJECT_TYPE == "Auto-detect" ? `#### Python Exemplars (if detected)
-- **Class Definitions**: Well-structured classes with proper documentation
-- **API Routes/Views**: Clean API implementations
-- **Data Models**: ORM model definitions
-- **Service Functions**: Business logic implementations
-- **Utility Modules**: Helper and utility functions
-- **Test Cases**: Well-structured unit tests` : ""}
+${PROJECT_TYPE == "Python" || PROJECT_TYPE == "Auto-detect" ? `#### Pythonのコード例（検出された場合）
+- **クラス定義**: 適切なドキュメントを備えた構造化されたクラス
+- **APIルート／View**: 明確なAPI実装
+- **データモデル**: ORMモデル定義
+- **サービス関数**: ビジネスロジック実装
+- **ユーティリティモジュール**: ヘルパー関数とユーティリティ関数
+- **テストケース**: 適切に構造化された単体テスト` : ""}
 
-### 4. Architecture Layer Exemplars
+### 4. アーキテクチャ層ごとのコード例
 
-- **Presentation Layer**:
-  - User interface components
-  - Controllers/API endpoints
-  - View models/DTOs
+- **プレゼンテーション層**:
+  - ユーザーインターフェイスコンポーネント
+  - Controller／APIエンドポイント
+  - View Model／DTO
   
-- **Business Logic Layer**:
-  - Service implementations
-  - Business logic components
-  - Workflow orchestration
+- **ビジネスロジック層**:
+  - サービス実装
+  - ビジネスロジックコンポーネント
+  - ワークフローのオーケストレーション
   
-- **Data Access Layer**:
-  - Repository implementations
-  - Data models
-  - Query patterns
+- **データアクセス層**:
+  - Repository実装
+  - データモデル
+  - クエリパターン
   
-- **Cross-Cutting Concerns**:
-  - Logging implementations
-  - Error handling
-  - Authentication/authorization
-  - Validation
+- **横断的関心事**:
+  - ログ実装
+  - エラー処理
+  - 認証／認可
+  - 検証
 
-### 5. Exemplar Documentation Format
+### 5. コード例のドキュメント形式
 
-For each identified exemplar, document:
-- File path (relative to repository root)
-- Brief description of what makes it exemplary
-- Pattern or component type it represents
-${INCLUDE_COMMENTS ? "- Key implementation details and coding principles demonstrated" : ""}
-${INCLUDE_CODE_SNIPPETS ? "- Small, representative code snippet (if applicable)" : ""}
+特定した各コード例について、次を文書化する:
+- ファイルパス（Repositoryルートからの相対パス）
+- 優れた例である理由の簡潔な説明
+- その例が表すパターンまたはコンポーネントの種類
+${INCLUDE_COMMENTS ? "- 示されている主要な実装詳細とコーディング原則" : ""}
+${INCLUDE_CODE_SNIPPETS ? "- 小さく代表的なコードスニペット（該当する場合）" : ""}
 
-${SCAN_DEPTH == "Comprehensive" ? `### 6. Additional Documentation
+${SCAN_DEPTH == "Comprehensive" ? `### 6. 追加ドキュメント
 
-- **Consistency Patterns**: Note consistent patterns observed across the codebase
-- **Architecture Observations**: Document architectural patterns evident in the code
-- **Implementation Conventions**: Identify naming and structural conventions
-- **Anti-patterns to Avoid**: Note any areas where the codebase deviates from best practices` : ""}
+- **一貫性のあるパターン**: コードベース全体で確認された一貫したパターンを記録する
+- **アーキテクチャ上の所見**: コードから明らかなアーキテクチャパターンを文書化する
+- **実装規約**: 命名規則と構造規約を特定する
+- **避けるべきアンチパターン**: コードベースがベストプラクティスから外れている領域を記録する` : ""}
 
-### ${SCAN_DEPTH == "Comprehensive" ? "7" : "6"}. Output Format
+### ${SCAN_DEPTH == "Comprehensive" ? "7" : "6"}. 出力形式
 
-Create exemplars.md with:
-1. Introduction explaining the purpose of the document
-2. Table of contents with links to categories
-3. Organized sections based on ${CATEGORIZATION}
-4. Up to ${MAX_EXAMPLES_PER_CATEGORY} exemplars per category
-5. Conclusion with recommendations for maintaining code quality
+exemplars.mdを次の構成で作成する:
+1. ドキュメントの目的を説明する導入
+2. カテゴリへのリンクを含む目次
+3. ${CATEGORIZATION}に基づいて整理したセクション
+4. カテゴリごとに最大${MAX_EXAMPLES_PER_CATEGORY}件のコード例
+5. コード品質を維持するための推奨事項を含む結論
 
-The document should be actionable for developers needing guidance on implementing new features consistent with existing patterns.
+このドキュメントは、既存パターンと一貫した新機能を実装するための指針を必要とする開発者が、実際に活用できる内容にする。
 
-Important: Only include actual files from the codebase. Verify all file paths exist. Do not include placeholder or hypothetical examples.
+重要: コードベースに実在するファイルだけを含める。すべてのファイルパスが存在することを確認する。プレースホルダーや仮想的な例を含めない。
 "
 
-## Expected Output
-Upon running this prompt, GitHub Copilot will scan your codebase and generate an exemplars.md file containing real references to high-quality code examples in your repository, organized according to your selected parameters.
+## 期待される出力
+このプロンプトを実行すると、GitHub Copilotがコードベースを走査し、選択したパラメーターに従って整理された、Repository内の高品質なコード例への実在する参照を含むexemplars.mdファイルを生成します。

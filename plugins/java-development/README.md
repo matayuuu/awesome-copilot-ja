@@ -1,8 +1,8 @@
-# Java Development Plugin
+# Java Development プラグイン
 
-Comprehensive collection of prompts and instructions for Java development including Spring Boot, Quarkus, testing, documentation, and best practices.
+Spring Boot、Quarkus、テスト、ドキュメント、ベストプラクティスを含む Java 開発向け prompts と instructions の包括的なコレクションです。
 
-## Installation
+## インストール
 
 ```bash
 # Using Copilot CLI

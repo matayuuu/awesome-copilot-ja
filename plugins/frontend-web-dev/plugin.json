@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "frontend-web-dev",
-  "description": "Essential prompts, instructions, and chat modes for modern frontend web development including React, Angular, Vue, TypeScript, and CSS frameworks.",
+  "description": "React、Angular、Vue、TypeScript、CSS frameworks を含む最新のフロントエンド Web 開発向けの基本的な prompts、instructions、chat modes です。",
   "version": "1.0.0",
   "author": {
     "name": "Awesome Copilot Community"

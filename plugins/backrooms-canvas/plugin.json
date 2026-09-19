@@ -1,6 +1,6 @@
 {
   "name": "backrooms-canvas",
-  "description": "Wander an endless first-person backrooms in a Copilot canvas while agents work; their status ghost-writes on the walls.",
+  "description": "エージェントが作業している間、Copilot canvas の無限に続く一人称視点の backrooms を歩き回れます。エージェントの状態は壁にゴーストライティングされます。",
   "version": "1.0.0",
   "author": {
     "name": "John Haugabook",

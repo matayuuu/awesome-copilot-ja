@@ -1,6 +1,6 @@
 ---
-name: "Daily Issues Report"
-description: "Generates a daily summary of open issues and recent activity as a GitHub issue"
+name: "毎日のIssueレポート"
+description: "オープンIssueと最近の活動の日次サマリーをGitHub Issueとして作成します"
 on:
   schedule: daily on weekdays
 permissions:
@@ -12,12 +12,12 @@ safe-outputs:
     labels: [report]
 ---
 
-## Daily Issues Report
+## 毎日のIssueレポート
 
-Create a daily summary of open issues for the team.
+チーム向けにオープンIssueの日次サマリーを作成します。
 
-## What to Include
+## 含める内容
 
-- New issues opened in the last 24 hours
-- Issues closed or resolved
-- Stale issues that need attention
+- 過去24時間に作成された新しいIssue
+- クローズまたは解決されたIssue
+- 対応が必要な古いIssue

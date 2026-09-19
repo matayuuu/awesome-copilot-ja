@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "token-pacman",
-  "description": "Visualizes live session AI-credit usage as a Pac-Man board with pellets, ghosts, fruit milestones, and game-over limits.",
+  "description": "セッションのAIクレジット使用量を、ドット、ゴースト、フルーツのマイルストーン、ゲームオーバー制限を備えたパックマンボードとして可視化します。",
   "version": "1.0.2",
   "author": {
     "name": "James Montemagno",

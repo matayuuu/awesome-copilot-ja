@@ -1,8 +1,8 @@
 # React 18 Upgrade Plugin
 
-Enterprise toolkit for migrating React 16/17 class-component codebases to React 18.3.1. Includes six specialized agents and seven skills targeting the specific challenges of upgrading legacy class-heavy applications.
+React 16/17のクラスコンポーネント中心のコードベースをReact 18.3.1へ移行するためのエンタープライズ向けツールキットです。レガシーなクラス中心アプリケーションのアップグレードに特化した6つのエージェントと7つのSkillを含みます。
 
-## Installation
+## インストール
 
 ```bash
 copilot plugin install react18-upgrade@awesome-copilot

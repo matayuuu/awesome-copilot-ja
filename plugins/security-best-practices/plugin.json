@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "security-best-practices",
-  "description": "Security frameworks, accessibility guidelines, performance optimization, and code quality best practices for building secure, maintainable, and high-performance applications.",
+  "description": "安全で保守しやすく、高性能なアプリケーションを構築するためのセキュリティフレームワーク、アクセシビリティガイドライン、パフォーマンス最適化、コード品質のベストプラクティスです。",
   "version": "1.0.0",
   "author": {
     "name": "Awesome Copilot Community"

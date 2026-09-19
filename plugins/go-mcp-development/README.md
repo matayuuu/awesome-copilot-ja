@@ -1,8 +1,8 @@
-# Go MCP Server Development Plugin
+# Go MCP Server Development プラグイン
 
-Complete toolkit for building Model Context Protocol (MCP) servers in Go using the official github.com/modelcontextprotocol/go-sdk. Includes instructions for best practices, a prompt for generating servers, and an expert chat mode for guidance.
+公式 github.com/modelcontextprotocol/go-sdk を使って Go で Model Context Protocol（MCP）server を構築するための完全なツールキットです。ベストプラクティスの instructions、server 生成用 prompt、ガイダンスを提供する expert chat mode を含みます。
 
-## Installation
+## インストール
 
 ```bash
 # Using Copilot CLI

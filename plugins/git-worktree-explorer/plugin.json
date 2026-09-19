@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "git-worktree-explorer",
-  "description": "Visualize the active Git repository through worktrees, branches, commits, and optional GitHub pull request context.",
+  "description": "worktree、branch、commit、任意の GitHub pull request コンテキストを通して、アクティブな Git リポジトリを可視化します。",
   "version": "1.0.0",
   "author": {
     "name": "James Montemagno",

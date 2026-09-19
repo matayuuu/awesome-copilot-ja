@@ -1,6 +1,6 @@
 ---
 name: php-mcp-server-generator
-description: 'Generate a complete PHP Model Context Protocol server project with tools, resources, prompts, and tests using the official PHP SDK'
+description: 'php-mcp-server-generator に関する作業を支援する Skill です。対象のファイルや設定を確認し、必要な手順、検証方法、注意点を案内します。対象技術の調査、実装、運用、トラブルシューティングに使用します。'
 ---
 
 # PHP MCP Server Generator
@@ -192,7 +192,7 @@ class ExampleTool
 {
     /**
      * Performs a greeting with the provided name.
-     * 
+     *
      * @param string $name The name to greet
      * @return string A greeting message
      */
@@ -201,7 +201,7 @@ class ExampleTool
     {
         return "Hello, {$name}!";
     }
-    
+
     /**
      * Performs arithmetic calculations.
      */
@@ -216,7 +216,7 @@ class ExampleTool
             'add' => $a + $b,
             'subtract' => $a - $b,
             'multiply' => $a * $b,
-            'divide' => $b != 0 ? $a / $b : 
+            'divide' => $b != 0 ? $a / $b :
                 throw new \InvalidArgumentException('Division by zero'),
             default => throw new \InvalidArgumentException('Invalid operation')
         };
@@ -328,7 +328,7 @@ class PromptGenerator
             ]
         ];
     }
-    
+
     /**
      * Generates documentation prompt.
      */
@@ -360,43 +360,43 @@ use App\Tools\ExampleTool;
 class ToolsTest extends TestCase
 {
     private ExampleTool $tool;
-    
+
     protected function setUp(): void
     {
         $this->tool = new ExampleTool();
     }
-    
+
     public function testGreet(): void
     {
         $result = $this->tool->greet('World');
         $this->assertSame('Hello, World!', $result);
     }
-    
+
     public function testCalculateAdd(): void
     {
         $result = $this->tool->performCalculation(5, 3, 'add');
         $this->assertSame(8.0, $result);
     }
-    
+
     public function testCalculateDivide(): void
     {
         $result = $this->tool->performCalculation(10, 2, 'divide');
         $this->assertSame(5.0, $result);
     }
-    
+
     public function testCalculateDivideByZero(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Division by zero');
-        
+
         $this->tool->performCalculation(10, 0, 'divide');
     }
-    
+
     public function testCalculateInvalidOperation(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid operation');
-        
+
         $this->tool->performCalculation(5, 3, 'modulo');
     }
 }

@@ -1,8 +1,8 @@
 # OpenAPI to Application - Go Plugin
 
-Generate production-ready Go applications from OpenAPI specifications. Includes project scaffolding, handler generation, middleware setup, and Go best practices for REST APIs.
+OpenAPI仕様から本番対応のGoアプリケーションを生成します。プロジェクトのスキャフォールディング、ハンドラー生成、ミドルウェア設定、REST API向けGoのベストプラクティスを含みます。
 
-## Installation
+## インストール
 
 ```bash
 # Using Copilot CLI

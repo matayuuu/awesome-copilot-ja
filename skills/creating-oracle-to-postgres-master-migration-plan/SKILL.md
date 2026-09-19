@@ -1,11 +1,11 @@
 ---
 name: creating-oracle-to-postgres-master-migration-plan
-description: 'Discovers all projects in a .NET solution, classifies each for Oracle-to-PostgreSQL migration eligibility, and produces a persistent master migration plan. Use when starting a multi-project Oracle-to-PostgreSQL migration, creating a migration inventory, or assessing which .NET projects contain Oracle dependencies.'
+description: '.NETソリューション内の全プロジェクトを検出し、OracleからPostgreSQLへの移行対象かどうかを分類して、永続的なマスター移行計画を作成する。複数プロジェクトのOracleからPostgreSQLへの移行開始、移行インベントリの作成、Oracle依存関係を含む.NETプロジェクトの評価に使用する。'
 ---
 
-# Creating an Oracle-to-PostgreSQL Master Migration Plan
+# OracleからPostgreSQLへのマスター移行計画の作成
 
-Analyze a .NET solution, classify every project for Oracle→PostgreSQL migration eligibility, and write a structured plan that downstream agents and skills can parse.
+.NETソリューションを分析し、すべてのプロジェクトをOracle→PostgreSQLの移行対象かどうかで分類して、後続のエージェントやSkillが解析できる構造化された計画を作成する。
 
 ## Workflow
 
@@ -17,37 +17,37 @@ Progress:
 - [ ] Step 4: Write the plan file
 ```
 
-**Step 1: Discover projects**
+**ステップ1: プロジェクトを検出する**
 
-Find the Solution File (it has a `.sln` or `.slnx` extension) in the workspace root (ask the user if multiple exist). Parse it to extract all `.csproj` project references. For each project, note the name, path, and type (class library, web API, console, test, etc.).
+ワークスペースのルートでソリューションファイル（拡張子は `.sln` または `.slnx`）を探す。複数ある場合はユーザーに確認する。ファイルを解析して、すべての `.csproj` プロジェクト参照を抽出する。各プロジェクトの名前、パス、種類（クラスライブラリ、Web API、コンソール、テストなど）を記録する。
 
-**Step 2: Classify each project**
+**ステップ2: 各プロジェクトを分類する**
 
-Scan every non-test project for Oracle indicators:
+テスト以外の全プロジェクトを走査し、Oracleを示す次の要素を探す。
 
-- NuGet references: `Oracle.ManagedDataAccess`, `Oracle.EntityFrameworkCore` (check `.csproj` and `packages.config`)
-- Config entries: Oracle connection strings in `appsettings.json`, `web.config`, `app.config`
-- Code usage: `OracleConnection`, `OracleCommand`, `OracleDataReader`
-- DDL cross-references under `.github/oracle-to-postgres-migration/DDL/Oracle/` (if present)
+- NuGet参照: `Oracle.ManagedDataAccess`、`Oracle.EntityFrameworkCore`（`.csproj` と `packages.config` を確認）
+- 構成項目: `appsettings.json`、`web.config`、`app.config` 内のOracle接続文字列
+- コードでの使用: `OracleConnection`、`OracleCommand`、`OracleDataReader`
+- `.github/oracle-to-postgres-migration/DDL/Oracle/` 配下のDDL相互参照（存在する場合）
 
-Assign one classification per project:
+プロジェクトごとに次のいずれか1つを割り当てる。
 
-| Classification | Meaning |
+| 分類 | 意味 |
 |---|---|
-| **MIGRATE** | Has Oracle interactions requiring conversion |
-| **SKIP** | No Oracle indicators (UI-only, shared utility, etc.) |
-| **ALREADY_MIGRATED** | A `-postgres` or `.Postgres` duplicate exists and appears processed |
-| **TEST_PROJECT** | Test project; handled by the testing workflow |
+| **MIGRATE** | 変換が必要なOracleとのやり取りがある |
+| **SKIP** | Oracleを示す要素がない（UI専用、共有ユーティリティなど） |
+| **ALREADY_MIGRATED** | `-postgres` または `.Postgres` の複製が存在し、処理済みと判断できる |
+| **TEST_PROJECT** | テストプロジェクト。テスト用Workflowで処理する |
 
-**Step 3: Confirm with user**
+**ステップ3: ユーザーに確認する**
 
-Present the classified list. Let the user adjust classifications or migration ordering before finalizing.
+分類済みの一覧を提示する。確定前に、ユーザーが分類または移行順序を調整できるようにする。
 
-**Step 4: Write the plan file**
+**ステップ4: 計画ファイルを書く**
 
-Save to: `.github/oracle-to-postgres-migration/Reports/MasterMigrationPlan.md`
+保存先: `.github/oracle-to-postgres-migration/Reports/MasterMigrationPlan.md`
 
-Use this exact template — downstream consumers depend on the structure:
+後続の利用者がこの構造に依存するため、次のテンプレートを正確に使用する。
 
 ````markdown
 # Master Migration Plan
@@ -85,4 +85,4 @@ Use this exact template — downstream consumers depend on the structure:
 2. **{ProjectName}** — {rationale}
 ````
 
-Order projects so that shared/foundational libraries are migrated before their dependents.
+共有ライブラリや基盤ライブラリが依存先より先に移行されるよう、プロジェクトを並べる。

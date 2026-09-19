@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "php-mcp-development",
-  "description": "Comprehensive resources for building Model Context Protocol servers using the official PHP SDK with attribute-based discovery, including best practices, project generation, and expert assistance",
+  "description": "公式PHP SDKを使い、属性ベースの検出に対応したModel Context Protocolサーバーを構築するための総合リソース。ベストプラクティス、プロジェクト生成、専門家による支援を含みます。",
   "version": "1.0.0",
   "author": {
     "name": "Awesome Copilot Community"

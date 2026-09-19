@@ -1,6 +1,6 @@
 ---
 name: repo-standardizer
-description: Polish any GitHub repository's surface — labels (emoji rating tiers, P0–P3 priority, impact severity), issue forms, PR template, CI workflows, CODEOWNERS, rulesets, docs. Repo meta & config only — no code logic touched. Use when creating a new repo or polishing an existing one.
+description: 'repo-standardizer に関する作業を支援する Skill です。対象のファイルや設定を確認し、必要な手順、検証方法、注意点を案内します。対象技術の調査、実装、運用、トラブルシューティングに使用します。'
 ---
 
 # GitHub Repo Standardizer
@@ -111,7 +111,7 @@ agent that auto-files PRs / auto-fixes issues.
 - **No** → skip that dimension entirely — never add `r:*` / bot labels to a
   repo with no automation.
 
-## Workflow
+## ワークフロー
 
 1. **Preflight** (above). If auth or access fails, stop with a clear message.
 2. **Dry-run plan** — show the user a concise table of what will be created/updated/skipped. Get confirmation for: rulesets, branch deletion/protection changes, org-level changes, and anything destructive.

@@ -1,65 +1,65 @@
 ---
 name: java-springboot
-description: 'Get best practices for developing applications with Spring Boot.'
+description: 'Spring Bootアプリケーション開発のベストプラクティスを得る。'
 ---
 
-# Spring Boot Best Practices
+# Spring Bootのベストプラクティス
 
-Your goal is to help me write high-quality Spring Boot applications by following established best practices.
+確立されたベストプラクティスに従って、高品質なSpring Bootアプリケーションを書くことを支援する。
 
-## Project Setup & Structure
+## プロジェクト設定と構成
 
-- **Build Tool:** Use Maven (`pom.xml`) or Gradle (`build.gradle`) for dependency management.
-- **Starters:** Use Spring Boot starters (e.g., `spring-boot-starter-web`, `spring-boot-starter-data-jpa`) to simplify dependency management.
-- **Package Structure:** Organize code by feature/domain (e.g., `com.example.app.order`, `com.example.app.user`) rather than by layer (e.g., `com.example.app.controller`, `com.example.app.service`).
+- **ビルドツール:** 依存関係管理にはMaven（`pom.xml`）またはGradle（`build.gradle`）を使う。
+- **Starter:** 依存関係管理を簡単にするため、Spring Boot starter（例: `spring-boot-starter-web`、`spring-boot-starter-data-jpa`）を使う。
+- **パッケージ構成:** レイヤー単位（例: `com.example.app.controller`、`com.example.app.service`）ではなく、機能またはドメイン単位（例: `com.example.app.order`、`com.example.app.user`）でコードを整理する。
 
-## Dependency Injection & Components
+## 依存性注入とコンポーネント
 
-- **Constructor Injection:** Always use constructor-based injection for required dependencies. This makes components easier to test and dependencies explicit.
-- **Immutability:** Declare dependency fields as `private final`.
-- **Component Stereotypes:** Use `@Component`, `@Service`, `@Repository`, and `@Controller`/`@RestController` annotations appropriately to define beans.
+- **コンストラクター注入:** 必須依存関係には常にコンストラクター注入を使う。これによりコンポーネントをテストしやすくなり、依存関係も明示される。
+- **不変性:** 依存関係のフィールドを `private final` として宣言する。
+- **コンポーネントステレオタイプ:** Beanを定義するために、`@Component`、`@Service`、`@Repository`、`@Controller`/`@RestController` アノテーションを適切に使う。
 
-## Configuration
+## 設定
 
-- **Externalized Configuration:** Use `application.yml` (or `application.properties`) for configuration. YAML is often preferred for its readability and hierarchical structure.
-- **Type-Safe Properties:** Use `@ConfigurationProperties` to bind configuration to strongly-typed Java objects.
-- **Profiles:** Use Spring Profiles (`application-dev.yml`, `application-prod.yml`) to manage environment-specific configurations.
-- **Secrets Management:** Do not hardcode secrets. Use environment variables, or a dedicated secret management tool like HashiCorp Vault or AWS Secrets Manager.
+- **外部化設定:** 設定には `application.yml`（または `application.properties`）を使う。YAMLは読みやすく階層構造を表現しやすいため、よく選ばれる。
+- **型安全なプロパティ:** `@ConfigurationProperties` を使って、強く型付けされたJavaオブジェクトに設定をバインドする。
+- **プロファイル:** Spring Profiles（`application-dev.yml`、`application-prod.yml`）で環境固有の設定を管理する。
+- **シークレット管理:** シークレットをハードコードしない。環境変数、またはHashiCorp VaultやAWS Secrets Managerのような専用のシークレット管理ツールを使う。
 
-## Web Layer (Controllers)
+## Web層（コントローラー）
 
-- **RESTful APIs:** Design clear and consistent RESTful endpoints.
-- **DTOs (Data Transfer Objects):** Use DTOs to expose and consume data in the API layer. Do not expose JPA entities directly to the client.
-- **Validation:** Use Java Bean Validation (JSR 380) with annotations (`@Valid`, `@NotNull`, `@Size`) on DTOs to validate request payloads.
-- **Error Handling:** Implement a global exception handler using `@ControllerAdvice` and `@ExceptionHandler` to provide consistent error responses.
+- **RESTful API:** 明確で一貫したRESTfulエンドポイントを設計する。
+- **DTO（データ転送オブジェクト）:** API層でデータを公開・受け取るにはDTOを使う。JPAエンティティをクライアントへ直接公開しない。
+- **バリデーション:** DTOのリクエスト本文を検証するため、アノテーション（`@Valid`、`@NotNull`、`@Size`）付きのJava Bean Validation（JSR 380）を使う。
+- **エラーハンドリング:** 一貫したエラーレスポンスを提供するため、`@ControllerAdvice` と `@ExceptionHandler` を使ったグローバル例外ハンドラーを実装する。
 
-## Service Layer
+## サービス層
 
-- **Business Logic:** Encapsulate all business logic within `@Service` classes.
-- **Statelessness:** Services should be stateless.
-- **Transaction Management:** Use `@Transactional` on service methods to manage database transactions declaratively. Apply it at the most granular level necessary.
+- **ビジネスロジック:** すべてのビジネスロジックを `@Service` クラス内にカプセル化する。
+- **ステートレス性:** サービスはステートレスにする。
+- **トランザクション管理:** データベーストランザクションを宣言的に管理するため、サービスメソッドに `@Transactional` を使う。必要な最小粒度で適用する。
 
-## Data Layer (Repositories)
+## データ層（リポジトリ）
 
-- **Spring Data JPA:** Use Spring Data JPA repositories by extending `JpaRepository` or `CrudRepository` for standard database operations.
-- **Custom Queries:** For complex queries, use `@Query` or the JPA Criteria API.
-- **Projections:** Use DTO projections to fetch only the necessary data from the database.
+- **Spring Data JPA:** 標準的なデータベース操作には、`JpaRepository` または `CrudRepository` を拡張したSpring Data JPAリポジトリを使う。
+- **カスタムクエリ:** 複雑なクエリには `@Query` またはJPA Criteria APIを使う。
+- **プロジェクション:** データベースから必要なデータだけを取得するにはDTOプロジェクションを使う。
 
-## Logging
+## ロギング
 
-- **SLF4J:** Use the SLF4J API for logging.
-- **Logger Declaration:** `private static final Logger logger = LoggerFactory.getLogger(MyClass.class);`
-- **Parameterized Logging:** Use parameterized messages (`logger.info("Processing user {}...", userId);`) instead of string concatenation to improve performance.
+- **SLF4J:** ロギングにはSLF4J APIを使う。
+- **Loggerの宣言:** `private static final Logger logger = LoggerFactory.getLogger(MyClass.class);`
+- **パラメーター化ロギング:** パフォーマンス向上のため、文字列連結ではなくパラメーター化メッセージ（`logger.info("Processing user {}...", userId);`）を使う。
 
-## Testing
+## テスト
 
-- **Unit Tests:** Write unit tests for services and components using JUnit 5 and a mocking framework like Mockito.
-- **Integration Tests:** Use `@SpringBootTest` for integration tests that load the Spring application context.
-- **Test Slices:** Use test slice annotations like `@WebMvcTest` (for controllers) or `@DataJpaTest` (for repositories) to test specific parts of the application in isolation.
-- **Testcontainers:** Consider using Testcontainers for reliable integration tests with real databases, message brokers, etc.
+- **単体テスト:** JUnit 5とMockitoのようなモックフレームワークを使って、サービスとコンポーネントの単体テストを書く。
+- **統合テスト:** Springアプリケーションコンテキストを読み込む統合テストには `@SpringBootTest` を使う。
+- **テストスライス:** アプリケーションの特定部分を分離してテストするには、`@WebMvcTest`（コントローラー用）や `@DataJpaTest`（リポジトリ用）のようなテストスライスアノテーションを使う。
+- **Testcontainers:** 実データベースやメッセージブローカーなどを使う信頼性の高い統合テストには、Testcontainersを検討する。
 
-## Security
+## セキュリティ
 
-- **Spring Security:** Use Spring Security for authentication and authorization.
-- **Password Encoding:** Always encode passwords using a strong hashing algorithm like BCrypt.
-- **Input Sanitization:** Prevent SQL injection by using Spring Data JPA or parameterized queries. Prevent Cross-Site Scripting (XSS) by properly encoding output.
+- **Spring Security:** 認証と認可にはSpring Securityを使う。
+- **パスワードのエンコード:** BCryptのような強力なハッシュアルゴリズムで、パスワードを常にエンコードする。
+- **入力のサニタイズ:** Spring Data JPAまたはパラメーター化クエリを使ってSQLインジェクションを防ぐ。出力を適切にエンコードしてクロスサイトスクリプティング（XSS）を防ぐ。

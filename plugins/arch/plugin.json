@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "arch",
-  "description": "Architecture and modernization toolkit: produce a cited architecture document for a locally-cloned repo, and generate a phased modernization plan that auto-runs Documentation mode when needed.",
+  "description": "アーキテクチャとモダナイゼーションのツールキット。ローカルに clone したリポジトリの出典付きアーキテクチャ文書を作成し、必要に応じて Documentation mode を自動実行する段階的なモダナイゼーション計画を生成します。",
   "version": "1.0.0",
   "keywords": [
     "architecture",

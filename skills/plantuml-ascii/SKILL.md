@@ -1,13 +1,13 @@
 ---
 name: plantuml-ascii
-description: "Generate ASCII art diagrams using PlantUML text mode. Use when user asks to create ASCII diagrams, text-based diagrams, terminal-friendly diagrams, or mentions plantuml ascii, text diagram, ascii art diagram. Supports: Converting PlantUML diagrams to ASCII art, Creating sequence diagrams, class diagrams, flowcharts in ASCII format, Generating Unicode-enhanced ASCII art with -utxt flag"
+description: 'plantuml-ascii に関する作業を支援する Skill です。対象のファイルや設定を確認し、必要な手順、検証方法、注意点を案内します。対象技術の調査、実装、運用、トラブルシューティングに使用します。'
 license: MIT
 allowed-tools: Bash, Write, Read
 ---
 
 # PlantUML ASCII Art Diagram Generator
 
-## Overview
+## 概要
 
 Create text-based ASCII art diagrams using PlantUML. Perfect for documentation in terminal environments, README files, emails, or any scenario where graphical diagrams aren't suitable.
 
@@ -20,7 +20,7 @@ PlantUML can generate diagrams as plain text (ASCII art) instead of images. This
 - Documentation that needs to be version-controlled
 - Environments where graphical tools aren't available
 
-## Installation
+## インストール
 
 ```bash
 # macOS
@@ -286,7 +286,7 @@ plantuml -utxt seq.puml
 cat seq.utxt
 ```
 
-## Troubleshooting
+## トラブルシューティング
 
 **Problem**: Garbled Unicode characters
 

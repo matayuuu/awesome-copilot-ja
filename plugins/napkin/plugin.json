@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "napkin",
-  "description": "Visual whiteboard collaboration for Copilot CLI. Opens an interactive whiteboard in your browser where you can draw, sketch, and add sticky notes — then share everything back with Copilot. Copilot sees your drawings and responds with analysis, suggestions, and ideas.",
+  "description": "Copilot CLI向けのビジュアルホワイトボード共同作業。ブラウザーでインタラクティブなホワイトボードを開き、描画、スケッチ、付箋の追加を行って、その内容をCopilotと共有できます。Copilotは描いた内容を見て、分析、提案、アイデアを返します。",
   "version": "1.0.0",
   "author": {
     "name": "Awesome Copilot Community"

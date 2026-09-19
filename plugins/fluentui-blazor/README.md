@@ -1,8 +1,8 @@
-# Fluent UI Blazor Plugin
+# Fluent UI Blazor プラグイン
 
-Everything you need to build Blazor applications with the [Microsoft Fluent UI Blazor](https://www.fluentui-blazor.net) component library, in one install: the `fluentui-blazor` skill for correct usage patterns, and the official Fluent UI Blazor MCP server for live, version-accurate lookup of components, enums, icons, and documentation.
+[Microsoft Fluent UI Blazor](https://www.fluentui-blazor.net) コンポーネントライブラリで Blazor アプリケーションを構築するために必要なものを 1 回のインストールで揃えます。正しい利用パターン向けの `fluentui-blazor` skill と、コンポーネント、enum、icons、ドキュメントをバージョンに正確にリアルタイム検索できる公式 Fluent UI Blazor MCP server を含みます。
 
-## Installation
+## インストール
 
 ```bash
 copilot plugin install fluentui-blazor@awesome-copilot

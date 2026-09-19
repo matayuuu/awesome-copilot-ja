@@ -1,62 +1,62 @@
 ---
 name: cloud-design-patterns
-description: 'Cloud design patterns for distributed systems architecture covering 42 industry-standard patterns across reliability, performance, messaging, security, and deployment categories. Use when designing, reviewing, or implementing distributed system architectures.'
+description: '信頼性、パフォーマンス、メッセージング、セキュリティ、デプロイの各カテゴリにわたる業界標準の42パターンを扱う、分散システムアーキテクチャ向けクラウド設計パターン。分散システムアーキテクチャを設計、レビュー、実装するときに使用する。'
 ---
 
-# Cloud Design Patterns
+# クラウド設計パターン
 
-Architects design workloads by integrating platform services, functionality, and code to meet both functional and nonfunctional requirements. To design effective workloads, you must understand these requirements and select topologies and methodologies that address the challenges of your workload's constraints. Cloud design patterns provide solutions to many common challenges.
+アーキテクトは、機能要件と非機能要件の両方を満たすために、プラットフォームサービス、機能、コードを統合してワークロードを設計します。効果的なワークロードを設計するには、これらの要件を理解し、ワークロードの制約がもたらす課題に対応できるトポロジと方法論を選択する必要があります。クラウド設計パターンは、多くの一般的な課題に対する解決策を提供します。
 
-System design heavily relies on established design patterns. You can design infrastructure, code, and distributed systems by using a combination of these patterns. These patterns are crucial for building reliable, highly secure, cost-optimized, operationally efficient, and high-performing applications in the cloud.
+システム設計は、確立された設計パターンに大きく依存します。これらのパターンを組み合わせることで、インフラストラクチャ、コード、分散システムを設計できます。クラウド上で信頼性、安全性、コスト効率、運用効率、パフォーマンスに優れたアプリケーションを構築するうえで、これらのパターンは極めて重要です。
 
-The following cloud design patterns are technology-agnostic, which makes them suitable for any distributed system. You can apply these patterns across Azure, other cloud platforms, on-premises setups, and hybrid environments.
+以下のクラウド設計パターンは特定の技術に依存しないため、あらゆる分散システムに適用できます。Azure、その他のクラウドプラットフォーム、オンプレミス構成、ハイブリッド環境で利用できます。
 
-## How Cloud Design Patterns Enhance the Design Process
+## クラウド設計パターンが設計プロセスを向上させる仕組み
 
-Cloud workloads are vulnerable to the fallacies of distributed computing, which are common but incorrect assumptions about how distributed systems operate. Examples of these fallacies include:
+クラウドワークロードは、分散システムの動作に関する一般的ではあるものの誤った思い込みである「分散コンピューティングの誤謬」の影響を受けやすくなります。たとえば、次のような誤謬があります。
 
-- The network is reliable.
-- Latency is zero.
-- Bandwidth is infinite.
-- The network is secure.
-- Topology doesn't change.
-- There's one administrator.
-- Component versioning is simple.
-- Observability implementation can be delayed.
+- ネットワークは信頼できる。
+- レイテンシはゼロである。
+- 帯域幅は無限である。
+- ネットワークは安全である。
+- トポロジは変化しない。
+- 管理者は1人である。
+- コンポーネントのバージョン管理は単純である。
+- 可観測性の実装は後回しにできる。
 
-These misconceptions can result in flawed workload designs. Design patterns don't eliminate these misconceptions but help raise awareness, provide compensation strategies, and provide mitigations. Each cloud design pattern has trade-offs. Focus on why you should choose a specific pattern instead of how to implement it.
+こうした誤解は、欠陥のあるワークロード設計につながる可能性があります。設計パターンは誤解そのものをなくすものではありませんが、問題への認識を高め、補完戦略や軽減策を提供します。各クラウド設計パターンにはトレードオフがあります。実装方法ではなく、特定のパターンを選ぶ理由に注目してください。
 
 ---
 
-## References
+## 参考資料
 
-| Reference | When to load |
+| 参考資料 | 読み込む場面 |
 |---|---|
-| [Reliability & Resilience Patterns](references/reliability-resilience.md) | Ambassador, Bulkhead, Circuit Breaker, Compensating Transaction, Retry, Health Endpoint Monitoring, Leader Election, Saga, Sequential Convoy |
-| [Performance Patterns](references/performance.md) | Async Request-Reply, Cache-Aside, CQRS, Index Table, Materialized View, Priority Queue, Queue-Based Load Leveling, Rate Limiting, Sharding, Throttling |
-| [Messaging & Integration Patterns](references/messaging-integration.md) | Choreography, Claim Check, Competing Consumers, Messaging Bridge, Pipes and Filters, Publisher-Subscriber, Scheduler Agent Supervisor |
-| [Architecture & Design Patterns](references/architecture-design.md) | Anti-Corruption Layer, Backends for Frontends, Gateway Aggregation/Offloading/Routing, Sidecar, Strangler Fig |
-| [Deployment & Operational Patterns](references/deployment-operational.md) | Compute Resource Consolidation, Deployment Stamps, External Configuration Store, Geode, Static Content Hosting |
-| [Security Patterns](references/security.md) | Federated Identity, Quarantine, Valet Key |
-| [Event-Driven Architecture Patterns](references/event-driven.md) | Event Sourcing |
-| [Best Practices & Pattern Selection](references/best-practices.md) | Selecting appropriate patterns, Well-Architected Framework alignment, documentation, monitoring |
-| [Azure Service Mappings](references/azure-service-mappings.md) | Common Azure services for each pattern category |
+| [信頼性と回復性のパターン](references/reliability-resilience.md) | Ambassador、Bulkhead、Circuit Breaker、Compensating Transaction、Retry、Health Endpoint Monitoring、Leader Election、Saga、Sequential Convoy |
+| [パフォーマンスパターン](references/performance.md) | Async Request-Reply、Cache-Aside、CQRS、Index Table、Materialized View、Priority Queue、Queue-Based Load Leveling、Rate Limiting、Sharding、Throttling |
+| [メッセージングと統合のパターン](references/messaging-integration.md) | Choreography、Claim Check、Competing Consumers、Messaging Bridge、Pipes and Filters、Publisher-Subscriber、Scheduler Agent Supervisor |
+| [アーキテクチャと設計のパターン](references/architecture-design.md) | Anti-Corruption Layer、Backends for Frontends、Gateway Aggregation／Offloading／Routing、Sidecar、Strangler Fig |
+| [デプロイと運用のパターン](references/deployment-operational.md) | Compute Resource Consolidation、Deployment Stamps、External Configuration Store、Geode、Static Content Hosting |
+| [セキュリティパターン](references/security.md) | Federated Identity、Quarantine、Valet Key |
+| [イベント駆動アーキテクチャパターン](references/event-driven.md) | Event Sourcing |
+| [ベストプラクティスとパターン選択](references/best-practices.md) | 適切なパターンの選択、Well-Architected Frameworkとの整合、ドキュメント化、監視 |
+| [Azureサービスの対応関係](references/azure-service-mappings.md) | 各パターンカテゴリで一般的なAzureサービス |
 
 ---
 
-## Pattern Categories at a Glance
+## パターンカテゴリ一覧
 
-| Category | Patterns | Focus |
+| カテゴリ | パターン数 | 主な対象 |
 |---|---|---|
-| Reliability & Resilience | 9 patterns | Fault tolerance, self-healing, graceful degradation |
-| Performance | 10 patterns | Caching, scaling, load management, data optimization |
-| Messaging & Integration | 7 patterns | Decoupling, event-driven communication, workflow coordination |
-| Architecture & Design | 7 patterns | System boundaries, API gateways, migration strategies |
-| Deployment & Operational | 5 patterns | Infrastructure management, geo-distribution, configuration |
-| Security | 3 patterns | Identity, access control, content validation |
-| Event-Driven Architecture | 1 pattern | Event sourcing and audit trails |
+| 信頼性と回復性 | 9パターン | フォールトトレランス、自己修復、グレースフルデグラデーション |
+| パフォーマンス | 10パターン | キャッシュ、スケーリング、負荷管理、データ最適化 |
+| メッセージングと統合 | 7パターン | 疎結合化、イベント駆動通信、ワークフロー調整 |
+| アーキテクチャと設計 | 7パターン | システム境界、APIゲートウェイ、移行戦略 |
+| デプロイと運用 | 5パターン | インフラストラクチャ管理、地理分散、構成 |
+| セキュリティ | 3パターン | ID、アクセス制御、コンテンツ検証 |
+| イベント駆動アーキテクチャ | 1パターン | イベントソーシングと監査証跡 |
 
-## External Links
+## 外部リンク
 
 - [Cloud Design Patterns - Azure Architecture Center](https://learn.microsoft.com/azure/architecture/patterns/)
 - [Azure Well-Architected Framework](https://learn.microsoft.com/azure/architecture/framework/)

@@ -1,15 +1,14 @@
 ---
 name: typespec-api-operations
-description: 'Add GET, POST, PATCH, and DELETE operations to a TypeSpec API plugin with proper routing, parameters, and adaptive cards'
+description: '適切なルーティング、パラメーター、Adaptive Cardsを備えたGET、POST、PATCH、DELETE操作をTypeSpec APIプラグインに追加します。'
 ---
+# TypeSpec API操作の追加
 
-# Add TypeSpec API Operations
+Microsoft 365 Copilot向けの既存TypeSpec APIプラグインにRESTful操作を追加します。
 
-Add RESTful operations to an existing TypeSpec API plugin for Microsoft 365 Copilot.
+## GET操作の追加
 
-## Adding GET Operations
-
-### Simple GET - List All Items
+### 単純なGET - すべての項目を一覧表示
 ```typescript
 /**
  * List all items.
@@ -18,7 +17,7 @@ Add RESTful operations to an existing TypeSpec API plugin for Microsoft 365 Copi
 @get op listItems(): Item[];
 ```
 
-### GET with Query Parameter - Filter Results
+### クエリパラメーター付きGET - 結果を絞り込む
 ```typescript
 /**
  * List items filtered by criteria.
@@ -28,7 +27,7 @@ Add RESTful operations to an existing TypeSpec API plugin for Microsoft 365 Copi
 @get op listItems(@query userId?: integer): Item[];
 ```
 
-### GET with Path Parameter - Get Single Item
+### パスパラメーター付きGET - 1件の項目を取得
 ```typescript
 /**
  * Get a specific item by ID.
@@ -38,7 +37,7 @@ Add RESTful operations to an existing TypeSpec API plugin for Microsoft 365 Copi
 @get op getItem(@path id: integer): Item;
 ```
 
-### GET with Adaptive Card
+### Adaptive Card付きGET
 ```typescript
 /**
  * List items with adaptive card visualization.
@@ -52,7 +51,7 @@ Add RESTful operations to an existing TypeSpec API plugin for Microsoft 365 Copi
 @get op listItems(): Item[];
 ```
 
-**Create the Adaptive Card** (`appPackage/item-card.json`):
+**Adaptive Cardを作成する**（`appPackage/item-card.json`）：
 ```json
 {
   "type": "AdaptiveCard",
@@ -86,9 +85,9 @@ Add RESTful operations to an existing TypeSpec API plugin for Microsoft 365 Copi
 }
 ```
 
-## Adding POST Operations
+## POST操作の追加
 
-### Simple POST - Create Item
+### 単純なPOST - 項目を作成
 ```typescript
 /**
  * Create a new item.
@@ -104,7 +103,7 @@ model CreateItemRequest {
 }
 ```
 
-### POST with Confirmation
+### 確認付きPOST
 ```typescript
 /**
  * Create a new item with confirmation.
@@ -125,9 +124,9 @@ model CreateItemRequest {
 op createItem(@body item: CreateItemRequest): Item;
 ```
 
-## Adding PATCH Operations
+## PATCH操作の追加
 
-### Simple PATCH - Update Item
+### 単純なPATCH - 項目を更新
 ```typescript
 /**
  * Update an existing item.
@@ -147,7 +146,7 @@ model UpdateItemRequest {
 }
 ```
 
-### PATCH with Confirmation
+### 確認付きPATCH
 ```typescript
 /**
  * Update an item with confirmation.
@@ -171,9 +170,9 @@ op updateItem(
 ): Item;
 ```
 
-## Adding DELETE Operations
+## DELETE操作の追加
 
-### Simple DELETE
+### 単純なDELETE
 ```typescript
 /**
  * Delete an item.
@@ -183,7 +182,7 @@ op updateItem(
 @delete op deleteItem(@path id: integer): void;
 ```
 
-### DELETE with Confirmation
+### 確認付きDELETE
 ```typescript
 /**
  * Delete an item with confirmation.
@@ -203,9 +202,9 @@ op updateItem(
 op deleteItem(@path id: integer): void;
 ```
 
-## Complete CRUD Example
+## CRUDの完全な例
 
-### Define the Service and Models
+### Serviceとモデルを定義
 ```typescript
 @service
 @server("https://api.example.com")
@@ -289,9 +288,9 @@ namespace ItemsAPI {
 }
 ```
 
-## Advanced Features
+## 高度な機能
 
-### Multiple Query Parameters
+### 複数のクエリパラメーター
 ```typescript
 @route("/items")
 @get op listItems(
@@ -308,7 +307,7 @@ model ItemList {
 }
 ```
 
-### Header Parameters
+### ヘッダーパラメーター
 ```typescript
 @route("/items")
 @get op listItems(
@@ -317,7 +316,7 @@ model ItemList {
 ): Item[];
 ```
 
-### Custom Response Models
+### カスタムレスポンスモデル
 ```typescript
 @route("/items/{id}")
 @delete op deleteItem(@path id: integer): DeleteResponse;
@@ -329,7 +328,7 @@ model DeleteResponse {
 }
 ```
 
-### Error Responses
+### エラーレスポンス
 ```typescript
 model ErrorResponse {
   error: {
@@ -343,76 +342,76 @@ model ErrorResponse {
 @get op getItem(@path id: integer): Item | ErrorResponse;
 ```
 
-## Testing Prompts
+## テスト用プロンプト
 
-After adding operations, test with these prompts:
+操作を追加したら、次のプロンプトでテストします。
 
-**GET Operations:**
-- "List all items and show them in a table"
-- "Show me items for user ID 1"
-- "Get the details of item 42"
+**GET操作：**
+- 「すべての項目を一覧表示して表にする」
+- 「ユーザーID 1の項目を表示する」
+- 「項目42の詳細を取得する」
 
-**POST Operations:**
-- "Create a new item with title 'My Task' for user 1"
-- "Add an item: title 'New Feature', description 'Add login'"
+**POST操作：**
+- 「ユーザー1向けにタイトルが「個人タスク」の新しい項目を作成する」
+- 「項目を追加する：タイトルは「新機能」、説明は「ログインを追加」」
 
-**PATCH Operations:**
-- "Update item 10 with title 'Updated Title'"
-- "Change the status of item 5 to completed"
+**PATCH操作：**
+- 「項目10のタイトルを「更新後のタイトル」に更新する」
+- 「項目5のステータスをcompletedに変更する」
 
-**DELETE Operations:**
-- "Delete item 99"
-- "Remove the item with ID 15"
+**DELETE操作：**
+- 「項目99を削除する」
+- 「ID 15の項目を削除する」
 
-## Best Practices
+## ベストプラクティス
 
-### Parameter Naming
-- Use descriptive parameter names: `userId` not `uid`
-- Be consistent across operations
-- Use optional parameters (`?`) for filters
+### パラメーターの命名
+- 説明的なパラメーター名を使う：`uid`ではなく`userId`
+- 操作間で一貫性を保つ
+- 絞り込みには省略可能なパラメーター（`?`）を使う
 
-### Documentation
-- Add JSDoc comments to all operations
-- Describe what each parameter does
-- Document expected responses
+### 文書化
+- すべての操作にJSDocコメントを追加する
+- 各パラメーターの役割を説明する
+- 期待されるレスポンスを文書化する
 
-### Models
-- Use `@visibility(Lifecycle.Read)` for read-only fields like `id`
-- Use `@format("date-time")` for date fields
-- Use union types for enums: `"active" | "completed"`
-- Make optional fields explicit with `?`
+### モデル
+- `id`のような読み取り専用フィールドには`@visibility(Lifecycle.Read)`を使う
+- 日付フィールドには`@format("date-time")`を使う
+- 列挙値にはユニオン型を使う：「"active" | "completed"」
+- 省略可能なフィールドは`?`で明示する
 
-### Confirmations
-- Always add confirmations to destructive operations (DELETE, PATCH)
-- Show key details in confirmation body
-- Use warning emoji (⚠️) for irreversible actions
+### 確認
+- 破壊的操作（DELETE、PATCH）には必ず確認を追加する
+- 確認本文に主要な詳細を表示する
+- 元に戻せない操作には警告絵文字（⚠️）を使う
 
-### Adaptive Cards
-- Keep cards simple and focused
-- Use conditional rendering with `${if(..., ..., 'N/A')}`
-- Include action buttons for common next steps
-- Test data binding with actual API responses
+### Adaptive Cards（アダプティブカード）
+- カードは単純で焦点を絞ったものにする
+- `${if(..., ..., 'N/A')}`で条件付きレンダリングを使う
+- よくある次の手順のアクションボタンを含める
+- 実際のAPIレスポンスでデータバインディングをテストする
 
-### Routing
-- Use RESTful conventions:
-  - `GET /items` - List
-  - `GET /items/{id}` - Get one
-  - `POST /items` - Create
-  - `PATCH /items/{id}` - Update
-  - `DELETE /items/{id}` - Delete
-- Group related operations in the same namespace
-- Use nested routes for hierarchical resources
+### ルーティング
+- RESTfulな規約を使う：
+  - `GET /items` - 一覧
+  - `GET /items/{id}` - 1件取得
+  - `POST /items` - 作成
+  - `PATCH /items/{id}` - 更新
+  - `DELETE /items/{id}` - 削除
+- 関連する操作を同じnamespaceにまとめる
+- 階層リソースにはネストしたルートを使う
 
-## Common Issues
+## よくある問題
 
-### Issue: Parameter not showing in Copilot
-**Solution**: Check parameter is properly decorated with `@query`, `@path`, or `@body`
+### 問題：Copilotにパラメーターが表示されない
+**解決策**：パラメーターに`@query`、`@path`、`@body`が正しく付いているか確認します。
 
-### Issue: Adaptive card not rendering
-**Solution**: Verify file path in `@card` decorator and check JSON syntax
+### 問題：Adaptive Cardが描画されない
+**解決策**：`@card`デコレーターのファイルパスを確認し、JSON構文を検証します。
 
-### Issue: Confirmation not appearing
-**Solution**: Ensure `@capabilities` decorator is properly formatted with confirmation object
+### 問題：確認が表示されない
+**解決策**：`@capabilities`デコレーターが確認オブジェクトとともに正しく記述されていることを確認します。
 
-### Issue: Model property not appearing in response
-**Solution**: Check if property needs `@visibility(Lifecycle.Read)` or remove it if it should be writable
+### 問題：レスポンスにモデルのプロパティが表示されない
+**解決策**：プロパティに`@visibility(Lifecycle.Read)`が必要か確認し、書き込み可能であるべき場合は削除します。

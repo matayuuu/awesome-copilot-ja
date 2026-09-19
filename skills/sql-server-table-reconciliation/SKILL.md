@@ -1,8 +1,7 @@
 ---
 name: sql-server-table-reconciliation
-description: "Use when: comparing SQL Server tables across instances, data migration validation, ETL verification, row mismatch detection, schema drift, reconciliation report, production vs staging comparison. Uses mssql-python driver with Apache Arrow for fast columnar data transfer and comparison."
+description: 'SQL Serverのインスタンス間のテーブル比較、データ移行検証、ETL検証、行の不一致検出、スキーマドリフト、照合レポート、本番環境とステージング環境の比較に使います。高速な列指向データ転送と比較のためにmssql-pythonドライバーとApache Arrowを使用します。'
 ---
-
 # SQL Server Table Reconciliation
 
 Compare identical tables across two SQL Server instances using Python with `mssql-python` driver and Apache Arrow. Detect missing rows, column mismatches, schema drift, and produce a reconciliation report.

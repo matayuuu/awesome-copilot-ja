@@ -1,25 +1,25 @@
 ---
 name: create-github-action-workflow-specification
-description: 'Create a formal specification for an existing GitHub Actions CI/CD workflow, optimized for AI consumption and workflow maintenance.'
+description: '既存のGitHub Actions CI/CD Workflowについて、AIによる利用とWorkflowの保守に最適化した正式な仕様を作成する。'
 ---
 
-# Create GitHub Actions Workflow Specification
+# GitHub Actions Workflow仕様の作成
 
-Create a comprehensive specification for the GitHub Actions workflow: `${input:WorkflowFile}`.
+GitHub Actions Workflow `${input:WorkflowFile}` の包括的な仕様を作成する。
 
-This specification serves as a specification for the workflow's behavior, requirements, and constraints. It must be implementation-agnostic, focusing on **what** the workflow accomplishes rather than **how** it's implemented.
+この仕様は、Workflowの動作、要件、制約を定義する。実装方法ではなくWorkflowが達成する**内容**へ焦点を当て、実装に依存しないものにする。
 
-## AI-Optimized Requirements
+## AI向けに最適化した要件
 
-- **Token Efficiency**: Use concise language without sacrificing clarity
-- **Structured Data**: Leverage tables, lists, and diagrams for dense information
-- **Semantic Clarity**: Use precise terminology consistently throughout
-- **Implementation Abstraction**: Avoid specific syntax, commands, or tool versions
-- **Maintainability**: Design for easy updates as workflow evolves
+- **トークン効率**: 明確さを損なわず簡潔な言葉を使う
+- **構造化データ**: 表、リスト、図を活用して情報を高密度に示す
+- **意味の明確さ**: 全体を通して正確な用語を一貫して使う
+- **実装の抽象化**: 特定の構文、コマンド、ツールバージョンを避ける
+- **保守性**: Workflowの進化に合わせて容易に更新できるよう設計する
 
-## Specification Template
+## 仕様テンプレート
 
-Save as: `/spec/spec-process-cicd-[workflow-name].md`
+保存先: `/spec/spec-process-cicd-[workflow-name].md`
 
 ```md
 ---
@@ -225,26 +225,26 @@ build_artifact: file  # Description: [content type]
 
 ```
 
-## Analysis Instructions
+## 分析手順
 
-When analyzing the workflow file:
+Workflowファイルを分析するときは次に従う。
 
-1. **Extract Core Purpose**: Identify the primary business objective
-2. **Map Job Flow**: Create dependency graph showing execution order
-3. **Identify Contracts**: Document inputs, outputs, and interfaces
-4. **Capture Constraints**: Extract timeouts, permissions, and limits
-5. **Define Quality Gates**: Identify validation and approval points
-6. **Document Error Paths**: Map failure scenarios and recovery
-7. **Abstract Implementation**: Focus on behavior, not syntax
+1. **中核目的の抽出**: 主なビジネス目標を特定する
+2. **Jobフローの対応付け**: 実行順序を示す依存関係グラフを作成する
+3. **契約の特定**: 入力、出力、インターフェイスを記録する
+4. **制約の収集**: タイムアウト、権限、制限を抽出する
+5. **品質ゲートの定義**: 検証点と承認点を特定する
+6. **エラーパスの記録**: 失敗シナリオと復旧を対応付ける
+7. **実装の抽象化**: 構文ではなく動作へ焦点を当てる
 
-## Mermaid Diagram Guidelines
+## Mermaid図の指針
 
-### Flow Types
+### フローの種類
 - **Sequential**: `A --> B --> C`
 - **Parallel**: `A --> B & A --> C; B --> D & C --> D`
 - **Conditional**: `A --> B{Decision}; B -->|Yes| C; B -->|No| D`
 
-### Styling
+### スタイル
 ```mermaid
 style TriggerNode fill:#e1f5fe
 style SuccessNode fill:#e8f5e8
@@ -252,8 +252,8 @@ style FailureNode fill:#ffebee
 style ProcessNode fill:#f3e5f5
 ```
 
-### Complex Workflows
-For workflows with 5+ jobs, use subgraphs:
+### 複雑なWorkflow
+5つ以上のJobがあるWorkflowではsubgraphを使う。
 ```mermaid
 graph TD
     subgraph "Build Phase"
@@ -265,12 +265,12 @@ graph TD
     C --> D
 ```
 
-## Token Optimization Strategies
+## トークン最適化戦略
 
-1. **Use Tables**: Dense information in structured format
-2. **Abbreviate Consistently**: Define once, use throughout
-3. **Bullet Points**: Avoid prose paragraphs
-4. **Code Blocks**: Structured data over narrative
-5. **Cross-Reference**: Link instead of repeat information
+1. **表を使う**: 構造化形式で情報を高密度に示す
+2. **略語を一貫して使う**: 一度定義し、全体で使用する
+3. **箇条書き**: 散文の段落を避ける
+4. **コードブロック**: 文章より構造化データを優先する
+5. **相互参照**: 情報を繰り返さずリンクする
 
-Focus on creating a specification that serves as both documentation and a template for workflow updates.
+文書とWorkflow更新用テンプレートの両方として機能する仕様の作成に集中する。

@@ -1,102 +1,101 @@
 ---
 name: technical-job-search
-description: 'Use this skill when a software engineer asks for help with job search tasks: parsing or analyzing a job description, tailoring a CV/resume, writing a cover letter, evaluating a job offer, or drafting a post-interview follow-up email. Do not activate for general career advice unrelated to an active job search action.'
+description: 'ソフトウェアエンジニアが求人検索に関する作業を依頼したときに使用します。求人票の解析・分析、CV／履歴書の調整、カバーレターの作成、オファーの評価、面接後のフォローアップメールの下書きを扱います。進行中の求人活動に関係しない一般的なキャリア相談では起動しないでください。'
 license: MIT
 argument-hint: 'Optional: the specific task — e.g. "analyze this JD", "tailor my CV", "write cover letter", "evaluate this offer"'
 ---
+# 技術職の求人検索
 
-# Technical Job Search
-
-Helps software engineers with discrete job search tasks: job description analysis, CV tailoring, cover letter writing, offer evaluation, and follow-up emails.
-
----
-
-## Job Description Analysis
-
-When given a job description, extract and structure:
-
-**Must-haves** (explicitly required or repeated multiple times):
-- Technical skills, years of experience, specific domain knowledge
-
-**Nice-to-haves** (preferred, a bonus, or mentioned once):
-- List these separately. Candidates often disqualify themselves over requirements that are actually optional.
-
-**What the role actually solves** (inferred from the description):
-- Summarize in 2-3 sentences what business problem this hire addresses
-
-**Red flags to surface**:
-- "Wear many hats" with no clarity on scope — risk of undefined ownership
-- 10+ must-have technologies for a single role — unrealistic bar or poor team planning
-- No mention of team size, tech stack, or what the role ships — may indicate disorganization
+ソフトウェアエンジニア向けに、求人票の分析、CVの調整、カバーレターの作成、オファーの評価、面接後のメールなど、個別の求人検索作業を支援します。
 
 ---
 
-## CV / Resume Tailoring
+## 求人票の分析
 
-When tailoring a CV to a specific job description:
+求人票を受け取ったら、次の情報を抽出して構造化します。
 
-1. **Match language exactly** — use the same terminology as the JD, not synonyms. If the JD says "distributed systems", do not write "large-scale systems".
-2. **Lead with impact** — every bullet should have a result: "Reduced P99 latency by 40%" not "Worked on performance improvements".
-3. **Quantify everything possible** — users, QPS, team size, cost saved, revenue impact.
-4. **Cut what does not match** — a two-page CV tailored to the role beats a four-page generic one.
-5. **Mirror the seniority signals** — entry roles want "built", senior roles want "designed", staff and principal roles want "drove" or "defined".
+**必須条件**（明示的に必須とされている、または複数回繰り返されている条件）
+- 技術スキル、経験年数、特定分野の知識
 
-Do not keyword-stuff. Write for the hiring manager reading it, not for an ATS parser.
+**歓迎条件**（望ましい、あると有利、または一度だけ言及されている条件）
+- 別に一覧化します。実際には任意の条件を理由に、候補者が自分を不適格だと判断してしまうことがよくあります。
 
----
+**その職務が実際に解決すること**（求人票から推測）
+- この採用で解決しようとしている事業上の課題を2～3文で要約します。
 
-## Cover Letter Writing
-
-A cover letter should answer three questions in under 300 words:
-
-1. **Why this company?** Something specific — a product, a technical challenge they have written about, a problem space you care about. Not "I admire your mission."
-2. **Why you?** One or two concrete things from your background that directly match what they need. Link to the specific role, not your full career history.
-3. **Why now?** What is your motivation at this point in your career? One sentence.
-
-Format: three short paragraphs. No preamble ("I am writing to apply for..."). No summary of your CV.
-
-Avoid:
-- Restating your CV in prose form
-- "I am passionate about..."
-- Generic company praise ("a leader in the industry", "innovative company")
-- Going longer than one page
+**明らかにすべき注意信号**
+- 範囲が明確でないまま「多くの役割を担う」——責任範囲が定義されていないおそれ
+- 1つの職務に10個以上の必須技術——非現実的な基準、またはチーム計画の不備
+- チーム規模、技術スタック、担当職務が何を出荷するかへの言及がない——組織化されていない可能性
 
 ---
 
-## Offer Evaluation
+## CV／履歴書の調整
 
-When evaluating a job offer, compare across these dimensions:
+特定の求人票に合わせてCVを調整するときは、次のようにします。
 
-**Compensation**
-- Base salary: check against market rate for role, level, and location (levels.fyi, Glassdoor, Blind, Comprehensive.io)
-- Equity: current valuation, vesting schedule (4-year with 1-year cliff is standard), dilution risk for early-stage companies
-- Bonus: target percentage vs actual historical payout
-- Total comp = base + expected bonus + annualized equity value
+1. **表現を正確に合わせる**——同義語ではなく、求人票と同じ用語を使います。求人票が「分散システム」と書いているなら、「大規模システム」とは書きません。
+2. **成果を先に示す**——各箇条書きに結果を含めます。「性能改善に取り組んだ」ではなく「P99レイテンシを40%削減した」と書きます。
+3. **可能な限り数値化する**——ユーザー数、QPS、チーム規模、削減コスト、収益への影響などを示します。
+4. **一致しない内容を削る**——職務に合わせた2ページのCVは、一般的な4ページのCVより効果的です。
+5. **職位のシグナルを反映する**——初級職では「構築した」、シニア職では「設計した」、スタッフ職やプリンシパル職では「推進した」「定義した」といった表現を使います。
 
-**Role clarity**
-- Scope: what does "owning" this role actually mean vs what is already decided?
-- Team: size, structure, who you report to, tenure of the team
-- Growth: what does the next level look like and how long do people typically take to get there?
-
-**Company health**
-- Stage: runway, revenue, growth rate — ask directly if not public
-- Engineering culture signals: PR review process, incident postmortem culture, on-call burden
-- Remote or hybrid reality: written policy vs actual practice
-
-**Red flags in an offer**
-- Pressure to decide in under 48 hours — a reasonable window is one to two weeks
-- Equity with no clear liquidity path for a company that has been private for 10+ years
-- A role described as greenfield that turns out to have 6 months of existing unmaintained code
-
-Get everything in writing before accepting.
+キーワードを詰め込みすぎないでください。ATSのパーサーではなく、それを読む採用マネージャーに向けて書きます。
 
 ---
 
-## Follow-up Emails
+## カバーレターの作成
 
-After an interview, send a follow-up within 24 hours:
-- One sentence thanking them for the time
-- One sentence referencing something specific from the conversation (a problem discussed, a question they asked)
-- One sentence reaffirming interest, if genuine
+カバーレターは300語以内で、次の3つの質問に答える必要があります。
 
-Do not write multiple paragraphs. Do not restate your qualifications. Do not follow up more than once if there is no reply.
+1. **なぜこの会社か** 特定の何か——製品、会社が発信している技術的課題、自分が関心を持つ問題領域などを挙げます。「ミッションに共感しています」では不十分です。
+2. **なぜあなたか** 相手が求める内容に直接一致する、経歴上の具体的な点を1～2個挙げます。職歴全体ではなく、応募する職務に結び付けます。
+3. **なぜ今か** キャリアのこの時点での動機は何かを、1文で示します。
+
+形式は短い3段落にします。前置き（「応募するために手紙を書いています」など）は不要です。CVの要約も書きません。
+
+避けるもの：
+- CVを文章として書き直すこと
+- 「私は～に情熱を持っています」
+- 一般的な会社賛辞（「業界のリーダー」「革新的な会社」など）
+- 1ページを超えること
+
+---
+
+## オファーの評価
+
+求人オファーを評価するときは、次の観点で比較します。
+
+**報酬**
+- 基本給：職務、レベル、勤務地の市場相場（levels.fyi、Glassdoor、Blind、Comprehensive.io）と比較します。
+- 株式報酬：現在の評価額、権利確定スケジュール（4年、1年クリフが標準）、初期段階の会社における希薄化リスクを確認します。
+- ボーナス：目標比率と過去の実績支給額を比較します。
+- 総報酬 ＝ 基本給 ＋ 予想ボーナス ＋ 年間換算した株式価値
+
+**職務の明確さ**
+- 範囲：「この職務を担う」とは実際に何を意味し、何がすでに決定されているのか。
+- チーム：規模、構成、直属の上司、チームメンバーの在籍期間。
+- 成長：次のレベルはどのようなもので、通常そこへ到達するまでどれくらいかかるのか。
+
+**会社の健全性**
+- 段階：ランウェイ、収益、成長率——公開情報がなければ直接尋ねます。
+- エンジニアリング文化の手掛かり：PRレビューのプロセス、インシデントのポストモーテム文化、オンコールの負担。
+- リモートまたはハイブリッドの実態：書面上の方針と実際の運用。
+
+**オファーにおける注意信号**
+- 48時間未満での決断を迫る——妥当な猶予は1～2週間です。
+- 10年以上非公開の会社なのに、株式報酬の明確な換金経路がない。
+- グリーンフィールドと説明された職務が、実際には6か月分の未保守コードを抱えている。
+
+承諾する前に、すべてを書面で確認します。
+
+---
+
+## フォローアップメール
+
+面接後24時間以内にフォローアップを送ります。
+- 時間を割いてくれたことへの感謝を1文で述べます。
+- 会話の具体的な内容（話し合った課題、相手からの質問など）に触れる文を1文入れます。
+- 本心から関心がある場合は、関心を改めて示す文を1文入れます。
+
+複数の段落を書かないでください。資格や経験を繰り返さないでください。返信がない場合のフォローアップは1回を超えないでください。

@@ -1,8 +1,8 @@
 # Open Source Sponsorship Plugin
 
-Tools and resources for Open Source Program Offices (OSPOs) to identify, evaluate, and manage sponsorship of open source dependencies through GitHub Sponsors, Open Collective, and other funding platforms.
+Open Source Program Office（OSPO）が、GitHub Sponsors、Open Collective、その他の資金調達プラットフォームを通じて、オープンソース依存関係へのスポンサー支援を特定、評価、管理するためのツールとリソースです。
 
-## Installation
+## インストール
 
 ```bash
 # Using Copilot CLI

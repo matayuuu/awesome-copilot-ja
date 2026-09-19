@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "skill-image-gen",
-  "description": "Generate images using AI directly from your coding workflow. Supports OpenAI (gpt-image-2) and Google Gemini. BYO API key — the skill guides you through setup on first use.",
+  "description": "コーディングワークフローから直接AIで画像を生成します。OpenAI（gpt-image-2）とGoogle Geminiに対応しています。APIキーは各自で用意してください。初回利用時はSkillが設定を案内します。",
   "version": "1.0.0",
   "keywords": [
     "image-generation",

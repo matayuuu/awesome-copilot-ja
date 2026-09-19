@@ -1,8 +1,8 @@
-# Database & Data Management Plugin
+# Database & Data Management プラグイン
 
-Database administration, SQL optimization, and data management tools for PostgreSQL, SQL Server, and general database development best practices.
+PostgreSQL、SQL Server 向けのデータベース管理、SQL 最適化、データ管理ツールと、一般的なデータベース開発のベストプラクティスです。
 
-## Installation
+## インストール
 
 ```bash
 # Using Copilot CLI

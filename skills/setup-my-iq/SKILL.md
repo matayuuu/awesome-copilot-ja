@@ -1,22 +1,7 @@
 ---
 name: setup-my-iq
-description: |
-  Create, set up, or update the personal context portfolio: structured markdown files describing
-  who you are, how you work, your teams, and your tool/ADO configuration. Runs the interview
-  workflow for first-time setup and targeted edits for updates.
-
-  Trigger this skill when the user asks to: set up their context, create or update their context
-  portfolio, "create my IQ", "set up my IQ", edit their profile, add/remove a stakeholder,
-  update ADO config, change team info, update pillars, or set up any plugin configuration.
-  Trigger when another skill fails to find context (missing files or TODO markers) and needs
-  context populated. Also trigger when the user mentions a context change in passing
-  (e.g., "my manager changed", "we added someone to the team") to offer a context file update.
-
-  Do NOT trigger for read-only questions like "who's on my team?" or "what's my ADO config?".
-  Those are answered directly from the context files referenced in the loaded custom
-  instructions; no skill is needed.
+description: '本人、仕事の進め方、チーム、Tool/ADO構成を記述する構造化Markdownファイルで個人コンテキストポートフォリオを作成、設定、更新します。コンテキストの設定、ポートフォリオの作成や更新、"create my IQ"、"set up my IQ"、プロフィール編集、関係者の追加や削除、ADO構成やチーム情報の更新、pillarsやプラグイン構成の設定を依頼されたときに使います。別のSkillがコンテキストを見つけられず、ファイルやTODOマーカーが不足している場合にも使います。読み取り専用の質問には使いません。'
 ---
-
 # Setup My IQ: Create and Update Context Portfolio
 
 Create and maintain the personal context portfolio: a set of structured markdown

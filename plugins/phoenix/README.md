@@ -1,15 +1,15 @@
 # Phoenix Plugin
 
-Phoenix AI observability skills for LLM application debugging, evaluation, and tracing. Includes CLI debugging tools, LLM evaluation workflows, and OpenInference tracing instrumentation.
+LLMアプリケーションのデバッグ、評価、トレースに対応するPhoenix AIオブザーバビリティSkillです。CLIデバッグツール、LLM評価ワークフロー、OpenInferenceトレース計装を含みます。
 
-## Installation
+## インストール
 
 ```bash
 # Using Copilot CLI
 copilot plugin install phoenix@awesome-copilot
 ```
 
-## What's Included
+## 含まれるもの
 
 ### Skills
 

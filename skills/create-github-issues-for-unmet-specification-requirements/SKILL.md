@@ -1,35 +1,35 @@
 ---
 name: create-github-issues-for-unmet-specification-requirements
-description: 'Create GitHub Issues for unimplemented requirements from specification files using feature_request.yml template.'
+description: '仕様ファイル内の未実装要件についてfeature_request.ymlテンプレートを使ってGitHub Issueを作成する。'
 ---
 
-# Create GitHub Issues for Unmet Specification Requirements
+# 未達の仕様要件からGitHub Issueを作成
 
-Create GitHub Issues for unimplemented requirements in the specification at `${file}`.
+`${file}` にある仕様の未実装要件についてGitHub Issueを作成する。
 
-## Process
+## 手順
 
-1. Analyze specification file to extract all requirements
-2. Check codebase implementation status for each requirement
-3. Search existing issues using `search_issues` to avoid duplicates
-4. Create new issue per unimplemented requirement using `create_issue`
-5. Use `feature_request.yml` template (fallback to default)
+1. 仕様ファイルを分析してすべての要件を抽出する
+2. 各要件についてコードベースの実装状況を確認する
+3. 重複を避けるため `search_issues` で既存Issueを検索する
+4. 未実装要件ごとに `create_issue` で新しいIssueを作成する
+5. `feature_request.yml` テンプレートを使う（利用できない場合は既定を使う）
 
-## Requirements
+## 要件
 
-- One issue per unimplemented requirement from specification
-- Clear requirement ID and description mapping
-- Include implementation guidance and acceptance criteria
-- Verify against existing issues before creation
+- 仕様内の未実装要件ごとに1件のIssueを作成する
+- 要件IDと説明の対応を明確にする
+- 実装指針と受け入れ条件を含める
+- 作成前に既存Issueと照合する
 
-## Issue Content
+## Issueの内容
 
-- Title: Requirement ID and brief description
-- Description: Detailed requirement, implementation method, and context
-- Labels: feature, enhancement (as appropriate)
+- タイトル: 要件IDと簡潔な説明
+- 説明: 詳細な要件、実装方法、背景
+- ラベル: 必要に応じてfeature、enhancement
 
-## Implementation Check
+## 実装状況の確認
 
-- Search codebase for related code patterns
-- Check related specification files in `/spec/` directory
-- Verify requirement isn't partially implemented
+- 関連するコードパターンをコードベースで検索する
+- `/spec/` ディレクトリ内の関連仕様ファイルを確認する
+- 要件が部分的に実装済みでないことを確認する

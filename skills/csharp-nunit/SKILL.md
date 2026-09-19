@@ -1,71 +1,71 @@
 ---
 name: csharp-nunit
-description: 'Get best practices for NUnit unit testing, including data-driven tests'
+description: 'データ駆動テストを含む NUnit 単体テストのベストプラクティスを提供する'
 ---
 
-# NUnit Best Practices
+# NUnit のベストプラクティス
 
-Your goal is to help me write effective unit tests with NUnit, covering both standard and data-driven testing approaches.
+標準テストとデータ駆動テストの両方を対象に、NUnit で効果的な単体テストを作成できるよう支援してください。
 
-## Project Setup
+## プロジェクトのセットアップ
 
-- Use a separate test project with naming convention `[ProjectName].Tests`
-- Reference Microsoft.NET.Test.Sdk, NUnit, and NUnit3TestAdapter packages
-- Create test classes that match the classes being tested (e.g., `CalculatorTests` for `Calculator`)
-- Use .NET SDK test commands: `dotnet test` for running tests
+- `[ProjectName].Tests` という命名規則の独立したテストプロジェクトを使う
+- Microsoft.NET.Test.Sdk、NUnit、NUnit3TestAdapter パッケージを参照する
+- テスト対象クラスに対応するテストクラスを作成する（例: `Calculator` に対する `CalculatorTests`）
+- テストの実行には .NET SDK の `dotnet test` コマンドを使う
 
-## Test Structure
+## テスト構造
 
-- Apply `[TestFixture]` attribute to test classes
-- Use `[Test]` attribute for test methods
-- Follow the Arrange-Act-Assert (AAA) pattern
-- Name tests using the pattern `MethodName_Scenario_ExpectedBehavior`
-- Use `[SetUp]` and `[TearDown]` for per-test setup and teardown
-- Use `[OneTimeSetUp]` and `[OneTimeTearDown]` for per-class setup and teardown
-- Use `[SetUpFixture]` for assembly-level setup and teardown
+- テストクラスに `[TestFixture]` 属性を付ける
+- テストメソッドに `[Test]` 属性を使う
+- Arrange-Act-Assert（AAA）パターンに従う
+- `MethodName_Scenario_ExpectedBehavior` パターンでテストに名前を付ける
+- テストごとのセットアップと後処理には `[SetUp]` と `[TearDown]` を使う
+- クラスごとのセットアップと後処理には `[OneTimeSetUp]` と `[OneTimeTearDown]` を使う
+- アセンブリレベルのセットアップと後処理には `[SetUpFixture]` を使う
 
-## Standard Tests
+## 標準テスト
 
-- Keep tests focused on a single behavior
-- Avoid testing multiple behaviors in one test method
-- Use clear assertions that express intent
-- Include only the assertions needed to verify the test case
-- Make tests independent and idempotent (can run in any order)
-- Avoid test interdependencies
+- 各テストは単一の動作に集中させる
+- 1 つのテストメソッドで複数の動作をテストしない
+- 意図が伝わる明確なアサーションを使う
+- テストケースの検証に必要なアサーションだけを含める
+- テストを独立かつ冪等にし、どの順序でも実行できるようにする
+- テスト間の依存を避ける
 
-## Data-Driven Tests
+## データ駆動テスト
 
-- Use `[TestCase]` for inline test data
-- Use `[TestCaseSource]` for programmatically generated test data
-- Use `[Values]` for simple parameter combinations
-- Use `[ValueSource]` for property or method-based data sources
-- Use `[Random]` for random numeric test values
-- Use `[Range]` for sequential numeric test values
-- Use `[Combinatorial]` or `[Pairwise]` for combining multiple parameters
+- インラインのテストデータには `[TestCase]` を使う
+- プログラムで生成するテストデータには `[TestCaseSource]` を使う
+- 単純なパラメーターの組み合わせには `[Values]` を使う
+- プロパティまたはメソッドに基づくデータソースには `[ValueSource]` を使う
+- ランダムな数値テスト値には `[Random]` を使う
+- 連続する数値テスト値には `[Range]` を使う
+- 複数のパラメーターを組み合わせるには `[Combinatorial]` または `[Pairwise]` を使う
 
-## Assertions
+## アサーション
 
-- Use `Assert.That` with constraint model (preferred NUnit style)
-- Use constraints like `Is.EqualTo`, `Is.SameAs`, `Contains.Item`
-- Use `Assert.AreEqual` for simple value equality (classic style)
-- Use `CollectionAssert` for collection comparisons
-- Use `StringAssert` for string-specific assertions
-- Use `Assert.Throws<T>` or `Assert.ThrowsAsync<T>` to test exceptions
-- Use descriptive messages in assertions for clarity on failure
+- 制約モデルを使った `Assert.That` を使用する（推奨される NUnit スタイル）
+- `Is.EqualTo`、`Is.SameAs`、`Contains.Item` などの制約を使う
+- 単純な値の等価比較には `Assert.AreEqual` を使う（クラシックスタイル）
+- コレクションの比較には `CollectionAssert` を使う
+- 文字列固有のアサーションには `StringAssert` を使う
+- 例外のテストには `Assert.Throws<T>` または `Assert.ThrowsAsync<T>` を使う
+- 失敗時に内容が分かるよう、アサーションには説明的なメッセージを使う
 
-## Mocking and Isolation
+## モックと分離
 
-- Consider using Moq or NSubstitute alongside NUnit
-- Mock dependencies to isolate units under test
-- Use interfaces to facilitate mocking
-- Consider using a DI container for complex test setups
+- NUnit とともに Moq または NSubstitute の使用を検討する
+- 依存関係をモック化してテスト対象の単位を分離する
+- モック化しやすくするためにインターフェイスを使う
+- 複雑なテストセットアップには DI コンテナーの使用を検討する
 
-## Test Organization
+## テストの整理
 
-- Group tests by feature or component
-- Use categories with `[Category("CategoryName")]`
-- Use `[Order]` to control test execution order when necessary
-- Use `[Author("DeveloperName")]` to indicate ownership
-- Use `[Description]` to provide additional test information
-- Consider `[Explicit]` for tests that shouldn't run automatically
-- Use `[Ignore("Reason")]` to temporarily skip tests
+- 機能またはコンポーネントごとにテストをグループ化する
+- `[Category("CategoryName")]` でカテゴリーを指定する
+- 必要な場合は `[Order]` でテスト実行順序を制御する
+- `[Author("DeveloperName")]` で所有者を示す
+- `[Description]` で追加のテスト情報を提供する
+- 自動実行すべきでないテストには `[Explicit]` を検討する
+- テストを一時的にスキップするには `[Ignore("Reason")]` を使う

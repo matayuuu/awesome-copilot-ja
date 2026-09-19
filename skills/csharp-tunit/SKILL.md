@@ -1,100 +1,100 @@
 ---
 name: csharp-tunit
-description: 'Get best practices for TUnit unit testing, including data-driven tests'
+description: 'データ駆動テストを含む TUnit 単体テストのベストプラクティスを提供する'
 ---
 
-# TUnit Best Practices
+# TUnit のベストプラクティス
 
-Your goal is to help me write effective unit tests with TUnit, covering both standard and data-driven testing approaches.
+標準テストとデータ駆動テストの両方を対象に、TUnit で効果的な単体テストを作成できるよう支援してください。
 
-## Project Setup
+## プロジェクトのセットアップ
 
-- Use a separate test project with naming convention `[ProjectName].Tests`
-- Reference TUnit package and TUnit.Assertions for fluent assertions
-- Create test classes that match the classes being tested (e.g., `CalculatorTests` for `Calculator`)
-- Use .NET SDK test commands: `dotnet test` for running tests
-- TUnit requires .NET 8.0 or higher
+- `[ProjectName].Tests` という命名規則の独立したテストプロジェクトを使う
+- TUnit パッケージと、Fluent Assertions 用の TUnit.Assertions を参照する
+- テスト対象クラスに対応するテストクラスを作成する（例: `Calculator` に対する `CalculatorTests`）
+- テストの実行には .NET SDK の `dotnet test` コマンドを使う
+- TUnit には .NET 8.0 以降が必要
 
-## Test Structure
+## テスト構造
 
-- No test class attributes required (like xUnit/NUnit)
-- Use `[Test]` attribute for test methods (not `[Fact]` like xUnit)
-- Follow the Arrange-Act-Assert (AAA) pattern
-- Name tests using the pattern `MethodName_Scenario_ExpectedBehavior`
-- Use lifecycle hooks: `[Before(Test)]` for setup and `[After(Test)]` for teardown
-- Use `[Before(Class)]` and `[After(Class)]` for shared context between tests in a class
-- Use `[Before(Assembly)]` and `[After(Assembly)]` for shared context across test classes
-- TUnit supports advanced lifecycle hooks like `[Before(TestSession)]` and `[After(TestSession)]`
+- xUnit/NUnit のようなテストクラス属性は不要
+- テストメソッドには、xUnit の `[Fact]` ではなく `[Test]` 属性を使う
+- Arrange-Act-Assert（AAA）パターンに従う
+- `MethodName_Scenario_ExpectedBehavior` パターンでテストに名前を付ける
+- ライフサイクルフックとして、セットアップには `[Before(Test)]`、後処理には `[After(Test)]` を使う
+- クラス内のテスト間で共有するコンテキストには `[Before(Class)]` と `[After(Class)]` を使う
+- テストクラス間で共有するコンテキストには `[Before(Assembly)]` と `[After(Assembly)]` を使う
+- TUnit は `[Before(TestSession)]` や `[After(TestSession)]` などの高度なライフサイクルフックをサポートする
 
-## Standard Tests
+## 標準テスト
 
-- Keep tests focused on a single behavior
-- Avoid testing multiple behaviors in one test method
-- Use TUnit's fluent assertion syntax with `await Assert.That()`
-- Include only the assertions needed to verify the test case
-- Make tests independent and idempotent (can run in any order)
-- Avoid test interdependencies (use `[DependsOn]` attribute if needed)
+- 各テストは単一の動作に集中させる
+- 1 つのテストメソッドで複数の動作をテストしない
+- `await Assert.That()` を使った TUnit の Fluent Assertion 構文を使う
+- テストケースの検証に必要なアサーションだけを含める
+- テストを独立かつ冪等にし、どの順序でも実行できるようにする
+- テスト間の依存を避ける（必要な場合は `[DependsOn]` 属性を使う）
 
-## Data-Driven Tests
+## データ駆動テスト
 
-- Use `[Arguments]` attribute for inline test data (equivalent to xUnit's `[InlineData]`)
-- Use `[MethodData]` for method-based test data (equivalent to xUnit's `[MemberData]`)
-- Use `[ClassData]` for class-based test data
-- Create custom data sources by implementing `ITestDataSource`
-- Use meaningful parameter names in data-driven tests
-- Multiple `[Arguments]` attributes can be applied to the same test method
+- インラインのテストデータには `[Arguments]` 属性を使う（xUnit の `[InlineData]` に相当）
+- メソッドベースのテストデータには `[MethodData]` を使う（xUnit の `[MemberData]` に相当）
+- クラスベースのテストデータには `[ClassData]` を使う
+- `ITestDataSource` を実装してカスタムデータソースを作成する
+- データ駆動テストでは意味のあるパラメーター名を使う
+- 同じテストメソッドに複数の `[Arguments]` 属性を適用できる
 
-## Assertions
+## アサーション
 
-- Use `await Assert.That(value).IsEqualTo(expected)` for value equality
-- Use `await Assert.That(value).IsSameReferenceAs(expected)` for reference equality
-- Use `await Assert.That(value).IsTrue()` or `await Assert.That(value).IsFalse()` for boolean conditions
-- Use `await Assert.That(collection).Contains(item)` or `await Assert.That(collection).DoesNotContain(item)` for collections
-- Use `await Assert.That(value).Matches(pattern)` for regex pattern matching
-- Use `await Assert.That(action).Throws<TException>()` or `await Assert.That(asyncAction).ThrowsAsync<TException>()` to test exceptions
-- Chain assertions with `.And` operator: `await Assert.That(value).IsNotNull().And.IsEqualTo(expected)`
-- Use `.Or` operator for alternative conditions: `await Assert.That(value).IsEqualTo(1).Or.IsEqualTo(2)`
-- Use `.Within(tolerance)` for DateTime and numeric comparisons with tolerance
-- All assertions are asynchronous and must be awaited
+- 値の等価比較には `await Assert.That(value).IsEqualTo(expected)` を使う
+- 参照の等価比較には `await Assert.That(value).IsSameReferenceAs(expected)` を使う
+- Boolean 条件には `await Assert.That(value).IsTrue()` または `await Assert.That(value).IsFalse()` を使う
+- コレクションには `await Assert.That(collection).Contains(item)` または `await Assert.That(collection).DoesNotContain(item)` を使う
+- 正規表現のパターンマッチには `await Assert.That(value).Matches(pattern)` を使う
+- 例外のテストには `await Assert.That(action).Throws<TException>()` または `await Assert.That(asyncAction).ThrowsAsync<TException>()` を使う
+- `.And` 演算子でアサーションを連結する: `await Assert.That(value).IsNotNull().And.IsEqualTo(expected)`
+- 代替条件には `.Or` 演算子を使う: `await Assert.That(value).IsEqualTo(1).Or.IsEqualTo(2)`
+- 許容誤差を伴う DateTime や数値の比較には `.Within(tolerance)` を使う
+- すべてのアサーションは非同期であり、await が必要
 
-## Advanced Features
+## 高度な機能
 
-- Use `[Repeat(n)]` to repeat tests multiple times
-- Use `[Retry(n)]` for automatic retry on failure
-- Use `[ParallelLimit<T>]` to control parallel execution limits
-- Use `[Skip("reason")]` to skip tests conditionally
-- Use `[DependsOn(nameof(OtherTest))]` to create test dependencies
-- Use `[Timeout(milliseconds)]` to set test timeouts
-- Create custom attributes by extending TUnit's base attributes
+- テストを複数回繰り返すには `[Repeat(n)]` を使う
+- 失敗時の自動再試行には `[Retry(n)]` を使う
+- 並列実行数の制限には `[ParallelLimit<T>]` を使う
+- 条件に応じてテストをスキップするには `[Skip("reason")]` を使う
+- テスト間の依存を作成するには `[DependsOn(nameof(OtherTest))]` を使う
+- テストのタイムアウトを設定するには `[Timeout(milliseconds)]` を使う
+- TUnit の基底属性を拡張してカスタム属性を作成する
 
-## Test Organization
+## テストの整理
 
-- Group tests by feature or component
-- Use `[Category("CategoryName")]` for test categorization
-- Use `[DisplayName("Custom Test Name")]` for custom test names
-- Consider using `TestContext` for test diagnostics and information
-- Use conditional attributes like custom `[WindowsOnly]` for platform-specific tests
+- 機能またはコンポーネントごとにテストをグループ化する
+- テストのカテゴリー分けには `[Category("CategoryName")]` を使う
+- カスタムテスト名には `[DisplayName("Custom Test Name")]` を使う
+- テストの診断と情報取得には `TestContext` の使用を検討する
+- プラットフォーム固有のテストには、カスタム `[WindowsOnly]` などの条件付き属性を使う
 
-## Performance and Parallel Execution
+## パフォーマンスと並列実行
 
-- TUnit runs tests in parallel by default (unlike xUnit which requires explicit configuration)
-- Use `[NotInParallel]` to disable parallel execution for specific tests
-- Use `[ParallelLimit<T>]` with custom limit classes to control concurrency
-- Tests within the same class run sequentially by default
-- Use `[Repeat(n)]` with `[ParallelLimit<T>]` for load testing scenarios
+- 明示的な構成が必要な xUnit とは異なり、TUnit は既定でテストを並列実行する
+- 特定のテストで並列実行を無効にするには `[NotInParallel]` を使う
+- カスタム制限クラスと `[ParallelLimit<T>]` を使って同時実行数を制御する
+- 同じクラス内のテストは既定で順次実行される
+- 負荷テストのシナリオでは `[Repeat(n)]` と `[ParallelLimit<T>]` を組み合わせる
 
-## Migration from xUnit
+## xUnit からの移行
 
-- Replace `[Fact]` with `[Test]`
-- Replace `[Theory]` with `[Test]` and use `[Arguments]` for data
-- Replace `[InlineData]` with `[Arguments]`
-- Replace `[MemberData]` with `[MethodData]`
-- Replace `Assert.Equal` with `await Assert.That(actual).IsEqualTo(expected)`
-- Replace `Assert.True` with `await Assert.That(condition).IsTrue()`
-- Replace `Assert.Throws<T>` with `await Assert.That(action).Throws<T>()`
-- Replace constructor/IDisposable with `[Before(Test)]`/`[After(Test)]`
-- Replace `IClassFixture<T>` with `[Before(Class)]`/`[After(Class)]`
+- `[Fact]` を `[Test]` に置き換える
+- `[Theory]` を `[Test]` に置き換え、データには `[Arguments]` を使う
+- `[InlineData]` を `[Arguments]` に置き換える
+- `[MemberData]` を `[MethodData]` に置き換える
+- `Assert.Equal` を `await Assert.That(actual).IsEqualTo(expected)` に置き換える
+- `Assert.True` を `await Assert.That(condition).IsTrue()` に置き換える
+- `Assert.Throws<T>` を `await Assert.That(action).Throws<T>()` に置き換える
+- コンストラクター/IDisposable を `[Before(Test)]`/`[After(Test)]` に置き換える
+- `IClassFixture<T>` を `[Before(Class)]`/`[After(Class)]` に置き換える
 
-**Why TUnit over xUnit?**
+**xUnit より TUnit を選ぶ理由**
 
-TUnit offers a modern, fast, and flexible testing experience with advanced features not present in xUnit, such as asynchronous assertions, more refined lifecycle hooks, and improved data-driven testing capabilities. TUnit's fluent assertions provide clearer and more expressive test validation, making it especially suitable for complex .NET projects.
+TUnit は、非同期アサーション、より洗練されたライフサイクルフック、強化されたデータ駆動テスト機能など、xUnit にはない高度な機能を備え、モダンで高速かつ柔軟なテスト体験を提供します。TUnit の Fluent Assertions により、テスト検証がより明確で表現力豊かになるため、特に複雑な .NET プロジェクトに適しています。

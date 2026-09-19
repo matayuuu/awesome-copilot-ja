@@ -1,63 +1,63 @@
 ---
 name: java-junit
-description: 'Get best practices for JUnit 5 unit testing, including data-driven tests'
+description: 'データ駆動テストを含むJUnit 5単体テストのベストプラクティスを得る。'
 ---
 
-# JUnit 5+ Best Practices
+# JUnit 5以降のベストプラクティス
 
-Your goal is to help me write effective unit tests with JUnit 5, covering both standard and data-driven testing approaches.
+標準的なテストとデータ駆動テストの両方を扱い、JUnit 5で効果的な単体テストを書くことを支援する。
 
-## Project Setup
+## プロジェクト設定
 
-- Use a standard Maven or Gradle project structure.
-- Place test source code in `src/test/java`.
-- Include dependencies for `junit-jupiter-api`, `junit-jupiter-engine`, and `junit-jupiter-params` for parameterized tests.
-- Use build tool commands to run tests: `mvn test` or `gradle test`.
+- 標準的なMavenまたはGradleのプロジェクト構成を使う。
+- テストソースコードを `src/test/java` に置く。
+- パラメーター化テスト用に `junit-jupiter-api`、`junit-jupiter-engine`、`junit-jupiter-params` の依存関係を含める。
+- テストの実行にはビルドツールのコマンド `mvn test` または `gradle test` を使う。
 
-## Test Structure
+## テスト構成
 
-- Test classes should have a `Test` suffix, e.g., `CalculatorTest` for a `Calculator` class.
-- Use `@Test` for test methods.
-- Follow the Arrange-Act-Assert (AAA) pattern.
-- Name tests using a descriptive convention, like `methodName_should_expectedBehavior_when_scenario`.
-- Use `@BeforeEach` and `@AfterEach` for per-test setup and teardown.
-- Use `@BeforeAll` and `@AfterAll` for per-class setup and teardown (must be static methods).
-- Use `@DisplayName` to provide a human-readable name for test classes and methods.
+- テストクラスには `Test` 接尾辞を付ける。例: `Calculator` クラスなら `CalculatorTest`。
+- テストメソッドには `@Test` を使う。
+- Arrange-Act-Assert（AAA）パターンに従う。
+- `methodName_should_expectedBehavior_when_scenario` のように、説明的な規約でテスト名を付ける。
+- テストごとのセットアップと後処理には `@BeforeEach` と `@AfterEach` を使う。
+- クラス単位のセットアップと後処理には `@BeforeAll` と `@AfterAll` を使う（staticメソッドでなければならない）。
+- テストクラスとテストメソッドに人が読める名前を付けるには `@DisplayName` を使う。
 
-## Standard Tests
+## 標準テスト
 
-- Keep tests focused on a single behavior.
-- Avoid testing multiple conditions in one test method.
-- Make tests independent and idempotent (can run in any order).
-- Avoid test interdependencies.
+- テストは単一の振る舞いに集中させる。
+- 1つのテストメソッドで複数の条件をテストしない。
+- テストを独立かつ冪等にする（任意の順序で実行できる）。
+- テスト間の依存関係を避ける。
 
-## Data-Driven (Parameterized) Tests
+## データ駆動（パラメーター化）テスト
 
-- Use `@ParameterizedTest` to mark a method as a parameterized test.
-- Use `@ValueSource` for simple literal values (strings, ints, etc.).
-- Use `@MethodSource` to refer to a factory method that provides test arguments as a `Stream`, `Collection`, etc.
-- Use `@CsvSource` for inline comma-separated values.
-- Use `@CsvFileSource` to use a CSV file from the classpath.
-- Use `@EnumSource` to use enum constants.
+- メソッドをパラメーター化テストとして示すには `@ParameterizedTest` を使う。
+- 単純なリテラル値（文字列、intなど）には `@ValueSource` を使う。
+- `Stream`、`Collection` などのテスト引数を提供するファクトリメソッドを参照するには `@MethodSource` を使う。
+- インラインのカンマ区切り値には `@CsvSource` を使う。
+- クラスパス上のCSVを使うには `@CsvFileSource` を使う。
+- enum定数には `@EnumSource` を使う。
 
-## Assertions
+## アサーション
 
-- Use the static methods from `org.junit.jupiter.api.Assertions` (e.g., `assertEquals`, `assertTrue`, `assertNotNull`).
-- For more fluent and readable assertions, consider using a library like AssertJ (`assertThat(...).is...`).
-- Use `assertThrows` or `assertDoesNotThrow` to test for exceptions.
-- Group related assertions with `assertAll` to ensure all assertions are checked before the test fails.
-- Use descriptive messages in assertions to provide clarity on failure.
+- `org.junit.jupiter.api.Assertions` のstaticメソッド（例: `assertEquals`、`assertTrue`、`assertNotNull`）を使う。
+- より流暢で読みやすいアサーションには、AssertJ（`assertThat(...).is...`）のようなライブラリを検討する。
+- 例外をテストするには `assertThrows` または `assertDoesNotThrow` を使う。
+- 関連するアサーションを `assertAll` でまとめ、テストが失敗する前にすべて確認されるようにする。
+- 失敗時に状況が分かる説明的なメッセージをアサーションに指定する。
 
-## Mocking and Isolation
+## モックと分離
 
-- Use a mocking framework like Mockito to create mock objects for dependencies.
-- Use `@Mock` and `@InjectMocks` annotations from Mockito to simplify mock creation and injection.
-- Use interfaces to facilitate mocking.
+- Mockitoのようなモックフレームワークを使って依存関係のモックオブジェクトを作成する。
+- モックの作成と注入を簡単にするには、Mockitoの `@Mock` と `@InjectMocks` アノテーションを使う。
+- モックしやすくするためにインターフェースを使う。
 
-## Test Organization
+## テストの整理
 
-- Group tests by feature or component using packages.
-- Use `@Tag` to categorize tests (e.g., `@Tag("fast")`, `@Tag("integration")`).
-- Use `@TestMethodOrder(MethodOrderer.OrderAnnotation.class)` and `@Order` to control test execution order when strictly necessary.
-- Use `@Disabled` to temporarily skip a test method or class, providing a reason.
-- Use `@Nested` to group tests in a nested inner class for better organization and structure.
+- パッケージを使って機能またはコンポーネントごとにテストをまとめる。
+- テストを分類するには `@Tag`（例: `@Tag("fast")`、`@Tag("integration")`）を使う。
+- 厳密に必要な場合に実行順を制御するには、`@TestMethodOrder(MethodOrderer.OrderAnnotation.class)` と `@Order` を使う。
+- テストメソッドまたはクラスを一時的にスキップするときは、理由を添えて `@Disabled` を使う。
+- 整理しやすくするため、ネストした内部クラスでテストをまとめるには `@Nested` を使う。

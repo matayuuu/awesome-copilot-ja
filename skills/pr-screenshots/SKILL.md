@@ -1,6 +1,6 @@
 ---
 name: pr-screenshots
-description: 'Embed before/after screenshots and annotated images in pull request descriptions. Covers PR description patterns, image upload for Azure DevOps and GitHub, and sizing best practices.'
+description: 'pr-screenshots に関する作業を支援する Skill です。対象のファイルや設定を確認し、必要な手順、検証方法、注意点を案内します。対象技術の調査、実装、運用、トラブルシューティングに使用します。'
 ---
 
 # PR Screenshots
@@ -123,7 +123,7 @@ Reference in the PR description:
 4. **Annotate when the change is subtle** — use the `image-annotations` skill to add callouts when the difference isn't immediately obvious
 5. **Match viewport and crop** between before/after pairs so the comparison is meaningful
 
-## Limitations
+## 制限事項
 
 - GitHub image upload requires workarounds (no public API for PR description images)
 - Azure DevOps attachment filenames can't be reused — plan naming ahead

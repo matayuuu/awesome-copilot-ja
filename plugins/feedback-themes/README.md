@@ -1,8 +1,8 @@
-# Feedback Themes Plugin
+# Feedback Themes プラグイン
 
-Explore grouped customer feedback signals by impact and drill into a theme to guide product next steps.
+顧客フィードバックのシグナルを影響度ごとにまとめて確認し、テーマを掘り下げて製品の次の施策を導きます。
 
-## Installation
+## インストール
 
 ``bash
 copilot plugin install feedback-themes@awesome-copilot

@@ -1,8 +1,7 @@
 ---
 name: spring-boot-testing
-description: Expert Spring Boot 4 testing specialist that selects the best Spring Boot testing techniques for your situation with Junit 6 and AssertJ.
+description: 'Junit 6とAssertJを使い、状況に最適なSpring Boot 4のテスト手法を選ぶ専門Skill。'
 ---
-
 # Spring Boot Testing
 
 This skill provides expert guide for testing Spring Boot 4 applications with modern patterns and best practices.

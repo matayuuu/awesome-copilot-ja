@@ -1,15 +1,15 @@
-# CAST Imaging Agents Plugin
+# CAST Imaging Agents プラグイン
 
-A comprehensive collection of specialized agents for software analysis, impact assessment, structural quality advisories, and architectural review using CAST Imaging.
+CAST Imaging を使用したソフトウェア分析、影響評価、構造品質の助言、アーキテクチャレビュー向けの専門 agents をまとめた包括的なコレクションです。
 
-## Installation
+## インストール
 
 ```bash
 # Using Copilot CLI
 copilot plugin install cast-imaging@awesome-copilot
 ```
 
-## What's Included
+## 含まれるもの
 
 ### Agents
 

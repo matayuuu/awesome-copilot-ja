@@ -1,6 +1,6 @@
 ---
 name: power-bi-dax-optimization
-description: 'Comprehensive Power BI DAX formula optimization prompt for improving performance, readability, and maintainability of DAX calculations.'
+description: 'power-bi-dax-optimization に関する作業を支援する Skill です。対象のファイルや設定を確認し、必要な手順、検証方法、注意点を案内します。対象技術の調査、実装、運用、トラブルシューティングに使用します。'
 ---
 
 # Power BI DAX Formula Optimizer
@@ -18,7 +18,7 @@ When provided with a DAX formula, perform this comprehensive analysis:
 - Assess filter complexity and suggest optimizations
 - Evaluate aggregation function choices
 
-### 2. **Readability Assessment** 
+### 2. **Readability Assessment**
 - Evaluate formula structure and clarity
 - Check naming conventions for measures and variables
 - Assess comment quality and documentation
@@ -44,7 +44,7 @@ For each DAX formula provided:
 ```
 Analyze the provided DAX formula and identify:
 - Performance bottlenecks
-- Readability issues  
+- Readability issues
 - Best practice violations
 - Potential errors or edge cases
 - Maintenance challenges
@@ -102,10 +102,10 @@ Explain all changes made:
 ## Example Output Format
 
 ```dax
-/* 
+/*
 ORIGINAL FORMULA ANALYSIS:
 - Performance Issues: [List identified issues]
-- Readability Concerns: [List readability problems]  
+- Readability Concerns: [List readability problems]
 - Best Practice Violations: [List violations]
 
 OPTIMIZATION STRATEGY:
@@ -117,14 +117,14 @@ PERFORMANCE IMPACT:
 */
 
 -- OPTIMIZED FORMULA:
-Optimized Measure Name = 
-VAR DescriptiveVariableName = 
+Optimized Measure Name =
+VAR DescriptiveVariableName =
     CALCULATE(
         [Base Measure],
         -- Clear filter logic
         Table[Column] = "Value"
     )
-VAR AnotherCalculation = 
+VAR AnotherCalculation =
     DIVIDE(
         DescriptiveVariableName,
         [Denominator Measure]
@@ -149,7 +149,7 @@ To use this prompt effectively, provide:
    - Current performance issues experienced
 3. **Specific optimization goals** such as:
    - Performance improvement
-   - Readability enhancement  
+   - Readability enhancement
    - Best practice compliance
    - Error handling improvement
 

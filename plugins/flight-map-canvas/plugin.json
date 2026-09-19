@@ -1,6 +1,6 @@
 {
   "name": "flight-map-canvas",
-  "description": "A GitHub Copilot canvas that generates a view where Google Maps can be explored using 3D controls, as if a flight simulator. Agents can send the flight anywhere and report what they are working on.",
+  "description": "フライトシミュレーターのように 3D 操作で Google Maps を探索できるビューを生成する GitHub Copilot canvas です。agents はフライトを任意の場所へ送り、作業内容を報告できます。",
   "version": "1.0.0",
   "author": {
     "name": "John Haugabook",

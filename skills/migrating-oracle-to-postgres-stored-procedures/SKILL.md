@@ -1,48 +1,48 @@
 ---
 name: migrating-oracle-to-postgres-stored-procedures
-description: 'Migrates Oracle PL/SQL stored procedures to PostgreSQL PL/pgSQL. Translates Oracle-specific syntax, preserves method signatures and type-anchored parameters, leverages orafce where appropriate, and applies explicit collation mapping (`COLLATE "C"` only when appropriate, locale collations when required). Use when converting Oracle stored procedures or functions to PostgreSQL equivalents during a database migration.'
+description: 'Oracle PL/SQLストアドプロシージャをPostgreSQL PL/pgSQLへ移行します。Oracle固有の構文を変換し、メソッドシグネチャと型アンカー付きパラメーターを保持し、適切な場合はorafceを活用し、明示的な照合順序マッピングを適用します（`COLLATE "C"`は適切な場合のみ、ロケール照合順序は必要な場合に使用）。データベース移行中にOracleのストアドプロシージャまたは関数をPostgreSQLの同等物へ変換する際に使用します。'
 ---
 
-# Migrating Stored Procedures from Oracle to PostgreSQL
+# OracleからPostgreSQLへのストアドプロシージャ移行
 
-Translate Oracle PL/SQL stored procedures and functions to PostgreSQL PL/pgSQL equivalents.
+Oracle PL/SQLストアドプロシージャおよび関数をPostgreSQL PL/pgSQLの同等物へ変換します。
 
 ## Workflow
 
 ```
-Progress:
-- [ ] Step 1: Read the Oracle source procedure
-- [ ] Step 2: Translate to PostgreSQL PL/pgSQL
-- [ ] Step 3: Write the migrated procedure to Postgres output directory
+進捗:
+- [ ] ステップ1: Oracleソースプロシージャを読む
+- [ ] ステップ2: PostgreSQL PL/pgSQLへ変換する
+- [ ] ステップ3: 移行したプロシージャをPostgres出力ディレクトリへ書き込む
 ```
 
-**Step 1: Read the Oracle source procedure**
+**ステップ1: Oracleソースプロシージャを読む**
 
-Read the Oracle stored procedure from `.github/oracle-to-postgres-migration/DDL/Oracle/Procedures and Functions/`. Consult the Oracle table/view definitions at `.github/oracle-to-postgres-migration/DDL/Oracle/Tables and Views/` for type resolution.
+`.github/oracle-to-postgres-migration/DDL/Oracle/Procedures and Functions/`からOracleストアドプロシージャを読みます。型解決のために、`.github/oracle-to-postgres-migration/DDL/Oracle/Tables and Views/`にあるOracleのテーブル/ビュー定義を参照します。
 
-**Step 2: Translate to PostgreSQL PL/pgSQL**
+**ステップ2: PostgreSQL PL/pgSQLへ変換する**
 
-Apply these translation rules:
+次の変換規則を適用します:
 
-- Translate all Oracle-specific syntax to PostgreSQL equivalents.
-- Preserve original functionality and control flow logic.
-- Keep type-anchored input parameters (e.g., `PARAM_NAME IN table_name.column_name%TYPE`).
-- Use explicit types (`NUMERIC`, `VARCHAR`, `INTEGER`) for output parameters passed to other procedures — do not type-anchor these.
-- Do not alter method signatures.
-- Do not prefix object names with schema names unless already present in the Oracle source.
-- Leave exception handling and rollback logic unchanged.
-- Do not generate `COMMENT` or `GRANT` statements.
-- Apply collation intentionally when ordering text:
-  - Use `COLLATE "C"` only when Oracle-compatible binary ordering is required and no other sort order is specified.
-  - If Oracle used explicit linguistic sorting (for example `NLS_SORT = French`), map to an explicit PostgreSQL locale collation instead of `"C"`.
-  - Use `SELECT collname, collprovider, collcollate, collctype FROM pg_collation ORDER BY collname;` to discover collations in the target environment.
-- Treat `UNION ALL` as a review checkpoint. Validate plan quality per branch and restructure if combined-branch planning causes regressions (for example, unexpected sequential scans on large tables).
-- Leverage the `orafce` extension when it improves clarity or fidelity.
+- すべてのOracle固有構文をPostgreSQLの同等物へ変換します。
+- 元の機能と制御フローのロジックを保持します。
+- 型アンカー付き入力パラメーターを維持します（例: `PARAM_NAME IN table_name.column_name%TYPE`）。
+- 他のプロシージャへ渡す出力パラメーターには明示的な型（`NUMERIC`、`VARCHAR`、`INTEGER`）を使用します。これらには型アンカーを使用しません。
+- メソッドシグネチャを変更しません。
+- Oracleソースにすでに存在する場合を除き、オブジェクト名にスキーマ名を接頭辞として付けません。
+- 例外処理とロールバックロジックは変更しません。
+- `COMMENT`または`GRANT`ステートメントを生成しません。
+- テキストを並べ替える際は、意図して照合順序を適用します:
+  - Oracle互換のバイナリ順序が必要で、ほかの並べ替え順序が指定されていない場合にのみ`COLLATE "C"`を使用します。
+  - Oracleが明示的な言語学的ソートを使用していた場合（例: `NLS_SORT = French`）、`"C"`ではなく明示的なPostgreSQLロケール照合順序へマッピングします。
+  - 対象環境で照合順序を検出するには、`SELECT collname, collprovider, collcollate, collctype FROM pg_collation ORDER BY collname;`を使用します。
+- `UNION ALL`をレビューのチェックポイントとして扱います。分岐ごとにプラン品質を検証し、結合分岐のプランニングによって回帰が生じる場合（例: 大きなテーブルで予期しないシーケンシャルスキャン）は再構成します。
+- 明瞭さまたは忠実性が向上する場合は、`orafce`拡張機能を活用します。
 
-Consult the PostgreSQL table/view definitions at `.github/oracle-to-postgres-migration/DDL/Postgres/{ProjectName}/Tables and Views/` for target schema details.
+対象スキーマの詳細については、`.github/oracle-to-postgres-migration/DDL/Postgres/{ProjectName}/Tables and Views/`にあるPostgreSQLのテーブル/ビュー定義を参照します。
 
-**Step 3: Write the migrated procedure to Postgres output directory**
+**ステップ3: 移行したプロシージャをPostgres出力ディレクトリへ書き込む**
 
-Place each migrated procedure in its own file under `.github/oracle-to-postgres-migration/DDL/Postgres/{ProjectName}/Procedures and Functions/{PACKAGE_NAME_IF_APPLICABLE}/`. One procedure per file.
+各移行済みプロシージャは、`.github/oracle-to-postgres-migration/DDL/Postgres/{ProjectName}/Procedures and Functions/{PACKAGE_NAME_IF_APPLICABLE}/`の下に個別のファイルとして配置します。ファイルごとに1つのプロシージャを配置します。
 
-> `{ProjectName}` is the project's assembly/folder name with spaces normalized to `-` (e.g. `MyApp.DataAccess`). This matches the path used by the agent and other migration skills.
+> `{ProjectName}`は、スペースを`-`に正規化したプロジェクトのアセンブリ名/フォルダー名です（例: `MyApp.DataAccess`）。これは、エージェントおよびほかの移行スキルで使用されるパスと一致します。

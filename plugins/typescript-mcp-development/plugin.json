@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "typescript-mcp-development",
-  "description": "Complete toolkit for building Model Context Protocol (MCP) servers in TypeScript/Node.js using the official SDK. Includes instructions for best practices, a prompt for generating servers, and an expert chat mode for guidance.",
+  "description": "公式SDKを使ってTypeScript/Node.jsでModel Context Protocol（MCP）サーバーを構築するための総合ツールキット。ベストプラクティスの指示、サーバー生成用プロンプト、専門家に相談できるチャットモードを含みます。",
   "version": "1.0.0",
   "author": {
     "name": "Awesome Copilot Community"

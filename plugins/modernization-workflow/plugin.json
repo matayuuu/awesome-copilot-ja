@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "modernization-workflow",
-  "description": "Visualize and guide the GitHub Copilot Modernize CLI Assess, Plan, and Execute workflow for .NET, Java, and C++ application repositories.",
+  "description": ".NET、Java、C++ アプリケーションリポジトリ向け GitHub Copilot Modernize CLI の Assess、Plan、Execute ワークフローを可視化し、案内します。",
   "version": "1.0.0",
   "author": {
     "name": "EMEA App GBB",

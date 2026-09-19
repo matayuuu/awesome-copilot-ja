@@ -1,6 +1,6 @@
 ---
 name: qdrant-version-upgrade
-description: "Guidance on how to upgrade your Qdrant version without interrupting the availability of your application and ensuring data integrity."
+description: 'qdrant-version-upgrade に関する作業を支援する Skill です。対象のファイルや設定を確認し、必要な手順、検証方法、注意点を案内します。対象技術の調査、実装、運用、トラブルシューティングに使用します。'
 ---
 
 

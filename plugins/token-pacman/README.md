@@ -1,8 +1,8 @@
 # Token Pacman Plugin
 
-Visualizes live session AI-credit usage as a Pac-Man board with pellets, ghosts, fruit milestones, and game-over limits.
+セッションのAIクレジット使用量を、ドット、ゴースト、フルーツのマイルストーン、ゲームオーバー制限を備えたパックマンボードとして可視化します。
 
-## Installation
+## インストール
 
 ``bash
 copilot plugin install token-pacman@awesome-copilot

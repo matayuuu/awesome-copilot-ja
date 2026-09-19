@@ -1,8 +1,8 @@
-# C# .NET Development Plugin
+# C# .NET Development プラグイン
 
-Essential prompts, instructions, and chat modes for C# and .NET development including testing, documentation, and best practices.
+テスト、ドキュメント、ベストプラクティスを含む C# および .NET 開発向けの基本的な prompts、instructions、chat modes です。
 
-## Installation
+## インストール
 
 ```bash
 # Using Copilot CLI

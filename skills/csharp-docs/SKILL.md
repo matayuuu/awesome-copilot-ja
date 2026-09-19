@@ -1,62 +1,62 @@
 ---
 name: csharp-docs
-description: 'Ensure that C# types are documented with XML comments and follow best practices for documentation.'
+description: 'C# の型が XML コメントで文書化され、ドキュメントのベストプラクティスに従っていることを確認する。'
 ---
 
-# C# Documentation Best Practices
+# C# ドキュメントのベストプラクティス
 
-- Public members should be documented with XML comments.
-- It is encouraged to document internal members as well, especially if they are complex or not self-explanatory.
+- public メンバーは XML コメントで文書化する。
+- internal メンバーも、特に複雑な場合や自明でない場合は文書化することを推奨する。
 
-## Guidance for all APIs
+## すべての API に関する指針
 
-- Use `<summary>` to provide a brief, one sentence, description of what the type or member does. Start the summary with a present-tense, third-person verb.
-- Use `<remarks>` for additional information, which can include implementation details, usage notes, or any other relevant context.
-- Use `<see langword>` for language-specific keywords like `null`, `true`, `false`, `int`, `bool`, etc.
-- Use `<c>` for inline code snippets.
-- Use `<example>` for usage examples on how to use the member.
-  - Use `<code>` for code blocks. `<code>` tags should be placed within an `<example>` tag. Add the language of the code example using the `language` attribute, for example, `<code language="csharp">`.
-- Use `<see cref>` to reference other types or members inline (in a sentence).
-- Use `<seealso>` for standalone (not in a sentence) references to other types or members in the "See also" section of the online docs.
-- Use `<inheritdoc/>` to inherit documentation from base classes or interfaces.
-  - Unless there is major behavior change, in which case you should document the differences.
+- 型やメンバーの動作を簡潔な一文で説明するには `<summary>` を使う。要約は現在形の三人称動詞で始める。
+- 実装の詳細、使用上の注意、その他の関連情報には `<remarks>` を使う。
+- `null`、`true`、`false`、`int`、`bool` など、言語固有のキーワードには `<see langword>` を使う。
+- インラインコードには `<c>` を使う。
+- メンバーの使用例には `<example>` を使う。
+  - コードブロックには `<code>` を使う。`<code>` タグは `<example>` タグ内に配置する。コード例の言語は `language` 属性で指定する（例: `<code language="csharp">`）。
+- 文中でほかの型やメンバーを参照するには `<see cref>` を使う。
+- オンラインドキュメントの「関連項目」セクションで、文中ではない独立した参照を示すには `<seealso>` を使う。
+- 基底クラスやインターフェイスからドキュメントを継承するには `<inheritdoc/>` を使う。
+  - ただし、動作に大きな変更がある場合は、その違いを文書化する。
 
-## Methods
+## メソッド
 
-- Use `<param>` to describe method parameters.
-  - The description should be a noun phrase that doesn't specify the data type.
-  - Begin with an introductory article.
-  - If the parameter is a flag enum, start the description with "A bitwise combination of the enumeration values that specifies...".
-  - If the parameter is a non-flag enum, start the description with "One of the enumeration values that specifies...".
-  - If the parameter is a Boolean, the wording should be of the form "`<see langword="true" />` to ...; otherwise, `<see langword="false" />`.".
-  - If the parameter is an "out" parameter, the wording should be of the form "When this method returns, contains .... This parameter is treated as uninitialized.".
-- Use `<paramref>` to reference parameter names in documentation.
-- Use `<typeparam>` to describe type parameters in generic types or methods.
-- Use `<typeparamref>` to reference type parameters in documentation.
-- Use `<returns>` to describe what the method returns.
-  - The description should be a noun phrase that doesn't specify the data type.
-  - Begin with an introductory article.
-  - If the return type is Boolean, the wording should be of the form "`<see langword="true" />` if ...; otherwise, `<see langword="false" />`.".
+- メソッドのパラメーターを説明するには `<param>` を使う。
+  - 説明はデータ型を明示しない名詞句にする。
+  - 導入冠詞から始める。
+  - パラメーターがフラグ列挙型の場合、説明は「...を指定する列挙値のビット単位の組み合わせ」に相当する表現で始める。
+  - パラメーターがフラグではない列挙型の場合、説明は「...を指定する列挙値のいずれか」に相当する表現で始める。
+  - パラメーターが Boolean の場合、「...する場合は `<see langword="true" />`、それ以外の場合は `<see langword="false" />`。」という形式にする。
+  - パラメーターが `out` パラメーターの場合、「このメソッドから戻るとき、...が格納されます。このパラメーターは初期化されていないものとして扱われます。」という形式にする。
+- ドキュメント内でパラメーター名を参照するには `<paramref>` を使う。
+- ジェネリック型やメソッドの型パラメーターを説明するには `<typeparam>` を使う。
+- ドキュメント内で型パラメーターを参照するには `<typeparamref>` を使う。
+- メソッドの戻り値を説明するには `<returns>` を使う。
+  - 説明はデータ型を明示しない名詞句にする。
+  - 導入冠詞から始める。
+  - 戻り値の型が Boolean の場合、「...の場合は `<see langword="true" />`、それ以外の場合は `<see langword="false" />`。」という形式にする。
 
-## Constructors
+## コンストラクター
 
-- The summary wording should be "Initializes a new instance of the <Class> class [or struct].".
+- 要約は「<Class> クラス［または構造体］の新しいインスタンスを初期化します。」に相当する表現にする。
 
-## Properties
+## プロパティ
 
-- The `<summary>` should start with:
-  - "Gets or sets..." for a read-write property.
-  - "Gets..." for a read-only property.
-  - "Gets [or sets] a value that indicates whether..." for properties that return a Boolean value.
-- Use `<value>` to describe the value of the property.
-  - The description should be a noun phrase that doesn't specify the data type.
-  - If the property has a default value, add it in a separate sentence, for example, "The default is `<see langword="false" />`".
-  - If the value type is Boolean, the wording should be of the form "`<see langword="true" />` if ...; otherwise, `<see langword="false" />`. The default is ...".
+- `<summary>` は次のように始める。
+  - 読み書き可能なプロパティでは「...を取得または設定します。」
+  - 読み取り専用プロパティでは「...を取得します。」
+  - Boolean 値を返すプロパティでは「...かどうかを示す値を取得［または設定］します。」
+- プロパティの値を説明するには `<value>` を使う。
+  - 説明はデータ型を明示しない名詞句にする。
+  - プロパティに既定値がある場合は、「既定値は `<see langword="false" />` です。」のように別の文で追加する。
+  - 値の型が Boolean の場合、「...の場合は `<see langword="true" />`、それ以外の場合は `<see langword="false" />`。既定値は ... です。」という形式にする。
 
-## Exceptions
+## 例外
 
-- Use `<exception cref>` to document exceptions thrown by constructors, properties, indexers, methods, operators, and events.
-- Document all exceptions thrown directly by the member.
-- For exceptions thrown by nested members, document only the exceptions users are most likely to encounter.
-- The description of the exception describes the condition under which it's thrown.
-  - Omit "Thrown if ..." or "If ..." at the beginning of the sentence. Just state the condition directly, for example "An error occurred when accessing a Message Queuing API."
+- コンストラクター、プロパティ、インデクサー、メソッド、演算子、イベントがスローする例外を文書化するには `<exception cref>` を使う。
+- メンバーが直接スローする例外はすべて文書化する。
+- 入れ子のメンバーがスローする例外については、ユーザーが遭遇する可能性が高いものだけを文書化する。
+- 例外の説明には、その例外がスローされる条件を書く。
+  - 文頭の「...の場合にスローされます」や「...の場合」は省き、条件を直接記述する。例: 「Message Queuing API へのアクセス中にエラーが発生しました。」

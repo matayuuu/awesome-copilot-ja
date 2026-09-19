@@ -1,31 +1,31 @@
 ---
 name: create-spring-boot-java-project
-description: 'Create Spring Boot Java Project Skeleton'
+description: 'Spring Boot Javaプロジェクトのひな形を作成する。'
 ---
 
-# Create Spring Boot Java project prompt
+# Spring Boot Javaプロジェクト作成プロンプト
 
-- Please make sure you have the following software installed on your system:
+- 次のソフトウェアがシステムにインストールされていることを確認する。
 
   - Java 21
   - Docker
   - Docker Compose
 
-- If you need to custom the project name, please change the `artifactId` and the `packageName` in [download-spring-boot-project-template](#download-spring-boot-project-template)
+- プロジェクト名をカスタマイズする場合は、[Spring Bootプロジェクトテンプレートのダウンロード](#download-spring-boot-project-template)にある `artifactId` と `packageName` を変更する。
 
-- If you need to update the Spring Boot version, please change the `bootVersion` in [download-spring-boot-project-template](#download-spring-boot-project-template)
+- Spring Bootのバージョンを更新する場合は、[Spring Bootプロジェクトテンプレートのダウンロード](#download-spring-boot-project-template)にある `bootVersion` を変更する。
 
-## Check Java version
+## Javaバージョンの確認
 
-- Run following command in terminal and check the version of Java
+- ターミナルで次のコマンドを実行し、Javaのバージョンを確認する。
 
 ```shell
 java -version
 ```
 
-## Download Spring Boot project template
+## Spring Bootプロジェクトテンプレートのダウンロード
 
-- Run following command in terminal to download a Spring Boot project template
+- ターミナルで次のコマンドを実行し、Spring Bootプロジェクトテンプレートをダウンロードする。
 
 ```shell
 curl https://start.spring.io/starter.zip \
@@ -39,33 +39,33 @@ curl https://start.spring.io/starter.zip \
   -o starter.zip
 ```
 
-## Unzip the downloaded file
+## ダウンロードしたファイルの展開
 
-- Run following command in terminal to unzip the downloaded file
+- ターミナルで次のコマンドを実行し、ダウンロードしたファイルを展開する。
 
 ```shell
 unzip starter.zip -d ./${input:projectName:demo-java}
 ```
 
-## Remove the downloaded zip file
+## ダウンロードしたZIPファイルの削除
 
-- Run following command in terminal to delete the downloaded zip file
+- ターミナルで次のコマンドを実行し、ダウンロードしたZIPファイルを削除する。
 
 ```shell
 rm -f starter.zip
 ```
 
-## Change directory to the project root
+## プロジェクトルートへの移動
 
-- Run following command in terminal to change directory to the project root
+- ターミナルで次のコマンドを実行し、プロジェクトルートへ移動する。
 
 ```shell
 cd ${input:projectName:demo-java}
 ```
 
-## Add additional dependencies
+## 追加の依存関係
 
-- Insert `springdoc-openapi-starter-webmvc-ui` and `archunit-junit5` dependency into `pom.xml` file
+- `pom.xml` ファイルに `springdoc-openapi-starter-webmvc-ui` と `archunit-junit5` の依存関係を追加する。
 
 ```xml
 <dependency>
@@ -81,9 +81,9 @@ cd ${input:projectName:demo-java}
 </dependency>
 ```
 
-## Add SpringDoc, Redis, JPA and MongoDB configurations
+## SpringDoc、Redis、JPA、MongoDBの構成追加
 
-- Insert SpringDoc configurations into `application.properties` file
+- `application.properties` ファイルにSpringDocの構成を追加する。
 
 ```properties
 # SpringDoc configurations
@@ -92,7 +92,7 @@ springdoc.swagger-ui.operations-sorter=alpha
 springdoc.swagger-ui.tags-sorter=alpha
 ```
 
-- Insert Redis configurations into `application.properties` file
+- `application.properties` ファイルにRedisの構成を追加する。
 
 ```properties
 # Redis configurations
@@ -101,7 +101,7 @@ spring.data.redis.port=6379
 spring.data.redis.password=rootroot
 ```
 
-- Insert JPA configurations into `application.properties` file
+- `application.properties` ファイルにJPAの構成を追加する。
 
 ```properties
 # JPA configurations
@@ -114,7 +114,7 @@ spring.jpa.show-sql=true
 spring.jpa.properties.hibernate.format_sql=true
 ```
 
-- Insert MongoDB configurations into `application.properties` file
+- `application.properties` ファイルにMongoDBの構成を追加する。
 
 ```properties
 # MongoDB configurations
@@ -126,38 +126,38 @@ spring.data.mongodb.password=rootroot
 spring.data.mongodb.database=test
 ```
 
-## Add `docker-compose.yaml` with Redis, PostgreSQL and MongoDB services
+## Redis、PostgreSQL、MongoDBサービスを含む `docker-compose.yaml` の追加
 
-- Create `docker-compose.yaml` at project root and add following services: `redis:6`, `postgresql:17` and `mongo:8`.
+- プロジェクトルートに `docker-compose.yaml` を作成し、`redis:6`、`postgresql:17`、`mongo:8` の各サービスを追加する。
 
-  - redis service should have
-    - password `rootroot`
-    - mapping port 6379 to 6379
-    - mounting volume `./redis_data` to `/data`
-  - postgresql service should have
-    - password `rootroot`
-    - mapping port 5432 to 5432
-    - mounting volume `./postgres_data` to `/var/lib/postgresql/data`
-  - mongo service should have
-    - initdb root username `root`
-    - initdb root password `rootroot`
-    - mapping port 27017 to 27017
-    - mounting volume `./mongo_data` to `/data/db`
+  - redisサービスには次を設定する
+    - パスワード `rootroot`
+    - ポート6379を6379へマッピング
+    - ボリューム `./redis_data` を `/data` へマウント
+  - postgresqlサービスには次を設定する
+    - パスワード `rootroot`
+    - ポート5432を5432へマッピング
+    - ボリューム `./postgres_data` を `/var/lib/postgresql/data` へマウント
+  - mongoサービスには次を設定する
+    - initdbのrootユーザー名 `root`
+    - initdbのrootパスワード `rootroot`
+    - ポート27017を27017へマッピング
+    - ボリューム `./mongo_data` を `/data/db` へマウント
 
-## Add `.gitignore` file
+## `.gitignore` ファイルへの追加
 
-- Insert `redis_data`, `postgres_data` and `mongo_data` directories in `.gitignore` file
+- `.gitignore` ファイルに `redis_data`、`postgres_data`、`mongo_data` ディレクトリを追加する。
 
-## Run Maven test command
+## Mavenテストコマンドの実行
 
-- Run maven clean test command to check if the project is working
+- Mavenのclean testコマンドを実行し、プロジェクトが動作することを確認する。
 
 ```shell
 ./mvnw clean test
 ```
 
-## Run Maven run command (Optional)
+## Maven実行コマンド（任意）
 
-- (Optional) `docker-compose up -d` to start the services, `./mvnw spring-boot:run` to run the Spring Boot project, `docker-compose rm -sf` to stop the services.
+- （任意）`docker-compose up -d` でサービスを起動し、`./mvnw spring-boot:run` でSpring Bootプロジェクトを実行し、`docker-compose rm -sf` でサービスを停止する。
 
-## Let's do this step by step
+## 1ステップずつ進める

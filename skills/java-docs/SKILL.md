@@ -1,23 +1,23 @@
 ---
 name: java-docs
-description: 'Ensure that Java types are documented with Javadoc comments and follow best practices for documentation.'
+description: 'Javaの型をJavadocコメントで文書化し、ドキュメント作成のベストプラクティスに従う。'
 ---
 
-# Java Documentation (Javadoc) Best Practices
+# Javaドキュメント（Javadoc）のベストプラクティス
 
-- Public and protected members should be documented with Javadoc comments.
-- It is encouraged to document package-private and private members as well, especially if they are complex or not self-explanatory.
-- The first sentence of the Javadoc comment is the summary description. It should be a concise overview of what the method does and end with a period.
-- Use `@param` for method parameters. The description starts with a lowercase letter and does not end with a period.
-- Use `@return` for method return values.
-- Use `@throws` or `@exception` to document exceptions thrown by methods.
-- Use `@see` for references to other types or members.
-- Use `{@inheritDoc}` to inherit documentation from base classes or interfaces.
-  - Unless there is major behavior change, in which case you should document the differences.
-- Use `@param <T>` for type parameters in generic types or methods.
-- Use `{@code}` for inline code snippets.
-- Use `<pre>{@code ... }</pre>` for code blocks.
-- Use `@since` to indicate when the feature was introduced (e.g., version number).
-- Use `@version` to specify the version of the member.
-- Use `@author` to specify the author of the code.
-- Use `@deprecated` to mark a member as deprecated and provide an alternative.
+- publicおよびprotectedメンバーにはJavadocコメントを付ける。
+- package-privateおよびprivateメンバーも、特に複雑または自明でない場合は文書化することが望ましい。
+- Javadocコメントの最初の文は要約説明とする。メソッドの動作を簡潔に示し、ピリオドで終える。
+- メソッド引数には `@param` を使う。説明は小文字で始め、ピリオドで終えない。
+- メソッドの戻り値には `@return` を使う。
+- メソッドがスローする例外には `@throws` または `@exception` を使う。
+- 他の型やメンバーへの参照には `@see` を使う。
+- 基底クラスやインターフェースのドキュメントを継承するには `{@inheritDoc}` を使う。
+  - ただし、動作が大きく変わる場合は差分を文書化する。
+- ジェネリック型またはメソッドの型パラメーターには `@param <T>` を使う。
+- インラインコードスニペットには `{@code}` を使う。
+- コードブロックには `<pre>{@code ... }</pre>` を使う。
+- 機能が導入された時期（例: バージョン番号）を示すには `@since` を使う。
+- メンバーのバージョンを指定するには `@version` を使う。
+- コードの作成者を指定するには `@author` を使う。
+- メンバーを非推奨として示し、代替手段を提示するには `@deprecated` を使う。

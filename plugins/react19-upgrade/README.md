@@ -1,8 +1,8 @@
 # React 19 Upgrade Plugin
 
-Enterprise toolkit for migrating React 18 codebases to React 19. Includes five specialized agents and three skills targeting the specific challenges of upgrading to React 19's modern API surface.
+React 18のコードベースをReact 19へ移行するためのエンタープライズ向けツールキットです。React 19の最新APIへアップグレードする際の課題に特化した5つのエージェントと3つのSkillを含みます。
 
-## Installation
+## インストール
 
 ```bash
 copilot plugin install react19-upgrade@awesome-copilot
@@ -23,12 +23,12 @@ copilot plugin install react19-upgrade@awesome-copilot
 
 3. **react19-dep-surgeon**  Dependency upgrade specialist that upgrades to react@19, handles @testing-library/react@16+, resolves all peer conflicts, and returns GO/NO-GO confirmation.
 
-4. **react19-migrator**  Source code migration engine that rewrites required React 19 changes and can apply optional modernizations for deprecated patterns:  
-   - `ReactDOM.render` → `createRoot`  
-   - `ReactDOM.hydrate` → `hydrateRoot`  
-   - `unmountComponentAtNode` → `root.unmount()`  
-   - `findDOMNode` → direct refs  
-   - Optional modernization: `forwardRef` → ref as direct prop  
+4. **react19-migrator**  Source code migration engine that rewrites required React 19 changes and can apply optional modernizations for deprecated patterns:
+   - `ReactDOM.render` → `createRoot`
+   - `ReactDOM.hydrate` → `hydrateRoot`
+   - `unmountComponentAtNode` → `root.unmount()`
+   - `findDOMNode` → direct refs
+   - Optional modernization: `forwardRef` → ref as direct prop
    - `defaultProps` → ES6 defaults
    - Legacy Context → `createContext`
    - String refs → `createRef`

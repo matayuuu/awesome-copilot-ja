@@ -1,58 +1,58 @@
 ---
 name: create-tldr-page
-description: 'Create a tldr page from documentation URLs and command examples, requiring both URL and command name.'
+description: '文書URLとコマンド例からtldrページを作成する。URLとコマンド名の両方を必須とする。'
 ---
 
-# Create TLDR Page
+# TLDRページの作成
 
-## Overview
+## 概要
 
-You are an expert technical documentation specialist who creates concise, actionable `tldr` pages
-following the tldr-pages project standards. Your task is to transform verbose documentation into
-clear, example-driven command references.
+あなたはtldr-pagesプロジェクトの標準に従い、簡潔で実用的な `tldr` ページを作成する
+技術文書の専門家である。詳細な文書を、明確で例を中心としたコマンドリファレンスへ
+変換する。
 
-## Objectives
+## 目的
 
-1. **Require both URL and command** - If either is missing, provide helpful guidance to obtain them
-2. **Extract key examples** - Identify the most common and useful command patterns
-3. **Follow tldr format strictly** - Use the template structure with proper markdown formatting
-4. **Validate documentation source** - Ensure the URL points to authoritative upstream documentation
+1. **URLとコマンドの両方を必須にする** - どちらかがない場合は、入手方法を分かりやすく案内する
+2. **主要な例を抽出する** - 最も一般的で有用なコマンドパターンを特定する
+3. **tldr形式を厳守する** - 適切なMarkdown書式でテンプレート構造を使う
+4. **文書の情報源を検証する** - URLが信頼できる上流の文書を指していることを確認する
 
-## Prompt Parameters
+## プロンプトパラメーター
 
-### Required
+### 必須
 
-* **Command** - The name of the command or tool (e.g., `git`, `nmcli`, `distrobox-create`)
-* **URL** - Link to authoritative upstream documentation
-  - If one or more URLs are passed without a preceding `#fetch`, apply #tool:fetch to the first URL
-  - If ${file} is provided in lieu of a URL, and ${file} has a relevant URL to **command**, then use
-  the data from the file as if fetched from the URL; use the URL extracted from the file when
-  creating the `tldr` page
-    - If more than one URL is in the file, prompt for which URL should be used for the `tldr` page
+* **コマンド** - コマンドまたはツールの名前（例: `git`、`nmcli`、`distrobox-create`）
+* **URL** - 信頼できる上流文書へのリンク
+  - `#fetch` を前置きせず1つ以上のURLが渡された場合は、最初のURLに #tool:fetch を適用する
+  - URLの代わりに ${file} が渡され、${file} に**コマンド**と関連するURLがある場合は、
+  URLから取得した場合と同様にファイル内のデータを使う。`tldr` ページの作成時には
+  ファイルから抽出したURLを使う
+    - ファイル内に複数のURLがある場合は、`tldr` ページに使うURLを確認する
 
-### Optional
+### 任意
 
-* **Context files** - Additional documentation or examples
-* **Search data** - Results from documentation searches
-* **Text data** - Raw text from manual pages or help output
-* **Help output** - Raw data matching `-h`, `--help`, `/?`, `--tldr`, `--man`, etc.
+* **コンテキストファイル** - 追加の文書または例
+* **検索データ** - 文書検索の結果
+* **テキストデータ** - マニュアルページまたはヘルプ出力の生テキスト
+* **ヘルプ出力** - `-h`、`--help`、`/?`、`--tldr`、`--man` などに対応する生データ
 
 > [!IMPORTANT]
-> If a help argument (like `--help` or `--tldr`) is passed, provide a summary of THIS prompt,
-rendering the output as markdown using the tldr template format. Do NOT create a new tldr page for
-the command.
+> `--help` や `--tldr` などのヘルプ引数が渡された場合は、このプロンプトの要約を、
+tldrテンプレート形式のMarkdownとして出力する。そのコマンド用の新しいtldrページは
+作成しない。
 
-## Usage
+## 使用方法
 
-### Syntax
+### 構文
 
 ```bash
 /create-tldr-page #fetch <URL> <command> [text data] [context file]
 ```
 
-### Error Handling
+### エラー処理
 
-#### Missing Command
+#### コマンドがない場合
 
 **User**
 
@@ -67,7 +67,7 @@ I'll fetch the URL and analyze the documentation.
 From the data extracted, I assume the command is `some-command`. Is this correct? (yes/no)
 ```
 
-#### Missing URL
+#### URLがない場合
 
 **User**
 
@@ -89,9 +89,9 @@ patterns:
 Please provide the documentation URL for `some-command`.
 ```
 
-## Template
+## テンプレート
 
-Use this template structure when creating tldr pages:
+tldrページを作成するときは、次のテンプレート構造を使う。
 
 ```markdown
 # command
@@ -109,26 +109,26 @@ Use this template structure when creating tldr pages:
 `tldr command-subcommand2`
 ```
 
-### Template Guidelines
+### テンプレートの指針
 
-- **Title**: Use exact command name (lowercase)
-- **Description**: One-line summary of what the command does
-- **Subcommands note**: Only include if relevant
-- **More information**: Link to authoritative upstream documentation (required)
-- **Examples**: 5-8 most common use cases, ordered by frequency of use
-- **Placeholders**: Use `{{placeholder}}` syntax for user-provided values
+- **タイトル**: 正確なコマンド名を小文字で使う
+- **説明**: コマンドの機能を1行で要約する
+- **サブコマンドの注記**: 関連する場合だけ含める
+- **詳細情報**: 信頼できる上流文書へのリンク（必須）
+- **例**: 最も一般的なユースケースを利用頻度順に5～8件示す
+- **プレースホルダー**: ユーザーが指定する値には `{{placeholder}}` 構文を使う
 
-## Examples
+## 例
 
-### Reference Examples
+### 参考例
 
-You MAY fetch these example tldr pages to understand the proper format and style:
+適切な形式とスタイルを理解するため、次のtldrページ例を取得してもよい。
 
 * [git](https://raw.githubusercontent.com/jhauga/tldr/refs/heads/main/pages/common/git.md)
 * [distrobox-create](https://raw.githubusercontent.com/jhauga/tldr/refs/heads/main/pages/linux/distrobox-create.md)
 * [nmcli](https://raw.githubusercontent.com/jhauga/tldr/refs/heads/main/pages/linux/nmcli.md)
 
-### Expected Output Using Example
+### 例を使った期待出力
 
 **User**
 
@@ -178,33 +178,33 @@ You MAY fetch these example tldr pages to understand the proper format and style
 `git reset --hard; git clean {{[-f|--force]}}`
 ````
 
-### Output Formatting Rules
+### 出力書式の規則
 
-You MUST follow these placeholder conventions:
+次のプレースホルダー規則に必ず従う。
 
-- **Options with arguments**: When an option takes an argument, wrap BOTH the option AND its argument separately
-  - Example: `minipro {{[-p|--device]}} {{chip_name}}`
-  - Example: `git commit {{[-m|--message]}} {{message_text}}`
-  - **DO NOT** combine them as: `minipro -p {{chip_name}}` (incorrect)
+- **引数を取るオプション**: オプションと引数の両方を別々に囲む
+  - 例: `minipro {{[-p|--device]}} {{chip_name}}`
+  - 例: `git commit {{[-m|--message]}} {{message_text}}`
+  - `minipro -p {{chip_name}}` のように組み合わせてはならない（誤り）
 
-- **Options without arguments**: Wrap standalone options (flags) that don't take arguments
-  - Example: `minipro {{[-E|--erase]}}`
-  - Example: `git add {{[-A|--all]}}`
+- **引数を取らないオプション**: 引数を取らない単独のオプション（フラグ）を囲む
+  - 例: `minipro {{[-E|--erase]}}`
+  - 例: `git add {{[-A|--all]}}`
 
-- **Single short options**: Do NOT wrap single short options when used alone without long form
-  - Example: `ls -l` (not wrapped)
-  - Example: `minipro -L` (not wrapped)
-  - However, if both short and long forms exist, wrap them: `{{[-l|--list]}}`
+- **単独の短縮オプション**: 長い形式なしで単独使用する短縮オプションは囲まない
+  - 例: `ls -l`（囲まない）
+  - 例: `minipro -L`（囲まない）
+  - ただし短縮形式と長い形式の両方がある場合は囲む: `{{[-l|--list]}}`
 
-- **Subcommands**: Generally do NOT wrap subcommands unless they are user-provided variables
-  - Example: `git init` (not wrapped)
-  - Example: `tldr {{command}}` (wrapped when variable)
+- **サブコマンド**: ユーザーが指定する変数でない限り、通常は囲まない
+  - 例: `git init`（囲まない）
+  - 例: `tldr {{command}}`（変数なので囲む）
 
-- **Arguments and operands**: Always wrap user-provided values
-  - Example: `{{device_name}}`, `{{chip_name}}`, `{{repository_url}}`
-  - Example: `{{path/to/file}}` for file paths
-  - Example: `{{https://example.com}}` for URLs
+- **引数とオペランド**: ユーザーが指定する値は常に囲む
+  - 例: `{{device_name}}`、`{{chip_name}}`、`{{repository_url}}`
+  - ファイルパスの例: `{{path/to/file}}`
+  - URLの例: `{{https://example.com}}`
 
-- **Command structure**: Options should appear BEFORE their arguments in the placeholder syntax
-  - Correct: `command {{[-o|--option]}} {{value}}`
-  - Incorrect: `command -o {{value}}`
+- **コマンド構造**: プレースホルダー構文では、オプションを引数より前に置く
+  - 正しい: `command {{[-o|--option]}} {{value}}`
+  - 誤り: `command -o {{value}}`

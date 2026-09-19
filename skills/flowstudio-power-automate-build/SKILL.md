@@ -1,48 +1,39 @@
 ---
 name: flowstudio-power-automate-build
-description: >-
-  Build, scaffold, and deploy Power Automate cloud flows using the FlowStudio
-  MCP server. Your agent constructs flow definitions, wires connections, deploys,
-  and tests — all via MCP without opening the portal.
-  Load this skill when asked to: create a flow, build a new flow,
-  deploy a flow definition, scaffold a Power Automate workflow, construct a flow
-  JSON, update an existing flow's actions, patch a flow definition, add actions
-  to a flow, wire up connections, or generate a workflow definition from scratch.
-  Requires a FlowStudio MCP subscription — see https://mcp.flowstudio.app
+description: 'FlowStudio MCP サーバーを使用して Power Automate クラウドフローを構築、スキャフォールディング、デプロイします。ポータルを開かず、MCP 経由でフロー定義の構築、接続の配線、デプロイ、テストを行います。フローの作成、新規フローの構築、フロー定義のデプロイ、Power Automate ワークフローのスキャフォールディング、フロー JSON の構築、既存フローのアクション更新、フロー定義のパッチ、アクション追加、接続の配線、またはワークフロー定義の新規生成を求められた場合に読み込みます。FlowStudio MCP サブスクリプションが必要です（https://mcp.flowstudio.app を参照）。'
 ---
 
-# Build & Deploy Power Automate Flows with FlowStudio MCP
+# FlowStudio MCP を使用した Power Automate フローの構築とデプロイ
 
-Step-by-step guide for constructing and deploying Power Automate cloud flows
-programmatically through the FlowStudio MCP server.
+FlowStudio MCP サーバーを介してプログラムで Power Automate クラウド フローを
+構築およびデプロイするためのステップバイステップ ガイドです。
 
-**Prerequisite**: A FlowStudio MCP server must be reachable with a valid JWT.
-See the `flowstudio-power-automate-mcp` skill for connection setup.
-Subscribe at https://mcp.flowstudio.app
+**前提条件**: 有効な JWT を使用して FlowStudio MCP サーバーに到達できる必要があります。
+接続の設定については `flowstudio-power-automate-mcp` スキルを参照してください。
+https://mcp.flowstudio.app で購読してください
 
-Workflow:
-1. Load current build tools.
-2. Check for an existing flow.
-3. Resolve connection references.
-4. Build the definition.
-5. Deploy.
-6. Verify.
-7. Test.
+ワークフロー:
+1. 現在の構築ツールを読み込む。
+2. 既存のフローを確認する。
+3. 接続参照を解決する。
+4. 定義を構築する。
+5. デプロイする。
+6. 検証する。
+7. テストする。
 
 ---
 
-## Source of Truth
+## 信頼できる情報源
 
-> **Always call `list_skills` / `tool_search` first** to confirm available tool
-> names and parameter schemas. Tool names and parameters may change between
-> server versions.
-> This skill covers response shapes, behavioral notes, and build patterns —
-> things tool schemas cannot tell you. If this document disagrees with
-> `tool_search` or a real API response, the API wins.
+> **利用可能なツール名とパラメーター スキーマを確認するため、必ず最初に `list_skills` / `tool_search` を呼び出してください**。
+> ツール名とパラメーターはサーバーのバージョン間で変更される可能性があります。
+> このスキルでは、レスポンスの形状、動作上の注意事項、構築パターン、つまり
+> ツール スキーマでは判断できない事項を扱います。このドキュメントが
+> `tool_search` または実際の API レスポンスと矛盾する場合は、API を優先してください。
 
 ---
 
-## Python Helper
+## Python ヘルパー
 
 ```python
 import json, urllib.request
@@ -71,11 +62,11 @@ ENV = "<environment-id>"  # e.g. Default-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
 
 ---
 
-## 0. Load the Current Build Tools
+## 0. 現在の構築ツールを読み込む
 
-For a brand-new flow, load the server's `create-flow` bundle. For editing an
-existing flow, load `build-flow`. This keeps the agent aligned with the MCP
-server's current schema before constructing JSON.
+新規フローの場合は、サーバーの `create-flow` バンドルを読み込みます。既存フローを
+編集する場合は、`build-flow` を読み込みます。これにより、JSON を構築する前に
+エージェントを MCP サーバーの現在のスキーマに合わせることができます。
 
 ```python
 schemas = mcp("tool_search", query="skill:create-flow")
@@ -83,7 +74,7 @@ schemas = mcp("tool_search", query="skill:create-flow")
 # describe_live_connector, get_live_dynamic_options, update_live_flow.
 ```
 
-If you need a tool outside the bundle, load it explicitly:
+バンドル外のツールが必要な場合は、明示的に読み込んでください。
 
 ```python
 mcp("tool_search", query="select:get_live_dynamic_properties")
@@ -91,9 +82,9 @@ mcp("tool_search", query="select:get_live_dynamic_properties")
 
 ---
 
-## 1. Safety Check: Does the Flow Already Exist?
+## 1. 安全確認: フローはすでに存在するか?
 
-Always look before you build to avoid duplicates:
+重複を避けるため、構築前に必ず確認してください。
 
 ```python
 results = mcp("list_live_flows",
@@ -116,24 +107,23 @@ else:
     FLOW_ID = None
 ```
 
-For very large environments, `list_live_flows` may return a continuation URL.
-Pass it back as `continuationUrl` with the same `mode` to retrieve the next
-batch. Use `mode="admin"` only when the user needs all environment flows and
-the MCP identity has admin rights.
+非常に大規模な環境では、`list_live_flows` が継続 URL を返す場合があります。
+次のバッチを取得するには、同じ `mode` とともに `continuationUrl` として
+それを渡します。ユーザーが環境内のすべてのフローを必要とし、かつ MCP ID に
+管理者権限がある場合にのみ `mode="admin"` を使用してください。
 
 ---
 
-## 2. Obtain Connection References
+## 2. 接続参照を取得する
 
-Every connector action needs a `connectionName` that points to a key in the
-flow's `connectionReferences` map. That key links to an authenticated connection
-in the environment.
+すべてのコネクタ アクションには、フローの `connectionReferences` マップ内のキーを指す
+`connectionName` が必要です。そのキーは、環境内の認証済み接続にリンクされます。
 
-> **MANDATORY**: You MUST call `list_live_connections` first — do NOT ask the
-> user for connection names or GUIDs. The API returns the exact values you need.
-> Only prompt the user if the API confirms that required connections are missing.
+> **必須**: 必ず最初に `list_live_connections` を呼び出してください。接続名や GUID を
+> ユーザーに尋ねてはいけません。API は必要な正確な値を返します。
+> 必要な接続が不足していることを API が確認した場合にのみ、ユーザーに確認してください。
 
-### 2a — Find active connections
+### 2a — アクティブな接続を探す
 
 ```python
 conns = mcp("list_live_connections", environmentName=ENV)
@@ -142,8 +132,8 @@ active = [c for c in conns["connections"]
 conn_map = {c["connectorName"]: c["id"] for c in active}
 ```
 
-For a known connector, pass `search` to reduce output and get paste-ready
-`connectionReferenceTemplate` and `hostTemplate` values:
+既知のコネクタについては、`search` を渡して出力を減らし、貼り付け可能な
+`connectionReferenceTemplate` および `hostTemplate` の値を取得します。
 
 ```python
 sp_conns = mcp("list_live_connections",
@@ -151,17 +141,17 @@ sp_conns = mcp("list_live_connections",
     search="shared_sharepointonline")
 ```
 
-### 2b — Determine which connectors the flow needs
+### 2b — フローに必要なコネクタを特定する
 
-Common connector API names: SharePoint `shared_sharepointonline`, Outlook
-`shared_office365`, Teams `shared_teams`, Approvals `shared_approvals`,
-OneDrive `shared_onedriveforbusiness`, Excel `shared_excelonlinebusiness`,
-Dataverse `shared_commondataserviceforapps`, Forms `shared_microsoftforms`.
+一般的なコネクタ API 名: SharePoint `shared_sharepointonline`、Outlook
+`shared_office365`、Teams `shared_teams`、Approvals `shared_approvals`、
+OneDrive `shared_onedriveforbusiness`、Excel `shared_excelonlinebusiness`、
+Dataverse `shared_commondataserviceforapps`、Forms `shared_microsoftforms`。
 
-Flows that need no connectors, such as Recurrence + Compose + HTTP only, can
-omit `connectionReferences`.
+Recurrence + Compose + HTTP のみなど、コネクタを必要としないフローでは、
+`connectionReferences` を省略できます。
 
-### 2c — If connections are missing, guide the user
+### 2c — 接続が不足している場合は、ユーザーを案内する
 
 ```python
 connectors_needed = ["shared_sharepointonline", "shared_office365"]  # adjust per flow
@@ -173,7 +163,7 @@ if missing:
     raise Exception(f"Missing active connections: {missing}")
 ```
 
-### 2d — Build the connectionReferences block
+### 2d — connectionReferences ブロックを構築する
 
 ```python
 connection_references = {}
@@ -190,21 +180,20 @@ for connector in connectors_needed:
     }
 ```
 
-In Step 3 action JSON, `inputs.host.connectionName` must be the map key such as
-`shared_teams`, not the GUID. The GUID belongs only inside the
-`connectionReferences[connector].connectionName` value. If an existing flow uses
-the same connectors, you may also copy its `properties.connectionReferences`
-from `get_live_flow`.
+手順 3 のアクション JSON では、`inputs.host.connectionName` は GUID ではなく、
+`shared_teams` のようなマップ キーでなければなりません。GUID は
+`connectionReferences[connector].connectionName` の値の中にのみ属します。既存フローが同じコネクタを使用する場合は、
+`get_live_flow` からその `properties.connectionReferences` をコピーすることもできます。
 
 ---
 
-## 3. Build the Flow Definition
+## 3. フロー定義を構築する
 
-Construct the definition object. See [flow-schema.md](references/flow-schema.md)
-for the full schema and these action pattern references for copy-paste templates:
-- [action-patterns-core.md](references/action-patterns-core.md) — Variables, control flow, expressions
-- [action-patterns-data.md](references/action-patterns-data.md) — Array transforms, HTTP, parsing
-- [action-patterns-connectors.md](references/action-patterns-connectors.md) — SharePoint, Outlook, Teams, Approvals
+定義オブジェクトを構築します。完全なスキーマについては [flow-schema.md](references/flow-schema.md)
+を参照してください。また、コピーして貼り付けられるテンプレートについては、次のアクション パターン リファレンスを参照してください。
+- [action-patterns-core.md](references/action-patterns-core.md) — 変数、制御フロー、式
+- [action-patterns-data.md](references/action-patterns-data.md) — 配列変換、HTTP、解析
+- [action-patterns-connectors.md](references/action-patterns-connectors.md) — SharePoint、Outlook、Teams、Approvals
 
 ```python
 definition = {
@@ -215,14 +204,14 @@ definition = {
 }
 ```
 
-> See [build-patterns.md](references/build-patterns.md) for complete, ready-to-use
-> flow definitions covering Recurrence+SharePoint+Teams, HTTP triggers, and more.
+> Recurrence+SharePoint+Teams、HTTP トリガーなどを対象とする、完全でそのまま使用できる
+> フロー定義については [build-patterns.md](references/build-patterns.md) を参照してください。
 
-### Discover connector operations before guessing JSON
+### JSON を推測する前にコネクタ操作を検出する
 
-For connector-backed triggers/actions, prefer the live connector describer over
-hand-written shapes. It can return authored hints, canonical examples, variant
-keys, inputs/outputs, and dynamic metadata pointers.
+コネクタを使用するトリガーおよびアクションでは、手書きの形状よりもライブ コネクタ記述子を
+優先してください。これにより、作成時のヒント、正規の例、バリアント キー、入力/出力、
+および動的メタデータ ポインターを取得できます。
 
 ```python
 # Search across connectors when you know the user's intent but not the API.
@@ -239,8 +228,7 @@ op = mcp("describe_live_connector",
 print(op.get("hint"))
 ```
 
-When an operation has multiple authored variants, request the variant the flow
-needs:
+操作に複数の作成済みバリアントがある場合は、フローが必要とするバリアントを要求してください。
 
 ```python
 teams_chat = mcp("describe_live_connector",
@@ -250,8 +238,8 @@ teams_chat = mcp("describe_live_connector",
     variant="flowbot_chat")
 ```
 
-When the operation description says a parameter has dynamic options or dynamic
-properties, call the indicated next tool:
+操作の説明でパラメーターに動的オプションまたは動的プロパティがあると示されている場合は、
+示された次のツールを呼び出してください。
 
 ```python
 sp_op = mcp("describe_live_connector",
@@ -277,19 +265,19 @@ fields = mcp("get_live_dynamic_properties",
     dynamicMetadata=sp_op["dynamicProperties"]["item"])
 ```
 
-Use dynamic options for dropdown IDs such as SharePoint sites/lists and Teams
-teams/channels. Use dynamic properties for schema/field shapes such as
-SharePoint list item columns.
+SharePoint サイト/リストや Teams チーム/チャネルなどのドロップダウン ID には動的オプションを
+使用します。SharePoint リスト項目の列など、スキーマ/フィールドの形状には動的プロパティを
+使用します。
 
 ---
 
-## 4. Deploy (Create or Update)
+## 4. デプロイ (作成または更新)
 
-`update_live_flow` handles both creation and updates in a single tool.
+`update_live_flow` は、作成と更新の両方を単一のツールで処理します。
 
-### Create a new flow (no existing flow)
+### 新規フローを作成する (既存フローなし)
 
-Omit `flowName` — the server generates a new GUID and creates via PUT:
+`flowName` を省略します。サーバーが新しい GUID を生成し、PUT 経由で作成します。
 
 ```python
 definition["description"] = "Weekly SharePoint → Teams notification flow, built by agent"
@@ -310,9 +298,9 @@ else:
     print(f"✅ Flow created: {FLOW_ID}")
 ```
 
-### Update an existing flow
+### 既存フローを更新する
 
-Provide `flowName` to PATCH:
+PATCH するには `flowName` を指定します。
 
 ```python
 definition["description"] = (
@@ -333,25 +321,25 @@ else:
     print("Update succeeded:", result)
 ```
 
-> ⚠️ `update_live_flow` always returns an `error` key.
-> `null` (Python `None`) means success — do not treat the presence of the key as failure.
+> ⚠️ `update_live_flow` は常に `error` キーを返します。
+> `null` (Python では `None`) は成功を意味します。キーが存在することを失敗として扱わないでください。
 >
-> ⚠️ Flow description lives at `definition["description"]`. The current server
-> appends `#flowstudio-mcp` for usage tracking. Do not pass a top-level
-> `description` argument unless `tool_search` shows one in the active schema.
+> ⚠️ フローの説明は `definition["description"]` にあります。現在のサーバーは使用状況追跡のために
+> `#flowstudio-mcp` を追加します。アクティブなスキーマで `tool_search` が示されない限り、
+> 最上位の `description` 引数を渡さないでください。
 
-### Common deployment errors
+### 一般的なデプロイ エラー
 
-| Error message (contains) | Cause | Fix |
+| エラー メッセージ (含まれる文字列) | 原因 | 修正 |
 |---|---|---|
-| `missing from connectionReferences` | An action's `host.connectionName` references a key that doesn't exist in the `connectionReferences` map | Ensure `host.connectionName` uses the **key** from `connectionReferences` (e.g. `shared_teams`), not the raw GUID |
-| `ConnectionAuthorizationFailed` / 403 | The connection GUID belongs to another user or is not authorized | Re-run Step 2a and use a connection owned by the current `x-api-key` user |
-| `InvalidTemplate` / `InvalidDefinition` | Syntax error in the definition JSON | Check `runAfter` chains, expression syntax, and action type spelling |
-| `ConnectionNotConfigured` | A connector action exists but the connection GUID is invalid or expired | Re-check `list_live_connections` for a fresh GUID |
+| `missing from connectionReferences` | アクションの `host.connectionName` が、`connectionReferences` マップに存在しないキーを参照している | `host.connectionName` が、生の GUID ではなく `connectionReferences` の**キー** (例: `shared_teams`) を使用していることを確認する |
+| `ConnectionAuthorizationFailed` / 403 | 接続 GUID が別のユーザーに属しているか、認可されていない | 手順 2a を再実行し、現在の `x-api-key` ユーザーが所有する接続を使用する |
+| `InvalidTemplate` / `InvalidDefinition` | 定義 JSON の構文エラー | `runAfter` チェーン、式の構文、アクション型のスペルを確認する |
+| `ConnectionNotConfigured` | コネクタ アクションは存在するが、接続 GUID が無効または期限切れである | 新しい GUID を取得するため `list_live_connections` を再確認する |
 
 ---
 
-## 5. Verify the Deployment
+## 5. デプロイを検証する
 
 ```python
 check = mcp("get_live_flow", environmentName=ENV, flowName=FLOW_ID)
@@ -368,20 +356,20 @@ print("Actions:", list(acts.keys()))
 
 ---
 
-## 6. Test the Flow
+## 6. フローをテストする
 
-> **MANDATORY**: Before triggering any test run, **ask the user for confirmation**.
-> Running a flow has real side effects — it may send emails, post Teams messages,
-> write to SharePoint, start approvals, or call external APIs. Explain what the
-> flow will do and wait for explicit approval before calling `trigger_live_flow`
-> or `resubmit_live_flow_run`.
+> **必須**: テスト実行をトリガーする前に、**ユーザーへ確認を求めてください**。
+> フローの実行には実際の副作用があります。メールの送信、Teams メッセージの投稿、
+> SharePoint への書き込み、承認の開始、外部 API の呼び出しが行われる場合があります。
+> フローが何を行うかを説明し、`trigger_live_flow` または `resubmit_live_flow_run` を呼び出す前に
+> 明示的な承認を待ってください。
 
-### Updated flows (have prior runs) — ANY trigger type
+### 更新済みフロー (過去の実行あり) — 任意のトリガー型
 
-> **Use `resubmit_live_flow_run` first.** It works for EVERY trigger type —
-> Recurrence, SharePoint, connector webhooks, Button, and HTTP. It replays
-> the original trigger payload. Do NOT ask the user to manually trigger the
-> flow or wait for the next scheduled run.
+> **最初に `resubmit_live_flow_run` を使用してください。**これは Recurrence、SharePoint、
+> コネクタ Webhook、Button、HTTP のすべてのトリガー型で機能します。元のトリガー ペイロードを
+> 再実行します。ユーザーに手動でフローをトリガーするよう依頼したり、次のスケジュール実行を
+> 待ったりしないでください。
 
 ```python
 runs = mcp("get_live_flow_runs", environmentName=ENV, flowName=FLOW_ID, top=1)
@@ -392,11 +380,11 @@ if runs:
     print(result)   # {"resubmitted": true, "triggerName": "..."}
 ```
 
-### HTTP, Button, and PowerApps flows — custom test payload
+### HTTP、Button、PowerApps フロー — カスタム テスト ペイロード
 
-Only use `trigger_live_flow` when you need to send a **different** payload
-than the original run. For verifying a fix, `resubmit_live_flow_run` is
-better because it uses the exact data that caused the failure.
+元の実行とは**異なる**ペイロードを送信する必要がある場合にのみ `trigger_live_flow` を
+使用してください。修正の検証には、失敗を引き起こした正確なデータを使用するため
+`resubmit_live_flow_run` の方が適しています。
 
 ```python
 defn = mcp("get_live_flow", environmentName=ENV, flowName=FLOW_ID)
@@ -411,15 +399,15 @@ print(f"Status: {result['responseStatus']}, via: {result['invocation']}")
 print(result.get("warning"))   # set when a required input was missing: the run still ran, with null
 ```
 
-### Brand-new non-HTTP flows
+### 新規の非 HTTP フロー
 
-A brand-new **Recurrence** flow needs no workaround: deploy it, then run it
-immediately with `trigger_live_flow` and no `body` — same as the portal's
-"Run flow" button. A body is refused; scheduled triggers take no inputs.
+新規の **Recurrence** フローに回避策は不要です。デプロイ後、ポータルの
+「Run flow」ボタンと同様に、`trigger_live_flow` を使用し `body` なしで
+すぐに実行します。本文は拒否されます。スケジュール トリガーは入力を受け取りません。
 
-A brand-new **connector-triggered** flow (SharePoint, webhooks) has no prior
-runs and cannot fire without a real source event. Deploy with a temporary
-HTTP trigger, test the actions, then swap to the production trigger:
+新規の **コネクタ トリガー型** フロー (SharePoint、Webhook) には過去の実行がなく、
+実際のソース イベントなしには起動できません。一時的な HTTP トリガーでデプロイして
+アクションをテストし、その後で運用トリガーに切り替えます。
 
 ```python
 production_trigger = definition["triggers"]
@@ -445,54 +433,54 @@ mcp("update_live_flow", environmentName=ENV, flowName=FLOW_ID,
     definition=definition, connectionReferences=connection_references)
 ```
 
-The trigger is only the entry point; testing through HTTP still exercises the
-same actions. If actions use `triggerBody()` or `triggerOutputs()`, pass a
-representative `body` shaped like the production trigger payload.
+トリガーは入口にすぎません。HTTP 経由のテストでも同じアクションが実行されます。
+アクションが `triggerBody()` または `triggerOutputs()` を使用する場合は、運用トリガーの
+ペイロードと同じ形状の代表的な `body` を渡してください。
 
 ---
 
-## Gotchas
+## 注意点
 
-| Mistake | Consequence | Prevention |
+| 誤り | 結果 | 防止策 |
 |---|---|---|
-| Missing `connectionReferences` in deploy | 400 "Supply connectionReferences" | Always call `list_live_connections` first |
-| `"operationOptions"` missing on Foreach | Parallel execution, race conditions on writes | Always add `"Sequential"` |
-| `union(old_data, new_data)` | Old values override new (first-wins) | Use `union(new_data, old_data)` |
-| `split()` on potentially-null string | `InvalidTemplate` crash | Wrap with `coalesce(field, '')` |
-| Checking `result["error"]` exists | Always present; true error is `!= null` | Use `result.get("error") is not None` |
-| Flow deployed but state is "Stopped" | Flow won't run on schedule | Call `set_live_flow_state` with `state: "Started"` — do **not** use `update_live_flow` for state changes |
-| Teams "Chat with Flow bot" recipient as object | 400 `GraphUserDetailNotFound` | Use plain string with trailing semicolon (see below) |
-| Copilot/Skills flow not in a solution | Copilot Studio may not discover it as an agent tool | After deploy, call `add_live_flow_to_solution` with the target `solutionId` |
-| Button/Skills trigger used for MCP testing | Runs even when a required input is missing (null) | Pass inputs in `trigger_live_flow` `body`; on `warning`, cancel and retry with the full body |
-| Connector action missing `metadata.operationMetadataId` | Designer/run-only UI can behave inconsistently | Preserve existing IDs; add stable GUIDs for new connector actions |
-| Placeholder Excel `scriptId` | Dynamic validation fails at save time | Resolve the real Office Script ID before deploying |
-| SharePoint `PatchItem` omits required fields | Save can fail even if the field is not changing | Echo unchanged required fields such as `item/Title` |
-| Copilot Studio connector calls a draft agent | Connector invocation can fail or hit stale behavior | Publish the agent before testing/resubmitting the flow |
+| デプロイ時に `connectionReferences` がない | 400 "Supply connectionReferences" | 必ず最初に `list_live_connections` を呼び出す |
+| Foreach に `"operationOptions"` がない | 並列実行となり、書き込み時に競合状態が発生する | 常に `"Sequential"` を追加する |
+| `union(old_data, new_data)` | 古い値が新しい値を上書きする (先勝ち) | `union(new_data, old_data)` を使用する |
+| null の可能性がある文字列に `split()` | `InvalidTemplate` のクラッシュ | `coalesce(field, '')` でラップする |
+| `result["error"]` の存在を確認する | 常に存在する。真のエラーは `!= null` | `result.get("error") is not None` を使用する |
+| フローはデプロイされたが状態が "Stopped" | フローはスケジュールどおりに実行されない | `state: "Started"` を指定して `set_live_flow_state` を呼び出す。状態変更に `update_live_flow` を使用**しない** |
+| Teams の "Chat with Flow bot" 受信者をオブジェクトにする | 400 `GraphUserDetailNotFound` | 末尾にセミコロンを付けたプレーン文字列を使用する (以下を参照) |
+| Copilot/Skills フローがソリューション内にない | Copilot Studio がエージェント ツールとして検出できない場合がある | デプロイ後、対象の `solutionId` で `add_live_flow_to_solution` を呼び出す |
+| MCP テストに Button/Skills トリガーを使用する | 必須入力が欠けていても (null で) 実行される | 入力を `trigger_live_flow` `body` で渡す。`warning` の場合はキャンセルし、完全な本文で再試行する |
+| コネクタ アクションに `metadata.operationMetadataId` がない | Designer/run-only UI の動作が一貫しない場合がある | 既存の ID を保持し、新しいコネクタ アクションには安定した GUID を追加する |
+| プレースホルダーの Excel `scriptId` | 動的検証が保存時に失敗する | デプロイ前に実際の Office Script ID を解決する |
+| SharePoint `PatchItem` で必須フィールドを省略する | フィールドを変更していなくても保存に失敗する場合がある | `item/Title` など、変更しない必須フィールドをそのまま含める |
+| Copilot Studio コネクタ呼び出しが下書きエージェントを使用する | コネクタ呼び出しが失敗するか、古い動作に到達する場合がある | フローをテスト/再送信する前にエージェントを公開する |
 
-### Teams `PostMessageToConversation` — Recipient Formats
+### Teams `PostMessageToConversation` — 受信者形式
 
-The `body/recipient` parameter format depends on the `location` value:
+`body/recipient` パラメーターの形式は `location` の値によって異なります。
 
-| Location | `body/recipient` format | Example |
+| 場所 | `body/recipient` の形式 | 例 |
 |---|---|---|
-| **Chat with Flow bot** | Plain email string with **trailing semicolon** | `"user@contoso.com;"` |
-| **Channel** | Object with `groupId` and `channelId` | `{"groupId": "...", "channelId": "..."}` |
+| **Chat with Flow bot** | **末尾にセミコロン**を付けたプレーンなメール文字列 | `"user@contoso.com;"` |
+| **Channel** | `groupId` と `channelId` を持つオブジェクト | `{"groupId": "...", "channelId": "..."}` |
 
-> **Common mistake**: passing `{"to": "user@contoso.com"}` for "Chat with Flow bot"
-> returns a 400 `GraphUserDetailNotFound` error. The API expects a plain string.
+> **よくある誤り**: "Chat with Flow bot" に `{"to": "user@contoso.com"}` を渡すと、
+> 400 `GraphUserDetailNotFound` エラーが返されます。API はプレーン文字列を想定しています。
 
 ---
 
-## Reference Files
+## 参照ファイル
 
-- [flow-schema.md](references/flow-schema.md) — Full flow definition JSON schema
-- [trigger-types.md](references/trigger-types.md) — Trigger type templates
-- [action-patterns-core.md](references/action-patterns-core.md) — Variables, control flow, expressions
-- [action-patterns-data.md](references/action-patterns-data.md) — Array transforms, HTTP, parsing
-- [action-patterns-connectors.md](references/action-patterns-connectors.md) — SharePoint, Outlook, Teams, Approvals
-- [build-patterns.md](references/build-patterns.md) — Complete flow definition templates (Recurrence+SP+Teams, HTTP trigger)
+- [flow-schema.md](references/flow-schema.md) — 完全なフロー定義 JSON スキーマ
+- [trigger-types.md](references/trigger-types.md) — トリガー型テンプレート
+- [action-patterns-core.md](references/action-patterns-core.md) — 変数、制御フロー、式
+- [action-patterns-data.md](references/action-patterns-data.md) — 配列変換、HTTP、解析
+- [action-patterns-connectors.md](references/action-patterns-connectors.md) — SharePoint、Outlook、Teams、Approvals
+- [build-patterns.md](references/build-patterns.md) — 完全なフロー定義テンプレート (Recurrence+SP+Teams、HTTP トリガー)
 
-## Related Skills
+## 関連スキル
 
-- `flowstudio-power-automate-mcp` — Core connection setup and tool reference
-- `flowstudio-power-automate-debug` — Debug failing flows after deployment
+- `flowstudio-power-automate-mcp` — コア接続セットアップとツール リファレンス
+- `flowstudio-power-automate-debug` — デプロイ後に失敗したフローをデバッグする

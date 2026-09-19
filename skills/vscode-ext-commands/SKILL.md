@@ -1,21 +1,21 @@
 ---
 name: vscode-ext-commands
-description: 'Guidelines for contributing commands in VS Code extensions. Indicates naming convention, visibility, localization and other relevant attributes, following VS Code extension development guidelines, libraries and good practices'
+description: 'VS Code拡張機能にコマンドを追加するための指針。VS Code拡張機能の開発ガイドライン、ライブラリ、ベストプラクティスに従い、命名規則、可視性、ローカライズなどを扱います。'
 ---
 
-# VS Code extension command contribution
+# VS Code拡張機能のコマンド追加
 
-This skill helps you to contribute commands in VS Code extensions
+このSkillは、VS Code拡張機能へのコマンド追加を支援します。
 
-## When to use this skill
+## このSkillを使う場面
 
-Use this skill when you need to:
-- Add or update commands to your VS Code extension
+次の作業が必要なときに使ってください。
+- VS Code拡張機能のコマンドを追加または更新する
 
-# Instructions
+# 手順
 
-VS Code commands must always define a `title`, independent of its category, visibility or location. We use a few patterns for each "kind" of command, with some characteristics, described below:
+VS Codeのコマンドでは、カテゴリ、可視性、配置に関係なく、必ず `title` を定義してください。コマンドの「種類」ごとに、以下の特徴を持ついくつかのパターンを使います。
 
-* Regular commands: By default, all commands should be accessible in the Command Palette, must define a `category`, and don't need an `icon`, unless the command will be used in the Side Bar.
+* 通常のコマンド: 既定ではすべてのコマンドをCommand Paletteから利用できるようにし、`category` を定義してください。Side Barで使う場合を除き、`icon` は不要です。
 
-* Side Bar commands: Its name follows a special pattern, starting with underscore (`_`) and suffixed with `#sideBar`, like `_extensionId.someCommand#sideBar` for instance. Must define an `icon`, and may or may not have some rule for `enablement`. Side Bar exclusive commands should not be visible in the Command Palette. Contributing it to the `view/title` or `view/item/context`, we must inform _order/position_ that it will be displayed, and we can use terms "relative to other command/button" in order to you identify the correct `group` to be used. Also, it's a good practice to define the condition (`when`) for the new command is visible.
+* Side Barのコマンド: 名前はアンダースコア（`_`）で始まり、`#sideBar` で終わる特別なパターンに従います。たとえば `_extensionId.someCommand#sideBar` です。`icon` を定義する必要があり、`enablement` のルールは任意です。Side Bar専用のコマンドはCommand Paletteに表示しないでください。`view/title` または `view/item/context` に追加する場合は、表示される _order/position_ を指定する必要があります。また、「他のコマンド/ボタンとの相対位置」を使って適切な `group` を決められるようにし、新しいコマンドを表示する条件（`when`）を定義するのがよい習慣です。

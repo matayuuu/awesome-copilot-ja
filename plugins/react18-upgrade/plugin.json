@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "react18-upgrade",
-  "description": "Enterprise React 18 migration toolkit with specialized agents and skills for upgrading React 16/17 class-component codebases to React 18.3.1. Includes auditor, dependency surgeon, class component migration specialist, automatic batching fixer, and test guardian.",
+  "description": "React 16/17のクラスコンポーネント中心のコードベースをReact 18.3.1へアップグレードするための、専門エージェントとSkillを備えたエンタープライズ向け移行ツールキット。監査、依存関係、クラスコンポーネント移行、自動バッチ処理修正、テストを担当する機能を含みます。",
   "version": "1.0.0",
   "keywords": [
     "react18",

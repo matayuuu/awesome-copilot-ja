@@ -1,19 +1,14 @@
 ---
 name: webmcpify
-description: 'Make a web app agent-ready — propose a WebMCP tool manifest, integrate, verify in a real browser, heal; unrelated code stays untouched. Use for "webmcpify", "add WebMCP", or "expose app actions to AI agents".'
+description: 'Web アプリをエージェント対応にするため、WebMCP ツールマニフェストを提案し、統合、実ブラウザーでの検証、修復を行う。無関係なコードは変更しない。「webmcpify」「WebMCP を追加」「アプリの操作を AI エージェントに公開」で使う。'
 argument-hint: "[inventory|integrate|verify|status|full] [scope notes]"
 license: MIT
 metadata:
   source: https://github.com/TueJon/webmcpify
 ---
+# webmcpify — 任意の Web アプリを検証可能な形でエージェント対応にする
 
-# webmcpify — make any web app agent-ready, verifiably
-
-You are running the webmcpify pipeline. It takes an existing web application and
-exposes its user-facing functionality as [WebMCP](https://webmachinelearning.github.io/webmcp/)
-tools (`document.modelContext` — a proposed web standard incubated in the W3C Web
-Machine Learning Community Group, currently a Chrome origin trial), so browser AI
-agents can operate the app through structured tool calls instead of guessing at the DOM.
+webmcpify パイプラインを実行する。既存の Web アプリのユーザー向け機能を [WebMCP](https://webmachinelearning.github.io/webmcp/) ツール（`document.modelContext` — W3C Web Machine Learning Community Group で検討中の提案 Web 標準で、現在は Chrome origin trial）として公開し、ブラウザー AI エージェントが DOM を推測せず構造化されたツール呼び出しでアプリを操作できるようにする。
 
 ```
 DETECT ──▶ INVENTORY ──▶ [HUMAN GATE: manifest approval] ──▶ INTEGRATE ──▶ VERIFY ──▶ HEAL ──▶ AUDIT
@@ -21,99 +16,67 @@ DETECT ──▶ INVENTORY ──▶ [HUMAN GATE: manifest approval] ──▶ I
               └── per area                                       └── per manifest entry ──┘
 ```
 
-Everything you need ships inside this skill directory: phase guides in
-`references/`, and vendorable code in `templates/` (runtime, ambient types,
-JS variant, React JSX typings, verification spec). Never assume files exist
-outside the skill dir.
+必要なものはすべてこの Skill ディレクトリに含まれる。フェーズガイドは `references/` に、ベンダー可能なコード（ランタイム、アンビエント型、JS 版、React JSX 型、検証仕様）は `templates/` にある。Skill ディレクトリ外のファイルの存在を前提にしない。
 
-**Out of scope** (stop and say so): backend-only MCP servers (that's classic MCP,
-not WebMCP), automating third-party sites you don't control, and generic SEO work.
+**対象外**（停止してその旨を伝える）: バックエンド専用 MCP サーバー（これは WebMCP ではなく classic MCP）、管理していない第三者サイトの自動化、一般的な SEO 作業。
 
-## Invocation modes
+## 起動モード
 
-The user may pass an argument (`/webmcpify <mode>` or plain words):
+ユーザーは引数（`/webmcpify <mode>` または通常の語句）を渡せる:
 
-| Argument | Run | Stop at |
+| 引数 | 実行内容 | 停止地点 |
 |---|---|---|
-| *(none)* or `full` | all phases, resuming from current manifest state | done |
-| `inventory` / `map` | DETECT + INVENTORY loops only — **zero code changes** | present the manifest table for review |
-| `integrate` | INTEGRATE loop only (requires approved tools in the manifest) | integrated + built |
-| `verify` | VERIFY + HEAL loops on integrated/verified tools | green/skipped report |
-| `status` | read `.webmcpify/manifest.json` — **read-only** | report phase, per-status tool counts, and the recommended next command |
+| *(なし)* または `full` | 現在のマニフェスト状態から再開して全フェーズ | 完了 |
+| `inventory` / `map` | DETECT + INVENTORY ループのみ — **コード変更ゼロ** | マニフェスト表をレビュー用に提示 |
+| `integrate` | INTEGRATE ループのみ（マニフェストに承認済みツールが必要） | 統合とビルドの完了 |
+| `verify` | 統合・検証済みツールに対する VERIFY + HEAL ループ | 成功またはスキップのレポート |
+| `status` | `.webmcpify/manifest.json` を読み取り — **読み取り専用** | フェーズ、状態別ツール数、推奨される次のコマンドを報告 |
 
-Any other text is scoping guidance (e.g. "only the checkout area", "read-only tools only").
+その他のテキストは範囲指定の指示として扱う（例: 「checkout 領域だけ」「読み取り専用ツールだけ」）。
 
-## Ground rules (non-negotiable, enforce in every phase)
+## 基本ルール（交渉不可、全フェーズで適用）
 
-1. **Zero unrelated changes.** Every diff hunk you produce must trace to a manifest
-   entry or the recorded one-time setup. Never refactor, reformat, rename, or
-   "improve" anything else — note problems in the report instead. Files that were
-   already dirty at baseline (recorded in the manifest) are **untouchable**: never
-   modify or revert them.
-2. **Read-only tools first.** Mutations are tri-state: `mutating: false`,
-   `"client"` (browser-local only: prefs, localStorage), or `"server"` (data
-   leaves the browser). Server-mutating tools require explicit **per-tool** human
-   approval recorded in the manifest; client-mutating tools may be approved as a
-   batch at the gate. Never expose destructive, irreversible, or payment actions
-   in a first integration.
-3. **The server is the only trust boundary.** A tool's `execute()` may only call code
-   paths the UI already uses (same endpoints, same validation, same auth). Never
-   create new endpoints, never bypass existing checks, never put secrets in tools.
-4. **Spec-shaped and dependency-free.** Register via `document.modelContext.registerTool()`
-   with AbortSignal lifecycle (feature-detect the deprecated `navigator.modelContext`
-   fallback). No third-party WebMCP runtime dependencies. Everything feature-detected:
-   the app behaves identically in browsers without WebMCP.
-5. **Never `toolautosubmit` on state-changing forms** — neither `mutating: "client"`
-   nor `"server"`. Only on pure read forms (search, filter, availability).
-6. **State lives in files, not in your context.** Read/write `.webmcpify/` constantly;
-   assume your context can be wiped between any two steps. Write the manifest
-   atomically (write `manifest.json.tmp`, then rename over `manifest.json`).
-7. **Commits are opt-in.** Never commit unless the human chose a commit policy at
-   the gate (see below). Without git or without permission, leave changes in the
-   working tree and record progress in the manifest only.
+1. **無関係な変更ゼロ。** 作成するすべての diff hunk は、マニフェストのエントリまたは記録済みの一度限りのセットアップに対応付けられなければならない。その他をリファクタリング、再フォーマット、改名、「改善」してはならず、問題はレポートに記録する。ベースライン時点ですでに変更されていたファイル（マニフェストに記録済み）は **変更不可** とし、変更も復元もしない。
+2. **読み取り専用ツールを先にする。** 変更は3状態とする: `mutating: false`、`"client"`（ブラウザー内だけ: 設定、localStorage）、または `"server"`（データがブラウザー外へ出る）。サーバーを変更するツールには、マニフェストに記録した**ツールごとの**人間の明示的な承認が必要である。クライアントを変更するツールはゲートで一括承認してよい。初回の統合では、破壊的、不可逆、支払いのアクションを公開しない。
+3. **サーバーだけを信頼境界とする。** ツールの `execute()` は UI がすでに使うコードパス（同じエンドポイント、同じ検証、同じ認証）だけを呼び出せる。新しいエンドポイントを作らず、既存のチェックを迂回せず、ツールに秘密情報を入れない。
+4. **仕様準拠かつ依存関係なし。** AbortSignal のライフサイクルを使い（非推奨の `navigator.modelContext` フォールバックを機能検出して）、`document.modelContext.registerTool()` で登録する。第三者の WebMCP ランタイム依存関係を追加しない。すべてを機能検出し、WebMCP のないブラウザーでもアプリが同じように動作するようにする。
+5. **状態を変更するフォームで `toolautosubmit` を決して使わない** — `mutating: "client"` でも `"server"` でも同じである。純粋な読み取りフォーム（検索、フィルター、空き状況）だけで使う。
+6. **状態はコンテキストではなくファイルに置く。** `.webmcpify/` を常に読み書きし、任意の2つの手順の間にコンテキストが消去される可能性を前提にする。マニフェストはアトミックに書き込む（`manifest.json.tmp` に書いてから `manifest.json` にリネームする）。
+7. **コミットはオプトイン。** 人間がゲートでコミット方針を選ばない限り、決してコミットしない（下記参照）。Git がない場合や権限がない場合は、変更をワーキングツリーに残し、進捗だけをマニフェストに記録する。
 
-## Fresh, authoritative guidance
+## 最新かつ権威あるガイダンス
 
-WebMCP is an evolving origin-trial API — the surface has already changed during the
-trial (testing API removed 2026-07; `navigator` → `document`). Before Phase 2, if
-network is available, pull Google's current official guides rather than relying on
-memory:
+WebMCP は変化中の origin-trial API であり、トライアル中にも API の表面は変更されている（testing API は 2026-07 に削除、`navigator` → `document`）。フェーズ2の前にネットワークが利用できる場合は、記憶に頼らず Google の最新公式ガイドを取得する:
 
 ```sh
 npx -y modern-web-guidance@latest retrieve "webmcp,agentic-forms,agentic-javascript-tools"
 ```
 
-If offline, use `references/integrate.md` — but prefer the live guides when they conflict.
+オフラインの場合は `references/integrate.md` を使う。ただし、内容が矛盾する場合は最新のガイドを優先する。
 
-## The state protocol — `.webmcpify/` in the target repo
+## 状態プロトコル — 対象リポジトリの `.webmcpify/`
 
-| File | Purpose |
+| ファイル | 目的 |
 |---|---|
-| `manifest.json` | Single source of truth (schema below; atomic writes) |
-| `areas/<id>.tools.json` | Sub-agent shard output during inventory fan-out (merged, then deleted) |
-| `report.md` | Human-facing running report; finalized at the end |
+| `manifest.json` | 唯一の正本（スキーマは下記、アトミック書き込み） |
+| `areas/<id>.tools.json` | インベントリの分散処理中にサブエージェントが出力する分割結果（統合後に削除） |
+| `report.md` | 人間向けの進行レポート。最後に確定する |
 
-**Resume rule:** if `manifest.json` exists, resume — recompute nothing already
-recorded. **Merge leftover shards FIRST**: any existing `areas/<id>.tools.json`
-files are merged into the manifest (mark those areas `inventoried`, delete the
-shards) before redispatching any sub-agents. Then continue at `pipeline.phase`,
-the first `pending` area, or the first tool whose status is not terminal.
-Terminal statuses: `verified`, `skipped`, `rejected`.
+**再開ルール:** `manifest.json` が存在する場合は再開し、すでに記録された内容を再計算しない。**残った分割結果を最初に統合する**: 既存の `areas/<id>.tools.json` ファイルをマニフェストへ統合し（該当領域を `inventoried` にして分割結果を削除する）、サブエージェントを再割り当てする。その後 `pipeline.phase`、最初の `pending` 領域、または状態が終端でない最初のツールから続行する。
+終端状態: `verified`、`skipped`、`rejected`。
 
-**Phase transitions** (make the atomic manifest write the moment the condition holds):
+**フェーズ遷移**（条件が成立した時点でアトミックなマニフェスト書き込みを行う）:
 
-- `detect → inventory`: `app` recorded, `baselineSha`/`baselineDirty` captured.
-- `inventory → gate`: no area `pending`, completeness pass has run.
-- `gate → integrate`: every `discovered` tool is `approved`/`rejected`, and
-  `commitPolicy` + `commitWebmcpifyDir` are set.
-- `integrate → verify`: no `approved` tools remain (each `integrated` or terminal),
-  build green.
-- `verify → heal`: verify loop visited every `integrated` tool and ≥1 is `failed`
-  (none failed → straight to `audit`).
-- `heal → audit`: no tool `failed` and post-heal full re-verify passed.
-- `audit → done`: every hunk mapped-or-flagged, `report.md` finalized.
+- `detect → inventory`: `app` を記録し、`baselineSha`／`baselineDirty` を取得済み。
+- `inventory → gate`: `pending` の領域がなく、完全性確認を実行済み。
+- `gate → integrate`: すべての `discovered` ツールが `approved` または `rejected` で、`commitPolicy` と `commitWebmcpifyDir` が設定されている。
+- `integrate → verify`: `approved` ツールが残っておらず、すべてが `integrated` または終端状態で、ビルドが成功している。
+- `verify → heal`: 検証ループがすべての `integrated` ツールを確認し、1つ以上が `failed`。
+  （失敗がなければ `audit` へ直行する。）
+- `heal → audit`: `failed` のツールがなく、修復後の完全な再検証に合格。
+- `audit → done`: すべての hunk を対応付けまたはフラグ付けし、`report.md` を確定済み。
 
-Manifest schema (Webmcpify Manifest v3):
+マニフェスト スキーマ（Webmcpify Manifest v3）:
 
 ```jsonc
 {
@@ -174,158 +137,93 @@ Manifest schema (Webmcpify Manifest v3):
 }
 ```
 
-**v2→v3 migration:** resuming a `"webmcpify": 2` manifest migrates in place on
-first write — `auth` string → array; `setup` booleans → path arrays (`false` →
-`[]`; `true` → recover paths from git/`log`, else `null` = done-but-unrecorded,
-audit treats those files flag-only); `mutating: true` → `"server"`; add
-`annotations` (defaults from the inventory table), `blockers: []`,
-`commitWebmcpifyDir: null`, `expect.navigation: null`; then bump to 3.
+**v2→v3 の移行:** `"webmcpify": 2` マニフェストを再開すると、最初の書き込み時にその場で移行する。`auth` の文字列を配列にし、`setup` のブール値をパス配列にする（`false` → `[]`、`true` → git または `log` からパスを復元し、復元できなければ `null` = 完了済みだが未記録。監査ではこれらのファイルをフラグのみの対象とする）。`mutating: true` を `"server"` にし、`annotations`（インベントリ表の既定値）、`blockers: []`、`commitWebmcpifyDir: null`、`expect.navigation: null` を追加し、最後に 3 へ更新する。
 
-## Phase 0 — DETECT
+## フェーズ 0 — DETECT
 
-Identify stack, build + dev-server commands, TypeScript or not, auth model
-(including how verify obtains each test session → `app.authFixtures`), test
-setup, and how the app starts locally; record under `app`. Record the git baseline:
-`pipeline.baselineSha` = current HEAD and `pipeline.baselineDirty` = `git status
---porcelain` paths (both `null`/`[]` without git). If the app cannot be started
-locally, append the blocker to `pipeline.blockers` — integration may proceed, but
-verification will be blocked and this must be surfaced at the gate. Details:
+技術スタック、ビルドと開発サーバーのコマンド、TypeScript の使用有無、認証モデル（各テスト セッションを検証がどのように取得するかを含む → `app.authFixtures`）、テスト設定、ローカルでのアプリ起動方法を特定し、`app` に記録する。Git のベースラインも記録する:
+`pipeline.baselineSha` = 現在の HEAD、`pipeline.baselineDirty` = `git status
+--porcelain` のパス（Git がない場合はどちらも `null`／`[]`）。アプリをローカルで起動できない場合はブロッカーを `pipeline.blockers` に追加する。統合は続行できるが検証はブロックされるため、ゲートで明示する。詳細:
 `references/inventory.md`.
 
-## Phase 1 — INVENTORY (loop; scales to any size)
+## フェーズ 1 — INVENTORY（ループ。規模を問わず適用）
 
-**Never map a large codebase in one pass.**
+**大規模なコードベースを 1 回でマッピングしない。**
 
-1. **Area map first (cheap, structural):** enumerate routes/views/feature modules
-   from the router config, pages directory, or navigation — without reading
-   implementation files. Write every area to `areas` with `"pending"`.
-2. **Inventory loop — one area per iteration:** deep-read only that area's files;
-   draft a candidate tool per user action (conventions, tool-count budget, and
-   overlap rules: `references/inventory.md`) with ALL manifest fields filled,
-   including `route`, `auth`, `annotations`, `examples`, `expect`, and `cleanup`
-   (required for `mutating: "server"`, recommended for `"client"`) — the verify
-   phase runs from these fields alone. Append as `"discovered"`, mark the area
-   `"inventoried"`, write the manifest, repeat.
-   - **Sub-agent fan-out:** sub-agents never write `manifest.json`. Each writes only
-     its own `areas/<id>.tools.json` shard — schema
+1. **最初に領域をマッピングする（低コストで構造的）:** 実装ファイルを読まず、ルーター設定、ページ ディレクトリ、ナビゲーションからルート、ビュー、機能モジュールを列挙する。すべての領域を `"pending"` として `areas` に書き込む。
+2. **インベントリ ループ（1 回につき 1 領域）:** その領域のファイルだけを詳しく読み、`references/inventory.md` の規約、ツール数の予算、重複ルールに従って、ユーザー操作ごとの候補ツールを作る。`route`、`auth`、`annotations`、`examples`、`expect`、`cleanup` を含むマニフェストの全フィールドを埋める（`mutating: "server"` では必須、`"client"` では推奨）。検証フェーズはこれらのフィールドだけで実行できる。`"discovered"` として追加し、領域を `"inventoried"` にしてマニフェストを書き込み、繰り返す。
+   - **サブエージェントの分散:** サブエージェントは `manifest.json` を書き込まない。それぞれが次の内容だけを書く。
+     各自の `areas/<id>.tools.json` 分割ファイル — スキーマ
      `{ "webmcpifyShard": 3, "area": "<id>", "tools": [ /* full v3 tool entries */ ] }`,
-     written atomically (tmp + rename). You (the coordinator) merge shards into
-     the manifest sequentially, then delete them; on resume, merge existing
-     shards FIRST before redispatching (Resume rule).
-3. **Exit:** no `pending` areas remain, plus one completeness pass — walk the app's
-   navigation and ask "is any visible user action missing?"
+     アトミックに書き込む（tmp + rename）。コーディネーターが分割結果を順番にマニフェストへ統合してから削除する。再開時は再割り当ての前に既存の分割結果を最初に統合する（再開ルール）。
+3. **終了:** `pending` の領域をなくし、完全性確認を 1 回行う。アプリのナビゲーションをたどり、「表示されるユーザー操作に抜けがないか」を確認する。
 
-## GATE — manifest approval (the one main checkpoint)
+## ゲート — マニフェスト承認（主なチェックポイント）
 
-Present the manifest compactly (id, area, kind, mutating, priority, one-line
-description) — per-area batches on large apps. Ask the human to decide, in one
-exchange where possible:
+マニフェストを簡潔に提示する（id、領域、種別、状態変更の有無、優先度、1 行の説明）。大規模アプリでは領域ごとに提示する。可能なら 1 回のやり取りで人間に決定を求める:
 
-1. Which tools are `approved` vs `rejected` (**`rejected` is terminal** — rejected
-   tools are excluded from every later phase and from exit conditions).
-   `mutating: "server"` tools need individual acknowledgment → record in
-   `approval`; `mutating: "client"` tools may be approved as a batch.
-2. **Commit policy**: `commit-per-batch` (each integration batch committed,
-   revertable — recommended on a clean baseline) or `no-commit` (leave changes
-   uncommitted for the human to review/commit) → `pipeline.commitPolicy`. Also
-   whether `.webmcpify/` itself should be committed (recommended: yes — it
-   documents the integration) → `pipeline.commitWebmcpifyDir`.
-3. Every entry in `pipeline.blockers` (e.g. app won't start). If verifying a tool
-   will unavoidably cause a real production side effect (e.g. a mailer with an
-   Origin-allow-listed endpoint), get that approved HERE and record it in the
-   tool's `approval.productionSideEffect` — see VERIFY.
+1. どのツールを `approved` または `rejected` にするかを決める（**`rejected` は終端状態**であり、後続の全フェーズと終了条件から除外する）。`mutating: "server"` ツールには個別の承認が必要で、`approval` に記録する。`mutating: "client"` ツールは一括承認できる。
+2. **コミット方針**: `commit-per-batch`（各統合バッチをコミットし、巻き戻し可能。クリーンなベースラインに推奨）または `no-commit`（人間がレビューしてコミットできるよう変更を未コミットで残す）を `pipeline.commitPolicy` に設定する。`.webmcpify/` 自体をコミットするかも決める（統合を記録するため yes を推奨）→ `pipeline.commitWebmcpifyDir`。
+3. `pipeline.blockers` の各項目（例: アプリが起動しない）。ツールの検証で実運用への副作用が避けられない場合（例: Origin 許可リストのエンドポイントを使うメーラー）は、ここで承認を得て `approval.productionSideEffect` に記録する。VERIFY を参照する。
 
-Apply `references/security.md` to every mutating tool **before** presenting.
+提示する前に、すべての状態変更ツールへ `references/security.md` を適用する。
 
-## Phase 2 — INTEGRATE (loop)
+## フェーズ 2 — INTEGRATE（ループ）
 
-One-time setup first — record the created/modified file **paths** in
-`pipeline.setup` (e.g. `runtimeVendored: ["src/webmcp/webmcpify.ts", ...]`):
-vendor the runtime from this skill's `templates/` (`webmcpify.ts`, or
-`webmcpify.js` for non-TS projects, plus `webmcp.d.ts` for TS and
-`webmcp-jsx.d.ts` for React TSX — keep the full MIT header; see
-`references/runtime.md`) and note the origin-trial/flag requirement in the target
-README (`originTrialNoted`). Then loop:
+最初に一度だけ設定し、作成または変更したファイルの **パス** を
+`pipeline.setup`（例: `runtimeVendored: ["src/webmcp/webmcpify.ts", ...]`）に記録する:
+この Skill の `templates/`（`webmcpify.ts`、または
+非 TS プロジェクト用の `webmcpify.js`、TS 用の `webmcp.d.ts`、React TSX 用の
+`webmcp-jsx.d.ts`）からランタイムを同梱する（MIT ヘッダー全体を保持し、詳細は
+`references/runtime.md` を参照する）。対象
+README（`originTrialNoted`）に記録する。その後ループする:
 
-1. Pick the next batch of `approved` tools — one area or ≤5 tools.
-2. Implement per `references/integrate.md`: declarative attributes for standard
-   HTML forms (including framework-rendered and fetch-intercepted ones);
-   imperative registration via the vendored runtime for non-form or
-   controlled-state actions.
-3. Build + typecheck; fix only what the batch broke.
-4. Mark tools `"integrated"`, write the manifest. Under `commit-per-batch`:
-   require a **clean index** before staging (unrelated staged changes → stop and
-   surface); stage **only the batch's files by path** — never `git add -A`, `-u`,
-   `.`, or `commit -a`; commit `feat(webmcp): expose <ids> (webmcpify)`. The
-   commit sha lands in `batchCommit` on the **next** manifest write — one commit
-   later (the manifest can't contain its own commit's sha). Never amend a
-   previous batch commit.
-5. Repeat until no `approved` tools remain.
+1. 次の `approved` ツールのバッチを選ぶ（1 領域または 5 ツール以下）。
+2. `references/integrate.md` に従って実装する。標準
+   HTML フォーム（フレームワークでレンダリングされたもの、fetch でインターセプトされるものを含む）;
+   フォーム以外または制御状態の操作には、同梱したランタイムで命令的に登録する。
+3. ビルドと型チェックを行い、バッチによって壊れたものだけを修正する。
+4. ツールを `"integrated"` としてマークし、マニフェストを書き込む。`commit-per-batch` では、
+   ステージ前に **クリーンな index** を要求する（無関係なステージ済み変更があれば停止して明示する）。バッチのファイルだけをパスでステージし、`git add -A`、`-u`、`.`、`commit -a` は決して使わない。`feat(webmcp): expose <ids> (webmcpify)` としてコミットする。コミット SHA は **次の** マニフェスト書き込み時に `batchCommit` へ記録する（1 コミット後。マニフェストには自分自身のコミット SHA を含められない）。以前のバッチ コミットを amend しない。
+5. `approved` ツールがなくなるまで繰り返す。
 
-## Phase 3 — VERIFY (loop)
+## フェーズ 3 — VERIFY（ループ）
 
-Set up once from `templates/webmcp.spec.ts` per `references/verify.md` (real headed
-Chrome; production `getTools()`/`executeTool()` surface with legacy fallback probe).
-Then loop over every `integrated` tool, using its manifest `route`, `auth`,
-`examples`, `expect`, and `annotations` fields:
+`references/verify.md` に従い `templates/webmcp.spec.ts` から一度だけ設定する（実際のヘッド付き Chrome、レガシー フォールバック調査を伴う本番の `getTools()`／`executeTool()` サーフェイス）。
+その後、各 `integrated` ツールについて、マニフェストの `route`、`auth`、
+`examples`、`expect`、`annotations` フィールドを使い、次を確認する:
 
-- assert the tool is registered with the expected schema (enumerated `inputSchema`
-  is a *stringified* JSON Schema — parse before comparing) **and** the manifest
-  `annotations`;
-- execute the valid example (mutating tools: dev/test data only, then run
-  `cleanup`) and one invalid example (`invalid: null` zero-param read tools:
-  dual-outcome assertion — see `references/verify.md`);
-- assert on the returned result **and** the resulting UI state per `expect`
-  (a UI **delta**, or `expect.navigation` when execution resolves `null`).
+- 期待するスキーマでツールが登録されていることを検証する（列挙された `inputSchema` は *文字列化された* JSON Schema なので、比較前に解析する）。同時にマニフェストの `annotations` も検証する。
+- 有効な例を実行し（状態変更ツールでは開発／テスト データだけを使い、その後 `cleanup` を実行する）、無効な例も 1 つ実行する（パラメーターのない読み取りツールで `invalid: null` の場合は二重結果を検証する。`references/verify.md` を参照）。
+- `expect` に従って返された結果 **と** その後の UI 状態を検証する（UI の **差分**、または実行結果が `null` の場合は `expect.navigation`）。
 
-Pass → `"verified"`. Fail → `"failed"` + failure note. Role-scoped tools: run the
-loop once per role listed in `auth`, signing in via the matching
-`app.authFixtures` entry.
+成功したら `"verified"`、失敗したら `"failed"` と失敗内容を記録する。ロール単位のツールでは、`auth` に記載された各ロールについて、対応する
+`app.authFixtures` のエントリ。
 
-**Production side-effect policy** — when a tool's verification unavoidably causes
-a real production effect (e.g. an email actually sent), ALL THREE are required:
-(1) the human approved it at the gate, recorded in `approval.productionSideEffect`;
-(2) every test payload is marked `[webmcpify verification]`; (3) the effect is
-listed in `report.md`. Without the recorded approval, don't execute the live
-path — mark the tool `skipped` with a blocker note.
+**実運用への副作用に関する方針** — ツールの検証で実運用への副作用が避けられない場合（例: 実際にメールが送信される場合）は、次の 3 つすべてが必要である:
+(1) ゲートで人間が承認し、`approval.productionSideEffect` に記録していること、
+(2) すべてのテスト ペイロードに `[webmcpify verification]` を付けること、
+(3) 副作用を `report.md` に記載すること。記録された承認がない場合は実運用経路を実行せず、ブロッカーの注記を付けてツールを `skipped` にする。
 
-## Phase 4 — HEAL (loop)
+## フェーズ 4 — HEAL（ループ）
 
-While any tool is `"failed"`: diagnose via `references/heal.md`, fix **only** that
-tool's integration — **implementation-only** fixes; if the fix would change the
-approved contract (schema, description, `mutating` class, `annotations`,
-`expect`), go back to the gate for re-approval instead of silently changing the
-manifest. The triggering verify failure is attempt 0; increment `attempts` per
-fix cycle and re-verify. At `attempts` = 3 → `"skipped"` with a clear blocker
-note (an explicit escalation to the human, not a silent drop). Never widen the
-diff or fake a pass. After healing, re-run verification once for **all** tools
-with status `integrated` or `verified` (healing one tool can break another —
-scope collisions).
+いずれかのツールが `"failed"` の間は、`references/heal.md` で診断し、そのツールの統合 **だけ** を修正する（**実装だけ**の修正）。修正によって承認済み契約（スキーマ、説明、`mutating` の分類、`annotations`、`expect`）が変わる場合は、マニフェストを黙って変更せず、ゲートに戻って再承認を得る。検証失敗の発生時を試行 0 とし、修正サイクルごとに `attempts` を増やして再検証する。`attempts` = 3 では、明確なブロッカー注記を付けて `"skipped"` にする（黙って削除せず、人間へ明示的にエスカレーションする）。差分を広げたり、合格を偽装したりしない。修復後は、状態が `integrated` または `verified` の **すべて**のツールをもう一度検証する（1 つの修正が別のツールを壊す可能性があるため）。
 
-**Exit:** every tool is `verified`, `skipped`, or `rejected`; build green.
+**終了:** すべてのツールが `verified`、`skipped`、または `rejected` であり、ビルドが成功している。
 
-## Final — AUDIT + report
+## 最終 — AUDIT とレポート
 
-1. **Diff audit (flag-only, never auto-revert):** collect the pipeline's changes —
-   `git diff <baselineSha>..HEAD` **plus the index and untracked files** under
-   `commit-per-batch`, or the working tree + index + untracked under `no-commit`.
-   Every hunk must map to a manifest entry or a recorded `pipeline.setup` path.
-   An unmapped hunk → **flag it in the report** with file/line and a suggested
-   disposition; never revert anything yourself. A hunk in a `baselineDirty` file
-   → untouchable, flag only. Without a `baselineSha`, audit the files named in
-   manifest `source` fields and `pipeline.setup` paths (setup entries recorded as
-   `null` by the v2→v3 migration: fall back to flag-only for those files).
-2. Finalize `.webmcpify/report.md`: tool coverage per area, skipped/rejected tools
-   with reasons, security notes (which mutating tools exist, what guards them,
-   any recorded production side effects), how to test manually (flag, DevTools
-   WebMCP pane, inspector extension), and every blocker that needs a human.
-3. Tell the human: what's exposed, what's skipped and why, and how to try it.
+1. **差分監査（フラグのみ、自動的に巻き戻さない）:** パイプラインの変更を収集する。
+   `git diff <baselineSha>..HEAD` に加えて、`commit-per-batch` では index と未追跡ファイルを、`no-commit` では作業ツリー、index、未追跡ファイルを対象にする。
+   すべての hunk をマニフェスト エントリまたは記録された `pipeline.setup` パスに対応付ける。対応付けられない hunk は、ファイル／行と推奨する扱いを付けて **レポートにフラグを立てる**。自分で巻き戻してはならない。`baselineDirty` ファイル内の hunk は変更不可で、フラグだけを立てる。`baselineSha` がない場合は、マニフェストの `source` フィールドと `pipeline.setup` パスに記載されたファイルを監査する（v2→v3 移行で設定項目が `null` と記録されている場合は、そのファイルをフラグのみの対象とする）。
+2. `.webmcpify/report.md` を確定する: 領域ごとのツール範囲、スキップまたは拒否したツールと理由、セキュリティ注記（存在する状態変更ツール、それを保護する仕組み、記録された実運用への副作用）、手動テスト方法（フラグ、DevTools の WebMCP ペイン、インスペクター拡張機能）、人間の対応が必要なすべてのブロッカーを含める。
+3. 人間に、公開したもの、スキップしたものとその理由、試す方法を伝える。
 
-## References (read on demand, not upfront)
+## 参照（最初にすべて読むのではなく、必要に応じて読む）
 
-- `references/inventory.md` — area mapping, naming/schema conventions, budgets/overlap
-- `references/integrate.md` — declarative + imperative patterns per stack
-- `references/runtime.md` — vendoring + wiring the `templates/` runtime
-- `references/verify.md` — harness setup: flags, surfaces, Playwright/Puppeteer, evals
-- `references/heal.md` — failure taxonomy → fixes
-- `references/security.md` — the security checklist (apply before the gate and at audit)
+- `references/inventory.md` — 領域マッピング、命名／スキーマ規約、予算／重複
+- `references/integrate.md` — 技術スタックごとの宣言的および命令的パターン
+- `references/runtime.md` — `templates/` ランタイムの同梱と接続
+- `references/verify.md` — ハーネス設定: フラグ、サーフェイス、Playwright／Puppeteer、評価
+- `references/heal.md` — 失敗分類から修正への対応
+- `references/security.md` — セキュリティ チェックリスト（ゲート前と監査時に適用）

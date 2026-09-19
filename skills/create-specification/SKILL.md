@@ -1,29 +1,29 @@
 ---
 name: create-specification
-description: 'Create a new specification file for the solution, optimized for Generative AI consumption.'
+description: '生成AIによる利用に最適化した、ソリューション用の新しい仕様ファイルを作成する。'
 ---
 
-# Create Specification
+# 仕様の作成
 
-Your goal is to create a new specification file for `${input:SpecPurpose}`.
+`${input:SpecPurpose}` の新しい仕様ファイルを作成する。
 
-The specification file must define the requirements, constraints, and interfaces for the solution components in a manner that is clear, unambiguous, and structured for effective use by Generative AIs. Follow established documentation standards and ensure the content is machine-readable and self-contained.
+仕様ファイルでは、ソリューションコンポーネントの要件、制約、インターフェイスを、生成AIが効果的に利用できる明確で曖昧さのない構造で定義する。確立された文書標準に従い、内容を機械可読かつ自己完結させる。
 
-## Best Practices for AI-Ready Specifications
+## AI向け仕様のベストプラクティス
 
-- Use precise, explicit, and unambiguous language.
-- Clearly distinguish between requirements, constraints, and recommendations.
-- Use structured formatting (headings, lists, tables) for easy parsing.
-- Avoid idioms, metaphors, or context-dependent references.
-- Define all acronyms and domain-specific terms.
-- Include examples and edge cases where applicable.
-- Ensure the document is self-contained and does not rely on external context.
+- 正確で明示的かつ曖昧さのない言葉を使う
+- 要件、制約、推奨事項を明確に区別する
+- 容易に解析できる構造化書式（見出し、リスト、表）を使う
+- 慣用句、比喩、コンテキスト依存の参照を避ける
+- すべての略語とドメイン固有用語を定義する
+- 該当する場合は例とエッジケースを含める
+- 文書を自己完結させ、外部コンテキストへ依存させない
 
-The specification should be saved in the `/spec/` directory and named according to the following convention: `spec-[a-z0-9-]+.md`, where the name should be descriptive of the specification's content and starting with the highlevel purpose, which is one of [schema, tool, data, infrastructure, process, architecture, or design].
+仕様は `/spec/` ディレクトリへ保存し、`spec-[a-z0-9-]+.md` の命名規則を使う。名前は仕様内容を表し、[schema, tool, data, infrastructure, process, architecture, design] のいずれかの上位目的から始める。
 
-The specification file must be formatted in well formed Markdown.
+仕様ファイルは整形式のMarkdownで記述する。
 
-Specification files must follow the template below, ensuring that all sections are filled out appropriately. The front matter for the markdown should be structured correctly as per the example following:
+仕様ファイルは次のテンプレートに従い、すべてのセクションを適切に記入する。Markdownのfront matterは次の例どおり正しく構造化する。
 
 ```md
 ---

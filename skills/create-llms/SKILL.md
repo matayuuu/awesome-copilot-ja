@@ -1,143 +1,143 @@
 ---
 name: create-llms
-description: 'Create an llms.txt file from scratch based on repository structure following the llms.txt specification at https://llmstxt.org/'
+description: 'https://llmstxt.org/ のllms.txt仕様に従い、リポジトリ構造に基づいてllms.txtファイルを一から作成する。'
 ---
 
-# Create LLMs.txt File from Repository Structure
+# リポジトリ構造からLLMs.txtファイルを作成
 
-Create a new `llms.txt` file from scratch in the root of the repository following the official llms.txt specification at https://llmstxt.org/. This file provides high-level guidance to large language models (LLMs) on where to find relevant content for understanding the repository's purpose and specifications.
+https://llmstxt.org/ の公式llms.txt仕様に従い、リポジトリのルートに新しい `llms.txt` ファイルを一から作成する。このファイルは、リポジトリの目的と仕様を理解するために関連コンテンツを探す場所を、大規模言語モデル（LLM）へ大局的に案内する。
 
-## Primary Directive
+## 主要指示
 
-Create a comprehensive `llms.txt` file that serves as an entry point for LLMs to understand and navigate the repository effectively. The file must comply with the llms.txt specification and be optimized for LLM consumption while remaining human-readable.
+LLMがリポジトリを効果的に理解して探索するための入口となる、包括的な `llms.txt` を作成する。llms.txt仕様に準拠し、人にも読みやすい状態を保ちながらLLMによる利用に最適化する。
 
-## Analysis and Planning Phase
+## 分析と計画のフェーズ
 
-Before creating the `llms.txt` file, you must complete a thorough analysis:
+`llms.txt` ファイルを作成する前に、詳細な分析を完了する。
 
-### Step 1: Review llms.txt Specification
+### ステップ1: llms.txt仕様を確認する
 
-- Review the official specification at https://llmstxt.org/ to ensure full compliance
-- Understand the required format structure and guidelines
-- Note the specific markdown structure requirements
+- 完全に準拠するため、https://llmstxt.org/ の公式仕様を確認する
+- 必須の書式構造と指針を理解する
+- Markdown構造の具体的な要件を記録する
 
-### Step 2: Repository Structure Analysis
+### ステップ2: リポジトリ構造を分析する
 
-- Examine the complete repository structure using appropriate tools
-- Identify the primary purpose and scope of the repository
-- Catalog all important directories and their purposes
-- List key files that would be valuable for LLM understanding
+- 適切なツールでリポジトリ構造全体を調べる
+- リポジトリの主な目的と範囲を特定する
+- 重要なディレクトリとその目的を一覧化する
+- LLMによる理解に役立つ主要ファイルを列挙する
 
-### Step 3: Content Discovery
+### ステップ3: コンテンツを検出する
 
-- Identify README files and their locations
-- Find documentation files (`.md` files in `/docs/`, `/spec/`, etc.)
-- Locate specification files and their purposes
-- Discover configuration files and their relevance
-- Find example files and code samples
-- Identify any existing documentation structure
+- READMEファイルと配置場所を特定する
+- 文書ファイル（`/docs/`、`/spec/` などの `.md` ファイル）を探す
+- 仕様ファイルとその目的を特定する
+- 構成ファイルとその関連性を確認する
+- サンプルファイルとコード例を探す
+- 既存の文書構造を特定する
 
-### Step 4: Create Implementation Plan
+### ステップ4: 実装計画を作成する
 
-Based on your analysis, create a structured plan that includes:
+分析に基づき、次を含む構造化された計画を作成する。
 
-- Repository purpose and scope summary
-- Priority-ordered list of essential files for LLM understanding
-- Secondary files that provide additional context
-- Organizational structure for the llms.txt file
+- リポジトリの目的と範囲の要約
+- LLMの理解に必須のファイルを優先順に並べた一覧
+- 追加のコンテキストを提供する補助ファイル
+- llms.txtファイルの構成
 
-## Implementation Requirements
+## 実装要件
 
-### Format Compliance
+### 書式への準拠
 
-The `llms.txt` file must follow this exact structure per the specification:
+`llms.txt` ファイルは、仕様に従って次の構造を正確に使用する。
 
-1. **H1 Header**: Single line with repository/project name (required)
-2. **Blockquote Summary**: Brief description in blockquote format (optional but recommended)
-3. **Additional Details**: Zero or more markdown sections without headings for context
-4. **File List Sections**: Zero or more H2 sections containing markdown lists of links
+1. **H1見出し**: リポジトリ名またはプロジェクト名を含む1行（必須）
+2. **引用形式の要約**: 引用形式の簡潔な説明（任意だが推奨）
+3. **追加詳細**: コンテキストを示す、見出しのない0個以上のMarkdownセクション
+4. **ファイル一覧セクション**: リンクのMarkdownリストを含む0個以上のH2セクション
 
-### Content Requirements
+### 内容の要件
 
-#### Required Elements
+#### 必須要素
 
-- **Project Name**: Clear, descriptive title as H1
-- **Summary**: Concise blockquote explaining the repository's purpose
-- **Key Files**: Essential files organized by category (H2 sections)
+- **プロジェクト名**: 明確で説明的なH1タイトル
+- **要約**: リポジトリの目的を説明する簡潔な引用
+- **主要ファイル**: カテゴリ別に整理した必須ファイル（H2セクション）
 
-#### File Link Format
+#### ファイルリンクの形式
 
-Each file link must follow: `[descriptive-name](relative-url): optional description`
+各ファイルリンクは `[descriptive-name](relative-url): optional description` の形式に従う。
 
-#### Section Organization
+#### セクション構成
 
-Organize files into logical H2 sections such as:
+ファイルを次のような論理的なH2セクションへ整理する。
 
-- **Documentation**: Core documentation files
-- **Specifications**: Technical specifications and requirements
-- **Examples**: Sample code and usage examples
-- **Configuration**: Setup and configuration files
-- **Optional**: Secondary files (special meaning - can be skipped for shorter context)
+- **文書**: 中核となる文書ファイル
+- **仕様**: 技術仕様と要件
+- **例**: サンプルコードと使用例
+- **構成**: セットアップファイルと構成ファイル
+- **任意**: 補助ファイル（短いコンテキストでは省略できる特別な意味を持つ）
 
-### Content Guidelines
+### 内容の指針
 
-#### Language and Style
+#### 言語とスタイル
 
-- Use concise, clear, unambiguous language
-- Avoid jargon without explanation
-- Write for both human and LLM readers
-- Be specific and informative in descriptions
+- 簡潔で明確かつ曖昧さのない言葉を使う
+- 説明のない専門用語を避ける
+- 人とLLMの両方を読者として書く
+- 説明は具体的で有益な内容にする
 
-#### File Selection Criteria
+#### ファイル選定基準
 
-Include files that:
-- Explain the repository's purpose and scope
-- Provide essential technical documentation
-- Show usage examples and patterns
-- Define interfaces and specifications
-- Contain configuration and setup instructions
+次に該当するファイルを含める。
+- リポジトリの目的と範囲を説明する
+- 必須の技術文書を提供する
+- 使用例とパターンを示す
+- インターフェイスと仕様を定義する
+- 構成とセットアップの手順を含む
 
-Exclude files that:
-- Are purely implementation details
-- Contain redundant information
-- Are build artifacts or generated content
-- Are not relevant to understanding the project
+次に該当するファイルは除外する。
+- 純粋な実装詳細である
+- 重複情報を含む
+- ビルド成果物または生成コンテンツである
+- プロジェクトの理解に関係しない
 
-## Execution Steps
+## 実行手順
 
-### Step 1: Repository Analysis
+### ステップ1: リポジトリ分析
 
-1. Examine the repository structure completely
-2. Read the main README.md to understand the project
-3. Identify all documentation directories and files
-4. Catalog specification files and their purposes
-5. Find example files and configuration files
+1. リポジトリ構造全体を調べる
+2. メインのREADME.mdを読み、プロジェクトを理解する
+3. すべての文書ディレクトリとファイルを特定する
+4. 仕様ファイルとその目的を一覧化する
+5. サンプルファイルと構成ファイルを探す
 
-### Step 2: Content Planning
+### ステップ2: 内容の計画
 
-1. Determine the primary purpose statement
-2. Write a concise summary for the blockquote
-3. Group identified files into logical categories
-4. Prioritize files by importance for LLM understanding
-5. Create descriptions for each file link
+1. 主な目的を表す文を決める
+2. 引用用の簡潔な要約を書く
+3. 特定したファイルを論理的なカテゴリへ分類する
+4. LLMによる理解の重要度に基づいてファイルへ優先順位を付ける
+5. 各ファイルリンクの説明を作成する
 
-### Step 3: File Creation
+### ステップ3: ファイル作成
 
-1. Create the `llms.txt` file in the repository root
-2. Follow the exact format specification
-3. Include all required sections
-4. Use proper markdown formatting
-5. Ensure all links are valid relative paths
+1. リポジトリルートに `llms.txt` ファイルを作成する
+2. 書式仕様へ正確に従う
+3. 必須セクションをすべて含める
+4. 適切なMarkdown書式を使う
+5. すべてのリンクが有効な相対パスであることを確認する
 
-### Step 4: Validation
-1. Verify compliance with https://llmstxt.org/ specification
-2. Check that all links are valid and accessible
-3. Ensure the file serves as an effective LLM navigation tool
-4. Confirm the file is both human and machine readable
+### ステップ4: 検証
+1. https://llmstxt.org/ の仕様への準拠を確認する
+2. すべてのリンクが有効でアクセス可能か確認する
+3. ファイルがLLM向けの効果的なナビゲーションとして機能することを確認する
+4. 人と機械の両方が読み取れることを確認する
 
-## Quality Assurance
+## 品質保証
 
-### Format Validation
+### 書式の検証
 
 - ✅ H1 header with project name
 - ✅ Blockquote summary (if included)
@@ -146,7 +146,7 @@ Exclude files that:
 - ✅ No broken or invalid links
 - ✅ Consistent formatting throughout
 
-### Content Validation
+### 内容の検証
 
 - ✅ Clear, unambiguous language
 - ✅ Comprehensive coverage of essential files
@@ -154,14 +154,14 @@ Exclude files that:
 - ✅ Appropriate file descriptions
 - ✅ Serves as effective LLM navigation tool
 
-### Specification Compliance
+### 仕様への準拠
 
 - ✅ Follows https://llmstxt.org/ format exactly
 - ✅ Uses required markdown structure
 - ✅ Implements optional sections appropriately
 - ✅ File located at repository root (`/llms.txt`)
 
-## Example Structure Template
+## 構造テンプレートの例
 
 ```txt
 # [Repository Name]
@@ -197,14 +197,14 @@ Exclude files that:
 - [Design Decisions](docs/decisions.md): Historical design decision records
 ```
 
-## Success Criteria
+## 成功条件
 
-The created `llms.txt` file should:
-1. Enable LLMs to quickly understand the repository's purpose
-2. Provide clear navigation to essential documentation
-3. Follow the official llms.txt specification exactly
-4. Be comprehensive yet concise
-5. Serve both human and machine readers effectively
-6. Include all critical files for project understanding
-7. Use clear, unambiguous language throughout
-8. Organize content logically for easy consumption
+作成する `llms.txt` ファイルは次を満たす。
+1. LLMがリポジトリの目的をすばやく理解できる
+2. 必須文書への明確なナビゲーションを提供する
+3. 公式llms.txt仕様へ正確に従う
+4. 包括的かつ簡潔である
+5. 人と機械の両方の読者に効果的に役立つ
+6. プロジェクト理解に重要なファイルをすべて含む
+7. 全体を通して明確で曖昧さのない言葉を使う
+8. 容易に利用できるよう内容を論理的に整理する

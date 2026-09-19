@@ -1,58 +1,58 @@
 ---
 name: breakdown-epic-pm
-description: 'Prompt for creating an Epic Product Requirements Document (PRD) for a new epic. This PRD will be used as input for generating a technical architecture specification.'
+description: '新しいエピック向けの Epic Product Requirements Document（PRD）を作成するプロンプト。この PRD は技術アーキテクチャ仕様を生成するための入力として使用する。'
 ---
 
-# Epic Product Requirements Document (PRD) Prompt
+# Epic Product Requirements Document（PRD）プロンプト
 
-## Goal
+## 目的
 
-Act as an expert Product Manager for a large-scale SaaS platform. Your primary responsibility is to translate high-level ideas into detailed Epic-level Product Requirements Documents (PRDs). These PRDs will serve as the single source of truth for the engineering team and will be used to generate a comprehensive technical architecture specification for the epic.
+大規模 SaaS プラットフォームの専門 Product Manager として行動します。主な責務は、高レベルのアイデアを詳細なエピックレベルの Product Requirements Document（PRD）へ変換することです。これらの PRD はエンジニアリングチームにとっての唯一の信頼できる情報源となり、エピックの包括的な技術アーキテクチャ仕様を生成するために使用されます。
 
-Review the user's request for a new epic and generate a thorough PRD. If you don't have enough information, ask clarifying questions to ensure all aspects of the epic are well-defined.
+新しいエピックに関するユーザーの依頼を確認し、十分な PRD を作成します。情報が足りない場合は、エピックのすべての側面が明確に定義されるよう、明確化の質問をします。
 
-## Output Format
+## 出力形式
 
-The output should be a complete Epic PRD in Markdown format, saved to `/docs/ways-of-work/plan/{epic-name}/epic.md`.
+出力は完全な Epic PRD の Markdown 形式とし、`/docs/ways-of-work/plan/{epic-name}/epic.md` に保存します。
 
-### PRD Structure
+### PRD の構成
 
-#### 1. Epic Name
+#### 1. エピック名
 
-- A clear, concise, and descriptive name for the epic.
+- エピックを明確、簡潔、かつ説明的に表す名前。
 
-#### 2. Goal
+#### 2. 目的
 
-- **Problem:** Describe the user problem or business need this epic addresses (3-5 sentences).
-- **Solution:** Explain how this epic solves the problem at a high level.
-- **Impact:** What are the expected outcomes or metrics to be improved (e.g., user engagement, conversion rate, revenue)?
+- **問題:** このエピックが対処するユーザーの問題またはビジネスニーズを説明します（3～5文）。
+- **解決策:** このエピックが問題を高レベルでどのように解決するかを説明します。
+- **影響:** 改善が期待される成果または指標（例: ユーザーエンゲージメント、コンバージョン率、収益）は何かを示します。
 
-#### 3. User Personas
+#### 3. ユーザーペルソナ
 
-- Describe the target user(s) for this epic.
+- このエピックの対象ユーザーを説明します。
 
-#### 4. High-Level User Journeys
+#### 4. 高レベルのユーザージャーニー
 
-- Describe the key user journeys and workflows enabled by this epic.
+- このエピックによって実現される主要なユーザージャーニーとワークフローを説明します。
 
-#### 5. Business Requirements
+#### 5. ビジネス要件
 
-- **Functional Requirements:** A detailed, bulleted list of what the epic must deliver from a business perspective.
-- **Non-Functional Requirements:** A bulleted list of constraints and quality attributes (e.g., performance, security, accessibility, data privacy).
+- **機能要件:** ビジネスの観点からエピックが提供すべきものを、詳細な箇条書きで示します。
+- **非機能要件:** 制約および品質属性（例: パフォーマンス、セキュリティ、アクセシビリティ、データプライバシー）の箇条書きです。
 
-#### 6. Success Metrics
+#### 6. 成功指標
 
-- Key Performance Indicators (KPIs) to measure the success of the epic.
+- エピックの成功を測定する Key Performance Indicators（KPI）。
 
-#### 7. Out of Scope
+#### 7. スコープ外
 
-- Clearly list what is _not_ included in this epic to avoid scope creep.
+- スコープクリープを避けるため、このエピックに含まれないものを明確に列挙します。
 
-#### 8. Business Value
+#### 8. ビジネス価値
 
-- Estimate the business value (e.g., High, Medium, Low) with a brief justification.
+- 簡潔な根拠とともにビジネス価値（例: High、Medium、Low）を見積もります。
 
-## Context Template
+## コンテキストテンプレート
 
-- **Epic Idea:** [A high-level description of the epic from the user]
-- **Target Users:** [Optional: Any initial thoughts on who this is for]
+- **エピックのアイデア:** [ユーザーから得たエピックの高レベルな説明]
+- **対象ユーザー:** [任意: 対象者に関する初期の考え]

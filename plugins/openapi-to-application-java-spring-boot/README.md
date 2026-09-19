@@ -1,8 +1,8 @@
 # OpenAPI to Application - Java Spring Boot Plugin
 
-Generate production-ready Spring Boot applications from OpenAPI specifications. Includes project scaffolding, REST controller generation, service layer organization, and Spring Boot best practices.
+OpenAPI仕様から本番対応のSpring Bootアプリケーションを生成します。プロジェクトのスキャフォールディング、RESTコントローラー生成、サービス層の整理、Spring Bootのベストプラクティスを含みます。
 
-## Installation
+## インストール
 
 ```bash
 # Using Copilot CLI

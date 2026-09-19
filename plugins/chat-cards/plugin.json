@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "chat-cards",
-  "description": "Interactive card deck in a GHCP canvas: tab cards, tables, SVG charts, show/hide sections, numbered outlines, rendered markdown documents, video clips, and forms whose submissions come back to the conversation as prompts.",
+  "description": "GHCP canvas のインタラクティブなカードデッキ。タブカード、表、SVG チャート、セクションの表示/非表示、番号付きアウトライン、レンダリング済み Markdown 文書、動画クリップ、送信内容がプロンプトとして会話に戻るフォームを提供します。",
   "version": "0.1.0",
   "keywords": [
     "interactive-cards",

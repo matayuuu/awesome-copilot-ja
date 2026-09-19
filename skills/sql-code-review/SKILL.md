@@ -1,15 +1,14 @@
 ---
 name: sql-code-review
-description: 'Universal SQL code review assistant that performs comprehensive security, maintainability, and code quality analysis across all SQL databases (MySQL, PostgreSQL, SQL Server, Oracle). Focuses on SQL injection prevention, access control, code standards, and anti-pattern detection. Complements SQL optimization prompt for complete development coverage.'
+description: 'すべての SQL データベース（MySQL、PostgreSQL、SQL Server、Oracle）を対象に、セキュリティ、保守性、コード品質を包括的に分析する汎用 SQL コードレビューアシスタント。SQL インジェクション防止、アクセス制御、コード標準、アンチパターン検出に重点を置き、完全な開発対応のため SQL 最適化プロンプトを補完する。'
 ---
+# SQL コードレビュー
 
-# SQL Code Review
+${selection}（選択がない場合はプロジェクト全体）を対象に、セキュリティ、性能、保守性、データベースのベストプラクティスに重点を置いて、SQL コードを徹底的にレビューします。
 
-Perform a thorough SQL code review of ${selection} (or entire project if no selection) focusing on security, performance, maintainability, and database best practices.
+## 🔒 セキュリティ分析
 
-## 🔒 Security Analysis
-
-### SQL Injection Prevention
+### SQL インジェクション防止
 ```sql
 -- ❌ CRITICAL: SQL Injection vulnerability
 query = "SELECT * FROM users WHERE id = " + userInput;
@@ -24,21 +23,21 @@ EXECUTE stmt USING @user_id;
 EXEC sp_executesql N'SELECT * FROM users WHERE id = @id', N'@id INT', @id = @user_id;
 ```
 
-### Access Control & Permissions
-- **Principle of Least Privilege**: Grant minimum required permissions
-- **Role-Based Access**: Use database roles instead of direct user permissions
-- **Schema Security**: Proper schema ownership and access controls
-- **Function/Procedure Security**: Review DEFINER vs INVOKER rights
+### アクセス制御と権限
+- **最小権限の原則**: 必要最小限の権限だけを付与する
+- **ロールベースアクセス**: ユーザーへの直接権限ではなくデータベースロールを使う
+- **スキーマセキュリティ**: 適切なスキーマ所有権とアクセス制御を設定する
+- **関数・プロシージャのセキュリティ**: DEFINER と INVOKER の権限を確認する
 
-### Data Protection
-- **Sensitive Data Exposure**: Avoid SELECT * on tables with sensitive columns
-- **Audit Logging**: Ensure sensitive operations are logged
-- **Data Masking**: Use views or functions to mask sensitive data
-- **Encryption**: Verify encrypted storage for sensitive data
+### データ保護
+- **機密データの露出**: 機密列を含むテーブルでは SELECT * を避ける
+- **監査ログ**: 機密操作が記録されることを確認する
+- **データマスキング**: ビューや関数で機密データをマスクする
+- **暗号化**: 機密データが暗号化して保存されることを確認する
 
-## ⚡ Performance Optimization
+## ⚡ 性能最適化
 
-### Query Structure Analysis
+### クエリ構造の分析
 ```sql
 -- ❌ BAD: Inefficient query patterns
 SELECT DISTINCT u.* 
@@ -55,19 +54,19 @@ WHERE o.order_date >= '2024-01-01'
 AND o.order_date < '2025-01-01';
 ```
 
-### Index Strategy Review
-- **Missing Indexes**: Identify columns that need indexing
-- **Over-Indexing**: Find unused or redundant indexes
-- **Composite Indexes**: Multi-column indexes for complex queries
-- **Index Maintenance**: Check for fragmented or outdated indexes
+### インデックス戦略のレビュー
+- **不足しているインデックス**: インデックスが必要な列を特定する
+- **過剰なインデックス**: 未使用または重複するインデックスを見つける
+- **複合インデックス**: 複雑なクエリ向けの複数列インデックス
+- **インデックス保守**: 断片化または古くなったインデックスを確認する
 
-### Join Optimization
-- **Join Types**: Verify appropriate join types (INNER vs LEFT vs EXISTS)
-- **Join Order**: Optimize for smaller result sets first
-- **Cartesian Products**: Identify and fix missing join conditions
-- **Subquery vs JOIN**: Choose the most efficient approach
+### JOIN 最適化
+- **JOIN の種類**: 適切な JOIN（INNER、LEFT、EXISTS）か確認する
+- **JOIN 順序**: 小さい結果セットを先に処理するよう最適化する
+- **直積**: 欠落した JOIN 条件を特定して修正する
+- **サブクエリと JOIN**: 最も効率的な方法を選ぶ
 
-### Aggregate and Window Functions
+### 集約関数とウィンドウ関数
 ```sql
 -- ❌ BAD: Inefficient aggregation
 SELECT user_id, 
@@ -81,9 +80,9 @@ FROM orders
 GROUP BY user_id;
 ```
 
-## 🛠️ Code Quality & Maintainability
+## 🛠️ コード品質と保守性
 
-### SQL Style & Formatting
+### SQL のスタイルと整形
 ```sql
 -- ❌ BAD: Poor formatting and style
 select u.id,u.name,o.total from users u left join orders o on u.id=o.user_id where u.status='active' and o.order_date>='2024-01-01';
@@ -98,19 +97,19 @@ WHERE u.status = 'active'
   AND o.order_date >= '2024-01-01';
 ```
 
-### Naming Conventions
-- **Consistent Naming**: Tables, columns, constraints follow consistent patterns
-- **Descriptive Names**: Clear, meaningful names for database objects
-- **Reserved Words**: Avoid using database reserved words as identifiers
-- **Case Sensitivity**: Consistent case usage across schema
+### 命名規則
+- **一貫した命名**: テーブル、列、制約で一貫したパターンに従う
+- **説明的な名前**: データベースオブジェクトには明確で意味のある名前を付ける
+- **予約語**: データベースの予約語を識別子として使わない
+- **大文字と小文字**: スキーマ全体で大文字・小文字の使い方を統一する
 
-### Schema Design Review
-- **Normalization**: Appropriate normalization level (avoid over/under-normalization)
-- **Data Types**: Optimal data type choices for storage and performance
-- **Constraints**: Proper use of PRIMARY KEY, FOREIGN KEY, CHECK, NOT NULL
-- **Default Values**: Appropriate default values for columns
+### スキーマ設計のレビュー
+- **正規化**: 適切な正規化レベルにする（過剰・不足を避ける）
+- **データ型**: 保存効率と性能に適したデータ型を選ぶ
+- **制約**: PRIMARY KEY、FOREIGN KEY、CHECK、NOT NULL を適切に使う
+- **既定値**: 列に適切な既定値を設定する
 
-## 🗄️ Database-Specific Best Practices
+## 🗄️ データベース固有のベストプラクティス
 
 ### PostgreSQL
 ```sql
@@ -170,9 +169,9 @@ CREATE TABLE users (
 );
 ```
 
-## 🧪 Testing & Validation
+## 🧪 テストと検証
 
-### Data Integrity Checks
+### データ整合性チェック
 ```sql
 -- Verify referential integrity
 SELECT o.user_id 
@@ -186,15 +185,15 @@ FROM products
 WHERE price < 0 OR stock_quantity < 0;
 ```
 
-### Performance Testing
-- **Execution Plans**: Review query execution plans
-- **Load Testing**: Test queries with realistic data volumes
-- **Stress Testing**: Verify performance under concurrent load
-- **Regression Testing**: Ensure optimizations don't break functionality
+### 性能テスト
+- **実行計画**: クエリの実行計画を確認する
+- **負荷テスト**: 現実的なデータ量でクエリをテストする
+- **ストレステスト**: 同時負荷下の性能を検証する
+- **回帰テスト**: 最適化で機能が壊れないことを確認する
 
-## 📊 Common Anti-Patterns
+## 📊 よくあるアンチパターン
 
-### N+1 Query Problem
+### N+1 クエリ問題
 ```sql
 -- ❌ BAD: N+1 queries in application code
 for user in users:
@@ -206,7 +205,7 @@ FROM users u
 LEFT JOIN orders o ON u.id = o.user_id;
 ```
 
-### Overuse of DISTINCT
+### DISTINCT の過剰使用
 ```sql
 -- ❌ BAD: DISTINCT masking join issues
 SELECT DISTINCT u.name 
@@ -220,7 +219,7 @@ INNER JOIN orders o ON u.id = o.user_id
 GROUP BY u.name;
 ```
 
-### Function Misuse in WHERE Clauses
+### WHERE 句での関数の誤用
 ```sql
 -- ❌ BAD: Functions prevent index usage
 SELECT * FROM orders 
@@ -232,39 +231,39 @@ WHERE order_date >= '2024-01-01'
   AND order_date < '2025-01-01';
 ```
 
-## 📋 SQL Review Checklist
+## 📋 SQL レビューチェックリスト
 
-### Security
-- [ ] All user inputs are parameterized
-- [ ] No dynamic SQL construction with string concatenation
-- [ ] Appropriate access controls and permissions
-- [ ] Sensitive data is properly protected
-- [ ] SQL injection attack vectors are eliminated
+### セキュリティ
+- [ ] すべてのユーザー入力をパラメーター化している
+- [ ] 文字列連結による動的 SQL の構築がない
+- [ ] 適切なアクセス制御と権限を設定している
+- [ ] 機密データを適切に保護している
+- [ ] SQL インジェクションの攻撃経路を排除している
 
-### Performance
-- [ ] Indexes exist for frequently queried columns
-- [ ] No unnecessary SELECT * statements
-- [ ] JOINs are optimized and use appropriate types
-- [ ] WHERE clauses are selective and use indexes
-- [ ] Subqueries are optimized or converted to JOINs
+### 性能
+- [ ] 頻繁に検索する列にインデックスがある
+- [ ] 不要な SELECT * がない
+- [ ] JOIN を最適化し、適切な種類を使っている
+- [ ] WHERE 句が選択性を持ち、インデックスを使っている
+- [ ] サブクエリを最適化するか JOIN に変換している
 
-### Code Quality
-- [ ] Consistent naming conventions
-- [ ] Proper formatting and indentation
-- [ ] Meaningful comments for complex logic
-- [ ] Appropriate data types are used
-- [ ] Error handling is implemented
+### コード品質
+- [ ] 命名規則が一貫している
+- [ ] 適切に整形・インデントしている
+- [ ] 複雑なロジックに意味のあるコメントがある
+- [ ] 適切なデータ型を使っている
+- [ ] エラー処理を実装している
 
-### Schema Design
-- [ ] Tables are properly normalized
-- [ ] Constraints enforce data integrity
-- [ ] Indexes support query patterns
-- [ ] Foreign key relationships are defined
-- [ ] Default values are appropriate
+### スキーマ設計
+- [ ] テーブルを適切に正規化している
+- [ ] 制約でデータ整合性を保証している
+- [ ] インデックスがクエリパターンを支えている
+- [ ] 外部キー関係を定義している
+- [ ] 既定値が適切である
 
-## 🎯 Review Output Format
+## 🎯 レビュー出力形式
 
-### Issue Template
+### 問題テンプレート
 ````
 ## [PRIORITY] [CATEGORY]: [Brief Description]
 
@@ -287,15 +286,15 @@ WHERE order_date >= '2024-01-01'
 **Expected Improvement**: [Performance gain, security benefit]
 ````
 
-### Summary Assessment
-- **Security Score**: [1-10] - SQL injection protection, access controls
-- **Performance Score**: [1-10] - Query efficiency, index usage
-- **Maintainability Score**: [1-10] - Code quality, documentation
-- **Schema Quality Score**: [1-10] - Design patterns, normalization
+### 総合評価
+- **セキュリティスコア**: [1-10] - SQL インジェクション対策、アクセス制御
+- **性能スコア**: [1-10] - クエリ効率、インデックス利用
+- **保守性スコア**: [1-10] - コード品質、ドキュメント
+- **スキーマ品質スコア**: [1-10] - 設計パターン、正規化
 
-### Top 3 Priority Actions
-1. **[Critical Security Fix]**: Address SQL injection vulnerabilities
-2. **[Performance Optimization]**: Add missing indexes or optimize queries
-3. **[Code Quality]**: Improve naming conventions and documentation
+### 優先アクション上位 3 件
+1. **[重大なセキュリティ修正]**: SQL インジェクションの脆弱性に対処する
+2. **[性能最適化]**: 不足しているインデックスを追加するか、クエリを最適化する
+3. **[コード品質]**: 命名規則とドキュメントを改善する
 
-Focus on providing actionable, database-agnostic recommendations while highlighting platform-specific optimizations and best practices.
+実行可能でデータベース非依存の推奨事項を示しつつ、プラットフォーム固有の最適化とベストプラクティスを強調します。

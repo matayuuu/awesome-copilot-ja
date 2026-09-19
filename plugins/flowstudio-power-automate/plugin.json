@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "flowstudio-power-automate",
-  "description": "Give your AI agent full visibility into Power Automate cloud flows via the FlowStudio MCP server. Connect, debug, build, monitor health, and govern flows at scale — action-level inputs and outputs, not just status codes.",
+  "description": "FlowStudio MCP server を介して、AI agent に Power Automate cloud flows の完全な可視性を与えます。ステータスコードだけでなくアクションレベルの入出力を使い、大規模にフローへ接続、デバッグ、構築、正常性監視、ガバナンスを行います。",
   "version": "2.0.0",
   "author": {
     "name": "Awesome Copilot Community"
