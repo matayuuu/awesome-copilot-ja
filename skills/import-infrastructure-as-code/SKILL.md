@@ -1,63 +1,63 @@
 ---
 name: import-infrastructure-as-code
-description: 'Import existing Azure resources into Terraform using Azure CLI discovery and Azure Verified Modules (AVM). Use when asked to reverse-engineer live Azure infrastructure, generate Infrastructure as Code from existing subscriptions/resource groups/resource IDs, map dependencies, derive exact import addresses from downloaded module source, prevent configuration drift, and produce AVM-based Terraform files ready for validation and planning across any Azure resource type.'
+description: 'Azure CLIによる探索とAzure Verified Modules（AVM）を使って既存のAzureリソースをTerraformへインポートする。稼働中のAzureインフラの逆解析、既存のサブスクリプション/リソースグループ/リソースIDからのInfrastructure as Code生成、依存関係の対応付け、ダウンロードしたモジュールソースからの正確なインポートアドレス導出、構成ドリフト防止、任意のAzureリソース種別向けに検証・計画可能なAVMベースTerraformファイルの作成に使う。'
 ---
 
-# Import Infrastructure as Code (Azure -> Terraform with AVM)
+# Infrastructure as Codeのインポート（Azure -> AVMを使ったTerraform）
 
-Convert existing Azure infrastructure into maintainable Terraform code using discovery data and Azure Verified Modules.
+探索データとAzure Verified Modulesを使って、既存のAzureインフラを保守可能なTerraformコードへ変換する。
 
-## When to Use This Skill
+## このSkillを使う場面
 
-Use this skill when the user asks to:
+次の依頼を受けたときに使用する。
 
-- Import existing Azure resources into Terraform
-- Generate IaC from live Azure environments
-- Handle any Azure resource type supported by AVM (and document justified non-AVM fallbacks)
-- Recreate infrastructure from a subscription or resource group
-- Map dependencies between discovered Azure resources
-- Use AVM modules instead of handwritten `azurerm_*` resources
+- 既存のAzureリソースをTerraformへインポートする
+- 稼働中のAzure環境からIaCを生成する
+- AVMがサポートする任意のAzureリソース種別を扱う（正当な非AVMフォールバックは記録する）
+- サブスクリプションまたはリソースグループからインフラを再作成する
+- 探索したAzureリソース間の依存関係を対応付ける
+- 手書きの `azurerm_*` リソースではなくAVMモジュールを使う
 
-## Prerequisites
+## 前提条件
 
-- Azure CLI installed and authenticated (`az login`)
-- Access to the target subscription or resource group
-- Terraform CLI installed
-- Network access to Terraform Registry and AVM index sources
+- Azure CLIがインストールされ、認証済みである（`az login`）
+- 対象のサブスクリプションまたはリソースグループへのアクセス
+- Terraform CLIがインストールされている
+- Terraform RegistryとAVMインデックスソースへのネットワークアクセス
 
-## Inputs
+## 入力
 
-| Parameter | Required | Default | Description |
+| パラメーター | 必須 | 既定値 | 説明 |
 |---|---|---|---|
-| `subscription-id` | No | Active CLI context | Azure subscription used for subscription-scope discovery and context setting |
-| `resource-group-name` | No | None | Azure resource group used for resource-group-scope discovery |
-| `resource-id` | No | None | One or more Azure ARM resource IDs used for specific-resource-scope discovery |
+| `subscription-id` | いいえ | CLIのアクティブなコンテキスト | サブスクリプション範囲の探索とコンテキスト設定に使うAzureサブスクリプション |
+| `resource-group-name` | いいえ | なし | リソースグループ範囲の探索に使うAzureリソースグループ |
+| `resource-id` | いいえ | なし | 特定リソース範囲の探索に使う1つ以上のAzure ARMリソースID |
 
-At least one of `subscription-id`, `resource-group-name`, or `resource-id` is required.
+`subscription-id`、`resource-group-name`、`resource-id` のいずれか1つ以上が必要。
 
-## Step-by-Step Workflows
+## 手順
 
-### 1) Collect Required Scope (Mandatory)
+### 1) 必要な範囲を収集する（必須）
 
-Request one of these scopes before running discovery commands:
+探索コマンドを実行する前に、次のいずれかの範囲を指定してもらう。
 
 - Subscription scope: `<subscription-id>`
 - Resource group scope: `<resource-group-name>`
 - Specific resources scope: one or more `<resource-id>` values
 
-Scope handling rules:
+範囲の扱いに関するルール:
 
-- Treat Azure ARM resource IDs (for example `/subscriptions/.../providers/...`) as cloud resource identifiers, not local file system paths.
-- Use resource IDs only with Azure CLI `--ids` arguments (for example `az resource show --ids <resource-id>`).
-- Never pass resource IDs to file-reading commands (`cat`, `ls`, `read_file`, glob searches) unless the user explicitly says they are local file paths.
-- If the user already provided one valid scope, do not ask for additional scope inputs unless required by a failing command.
-- Do not ask follow-up questions that can be answered from already-provided scope values.
+- Azure ARMリソースID（例 `/subscriptions/.../providers/...`）はローカルファイルシステムのパスではなく、クラウドリソース識別子として扱う。
+- リソースIDはAzure CLIの `--ids` 引数でのみ使う（例 `az resource show --ids <resource-id>`）。
+- ユーザーがローカルファイルパスだと明示しない限り、リソースIDをファイル読み取りコマンド（`cat`、`ls`、`read_file`、glob検索）へ渡さない。
+- ユーザーが有効な範囲を1つ指定済みなら、コマンド失敗で必要にならない限り追加の範囲入力を求めない。
+- すでに指定された範囲の値から答えられる追加質問をしない。
 
-If scope is missing, ask for it explicitly and stop.
+範囲が不足している場合は明示的に求め、停止する。
 
-### 2) Authenticate and Set Context
+### 2) 認証してコンテキストを設定する
 
-Run only the commands required for the selected scope.
+選択した範囲に必要なコマンドだけを実行する。
 
 For subscription scope:
 
@@ -67,15 +67,15 @@ az account set --subscription <subscription-id>
 az account show --query "{subscriptionId:id, name:name, tenantId:tenantId}" -o json
 ```
 
-Expected output: JSON object with `subscriptionId`, `name`, and `tenantId`.
+期待される出力: `subscriptionId`、`name`、`tenantId` を含むJSONオブジェクト。
 
-For resource group or specific resource scope, `az login` is still required but `az account set` is optional if the active context is already correct.
+リソースグループまたは特定リソースの範囲でも `az login` は必要だが、アクティブなコンテキストが正しければ `az account set` は省略できる。
 
-When using specific resource scope, prefer direct `--ids`-based commands first and avoid extra discovery prompts for subscription or resource group unless needed for a concrete command.
+特定リソースの範囲では、まず `--ids` ベースの直接コマンドを優先し、具体的なコマンドに必要でない限りサブスクリプションやリソースグループについて追加の探索を求めない。
 
-### 3) Run Discovery Commands
+### 3) 探索コマンドを実行する
 
-Discover resources using the selected scopes. Ensure to fetch all necessary information for accurate Terraform generation.
+選択した範囲でリソースを探索する。正確なTerraform生成に必要な情報をすべて取得する。
 
 ```bash
 # Subscription scope
@@ -88,33 +88,33 @@ az resource list --resource-group <resource-group-name> -o json
 az resource show --ids <resource-id-1> <resource-id-2> ... -o json
 ```
 
-Expected output: JSON object or array containing Azure resource metadata (`id`, `type`, `name`, `location`, `tags`, `properties`).
+期待される出力: Azureリソースのメタデータ（`id`、`type`、`name`、`location`、`tags`、`properties`）を含むJSONオブジェクトまたは配列。
 
-### 4) Resolve Dependencies Before Code Generation
+### 4) コード生成前に依存関係を解決する
 
-Parse exported JSON and map:
+エクスポートしたJSONを解析し、次を対応付ける。
 
-- Parent-child relationships (for example: NIC -> Subnet -> VNet)
-- Cross-resource references in `properties`
-- Ordering for Terraform creation
+- 親子関係（例: NIC -> Subnet -> VNet）
+- `properties` 内のリソース間参照
+- Terraformで作成する順序
 
-IMPORTANT: Generate the following documentation and save it to a docs folder in the root of the project.
-- `exported-resources.json` with all discovered resources and their metadata, including dependencies and references.
-- `EXPORTED-ARCHITECTURE.MD` file with a human-readable architecture overview based on the discovered resources and their relationships.
+重要: 次の文書を生成し、プロジェクトルートのdocsフォルダーに保存する。
+- `exported-resources.json`: 探索したすべてのリソースと、依存関係・参照を含むメタデータ。
+- `EXPORTED-ARCHITECTURE.MD`: 探索したリソースと関係に基づく、人が読めるアーキテクチャ概要。
 
-### 5) Select Azure Verified Modules (Required)
+### 5) Azure Verified Modulesを選択する（必須）
 
-Use the latest AVM version for each resource type.
+各リソース種別で最新のAVMバージョンを使う。
 
 ### Terraform Registry
 
-- Search for "avm" + resource name
-- Filter by "Partner" tag to find official AVM modules
-- Example: Search "avm storage account" → filter by Partner
+- 「avm」+ リソース名で検索する
+- 「Partner」タグで絞り込み、公式AVMモジュールを探す
+- 例: 「avm storage account」で検索 → Partnerで絞り込む
 
-### Official AVM Index
+### 公式AVMインデックス
 
-> **Note:** The following links always point to the latest version of the CSV files on the main branch. As intended, this means the files may change over time. If you require a point-in-time version, consider using a specific release tag in the URL.
+> **注:** 以下のリンクは常にmainブランチのCSVファイル最新版を指す。そのためファイルは時間とともに変わる可能性がある。特定時点の版が必要なら、URLに特定のリリースタグを使うことを検討する。
 
 - **Terraform Resource Modules**: `https://raw.githubusercontent.com/Azure/Azure-Verified-Modules/refs/heads/main/docs/static/module-indexes/TerraformResourceModules.csv`
 - **Terraform Pattern Modules**: `https://raw.githubusercontent.com/Azure/Azure-Verified-Modules/refs/heads/main/docs/static/module-indexes/TerraformPatternModules.csv`
