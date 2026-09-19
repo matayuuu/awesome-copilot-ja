@@ -1,28 +1,28 @@
 ---
 name: acreadiness-policy
-description: 'Help the user pick, write, or apply an AgentRC policy. Policies customise readiness scoring by disabling irrelevant checks, overriding impact/level, setting pass-rate thresholds, or chaining org baselines with team overrides. Use when the user asks about strict mode, AI-only scoring, custom weights, CI gating, or wants org-wide standardisation.'
+description: 'AgentRCポリシーの選択、作成、適用を支援する。ポリシーで無関係なチェックの無効化、impact/levelの上書き、合格率しきい値の設定、組織ベースラインとチーム上書きの連結ができる。strict mode、AIのみの採点、重みのカスタマイズ、CIゲート、組織標準化を尋ねられたときに使う。'
 argument-hint: "[show | new <name> | apply <path-or-pkg>] — e.g. /acreadiness-policy show, /acreadiness-policy new strict-frontend"
 ---
 
-# /acreadiness-policy — AgentRC policies
+# /acreadiness-policy — AgentRCポリシー
 
-Use this skill when the user asks about **policies**, **strict mode**, **custom scoring**, **disabling checks**, **org standards**, or **CI gating** of readiness.
+ユーザーが準備状況評価の **ポリシー**、**strict mode**、**カスタム採点**、**チェックの無効化**、**組織標準**、**CIゲート**について尋ねたときに使う。
 
-A policy is a small JSON file with three optional sections — `criteria`, `extras`, `thresholds` — that customise how AgentRC scores readiness.
+ポリシーは3つの任意セクション — `criteria`、`extras`、`thresholds` — を持つ小さなJSONファイルで、AgentRCの準備状況採点方法をカスタマイズする。
 
-## Built-in examples
+## 組み込み例
 
-AgentRC ships with three example policies in `examples/policies/`:
+AgentRCには `examples/policies/` に3つのポリシー例が同梱されている:
 
-| Policy | What it does |
+| ポリシー | 動作 |
 |---|---|
-| `strict.json` | 100% pass rate, raises impact on key criteria |
-| `ai-only.json` | Disables all repo-health checks, focuses on AI tooling |
-| `repo-health-only.json` | Disables AI checks, focuses on traditional quality |
+| `strict.json` | 合格率100%を要求し、主要基準のimpactを上げる |
+| `ai-only.json` | すべてのrepo-healthチェックを無効化し、AI toolingに集中する |
+| `repo-health-only.json` | AIチェックを無効化し、従来の品質に集中する |
 
-Recommend these as starting points before writing a custom policy.
+カスタムポリシーを書く前の出発点として、これらを推奨する。
 
-## Policy schema
+## ポリシースキーマ
 
 ```jsonc
 {
@@ -43,9 +43,9 @@ Recommend these as starting points before writing a custom policy.
 }
 ```
 
-### Impact weights
+### impactの重み
 
-| Impact | Weight |
+| 影響度 | 重み |
 |---|---|
 | critical | 5 |
 | high | 4 |
@@ -53,44 +53,44 @@ Recommend these as starting points before writing a custom policy.
 | low | 2 |
 | info | 0 |
 
-`Score = 1 − (deductions / max possible weight)`. Grades: **A** ≥ 0.9, **B** ≥ 0.8, **C** ≥ 0.7, **D** ≥ 0.6, **F** < 0.6.
+`Score = 1 − (deductions / max possible weight)`。評価: **A** ≥ 0.9、**B** ≥ 0.8、**C** ≥ 0.7、**D** ≥ 0.6、**F** < 0.6。
 
-## Sub-commands
+## サブコマンド
 
 ### `show`
-List policies currently in effect (from `agentrc.config.json` `policies` array, or none).
+現在有効なポリシーを一覧表示する（`agentrc.config.json` の `policies` 配列から取得。なければなし）。
 
 ### `new <name>`
-Scaffold `policies/<name>.json` with sensible defaults. Walk the user through:
-1. **What to disable** — irrelevant pillars or extras for their stack (e.g. disable `observability` for a static site).
-2. **What to raise** — override `impact` to `high` or `critical` for must-haves (e.g. `readme`, `codeowners`).
-3. **Pass-rate threshold** — typical org baselines: `0.7` (lenient), `0.85` (standard), `1.0` (strict).
-4. Reference the policy from `agentrc.config.json`:
+妥当な既定値で `policies/<name>.json` を雛形生成する。ユーザーを次の項目へ案内する:
+1. **無効化するもの** — スタックに無関係な柱や追加項目（例: 静的サイトで `observability` を無効化）。
+2. **重要度を上げるもの** — 必須項目（例: `readme`、`codeowners`）の `impact` を `high` または `critical` に上書きする。
+3. **合格率のしきい値** — 組織でよく使う基準: `0.7`（緩い）、`0.85`（標準）、`1.0`（厳格）。
+4. `agentrc.config.json` からポリシーを参照する:
    ```json
    { "policies": ["./policies/<name>.json"] }
    ```
 
 ### `apply <path-or-pkg>`
-Run `agentrc readiness --json --policy <source>` and re-render the report by handing off to the `assess` skill / `ai-readiness-reporter` agent. Supports chaining:
+`agentrc readiness --json --policy <source>` を実行し、`assess` Skill / `ai-readiness-reporter` Agentへ委譲してレポートを再描画する。連結をサポートする:
 ```bash
 npx -y github:microsoft/agentrc readiness --json --policy ./org-baseline.json,./team-frontend.json
 ```
 
-## CI gating
+## CIゲート
 
-Combine policies with `--fail-level` to enforce a minimum maturity level in CI:
+`--fail-level` とポリシーを組み合わせ、CIで最低成熟度レベルを強制する:
 
 ```yaml
 - run: npx -y github:microsoft/agentrc readiness --policy ./policies/strict.json --fail-level 3
 ```
 
-## Advanced
+## 高度な使い方
 
-JSON policies can disable, override, and set thresholds — but **cannot add new criteria**. For new detection logic, point users at AgentRC's TypeScript plugin system (`docs/dev/plugins.md`).
+JSONポリシーでは無効化、上書き、しきい値設定ができるが、**新しい基準は追加できない**。新しい検出ロジックにはAgentRCのTypeScriptプラグインシステム（`docs/dev/plugins.md`）を案内する。
 
-## Operating rules
+## 運用ルール
 
-- **Never silently disable a pillar.** If the user wants to disable `observability`, confirm and explain the trade-off.
-- **Prefer overriding `impact` over disabling.** Disabling hides the gap entirely; overriding lets it still appear in the report.
-- **Recommend extras stay enabled.** They cost nothing — they don't affect the score.
-- **Suggest layering** — most orgs want a baseline policy + per-team overrides chained with `--policy a.json,b.json`.
+- **柱を黙って無効化しない。** ユーザーが `observability` の無効化を望む場合は、確認してトレードオフを説明する。
+- **無効化より `impact` の上書きを優先する。** 無効化するとギャップ全体が隠れるが、上書きならレポートに残る。
+- **追加項目は有効のままにするよう推奨する。** 無料であり、スコアへ影響しない。
+- **階層化を提案する。** 多くの組織では、基準ポリシーとチーム別上書きを `--policy a.json,b.json` で連結する。

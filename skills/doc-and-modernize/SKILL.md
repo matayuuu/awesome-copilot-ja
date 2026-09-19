@@ -120,7 +120,7 @@ target architecture や phase を提案する前に実施します。component/d
 
 時間切れ時点の実測結果を記録し、動かないものを何週間も復旧し続けません。
 
-#### Testability Milestone
+#### テスト可能性マイルストーン（Testability Milestone）
 
 component ごとに、次の 4 条件を同時に初めて満たす phase を明記します。
 
@@ -131,14 +131,14 @@ component ごとに、次の 4 条件を同時に初めて満たす phase を明
 
 Testability Milestone 前を **pre-testability（dark）**、後を **post-testability（lit）** とします。dark phase に自動 test gate を要求してはいけません。lit phase で初めて本物の CI、characterization test、e2e を gate にできます。
 
-#### migration strategy
+#### 移行戦略（migration strategy）
 
 - **A: Freeze-then-lift** — 旧アプリを現状のまま safety net で覆い、その下で upgrade する。許容コストで復旧できる場合だけ選ぶ。
 - **B: Beachhead-then-expand（walking skeleton）** — 動かない旧環境全体を覆わず、最小の end-to-end slice を modern stack に移し、build、boot、test を可能にしてから範囲を拡大する。動かないアプリの既定戦略。
 
 旧 stack がまったく build/run できない場合は、旧環境の characterization test を諦め、旧コードや出力を参照 oracle として target stack 上に test を構築します。
 
-#### safety ladder
+#### 安全性の段階（safety ladder）
 
 - **L4 — 完全な自動 gate:** CI で lint + unit + characterization + e2e が green。
 - **L3 — 部分 gate:** 一部 suite が green で lockfile と CI があり、残りは名前付きで quarantine。
@@ -155,7 +155,7 @@ oracle の優先順位:
 
 production 利用、実ユーザー、旧 system を oracle として使えるかを考慮し、regression cost に見合う rung を選びます。
 
-#### CI Milestone
+#### CIマイルストーン（CI Milestone）
 
 CI を初めて構築する phase をロードマップで明記します。CI は各 component の最初の lit phase、つまり Testability Milestone と同時か直後に構築します。
 

@@ -1,65 +1,65 @@
 ---
 name: adobe-illustrator-scripting
-description: 'Write, debug, and optimize Adobe Illustrator automation scripts using ExtendScript (JavaScript/JSX). Use when creating or modifying scripts that manipulate documents, layers, paths, text frames, colors, symbols, artboards, or any Illustrator DOM objects. Covers the complete JavaScript object model, coordinate system, measurement units, export workflows, and scripting best practices.'
+description: 'ExtendScript (JavaScript/JSX)でAdobe Illustrator自動化スクリプトを作成、デバッグ、最適化する。ドキュメント、レイヤー、パス、テキストフレーム、カラー、シンボル、アートボード、その他のIllustrator DOMオブジェクトを操作するスクリプトの作成・変更で使う。JavaScriptオブジェクトモデル、座標系、測定単位、書き出し手順、スクリプトのベストプラクティスを扱う。'
 ---
 
-# Adobe Illustrator Scripting
+# Adobe Illustratorスクリプティング
 
-Expert guidance for automating Adobe Illustrator through ExtendScript (JavaScript/JSX). This skill covers the Illustrator scripting object model, all major API objects, code patterns, and best practices for writing production-quality `.jsx` scripts.
+ExtendScript（JavaScript/JSX）でAdobe Illustratorを自動化するための専門的な指針を提供する。このSkillはIllustratorのスクリプティングオブジェクトモデル、主要APIオブジェクト、コードパターン、本番品質の `.jsx` スクリプトを書くためのベストプラクティスを扱う。
 
-## Bundled Assets
+## 同梱アセット
 
-- [`references/object-model-quick-reference.md`](references/object-model-quick-reference.md): Use this as a quick lookup for the Illustrator scripting object model, common document and page item types, and related DOM concepts while writing or debugging scripts.
-- `scripts/`: Contains example Illustrator automation scripts you can use as starting points or implementation patterns for common tasks such as document manipulation, exports, batch processing, and DOM usage. Review and adapt these examples when you need working JSX patterns or want to compare behavior while debugging.
-## When to Use This Skill
+- [`references/object-model-quick-reference.md`](references/object-model-quick-reference.md): Illustratorスクリプトのオブジェクトモデル、一般的なドキュメントやページアイテムの種類、関連するDOM概念を、スクリプトの作成やデバッグ時に素早く参照する。
+- `scripts/`: ドキュメント操作、書き出し、バッチ処理、DOM利用などの出発点や実装パターンになるIllustrator自動化スクリプトの例を含む。動作するJSXパターンが必要な場合やデバッグ時の挙動比較に使う。
+## このSkillを使う場面
 
-- Writing new Illustrator automation scripts (`.jsx` or `.js` files)
-- Debugging or fixing existing Illustrator ExtendScript code
-- Manipulating documents, layers, page items, paths, text, or colors programmatically
-- Batch-processing Illustrator files or generating artwork from data
-- Exporting documents to various formats (PDF, SVG, PNG, EPS, etc.)
-- Working with the Illustrator DOM (Application, Document, Layer, PathItem, TextFrame, etc.)
-- Creating data-driven graphics using variables and datasets
-- Automating print workflows with scripted print options
+- Illustrator自動化スクリプト（`.jsx` または `.js` ファイル）の新規作成
+- 既存のIllustrator ExtendScriptコードのデバッグまたは修正
+- ドキュメント、レイヤー、ページアイテム、パス、テキスト、カラーのプログラム操作
+- Illustratorファイルのバッチ処理、またはデータからのアートワーク生成
+- ドキュメントの各種形式（PDF、SVG、PNG、EPSなど）への書き出し
+- Illustrator DOM（Application、Document、Layer、PathItem、TextFrameなど）の操作
+- 変数とデータセットを使ったデータ駆動グラフィックの作成
+- スクリプト化された印刷オプションによる印刷ワークフローの自動化
 
-## Prerequisites
+## 前提条件
 
-- Adobe Illustrator CC or later installed
-- Basic JavaScript knowledge (ExtendScript is ES3-based with Adobe extensions)
-- Scripts are executed via File > Scripts > Other Scripts, the Scripts menu, or placed in the Startup Scripts folder
-- The ExtendScript Toolkit (ESTK) or any text editor can be used to write `.jsx` files
+- Adobe Illustrator CC以降がインストールされている
+- 基本的なJavaScript知識（ExtendScriptはAdobe拡張を含むES3ベース）
+- スクリプトは File > Scripts > Other Scripts、Scriptsメニュー、またはStartup Scriptsフォルダー配置で実行する
+- `.jsx` ファイルの作成にはExtendScript Toolkit（ESTK）または任意のテキストエディターを使える
 
-## Scripting Environment
+## スクリプト環境
 
-### Language and File Extensions
+### 言語とファイル拡張子
 
-| Language | Extension | Platform |
+| 言語 | 拡張子 | プラットフォーム |
 |---|---|---|
 | ExtendScript/JavaScript | `.jsx`, `.js` | Windows, macOS |
 | AppleScript | `.scpt` | macOS only |
 | VBScript | `.vbs` | Windows only |
 
-**This skill focuses on ExtendScript/JavaScript** as the cross-platform, most widely used option.
+このSkillは、クロスプラットフォームで最も広く使われる選択肢として **ExtendScript/JavaScript** に集中する。
 
-### Executing Scripts
+### スクリプトの実行
 
-- **Scripts menu**: File > Scripts lists scripts from the application scripts folder
-- **Other Scripts**: File > Scripts > Other Scripts to browse and run any `.jsx` file
-- **Startup Scripts**: Place scripts in the Startup Scripts folder to run automatically on launch
-- **Target directive**: Begin scripts with `#target illustrator` when running from ESTK or external tools
-- **`#targetengine` directive**: Use `#targetengine "session"` to persist variables across script executions
-- **External invocation**: Scripts are frequently launched from outside Illustrator — by shell scripts, task runners, CI jobs, ExtendScript Toolkit (`ExtendScript Toolkit.exe -run script.jsx`), or `BridgeTalk` messages from other Adobe apps. See [External Invocation & Argument Passing](#external-invocation--argument-passing).
+- **Scripts menu**: File > Scripts はアプリケーションのscriptsフォルダーにあるスクリプトを一覧表示する
+- **Other Scripts**: File > Scripts > Other Scripts で任意の `.jsx` ファイルを参照して実行する
+- **Startup Scripts**: Startup Scriptsフォルダーへ置くと起動時に自動実行される
+- **targetディレクティブ**: ESTKや外部ツールから実行する場合は、スクリプトを `#target illustrator` で始める
+- **`#targetengine` ディレクティブ**: スクリプト実行をまたいで変数を保持するには `#targetengine "session"` を使う
+- **外部呼び出し**: スクリプトはシェルスクリプト、タスクランナー、CIジョブ、ExtendScript Toolkit（`ExtendScript Toolkit.exe -run script.jsx`）、または他のAdobeアプリからの `BridgeTalk` メッセージでIllustrator外部から起動されることが多い。[外部呼び出しと引数の受け渡し](#外部呼び出しと引数の受け渡し)を参照する。
 
-### Naming Conventions (JavaScript)
+### 命名規則（JavaScript）
 
-- Objects and properties use **camelCase**: `activeDocument`, `pathItems`, `textFrames`
-- The `app` global references the `Application` object
-- Collection indices are **zero-based**: `documents[0]` is the frontmost document
-- Use `typename` property to identify object types at runtime
+- オブジェクトとプロパティは **camelCase** を使う: `activeDocument`、`pathItems`、`textFrames`
+- `app` グローバルは `Application` オブジェクトを参照する
+- コレクションのインデックスは **0始まり**: `documents[0]` は最前面のドキュメント
+- 実行時にオブジェクト型を特定するには `typename` プロパティを使う
 
-## Object Model Overview
+## オブジェクトモデルの概要
 
-The Illustrator DOM follows a strict containment hierarchy:
+Illustrator DOMは厳密な包含階層に従う:
 
 ```
 Application (app)
@@ -92,45 +92,45 @@ Application (app)
 └── textFonts[]
 ```
 
-### Top-Level Objects
+### トップレベルオブジェクト
 
-- **Application** (`app`): The root object. Provides access to documents, preferences, fonts, and printers. Key properties: `activeDocument`, `documents`, `textFonts`, `printerList`, `userInteractionLevel`, `version`.
-- **Document**: Represents an open `.ai` file. Key properties: `layers`, `pageItems`, `selection`, `activeLayer`, `width`, `height`, `rulerOrigin`, `documentColorSpace`. Key methods: `saveAs()`, `exportFile()`, `close()`, `print()`.
-- **Layer**: A drawing layer. Key properties: `pageItems`, `pathItems`, `textFrames`, `visible`, `locked`, `opacity`, `name`, `zOrderPosition`, `color`.
+- **Application** (`app`): ルートオブジェクト。ドキュメント、環境設定、フォント、プリンターへアクセスできる。主要プロパティ: `activeDocument`、`documents`、`textFonts`、`printerList`、`userInteractionLevel`、`version`。
+- **Document**: 開いている `.ai` ファイルを表す。主要プロパティ: `layers`、`pageItems`、`selection`、`activeLayer`、`width`、`height`、`rulerOrigin`、`documentColorSpace`。主要メソッド: `saveAs()`、`exportFile()`、`close()`、`print()`。
+- **Layer**: 描画レイヤー。主要プロパティ: `pageItems`、`pathItems`、`textFrames`、`visible`、`locked`、`opacity`、`name`、`zOrderPosition`、`color`。
 
-## Measurement Units and Coordinates
+## 測定単位と座標
 
-### Units
+### 単位
 
-All scripting API values use **points** (72 points = 1 inch). Convert other units:
+すべてのスクリプティングAPI値は **points**（72 points = 1 inch）を使う。他の単位は変換する:
 
-| Unit | Conversion |
+| 単位 | 変換 |
 |---|---|
 | Inches | multiply by 72 |
 | Centimeters | multiply by 28.346 |
 | Millimeters | multiply by 2.834645 |
 | Picas | multiply by 12 |
 
-Kerning, tracking, and `aki` properties use **em units** (thousandths of an em, proportional to font size).
+カーニング、トラッキング、`aki` プロパティは **em units**（emの1000分の1、フォントサイズに比例）を使う。
 
-### Coordinate System
+### 座標系
 
-- For **scripted documents**, the origin `(0,0)` is at the **bottom-left** of the artboard
-- X increases left to right; Y increases bottom to top
-- The `position` property of a page item is the **top-left corner** of its bounding box as `[x, y]`
-- Maximum page item width/height: 16348 points
+- **スクリプトで作成したドキュメント**では、原点 `(0,0)` はアートボードの**左下**にある
+- Xは左から右へ、Yは下から上へ増える
+- ページアイテムの `position` プロパティは、バウンディングボックスの**左上角**を `[x, y]` で表す
+- ページアイテムの最大幅/高さ: 16348 points
 
-### Art Item Bounds
+### アートアイテムの境界
 
-Every page item has three bounding rectangles:
+すべてのページアイテムには3種類の境界矩形がある:
 
-- `geometricBounds`: Excludes stroke width `[left, top, right, bottom]`
-- `visibleBounds`: Includes stroke width
-- `controlBounds`: Includes control/direction points
+- `geometricBounds`: 線幅を除く `[left, top, right, bottom]`
+- `visibleBounds`: 線幅を含む
+- `controlBounds`: 制御点/方向点を含む
 
-## Working with Documents
+## ドキュメントの操作
 
-### Creating and Opening
+### 作成と開く操作
 
 ```javascript
 // Create a new document
@@ -148,7 +148,7 @@ var fileRef = new File("/path/to/file.ai");
 var doc = app.open(fileRef);
 ```
 
-### Saving and Exporting
+### 保存と書き出し
 
 ```javascript
 // Save as Illustrator format
@@ -175,11 +175,11 @@ svgOpts.fontType = SVGFontType.OUTLINEFONT;
 doc.exportFile(new File("/path/to/output.svg"), ExportType.SVG, svgOpts);
 ```
 
-## Working with Paths and Shapes
+## パスと図形の操作
 
-### Built-in Shape Methods
+### 組み込み図形メソッド
 
-The `pathItems` collection provides convenience methods for common shapes:
+`pathItems` コレクションは一般的な図形向けの便利メソッドを提供する:
 
 ```javascript
 var doc = app.activeDocument;
@@ -201,7 +201,7 @@ var hex = layer.pathItems.polygon(300, 300, 50, 6);
 var star = layer.pathItems.star(300, 300, 50, 25, 5);
 ```
 
-### Freeform Paths Using Coordinate Arrays
+### 座標配列を使った自由形状パス
 
 ```javascript
 var doc = app.activeDocument;
@@ -212,7 +212,7 @@ path.stroked = true;
 path.strokeWidth = 2;
 ```
 
-### Freeform Paths Using PathPoint Objects
+### PathPointオブジェクトを使った自由形状パス
 
 ```javascript
 var doc = app.activeDocument;
@@ -233,7 +233,7 @@ point2.pointType = PointType.SMOOTH;
 path.closed = false;
 ```
 
-### Path Properties
+### パスのプロパティ
 
 ```javascript
 var item = doc.pathItems[0];
@@ -246,9 +246,9 @@ item.opacity = 80;
 item.closed = true;
 ```
 
-## Working with Colors
+## カラーの操作
 
-### Color Objects
+### カラーオブジェクト
 
 ```javascript
 // RGB Color (values 0-255)
@@ -278,7 +278,7 @@ lab.b = -30;
 var none = new NoColor();
 ```
 
-### Applying Colors
+### カラーの適用
 
 ```javascript
 var item = doc.pathItems[0];
@@ -296,7 +296,7 @@ gradColor.gradient = gradient;
 item.fillColor = gradColor;
 ```
 
-### Spot Colors and Swatches
+###特色カラーとスウォッチ
 
 ```javascript
 // Create a spot color
@@ -315,9 +315,9 @@ var swatch = doc.swatches.getByName("PANTONE 185 C");
 item.fillColor = swatch.color;
 ```
 
-## Working with Text
+## テキストの操作
 
-### Text Frame Types
+### テキストフレームの種類
 
 ```javascript
 var doc = app.activeDocument;
@@ -339,7 +339,7 @@ var pathText = doc.textFrames.pathText(curvePath);
 pathText.contents = "Text on a path";
 ```
 
-### Character and Paragraph Formatting
+### 文字と段落の書式
 
 ```javascript
 var tf = doc.textFrames[0];
@@ -364,7 +364,7 @@ paraAttr.spaceBefore = 0;
 paraAttr.spaceAfter = 0;
 ```
 
-### Accessing Text Content
+### テキスト内容へのアクセス
 
 ```javascript
 var tf = doc.textFrames[0];
@@ -380,7 +380,7 @@ tf.words[0].characterAttributes.size = 36;
 tf.paragraphs[0].paragraphAttributes.justification = Justification.LEFT;
 ```
 
-### Threading Text Frames
+### テキストフレームの連結
 
 ```javascript
 var frame1 = doc.textFrames.areaText(path1);
@@ -394,7 +394,7 @@ var storyCount = doc.stories.length;
 var fullText = doc.stories[0].textRange.contents;
 ```
 
-## Working with Layers
+## レイヤーの操作
 
 ```javascript
 var doc = app.activeDocument;
@@ -418,7 +418,7 @@ item.move(newLayer, ElementPlacement.PLACEATBEGINNING);
 newLayer.zOrder(ZOrderMethod.SENDTOBACK);
 ```
 
-## Working with Selections
+## 選択範囲の操作
 
 ```javascript
 // Get current selection
@@ -442,7 +442,7 @@ doc.pathItems[0].selected = true;
 doc.selection = null;
 ```
 
-## Working with Symbols
+## シンボルの操作
 
 ```javascript
 // Place a symbol instance
@@ -457,7 +457,7 @@ var symDef = instance.symbol;
 instance.breakLink();
 ```
 
-## Transformations
+## 変形
 
 ```javascript
 var item = doc.pathItems[0];
@@ -478,7 +478,7 @@ matrix = app.concatenateScaleMatrix(matrix, 150, 150);
 item.transform(matrix);
 ```
 
-## Working with Artboards
+## アートボードの操作
 
 ```javascript
 var doc = app.activeDocument;
@@ -495,7 +495,7 @@ newAB.name = "Page 2";
 doc.artboards.setActiveArtboardIndex(1);
 ```
 
-## Data-Driven Graphics (Variables and Datasets)
+## データ駆動グラフィック（変数とデータセット）
 
 ```javascript
 // Variables link document items to data fields
@@ -516,7 +516,7 @@ ds.name = "Version 1";
 doc.dataSets[0].display();
 ```
 
-## Printing
+## 印刷
 
 ```javascript
 var doc = app.activeDocument;
@@ -538,9 +538,9 @@ opts.jobOptions = jobOpts;
 doc.print(opts);
 ```
 
-## User Interaction Levels
+## ユーザー操作レベル
 
-Control whether Illustrator shows dialogs during script execution:
+スクリプト実行中にIllustratorがダイアログを表示するかを制御する:
 
 ```javascript
 // Suppress all dialogs
@@ -553,30 +553,22 @@ doc.close(SaveOptions.DONOTSAVECHANGES);
 app.userInteractionLevel = UserInteractionLevel.DISPLAYALERTS;
 ```
 
-## Working with Methods (JavaScript-Specific)
+## メソッドの操作（JavaScript固有）
 
-When calling methods with multiple optional parameters, use `undefined` to skip middle parameters:
+複数の任意パラメーターを持つメソッドを呼ぶ場合、中間パラメーターを飛ばすには `undefined` を使う:
 
 ```javascript
 // rotate(angle, [changePositions], [changeFillPatterns], [changeFillGradients], ...)
 item.rotate(30, undefined, undefined, true);
 ```
 
-## External Invocation & Argument Passing
+## 外部呼び出しと引数の受け渡し
 
-Illustrator scripts are routinely launched from outside the application —
-shell scripts, schedulers, build pipelines, ExtendScript Toolkit, or
-`BridgeTalk` messages from other Creative Cloud apps. The execution
-environment under those launchers differs from the in-application *File >
-Scripts* path in several ways that frequently break otherwise-correct code.
+Illustratorスクリプトは、シェルスクリプト、スケジューラー、ビルドパイプライン、ExtendScript Toolkit、または他のCreative Cloudアプリからの `BridgeTalk` メッセージなど、アプリケーション外部から起動されることが多い。これらのランチャー配下の実行環境は、アプリケーション内の *File > Scripts* 経路といくつかの点で異なり、本来は正しいコードを壊すことがよくある。
 
-### `arguments[]` Is Unreliable Under External Launchers
+### 外部ランチャー配下では `arguments[]` は信頼できない
 
-ExtendScript Toolkit's `-run` invocation and `BridgeTalk.send()` do not
-forward arbitrary launcher arguments into the script's top-level
-`arguments[]` array. In many configurations the array contains a single
-`[object BridgeTalk]` element instead of the values the caller passed, as
-demonstrated below:
+ExtendScript Toolkitの `-run` 呼び出しと `BridgeTalk.send()` は、任意のランチャー引数をスクリプト最上位の `arguments[]` 配列へ転送しない。多くの構成では、下記のように、呼び出し元が渡した値ではなく単一の `[object BridgeTalk]` 要素だけが配列に入る。
 
 ```javascript
 // At top of script
@@ -587,15 +579,11 @@ for (var i = 0; i < passed.length; i++) {
 }
 ```
 
-**Do not rely on `arguments[]` for required inputs when the script is
-launched externally.** Use one of the following more reliable channels.
+スクリプトが外部から起動される場合、必須入力に `arguments[]` を頼らない。次のより信頼できるチャネルのいずれかを使う。
 
-### Sidecar File for Parameters
+### パラメーター用サイドカーファイル
 
-When a script fails under an external launcher and the source of the error
-is not obvious, fall back to a sidecar file: have the caller write a small
-text file at a known absolute path, and read it on startup. This works
-regardless of launcher quirks and is easy to inspect after a failed run.
+外部ランチャー配下でスクリプトが失敗し、エラー原因が明らかでない場合は、サイドカーファイルへフォールバックする。呼び出し元に既知の絶対パスへ小さなテキストファイルを書かせ、起動時にそれを読む。この方法はランチャーの癖に左右されず、失敗後に調査しやすい。
 
 ```javascript
 var SIDECAR_PATH = "C:/Users/userName/job.args.txt";
@@ -617,7 +605,7 @@ function readSidecar(path) {
 }
 ```
 
-A `key=value` format is equally workable and avoids positional fragility:
+`key=value` 形式も同様に使いやすく、位置依存の脆さを避けられる:
 
 ```text
 input=C:/path/to/input.ai
@@ -625,20 +613,13 @@ output=C:/path/to/output.pdf
 mode=preview
 ```
 
-### Environment Variables
+### 環境変数
 
-`$.getenv("NAME")` returns environment variables visible to **Illustrator's
-process**, not the launcher's. If the launcher needs Illustrator to see a
-value, it must set the variable system-wide or in Illustrator's parent
-environment before launching. For per-invocation values, prefer a sidecar
-file.
+`$.getenv("NAME")` は、ランチャーではなく **Illustratorのプロセス**から見える環境変数を返す。ランチャーがIllustratorに値を見せる必要がある場合は、起動前にシステム全体またはIllustratorの親環境へ変数を設定しなければならない。呼び出しごとの値にはサイドカーファイルを優先する。
 
-### `$.fileName` and `File($.fileName).parent`
+### `$.fileName` と `File($.fileName).parent`
 
-Under in-application execution, `$.fileName` is the absolute path of the
-running script and `File($.fileName).parent` yields the script's folder.
-Under some external launchers (notably ESTK `-run`) `$.fileName` can be
-empty, causing relative path resolution to silently fail.
+アプリケーション内実行では、`$.fileName` は実行中スクリプトの絶対パスであり、`File($.fileName).parent` はスクリプトのフォルダーを返す。一部の外部ランチャー（特にESTK `-run`）では `$.fileName` が空になり、相対パス解決が静かに失敗することがある。
 
 ```javascript
 // Fragile: returns null under some launchers
@@ -650,12 +631,9 @@ var sidecar = new File("C:/Users/userName/job.args.txt");
 if (!sidecar.exists) sidecar = new File(Folder.temp.fsName + "/job.args.txt");
 ```
 
-### Diagnostic Logging to an Absolute Path
+### 絶対パスへの診断ログ
 
-Silent failures are common because dialogs are suppressed and the launcher
-may not surface `$.writeln` output. Write a plain-text log to a known
-absolute path so a run can be inspected after the fact. Create the parent
-folder on demand so the first call cannot fail for a missing directory.
+ダイアログが抑制され、ランチャーが `$.writeln` 出力を表示しない場合があるため、無言の失敗はよく起こる。実行後に調査できるよう、既知の絶対パスへプレーンテキストログを書く。最初の呼び出しがディレクトリ不足で失敗しないよう、親フォルダーは必要時に作成する。
 
 ```javascript
 var LOG_PATH = "C:/Users/userName/logs/job.log";
@@ -672,11 +650,9 @@ function log(msg) {
 }
 ```
 
-### Wrap the Entry Point in `try { ... } catch`
+### エントリポイントを `try { ... } catch` で囲む
 
-Externally launched scripts often fail without any visible indication. A
-top-level `try`/`catch` that writes the error to the log file converts
-silent failures into a single inspectable line.
+外部起動されたスクリプトは、目に見える兆候なしに失敗することが多い。最上位の `try`/`catch` でエラーをログファイルへ書くと、無言の失敗を調査可能な1行へ変換できる。
 
 ```javascript
 try {
@@ -686,21 +662,17 @@ try {
 }
 ```
 
-### Suppress User Interaction
+### ユーザー操作を抑制する
 
-External callers cannot answer dialogs. Disable them before any DOM work
-and avoid `alert()` / `confirm()` / `prompt()` entirely in scripts that may
-be launched headlessly.
+外部呼び出し元はダイアログに応答できない。DOM操作の前に無効化し、ヘッドレスで起動される可能性があるスクリプトでは `alert()` / `confirm()` / `prompt()` を完全に避ける。
 
 ```javascript
 app.userInteractionLevel = UserInteractionLevel.DONTDISPLAYALERTS;
 ```
 
-### Save Explicitly
+### 明示的に保存する
 
-Closing or letting Illustrator return to its idle state does not save the
-working file. After all DOM edits, call `doc.saveAs(...)` (or `doc.save()`)
-explicitly and log whether it succeeded.
+閉じるだけ、またはIllustratorをアイドル状態へ戻すだけでは作業ファイルは保存されない。すべてのDOM編集後、`doc.saveAs(...)`（または `doc.save()`）を明示的に呼び出し、成功したかをログに記録する。
 
 ```javascript
 var opts = new IllustratorSaveOptions();
@@ -708,9 +680,9 @@ opts.compatibility = Compatibility.ILLUSTRATOR17;
 doc.saveAs(new File(doc.fullName.fsName), opts);
 ```
 
-## Common Patterns
+## よく使うパターン
 
-### Iterate All Page Items in a Document
+### ドキュメント内のすべてのページアイテムを反復する
 
 ```javascript
 function processAllItems(doc) {
@@ -732,7 +704,7 @@ function processAllItems(doc) {
 }
 ```
 
-### Recursively Unlock Layers and Groups Before Editing
+### 編集前にレイヤーとグループを再帰的にロック解除する
 
 A locked layer or any locked ancestor (parent group, clip group, sublayer)
 will cause edits to throw `Error: Target layer cannot be modified`. Walk the
@@ -761,7 +733,7 @@ function unlockAll(doc) {
 }
 ```
 
-### Replacing the File Behind a Linked Image (Relink)
+### リンク画像の背後にあるファイルを差し替える（再リンク）
 
 `PlacedItem.file = newFile` replaces a linked image while preserving the
 parent, stacking order, and (after re-applying) the bounds. **`RasterItem`
@@ -792,13 +764,9 @@ function relinkOrRebuild(item, newFile) {
 }
 ```
 
-### Placing SVG Content (Copy/Paste Pattern)
+### SVGコンテンツを配置する（コピー/貼り付けパターン）
 
-`PlacedItem.file` accepts raster formats and AI/PDF, **but not SVG**. Setting
-it to an `.svg` File throws `Unable to set placed item's file, is the file
-path provided valid?`. The reliable way to bring SVG artwork into a document
-is to open the SVG as a separate document, select all, copy, close, and paste
-into the working document.
+`PlacedItem.file` はラスター形式とAI/PDFを受け付けるが、**SVGは受け付けない**。`.svg` Fileを設定すると `Unable to set placed item's file, is the file path provided valid?` が投げられる。SVGアートワークをドキュメントへ取り込む信頼できる方法は、SVGを別ドキュメントとして開き、すべて選択してコピーし、閉じてから作業ドキュメントへ貼り付けることである。
 
 ```javascript
 function placeSVG(targetDoc, svgFile, targetLayer) {
@@ -824,12 +792,9 @@ function placeSVG(targetDoc, svgFile, targetLayer) {
 }
 ```
 
-### Finding a Clipping Path Inside a Mask Group
+### マスクグループ内のクリッピングパスを見つける
 
-Clip groups expose their clipping shape as a child `PathItem` (or, less
-commonly, a child of a `CompoundPathItem`) with `clipping === true`. The
-clip's `geometricBounds` give the visible frame to size or center content
-against.
+クリップグループは、`clipping === true` を持つ子 `PathItem`（または、まれに `CompoundPathItem` の子）としてクリッピング形状を公開する。クリップの `geometricBounds` は、コンテンツのサイズ調整や中央揃えに使う可視フレームを提供する。
 
 ```javascript
 function findClipPath(group) {
@@ -849,12 +814,9 @@ function findClipPath(group) {
 }
 ```
 
-### Cover-Fit and Contain-Fit Sizing
+### cover-fitとcontain-fitのサイズ調整
 
-To make an image fully cover a rectangle (any overflow hidden by a mask), use
-the larger of the width/height ratios. To make it fit entirely inside, use
-the smaller. A bleed factor (e.g. `1.10`) lets a cover image extend slightly
-past the clip edge.
+画像で矩形を完全に覆う（はみ出しはマスクで隠す）には、幅/高さ比の大きい方を使う。完全に内側へ収めるには、小さい方を使う。塗り足し係数（例: `1.10`）を使うと、cover画像をクリップ端より少し外側まで広げられる。
 
 ```javascript
 function fitItemToRect(item, rect, mode, bleed) {
@@ -883,7 +845,7 @@ function fitItemToRect(item, rect, mode, bleed) {
 
 
 
-### Batch Process Files in a Folder
+### フォルダー内のファイルをバッチ処理する
 
 ```javascript
 var folder = Folder.selectDialog("Select folder of .ai files");
@@ -897,7 +859,7 @@ if (folder) {
 }
 ```
 
-### Error Handling
+### エラー処理
 
 ```javascript
 try {
@@ -909,29 +871,29 @@ try {
 }
 ```
 
-## Troubleshooting
+## トラブルシューティング
 
-- **"undefined is not an object"**: Usually means the collection is empty or the index is out of bounds. Check `.length` before accessing items.
-- **Script runs but nothing changes visually**: Call `app.redraw()` to force a screen refresh after modifications.
-- **Color mode mismatch**: Document color space (RGB vs CMYK) must match color objects. Use `doc.documentColorSpace` to check.
-- **Position seems wrong**: Remember scripted documents use bottom-left origin with Y increasing upward. The `position` property is the top-left of the bounding box.
-- **Text not appearing**: Ensure the text frame has a non-zero size. For point text, set `position`; for area text, provide a valid path to `areaText()`.
-- **File paths on Windows**: Use forward slashes (`/`) or double backslashes (`\\`) in path strings, or use the `File` object constructor.
-- **Dialog boxes interrupting batch scripts**: Set `app.userInteractionLevel = UserInteractionLevel.DONTDISPLAYALERTS` before batch operations.
-- **Collections use `getByName()`**: Many collection objects support `getByName("name")` which throws an error if not found; wrap in try/catch.
-- **"Target layer cannot be modified"**: A locked layer, sublayer, or parent group (often a clip group like `Cover_Mask`) is blocking the edit. Recursively clear `locked` and `hidden` across the document before modifying. See [Recursively Unlock Layers and Groups](#recursively-unlock-layers-and-groups-before-editing).
-- **"Unable to set placed item's file, is the file path provided valid?"**: The file exists and the path is correct, but `PlacedItem.file` does not accept the format. SVG is the most common cause — use the [open / copy / paste pattern](#placing-svg-content-copypaste-pattern) instead.
-- **`RasterItem.file = newFile` does nothing or throws**: `RasterItem` does not expose a writable `file` property. Add a new `PlacedItem` to the same parent, restore the bounds and name, then `.remove()` the raster.
-- **`arguments[0]` is `[object BridgeTalk]`** (or empty): The script was launched through ESTK `-run` or a `BridgeTalk` message; positional arguments are not forwarded. Use a sidecar file at a known absolute path. See [External Invocation & Argument Passing](#external-invocation--argument-passing).
-- **`$.fileName` is empty**: Same external-launcher cause. Do not derive resource paths from `$.fileName` in scripts that may be invoked headlessly — use absolute paths or `Folder.temp`.
-- **Script appears to do nothing**: Almost always either a locked ancestor, suppressed dialogs swallowing the error, or a missing explicit `saveAs` after edits. Add a top-level `try`/`catch` that logs to an absolute path to confirm execution and capture the error.
-- **`item.resize(sx, sy)` recentered the artwork unexpectedly**: `resize` defaults to scaling around the item's center (`Transformation.CENTER`). Pass an explicit `scaleAbout` argument or follow with `translate(dx, dy)` to reposition.
+- **"undefined is not an object"**: 通常はコレクションが空、またはインデックスが範囲外であることを意味する。アイテムへアクセスする前に `.length` を確認する。
+- **スクリプトは実行されるが見た目が変わらない**: 変更後に `app.redraw()` を呼び出し、画面更新を強制する。
+- **カラーモード不一致**: ドキュメントのカラースペース（RGB vs CMYK）はカラーオブジェクトと一致している必要がある。`doc.documentColorSpace` で確認する。
+- **位置がおかしく見える**: スクリプトで作成したドキュメントは左下原点で、Yが上方向に増えることを思い出す。`position` プロパティはバウンディングボックス左上である。
+- **テキストが表示されない**: テキストフレームが0ではないサイズを持つことを確認する。ポイントテキストでは `position` を設定し、エリアテキストでは `areaText()` に有効なパスを渡す。
+- **Windowsのファイルパス**: パス文字列ではスラッシュ（`/`）または二重バックスラッシュ（`\\`）を使うか、`File` オブジェクトコンストラクターを使う。
+- **ダイアログボックスがバッチスクリプトを中断する**: バッチ操作前に `app.userInteractionLevel = UserInteractionLevel.DONTDISPLAYALERTS` を設定する。
+- **コレクションは `getByName()` を使う**: 多くのコレクションオブジェクトは `getByName("name")` をサポートし、見つからない場合はエラーを投げるためtry/catchで囲む。
+- **"Target layer cannot be modified"**: ロックされたレイヤー、サブレイヤー、または親グループ（多くは `Cover_Mask` のようなクリップグループ）が編集を妨げている。変更前にドキュメント全体で `locked` と `hidden` を再帰的に解除する。[レイヤーとグループを再帰的にロック解除する](#編集前にレイヤーとグループを再帰的にロック解除する)を参照する。
+- **"Unable to set placed item's file, is the file path provided valid?"**: ファイルは存在しパスも正しいが、`PlacedItem.file` がその形式を受け付けない。SVGが最も一般的な原因である。代わりに[open / copy / pasteパターン](#svgコンテンツを配置するコピー貼り付けパターン)を使う。
+- **`RasterItem.file = newFile` が何もしない、または例外を投げる**: `RasterItem` は書き込み可能な `file` プロパティを公開しない。同じ親に新しい `PlacedItem` を追加し、境界と名前を復元してからラスタを `.remove()` する。
+- **`arguments[0]` が `[object BridgeTalk]`（または空）**: スクリプトがESTK `-run` または `BridgeTalk` メッセージ経由で起動されており、位置引数が転送されていない。既知の絶対パスにあるサイドカーファイルを使う。[外部呼び出しと引数の受け渡し](#外部呼び出しと引数の受け渡し)を参照する。
+- **`$.fileName` が空**: 同じ外部ランチャー起因である。ヘッドレス起動され得るスクリプトでは、`$.fileName` からリソースパスを導出しない。絶対パスまたは `Folder.temp` を使う。
+- **スクリプトが何もしていないように見える**: ほとんどの場合、ロックされた祖先、抑制されたダイアログがエラーを隠していること、または編集後の明示的な `saveAs` 不足が原因である。実行確認とエラー取得のため、絶対パスへログを書く最上位 `try`/`catch` を追加する。
+- **`item.resize(sx, sy)` が予期せずアートワークを再中央揃えした**: `resize` は既定でアイテム中心（`Transformation.CENTER`）を基準に拡大縮小する。明示的な `scaleAbout` 引数を渡すか、後続で `translate(dx, dy)` して再配置する。
 
-## Scripting Constants Reference
+## スクリプティング定数リファレンス
 
-Common enumeration constants used across the API:
+API全体でよく使う列挙定数:
 
-| Category | Constants |
+| カテゴリ | 定数 |
 |---|---|
 | **Color Space** | `DocumentColorSpace.RGB`, `DocumentColorSpace.CMYK` |
 | **Justification** | `Justification.LEFT`, `Justification.CENTER`, `Justification.RIGHT`, `Justification.FULLJUSTIFY` |
@@ -949,9 +911,9 @@ Common enumeration constants used across the API:
 | **User Interaction** | `UserInteractionLevel.DISPLAYALERTS`, `UserInteractionLevel.DONTDISPLAYALERTS` |
 | **Compatibility** | `Compatibility.ILLUSTRATOR10` through `Compatibility.ILLUSTRATOR24` |
 
-## JavaScript Object Reference (Complete API Object List)
+## JavaScriptオブジェクトリファレンス（APIオブジェクト完全一覧）
 
-The Illustrator JavaScript API contains the following objects, grouped by category:
+Illustrator JavaScript APIには、カテゴリ別に次のオブジェクトが含まれる:
 
 ### Core Objects
 
@@ -1017,7 +979,7 @@ The Illustrator JavaScript API contains the following objects, grouped by catego
 
 `ImageCaptureOptions`, `RasterEffectOptions`, `RasterizeOptions`
 
-## References
+## 参考資料
 
 - [Changelog](https://ai-scripting.docsforadobe.dev/introduction/changelog/) - Recent scripting API changes (CC 2020 added `Document.getPageItemFromUuid` and `PageItem.uuid`; CC 2017 added `Application.getIsFileOpen`)
 - [Illustrator Scripting Guide](https://ai-scripting.docsforadobe.dev/) - Full community-maintained documentation

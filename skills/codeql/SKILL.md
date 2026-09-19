@@ -12,12 +12,12 @@ description: 'GitHub ActionsワークフローとCodeQL CLIを使用してCodeQL
 次の依頼でこのSkillを使用します:
 
 - `codeql.yml` GitHub Actionsワークフローの作成またはカスタマイズ
-- コードスキャンのdefault setupとadvanced setupの選択
-- CodeQLの言語マトリックス、build mode、query suiteの構成
+- コードスキャンの既定のセットアップと高度なセットアップの選択
+- CodeQLの言語マトリックス、ビルドモード、クエリスイートの構成
 - CodeQL CLIのローカル実行（`codeql database create`、`database analyze`、`github upload-results`）
 - CodeQLのSARIF出力の理解または解釈
-- CodeQL分析失敗のトラブルシューティング（build mode、コンパイル言語、runner要件）
-- コンポーネントごとにスキャンするmonorepo向けCodeQLのセットアップ
+- CodeQL分析失敗のトラブルシューティング（ビルドモード、コンパイル言語、ランナー要件）
+- コンポーネントごとにスキャンするモノレポ向けCodeQLのセットアップ
 - 依存関係キャッシュ、カスタムquery pack、model packの構成
 
 ## 対応言語
@@ -43,10 +43,10 @@ CodeQLは次の言語識別子に対応しています:
 
 ### ステップ1: セットアップの種類を選ぶ
 
-- **Default setup** — RepositoryのSettings → Advanced Security → CodeQL analysisから有効にします。すぐに始める場合に最適です。多くの言語で`none` build modeを使用します。
-- **Advanced setup** — `.github/workflows/codeql.yml`ファイルを作成し、トリガー、build mode、query suite、マトリックス戦略を完全に制御します。
+- **既定のセットアップ** — Repositoryの設定 → Advanced Security → CodeQL分析から有効にします。すぐに始める場合に最適です。多くの言語で`none`ビルドモードを使用します。
+- **高度なセットアップ** — `.github/workflows/codeql.yml`ファイルを作成し、トリガー、ビルドモード、クエリスイート、マトリックス戦略を完全に制御します。
 
-defaultからadvancedへ切り替えるには、最初にdefault setupを無効化してから、ワークフローファイルをコミットします。
+既定のセットアップから高度なセットアップへ切り替えるには、最初に既定のセットアップを無効化してから、ワークフローファイルをコミットします。
 
 ### ステップ2: ワークフローのトリガーを構成する
 
@@ -64,7 +64,7 @@ on:
 
 - `push` — 指定したブランチへのpushごとにスキャンし、結果はSecurityタブに表示される
 - `pull_request` — PRのマージコミットをスキャンし、結果はPRチェックのannotationとして表示される
-- `schedule` — default branchを定期的にスキャンする（cronはdefault branchに存在する必要がある）
+- `schedule` — 既定ブランチを定期的にスキャンする（cronは既定ブランチに存在する必要がある）
 - `merge_group` — Repositoryでmerge queueを使用する場合に追加する
 
 ドキュメントだけを変更するPRのスキャンを省略するには:
@@ -112,9 +112,9 @@ jobs:
 コンパイル言語では、適切な`build-mode`を設定します:
 - `none` — ビルド不要（C/C++、C#、Java、Rustに対応）
 - `autobuild` — ビルドを自動検出
-- `manual` — カスタムビルドコマンド（advanced setupのみ）
+- `manual` — カスタムビルドコマンド（高度なセットアップのみ）
 
-> 言語ごとのautobuildの詳細動作とrunner要件については、`references/compiled-languages.md`を検索してください。
+> 言語ごとの`autobuild`の詳細動作とランナー要件については、`references/compiled-languages.md`を検索してください。
 
 ### ステップ5: CodeQLの初期化と分析を構成する
 
@@ -144,11 +144,11 @@ steps:
 
 **依存関係のキャッシュ:** 復元した依存関係を実行間でキャッシュするには、`init`アクションに`dependency-caching: true`を設定します。
 
-**分析カテゴリ:** monorepoのSARIF結果を区別するには`category`を使用します（例: 言語別、コンポーネント別）。
+**分析カテゴリ:** モノレポのSARIF結果を区別するには`category`を使用します（例: 言語別、コンポーネント別）。
 
 ### ステップ6: Monorepoの構成
 
-複数のコンポーネントを持つmonorepoでは、`category`パラメーターを使用してSARIF結果を分離します:
+複数のコンポーネントを持つモノレポでは、`category`パラメーターを使用してSARIF結果を分離します:
 
 ```yaml
 category: "/language:${{ matrix.language }}/component:frontend"
@@ -238,7 +238,7 @@ codeql database analyze codeql-db \
   --output=results.sarif
 ```
 
-一般的なquery suite: `<language>-code-scanning.qls`、`<language>-security-extended.qls`、`<language>-security-and-quality.qls`。
+一般的なクエリスイート: `<language>-code-scanning.qls`、`<language>-security-extended.qls`、`<language>-security-and-quality.qls`。
 
 ### ステップ4: 結果をGitHubへアップロードする
 
@@ -340,7 +340,7 @@ packs:
 ### デバッグログ
 
 詳細な診断を有効にするには:
-- **GitHub Actions:** "Enable debug logging"を選択してワークフローを再実行する
+- **GitHub Actions:** 「デバッグログを有効にする」を選択してワークフローを再実行する
 - **CodeQL CLI:** `--verbosity=progress++`と`--logdir=codeql-logs`を使用する
 
 ## トラブルシューティング
@@ -355,17 +355,17 @@ packs:
 | ソースコードが認識されない | `--source-root`、ビルドコマンド、言語識別子を確認する |
 | C#コンパイラの失敗 | `/p:EmitCompilerGeneratedFiles=true`と`.sqlproj`またはレガシープロジェクトの競合を確認する |
 | スキャン行数が予想より少ない | `none`から`autobuild`／`manual`へ切り替え、ビルドですべてのソースがコンパイルされることを確認する |
-| Kotlinがno-build modeになっている | default setupを無効化して再度有効化し、`autobuild`へ切り替える |
+| Kotlinがビルドなしモードになっている | 既定のセットアップを無効化して再度有効化し、`autobuild`へ切り替える |
 | 毎回キャッシュミスになる | `init`アクションの`dependency-caching: true`を確認する |
-| ディスク／メモリ不足 | より大きなrunnerを使用し、`paths`構成で分析範囲を減らし、`build-mode: none`を使用する |
+| ディスク／メモリ不足 | より大きなランナーを使用し、`paths`構成で分析範囲を減らし、`build-mode: none`を使用する |
 | SARIFアップロードの失敗 | tokenに`security-events: write`があることを確認し、10 MBのファイルサイズ上限を確認する |
 | SARIF結果が上限を超える | 異なる`--sarif-category`で複数のアップロードへ分割し、クエリ範囲を減らす |
-| CodeQLワークフローが2つある | advanced setupを使用する場合はdefault setupを無効化するか、古いワークフローファイルを削除する |
-| 分析が遅い | 依存関係キャッシュを有効化し、`--threads=0`を使用し、query suiteの範囲を減らす |
+| CodeQLワークフローが2つある | 高度なセットアップを使用する場合は既定のセットアップを無効化するか、古いワークフローファイルを削除する |
+| 分析が遅い | 依存関係キャッシュを有効化し、`--threads=0`を使用し、クエリスイートの範囲を減らす |
 
 > 詳細な解決策を含む包括的なトラブルシューティングについては、`references/troubleshooting.md`を検索してください。
 
-### ハードウェア要件（Self-hosted runner）
+### ハードウェア要件（セルフホステッドランナー）
 
 | コードベースの規模 | RAM | CPU |
 |---|---|---|
@@ -375,7 +375,7 @@ packs:
 
 すべての規模: 空きディスク容量14 GB以上のSSD。
 
-### Actionのバージョン管理
+### アクションのバージョン管理
 
 CodeQL actionを特定のmajor versionに固定します:
 
@@ -391,13 +391,13 @@ uses: github/codeql-action/analyze@v4
 
 詳しいドキュメントが必要な場合は、次の参考ファイルを読み込みます:
 
-- `references/workflow-configuration.md` — ワークフローのトリガー、runner、構成オプションの完全な説明
+- `references/workflow-configuration.md` — ワークフローのトリガー、ランナー、構成オプションの完全な説明
   - 検索パターン: `trigger`、`schedule`、`paths-ignore`、`db-location`、`model packs`、`alert severity`、`merge protection`、`concurrency`、`config file`
 - `references/cli-commands.md` — 完全なCodeQL CLIコマンドリファレンス
   - 検索パターン: `database create`、`database analyze`、`upload-results`、`resolve packs`、`cli-server`、`installation`、`CI integration`
 - `references/sarif-output.md` — SARIF v2.1.0のオブジェクトモデル、アップロード上限、第三者対応
   - 検索パターン: `sarifLog`、`result`、`location`、`region`、`codeFlow`、`fingerprint`、`suppression`、`upload limits`、`third-party`、`precision`、`security-severity`
-- `references/compiled-languages.md` — 言語ごとのbuild modeとautobuild動作
+- `references/compiled-languages.md` — 言語ごとのビルドモードと`autobuild`動作
   - 検索パターン: `C/C++`、`C#`、`Java`、`Go`、`Rust`、`Swift`、`autobuild`、`build-mode`、`hardware`、`dependency caching`
 - `references/troubleshooting.md` — 包括的なエラー診断と解決策
   - 検索パターン: `no source code`、`out of disk`、`out of memory`、`403`、`C# compiler`、`analysis too long`、`fewer lines`、`Kotlin`、`extraction errors`、`debug logging`、`SARIF upload`、`SARIF limits`

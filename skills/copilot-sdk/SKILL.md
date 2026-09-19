@@ -36,7 +36,7 @@ pip install github-copilot-sdk
 python -m copilot download-runtime
 ```
 
-Published Python wheels include a pinned runtime version. The pre-download command caches that runtime locally; if skipped, the SDK attempts to download it automatically on first use.
+公開されているPython wheelには、固定されたruntimeバージョンが含まれる。事前downloadコマンドはそのruntimeをローカルへcacheする。省略した場合、SDKは初回利用時に自動downloadを試みる。
 
 ### Go
 ```bash
@@ -525,7 +525,7 @@ async def main():
 asyncio.run(main())
 ```
 
-## MCP Serverとの統合
+## MCP serverとの統合
 
 構築済みツールを利用するため、MCP（Model Context Protocol）serverへ接続する。リポジトリ、Issue、PRへアクセスするにはGitHubのMCP serverへ接続する。
 
@@ -649,16 +649,16 @@ async with await client.create_session(
     ...
 ```
 
-## 外部CLI Server
+## 外部CLI server
 
 CLIをserver modeで別途実行し、SDKから接続する。デバッグ、リソース共有、カスタム環境で役立つ。
 
-### CLIをServer Modeで起動
+### CLIをserver modeで起動
 ```bash
 copilot --server --port 4321
 ```
 
-### SDKを外部Serverへ接続
+### SDKを外部serverへ接続
 
 #### TypeScript
 ```typescript
@@ -718,9 +718,9 @@ await using var session = await client.CreateSessionAsync(new SessionConfig
 
 **注:** 外部serverを使うよう構成した場合、SDKが管理するのは接続だけであり、外部プロセスは管理しない。
 
-## Eventの種類
+## eventの種類
 
-| Event | 説明 |
+| event | 説明 |
 |-------|-------------|
 | `user.message` | ユーザー入力が追加された |
 | `assistant.message` | 完全なモデル応答 |
@@ -732,9 +732,9 @@ await using var session = await client.CreateSessionAsync(new SessionConfig
 | `session.idle` | 実行中の処理がない |
 | `session.error` | エラーが発生した |
 
-## Clientの構成
+## clientの構成
 
-| Option | 説明 | 既定値 |
+| オプション | 説明 | 既定値 |
 |--------|-------------|---------|
 | `cliPath` | Copilot CLI実行可能ファイルのパス | システムのPATH |
 | `cliUrl` | 既存serverへ接続（例: `"localhost:4321"`） | なし |
@@ -745,9 +745,9 @@ await using var session = await client.CreateSessionAsync(new SessionConfig
 | `autoRestart` | クラッシュ時に再起動する | true |
 | `cwd` | CLIプロセスの作業ディレクトリ | 継承 |
 
-## Sessionの構成
+## sessionの構成
 
-| Option | 説明 |
+| オプション | 説明 |
 |--------|-------------|
 | `model` | 使用するLLM（`"gpt-4.1"`、`"claude-sonnet-4.5"` など） |
 | `sessionId` | カスタムsession識別子 |
@@ -759,7 +759,7 @@ await using var session = await client.CreateSessionAsync(new SessionConfig
 | `availableTools` | 許可するツールのallowlist |
 | `excludedTools` | 無効化するツールのdenylist |
 
-## Sessionの永続化
+## sessionの永続化
 
 再起動をまたいで会話を保存し、再開する。
 
@@ -772,13 +772,13 @@ const session = await client.createSession({
 });
 ```
 
-### Sessionを再開
+### sessionを再開
 ```typescript
 const session = await client.resumeSession("user-123-conversation", { onPermissionRequest: approveAll });
 await session.send({ prompt: "What did we discuss earlier?" });
 ```
 
-### Sessionの一覧表示と削除
+### sessionの一覧表示と削除
 ```typescript
 const sessions = await client.listSessions();
 await client.deleteSession("old-session-id");
@@ -893,11 +893,11 @@ SDKはCLIプロセスのライフサイクルを自動管理する。すべて�
 
 ## リソース
 
-- **GitHub Repository**: https://github.com/github/copilot-sdk
+- **GitHubリポジトリ**: https://github.com/github/copilot-sdk
 - **入門チュートリアル**: https://github.com/github/copilot-sdk/blob/main/docs/tutorials/first-app.md
-- **GitHub MCP Server**: https://github.com/github/github-mcp-server
-- **MCP Serversディレクトリ**: https://github.com/modelcontextprotocol/servers
-- **Cookbook**: https://github.com/github/copilot-sdk/tree/main/cookbook
+- **GitHub MCP server**: https://github.com/github/github-mcp-server
+- **MCP serverディレクトリ**: https://github.com/modelcontextprotocol/servers
+- **Cookbook（レシピ集）**: https://github.com/github/copilot-sdk/tree/main/cookbook
 - **サンプル**: https://github.com/github/copilot-sdk/tree/main/samples
 
 ## ステータス

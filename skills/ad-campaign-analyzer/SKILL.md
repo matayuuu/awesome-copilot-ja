@@ -1,72 +1,72 @@
 ---
 name: ad-campaign-analyzer
-description: 'Use this skill when the user shares ad campaign performance data and asks what to cut, scale, or test. Trigger for prompts like "analyze my ad campaigns", "where am I wasting ad spend", "reallocate my ad budget", "which ads are actually working", or "ROAS analysis". Do not trigger for campaign planning or creative generation without performance data.'
+description: '広告キャンペーンの実績データが共有され、何を削減、拡大、テストすべきか尋ねられたときに使う。「広告キャンペーンを分析して」「広告費をどこで無駄にしているか」「広告予算を再配分して」「実際に効いている広告はどれか」「ROAS分析」などが対象。実績データを伴わないキャンペーン計画やクリエイティブ生成では起動しない。'
 license: MIT
-compatibility: 'Cross-platform. Pure reasoning skill over user-provided campaign exports (CSV, paste, or screenshot from Google, Meta, or LinkedIn) — no external tools, network calls, or API keys.'
+compatibility: 'クロスプラットフォーム。Google、Meta、LinkedInから提供されたキャンペーン書き出し（CSV、貼り付け、スクリーンショット）を対象とする純粋な推論Skill。外部ツール、ネットワーク呼び出し、APIキーは不要。'
 metadata:
   version: "1.0"
   author: GooseWorks
   source: https://github.com/gooseworks-ai/goose-skills
 ---
 
-# Ad Campaign Analyzer
+# 広告キャンペーン分析
 
-Take raw campaign performance data and turn it into clear decisions. This skill doesn't just summarize metrics — it diagnoses problems, identifies winners, checks statistical significance, and tells you exactly what to cut, scale, and test next. Then it goes further: it compares channels on equal terms, finds where you're over-spending vs under-spending relative to results, and produces a concrete budget reallocation plan.
+生のキャンペーン実績データを明確な意思決定へ変換する。このSkillは指標を要約するだけでなく、問題を診断し、勝ち筋を特定し、統計的有意性を確認し、次に何を削減、拡大、テストするかを具体的に示す。さらにチャネルを同じ基準で比較し、結果に対して過剰投資または投資不足の箇所を見つけ、具体的な予算再配分計画を作成する。
 
-**Core principle:** Most startup founders check their ad dashboard, see a ROAS number, and either panic or celebrate. This skill gives you the nuanced analysis a paid media specialist would: what's actually significant, what's noise, and where your next dollar should go. It also solves the allocation problem — most startups either spread budget too thin across channels (no channel gets enough to learn) or dump everything into one channel (missing cheaper opportunities elsewhere).
+**基本原則:** 多くのスタートアップ創業者は広告ダッシュボードを確認し、ROASの数字を見て慌てるか喜ぶ。このSkillは有料メディア専門家のように、何が本当に有意で何がノイズか、次の1ドルをどこへ投じるべきかを分析する。さらに配分問題も解決する。多くのスタートアップはチャネルへ予算を薄く広げすぎて学習量を確保できないか、1チャネルへ全額を投じて他の安価な機会を逃している。
 
-## When to Use
+## 使う場面
 
-- "Analyze my Google Ads performance"
-- "Which ads should I kill?"
-- "Is this campaign working?"
-- "Where am I wasting ad spend?"
-- "Optimize my Meta Ads"
-- "How should I split my ad budget?"
-- "Should I spend more on Google or Meta?"
-- "Reallocate my ad spend across channels"
-- "Where am I getting the best return?"
-- "I have $X/month for ads — how should I distribute it?"
+- "Google Adsの実績を分析して"
+- "どの広告を止めるべき?"
+- "このキャンペーンは機能している?"
+- "広告費をどこで無駄にしている?"
+- "Meta Adsを最適化して"
+- "広告予算をどう分けるべき?"
+- "GoogleとMetaのどちらにもっと使うべき?"
+- "チャネル横断で広告費を再配分して"
+- "どこで最も良いリターンを得ている?"
+- "広告に月$X使える。どう配分すべき?"
 
-## Phase 0: Intake
+## フェーズ0: 受付
 
-1. **Campaign data** — One of:
-   - CSV export from Google Ads / Meta Ads Manager / LinkedIn Campaign Manager
-   - Pasted performance table
-   - Screenshots of dashboard (we'll extract the data)
-2. **Platform(s)** — Google / Meta / LinkedIn / All
-3. **Time period** — What date range does this cover?
-4. **Monthly budget** — Total ad spend in this period
-5. **Primary goal** — What conversion are you optimizing for? (Demos / Trials / Purchases / Leads)
-6. **Target metrics** — Do you have target CPA or ROAS? (If not, we'll benchmark)
-7. **Any known changes?** — Did you change creative, budget, or targeting during this period?
-8. **Channels currently running** — Google Ads, Meta Ads, LinkedIn Ads, Twitter/X Ads, TikTok Ads, other
-9. **Funnel data** (if available):
-   - Lead → MQL rate
-   - MQL → SQL rate
-   - SQL → Close rate
-   - Average deal size
-10. **Channels you're considering but haven't tried** — Want to test new channels?
-11. **Constraints** — Minimum spend on any channel? Platform you must stay on?
+1. **キャンペーンデータ** — 次のいずれか:
+   - Google Ads / Meta Ads Manager / LinkedIn Campaign ManagerからのCSV書き出し
+   - 貼り付けられた実績表
+   - ダッシュボードのスクリーンショット（データを抽出する）
+2. **プラットフォーム** — Google / Meta / LinkedIn / All
+3. **期間** — どの日付範囲を対象とするか。
+4. **月間予算** — この期間の広告費合計。
+5. **主目的** — どのコンバージョンを最適化するか（デモ / トライアル / 購入 / リード）。
+6. **目標指標** — 目標CPAまたはROASがあるか（なければベンチマークする）。
+7. **既知の変更** — この期間にクリエイティブ、予算、ターゲティングを変更したか。
+8. **現在稼働中のチャネル** — Google Ads、Meta Ads、LinkedIn Ads、Twitter/X Ads、TikTok Ads、その他。
+9. **ファネルデータ**（利用可能な場合）:
+   - Lead → MQL率
+   - MQL → SQL率
+   - SQL → 成約率
+   - 平均取引額
+10. **検討中だが未試行のチャネル** — 新しいチャネルをテストしたいか。
+11. **制約** — いずれかのチャネルの最低支出額や、継続利用が必須のプラットフォームはあるか。
 
-## Phase 1: Data Ingestion & Normalization
+## フェーズ1: データ取り込みと正規化
 
-### Accepted Data Formats
+### 受け付けるデータ形式
 
-| Source | Key Columns Expected |
+| ソース | 期待される主要列 |
 |--------|---------------------|
 | **Google Ads** | Campaign, Ad Group, Keyword, Impressions, Clicks, CTR, CPC, Conversions, Conv Rate, Cost, Conv Value |
 | **Meta Ads** | Campaign, Ad Set, Ad, Impressions, Reach, Clicks, CTR, CPC, Conversions, Cost Per Result, Amount Spent, ROAS |
 | **LinkedIn Ads** | Campaign, Impressions, Clicks, CTR, CPC, Conversions, Cost, Leads |
 
-Normalize all data into a standard analysis format:
+すべてのデータを標準分析形式へ正規化する:
 
-| Dimension | Impressions | Clicks | CTR | CPC | Conversions | Conv Rate | CPA | Spend | Revenue/Value |
+| ディメンション | インプレッション | クリック | CTR | CPC | コンバージョン | CVR | CPA | 支出 | 収益/価値 |
 |-----------|------------|--------|-----|-----|-------------|----------|-----|-------|--------------|
 
-### Multi-Channel Normalization
+### マルチチャネル正規化
 
-When data spans multiple channels, also produce a channel-level rollup:
+複数チャネルにまたがるデータでは、チャネル単位の集計も作成する:
 
 | Channel | Monthly Spend | Impressions | Clicks | CTR | CPC | Conversions | Conv Rate | CPA | ROAS | CAC* |
 |---------|-------------|------------|--------|-----|-----|-------------|----------|-----|------|------|
@@ -77,23 +77,23 @@ When data spans multiple channels, also produce a channel-level rollup:
 | [Other] | ... | | | | | | | | | |
 | **Total** | $[X] | | | | | [N] | | $[X] avg | [X] avg | $[X] avg |
 
-*CAC = Full customer acquisition cost if funnel data provided (CPA × close-rate adjustment)
+*CAC = ファネルデータが提供された場合の完全な顧客獲得コスト（CPA × 成約率調整）
 
-### Funnel-Adjusted CAC (If Funnel Data Available)
+### ファネル調整済みCAC（ファネルデータがある場合）
 
 ```
 Channel CAC = CPA ÷ (MQL rate × SQL rate × Close rate)
 ```
 
-This reveals which channels produce leads that actually close, not just convert.
+これにより、単にコンバージョンするだけでなく、実際に成約するリードを生むチャネルが分かる。
 
-## Phase 2: Performance Diagnostics
+## フェーズ2: 実績診断
 
-### 2A: Campaign-Level Health Check
+### 2A: キャンペーン単位の健全性チェック
 
-For each campaign:
+各キャンペーンについて:
 
-| Metric | Value | Benchmark | Status |
+| 指標 | 値 | ベンチマーク | 状態 |
 |--------|-------|-----------|--------|
 | CTR | [X%] | [Industry avg] | [Good/Okay/Poor] |
 | CPC | $[X] | [Category avg] | [Good/Okay/Poor] |
@@ -102,33 +102,33 @@ For each campaign:
 | ROAS | [X] | [Target or benchmark] | [Good/Okay/Poor] |
 | Impression Share | [X%] | [>60% ideal] | [Good/Okay/Poor] |
 
-### 2B: Budget Waste Detection
+### 2B: 予算浪費の検出
 
-Identify spend that produced no or negative return:
+成果がない、またはマイナスのリターンになった支出を特定する:
 
-| Waste Type | Signal | Action |
+| 無駄の種類 | シグナル | アクション |
 |-----------|--------|--------|
-| **Zero-conversion keywords/ads** | Spend > $[X] with 0 conversions | Pause or add negatives |
-| **High CPA outliers** | CPA > 3x target | Pause or restructure |
-| **Low CTR ads** | CTR < 50% of campaign average | Replace creative |
-| **Broad match bleed** | Search terms report showing irrelevant clicks | Add negative keywords |
-| **Audience overlap** | Same users hit by multiple campaigns | Exclude audiences |
-| **Dayparting waste** | Conversions cluster at certain hours; spend is 24/7 | Set ad schedule |
+| **コンバージョンゼロのキーワード/広告** | 支出 > $[X] かつコンバージョン0 | 一時停止または除外を追加 |
+| **高CPAの外れ値** | CPA > 目標の3倍 | 一時停止または再構成 |
+| **低CTR広告** | CTR < キャンペーン平均の50% | クリエイティブを差し替え |
+| **部分一致の漏れ** | 検索語句レポートに無関係なクリックがある | 除外キーワードを追加 |
+| **オーディエンス重複** | 同じユーザーに複数キャンペーンが当たっている | オーディエンスを除外 |
+| **時間帯配信の無駄** | コンバージョンが特定時間に集中し、支出は24時間発生 | 広告スケジュールを設定 |
 
-### 2C: Winner Identification
+### 2C: 勝ち筋の特定
 
-Find what's actually working:
+実際に機能しているものを特定する:
 
-| Winner Type | Signal | Action |
+| 勝ち筋の種類 | シグナル | アクション |
 |------------|--------|--------|
-| **Top-performing keywords** | Lowest CPA, highest conv rate | Increase bid, add variants |
-| **Winning ads** | Highest CTR + conv rate combo | Scale spend, clone for other groups |
-| **Best audiences** | Lowest CPA segment | Increase budget allocation |
-| **Best times** | Peak conversion hours/days | Concentrate budget |
+| **高実績キーワード** | 最低CPA、最高CVR | 入札を上げ、バリエーションを追加 |
+| **勝ち広告** | CTRとCVRの組み合わせが最高 | 支出を拡大し、他グループへ複製 |
+| **最良オーディエンス** | 最低CPAのセグメント | 予算配分を増やす |
+| **最良時間帯** | コンバージョンのピーク時間/曜日 | 予算を集中 |
 
-### 2D: Statistical Significance Check
+### 2D: 統計的有意性の確認
 
-For any A/B test (ad variants, audiences, landing pages):
+任意のA/Bテスト（広告バリエーション、オーディエンス、ランディングページ）について:
 
 ```
 Test: [Variant A] vs [Variant B]
@@ -140,11 +140,11 @@ Verdict: [Statistically significant / Not enough data / Too close to call]
 Recommended action: [Pick winner / Continue test / Increase budget to reach significance]
 ```
 
-Minimum sample: 100 clicks per variant for CTR tests, 30 conversions per variant for CPA tests.
+最小サンプル: CTRテストでは各バリエーション100クリック、CPAテストでは各バリエーション30コンバージョン。
 
-## Phase 3: Funnel Analysis
+## フェーズ3: ファネル分析
 
-### Click → Conversion Path
+### クリック → コンバージョン経路
 
 ```
 Impressions: [N] (100%)
@@ -156,51 +156,51 @@ Conversions: [N] ([X%] of clicks)
 Revenue: $[N]
 ```
 
-### Funnel Drop-Off Diagnosis
+### ファネル離脱の診断
 
-| Drop-Off Point | Rate | Benchmark | Likely Cause | Fix |
+| 離脱地点 | 率 | ベンチマーク | 想定原因 | 修正 |
 |----------------|------|-----------|-------------|-----|
 | Impression → Click | [CTR%] | [Benchmark] | [Ad relevance / targeting] | [Copy/targeting change] |
 | Click → Conversion | [Conv%] | [Benchmark] | [Landing page / offer / audience mismatch] | [LP optimization] |
 | Conversion → Revenue | [Close%] | [Benchmark] | [Lead quality / sales process] | [Qualification criteria] |
 
-## Phase 4: Budget Reallocation
+## フェーズ4: 予算再配分
 
-When data spans multiple channels, perform cross-channel budget optimization.
+複数チャネルにまたがるデータでは、チャネル横断の予算最適化を行う。
 
-### 4A: Channel Efficiency Ranking
+### 4A: チャネル効率ランキング
 
-| Rank | Channel | CPA | Funnel-Adj CAC | Share of Spend | Share of Conversions | Efficiency Index |
+| 順位 | チャネル | CPA | ファネル調整CAC | 支出シェア | コンバージョンシェア | 効率指数 |
 |------|---------|-----|---------------|----------------|---------------------|-----------------|
 | 1 | [Channel] | $[X] | $[X] | [X%] | [X%] | [Conv share ÷ Spend share] |
 
-**Efficiency Index:**
-- **> 1.0** = Under-invested (getting more than its share of conversions)
-- **= 1.0** = Proportional (fair share)
-- **< 1.0** = Over-invested (getting less than its share)
+**効率指数:**
+- **> 1.0** = 投資不足（支出シェア以上のコンバージョンを得ている）
+- **= 1.0** = 比例（妥当なシェア）
+- **< 1.0** = 投資過多（支出シェア未満の成果）
 
-### 4B: Marginal Return Analysis
+### 4B: 限界収益分析
 
-For each channel, estimate if additional spend would yield proportional returns:
+各チャネルについて、追加支出が比例したリターンを生むか推定する:
 
-| Channel | Current CPA | Impression Share / Saturation Signal | Marginal Return Estimate |
+| チャネル | 現在のCPA | インプレッションシェア / 飽和シグナル | 限界リターン推定 |
 |---------|-------------|-------------------------------------|------------------------|
 | Google Search | $[X] | [X%] impression share — room to grow | Likely positive |
 | Meta | $[X] | Frequency [X] — audience may be saturated | Diminishing |
 | LinkedIn | $[X] | Low volume — limited targeting pool | Ceiling soon |
 
-### 4C: Funnel Stage Coverage
+### 4C: ファネル段階のカバレッジ
 
 | Funnel Stage | Channels Covering It | Current Spend | Gap? |
 |-------------|---------------------|--------------|------|
 | **Awareness** (top) | [Meta Display, YouTube] | $[X] | [Yes/No] |
 | **Consideration** (mid) | [Google Search, Meta retargeting] | $[X] | [Yes/No] |
-| **Decision** (bottom) | [Google Brand, Google Search] | $[X] | [Yes/No] |
+| **意思決定**（下層） | [Google Brand, Google Search] | $[X] | [Yes/No] |
 | **Retargeting** | [Meta, Google Display] | $[X] | [Yes/No] |
 
-### 4D: Budget Shift Recommendations
+### 4D: 予算移動の推奨
 
-| Channel | Current Spend | Recommended Spend | Change | Reasoning |
+| チャネル | 現在の支出 | 推奨支出 | 変化 | 理由 |
 |---------|-------------|------------------|--------|-----------|
 | Google Search | $[X] | $[Y] | +$[Z] | [Lowest CPA, room to scale] |
 | Meta | $[X] | $[Y] | -$[Z] | [Audience saturation, frequency too high] |
@@ -208,7 +208,7 @@ For each channel, estimate if additional spend would yield proportional returns:
 | [New channel] | $0 | $[Y] | +$[Y] | [Test budget — competitors succeeding here] |
 | **Total** | $[X] | $[X] | $0 | Budget-neutral reallocation |
 
-### 4E: Scenario Modeling
+### 4E: シナリオモデリング
 
 **Scenario 1: Conservative shift (+/- 20%)**
 - Expected conversions: [N] (currently [N]) = [X%] improvement
@@ -225,7 +225,7 @@ For each channel, estimate if additional spend would yield proportional returns:
 - Expected conversions: [N]
 - New channels to test: [list]
 
-## Phase 5: Output Format
+## フェーズ5: 出力形式
 
 ```markdown
 # Ad Campaign Analysis — [Product/Client] — [DATE]
@@ -332,9 +332,9 @@ Primary goal: [Conversions / Revenue / Leads]
 - [ ] **Re-evaluate:** [Run this analysis again with new data, adjust allocations based on actual results]
 ```
 
-Save to `campaign-analysis-[YYYY-MM-DD].md` in the current working directory (or user-specified path).
+現在の作業ディレクトリ（またはユーザー指定パス）に `campaign-analysis-[YYYY-MM-DD].md` として保存する。
 
-## Cost
+## コスト
 
 | Component | Cost |
 |-----------|------|
@@ -342,20 +342,20 @@ Save to `campaign-analysis-[YYYY-MM-DD].md` in the current working directory (or
 | Statistical calculations | Free |
 | **Total** | **Free** |
 
-## Tools Required
+## 必要なツール
 
 - No external tools needed — pure reasoning skill
 - User provides campaign data as CSV, paste, or screenshot
 
-## Trigger Phrases
+## 起動フレーズ
 
-- "Analyze my ad campaign performance"
-- "Which ads should I pause?"
-- "Where am I wasting ad budget?"
-- "Is my Google Ads campaign working?"
-- "Optimize my Meta Ads spend"
-- "How should I allocate my ad budget?"
-- "Should I spend more on Google or Meta?"
-- "Reallocate my ad spend"
-- "Where am I getting the best ROAS?"
-- "Optimize my multi-channel ad budget"
+- "広告キャンペーンの実績を分析して"
+- "どの広告を一時停止すべき?"
+- "広告予算をどこで無駄にしている?"
+- "Google Adsキャンペーンは機能している?"
+- "Meta Adsの支出を最適化して"
+- "広告予算をどう配分すべき?"
+- "GoogleとMetaのどちらにもっと使うべき?"
+- "広告費を再配分して"
+- "どこで最も良いROASを得ている?"
+- "マルチチャネル広告予算を最適化して"

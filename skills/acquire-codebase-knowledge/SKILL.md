@@ -1,37 +1,37 @@
 ---
 name: acquire-codebase-knowledge
-description: 'Use this skill when the user explicitly asks to map, document, or onboard into an existing codebase. Trigger for prompts like "map this codebase", "document this architecture", "onboard me to this repo", or "create codebase docs". Do not trigger for routine feature implementation, bug fixes, or narrow code edits unless the user asks for repository-level discovery.'
+description: '既存のコードベースの把握、文書化、オンボーディングを明示的に依頼されたときに使うSkill。「このコードベースを地図化して」「このアーキテクチャを文書化して」「このリポジトリを理解したい」「コードベースの文書を作って」などが対象。リポジトリ全体の探索を求められない通常の機能実装、バグ修正、狭いコード編集では起動しない。'
 license: MIT
-compatibility: 'Cross-platform. Requires Python 3.8+ and git. Run scripts/scan.py from the target project root.'
+compatibility: 'クロスプラットフォーム。Python 3.8以降とgitが必要。対象プロジェクトのルートからscripts/scan.pyを実行する。'
 metadata:
   version: "1.3"
   enhancements:
-    - Multi-language manifest detection (25+ languages supported)
-    - CI/CD pipeline detection (10+ platforms)
-    - Container & orchestration detection
-    - Code metrics by language
-    - Security & compliance config detection
-    - Performance testing markers
-argument-hint: 'Optional: specific area to focus on, e.g. "architecture only", "testing and concerns"'
+    - 多言語マニフェスト検出（25以上の言語に対応）
+    - CI/CDパイプライン検出（10以上のプラットフォーム）
+    - コンテナーとオーケストレーションの検出
+    - 言語別コードメトリクス
+    - セキュリティとコンプライアンス設定の検出
+    - パフォーマンステスト用マーカー
+argument-hint: '任意: 対象領域（例: "architecture only", "testing and concerns"）'
 ---
 
-# Acquire Codebase Knowledge
+# コードベースの知識を取得
 
-Produces seven populated documents in `docs/codebase/` covering everything needed to work effectively on the project. Only document what is verifiable from files or terminal output — never infer or assume.
+プロジェクトで効果的に作業するために必要な情報を網羅した7つの文書を `docs/codebase/` に生成する。ファイルまたはターミナル出力で検証できる内容だけを記録し、推測や仮定はしない。
 
-## Output Contract (Required)
+## 出力契約（必須）
 
-Before finishing, all of the following must be true:
+完了前に、次のすべてを満たすこと:
 
-1. Exactly these files exist in `docs/codebase/`: `STACK.md`, `STRUCTURE.md`, `ARCHITECTURE.md`, `CONVENTIONS.md`, `INTEGRATIONS.md`, `TESTING.md`, `CONCERNS.md`.
-2. Every claim is traceable to source files, config, or terminal output.
-3. Unknowns are marked as `[TODO]`; intent-dependent decisions are marked `[ASK USER]`.
-4. Every document includes a short "evidence" list with concrete file paths.
-5. Final response includes numbered `[ASK USER]` questions and intent-vs-reality divergences.
+1. `docs/codebase/` には次のファイルだけが存在すること: `STACK.md`, `STRUCTURE.md`, `ARCHITECTURE.md`, `CONVENTIONS.md`, `INTEGRATIONS.md`, `TESTING.md`, `CONCERNS.md`。
+2. すべての主張をソースファイル、設定、またはターミナル出力まで追跡できること。
+3. 不明点は `[TODO]`、意図に依存する判断は `[ASK USER]` と記すこと。
+4. 各文書に具体的なファイルパスを含む短い「根拠」一覧を付けること。
+5. 最終回答に番号付きの `[ASK USER]` 質問と、意図と実態の相違を含めること。
 
-## Workflow
+## ワークフロー
 
-Copy and track this checklist:
+次のチェックリストをコピーして追跡する:
 
 ```
 - [ ] Phase 1: Run scan, read intent documents
@@ -40,134 +40,134 @@ Copy and track this checklist:
 - [ ] Phase 4: Validate docs, present findings, resolve all [ASK USER] items
 ```
 
-## Focus Area Mode
+## 対象領域モード
 
-If the user supplies a focus area (for example: "architecture only" or "testing and concerns"):
+ユーザーが対象領域（例:「アーキテクチャのみ」「テストと懸念」）を指定した場合:
 
-1. Always run Phase 1 in full.
-2. Fully complete focus-area documents first.
-3. For non-focus documents not yet analyzed, keep required sections present and mark unknowns as `[TODO]`.
-4. Still run the Phase 4 validation loop on all seven documents before final output.
+1. フェーズ1は必ず完全に実行する。
+2. 対象領域の文書を先に完全に仕上げる。
+3. まだ分析していない対象外文書も必須セクションを残し、不明点を `[TODO]` とする。
+4. 最終出力前に、7文書すべてへフェーズ4の検証ループを実行する。
 
-### Phase 1: Scan and Read Intent
+### フェーズ1: スキャンと意図の確認
 
-1. Run the scan script from the target project root:
+1. 対象プロジェクトのルートからスキャンスクリプトを実行する:
    ```bash
    python3 "$SKILL_ROOT/scripts/scan.py" --output docs/codebase/.codebase-scan.txt
    ```
-   Where `$SKILL_ROOT` is the absolute path to the skill folder. Works on Windows, macOS, and Linux.
+   `$SKILL_ROOT` はSkillフォルダーの絶対パス。Windows、macOS、Linuxで動作する。
 
-   **Quick start:** If you have the path inline:
+   **クイックスタート:** パスをインラインで指定できる場合:
    ```bash
    python3 /absolute/path/to/skills/acquire-codebase-knowledge/scripts/scan.py --output docs/codebase/.codebase-scan.txt
    ```
 
-2. Search for `PRD`, `TRD`, `README`, `ROADMAP`, `SPEC`, `DESIGN` files and read them.
-3. Summarise the stated project intent before reading any source code.
+2. `PRD`、`TRD`、`README`、`ROADMAP`、`SPEC`、`DESIGN` ファイルを検索して読む。
+3. ソースコードを読む前に、明記されたプロジェクトの意図を要約する。
 
-### Phase 2: Investigate
+### フェーズ2: 調査
 
-Use the scan output to answer questions for each of the seven templates. Load [`references/inquiry-checkpoints.md`](references/inquiry-checkpoints.md) for the full per-template question list.
+スキャン結果を使って7つのテンプレートごとの質問に答える。テンプレート別の質問一覧は [`references/inquiry-checkpoints.md`](references/inquiry-checkpoints.md) を読み込む。
 
-If the stack is ambiguous (multiple manifest files, unfamiliar file types, no `package.json`), load [`references/stack-detection.md`](references/stack-detection.md).
+スタックが曖昧な場合（マニフェストが複数、未知のファイル形式、`package.json` がない場合）は [`references/stack-detection.md`](references/stack-detection.md) を読み込む。
 
-### Phase 3: Populate Templates
+### フェーズ3: テンプレートを埋める
 
-Copy each template from `assets/templates/` into `docs/codebase/`. Fill in this order:
+`assets/templates/` の各テンプレートを `docs/codebase/` にコピーする。次の順序で記入する:
 
-1. [STACK.md](assets/templates/STACK.md) — language, runtime, frameworks, all dependencies
-2. [STRUCTURE.md](assets/templates/STRUCTURE.md) — directory layout, entry points, key files
-3. [ARCHITECTURE.md](assets/templates/ARCHITECTURE.md) — layers, patterns, data flow
-4. [CONVENTIONS.md](assets/templates/CONVENTIONS.md) — naming, formatting, error handling, imports
-5. [INTEGRATIONS.md](assets/templates/INTEGRATIONS.md) — external APIs, databases, auth, monitoring
-6. [TESTING.md](assets/templates/TESTING.md) — frameworks, file organization, mocking strategy
-7. [CONCERNS.md](assets/templates/CONCERNS.md) — tech debt, bugs, security risks, perf bottlenecks
+1. [STACK.md](assets/templates/STACK.md) — 言語、ランタイム、フレームワーク、すべての依存関係
+2. [STRUCTURE.md](assets/templates/STRUCTURE.md) — ディレクトリ構成、エントリポイント、主要ファイル
+3. [ARCHITECTURE.md](assets/templates/ARCHITECTURE.md) — 層、パターン、データフロー
+4. [CONVENTIONS.md](assets/templates/CONVENTIONS.md) — 命名、フォーマット、エラー処理、インポート
+5. [INTEGRATIONS.md](assets/templates/INTEGRATIONS.md) — 外部API、データベース、認証、監視
+6. [TESTING.md](assets/templates/TESTING.md) — フレームワーク、ファイル構成、モック方針
+7. [CONCERNS.md](assets/templates/CONCERNS.md) — 技術的負債、バグ、セキュリティリスク、性能ボトルネック
 
-Use `[TODO]` for anything that cannot be determined from code. Use `[ASK USER]` where the right answer requires team intent.
+コードから判断できない内容には `[TODO]` を使う。正解にチームの意図が必要な場合は `[ASK USER]` を使う。
 
-### Phase 4: Validate, Repair, Verify
+### フェーズ4: 検証、修復、確認
 
-Run this mandatory validation loop before finalizing:
+完了前に、次の必須検証ループを実行する:
 
-1. Validate each doc against `references/inquiry-checkpoints.md`.
-2. For each non-trivial claim, confirm at least one evidence reference exists.
-3. If any required section is missing or unsupported:
-  - Fix the document.
-  - Re-run validation.
-4. Repeat until all seven docs pass.
+1. 各文書を `references/inquiry-checkpoints.md` と照合して検証する。
+2. 重要な主張ごとに、少なくとも1つの根拠参照があることを確認する。
+3. 必須セクションが欠けている、または根拠がない場合:
+  - 文書を修正する。
+  - 検証を再実行する。
+4. 7文書すべてが合格するまで繰り返す。
 
-Then present a summary of all seven documents, list every `[ASK USER]` item as a numbered question, and highlight any Intent vs. Reality divergences from Phase 1.
+その後、7文書すべての概要を示し、すべての `[ASK USER]` 項目を番号付き質問として列挙し、フェーズ1で見つかった意図と実態の相違を強調する。
 
-Validation pass criteria:
+検証合格基準:
 
-- No unsupported claims.
-- No empty required sections.
-- Unknowns use `[TODO]` rather than assumptions.
-- Team-intent gaps are explicitly marked `[ASK USER]`.
-
----
-
-## Gotchas
-
-**Monorepos:** Root `package.json` may have no source — check for `workspaces`, `packages/`, or `apps/` directories. Each workspace may have independent dependencies and conventions. Map each sub-package separately.
-
-**Outdated README:** README often describes intended architecture, not the current one. Cross-reference with actual file structure before treating any README claim as fact.
-
-**TypeScript path aliases:** `tsconfig.json` `paths` config means imports like `@/foo` don't map directly to the filesystem. Map aliases to real paths before documenting structure.
-
-**Generated/compiled output:** Never document patterns from `dist/`, `build/`, `generated/`, `.next/`, `out/`, or `__pycache__/`. These are artefacts — document source conventions only.
-
-**`.env.example` reveals required config:** Secrets are never committed. Read `.env.example`, `.env.template`, or `.env.sample` to discover required environment variables.
-
-**`devDependencies` ≠ production stack:** Only `dependencies` (or equivalent, e.g. `[tool.poetry.dependencies]`) runs in production. Document linters, formatters, and test frameworks separately as dev tooling.
-
-**Test TODOs ≠ production debt:** TODOs inside `test/`, `tests/`, `__tests__/`, or `spec/` are coverage gaps, not production technical debt. Separate them in `CONCERNS.md`.
-
-**High-churn files = fragile areas:** Files appearing most in recent git history have the highest modification rate and likely hidden complexity. Always note them in `CONCERNS.md`.
+- 根拠のない主張がない。
+- 必須セクションが空でない。
+- 不明点に仮定ではなく `[TODO]` を使っている。
+- チームの意図が必要な空白を `[ASK USER]` と明示している。
 
 ---
 
-## Anti-Patterns
+## 注意点
 
-| ❌ Don't | ✅ Do instead |
+**モノレポ:** ルートの `package.json` にソースがない場合があるため、`workspaces`、`packages/`、`apps/` ディレクトリを確認する。各ワークスペースは独立した依存関係と規約を持つ場合があるため、サブパッケージごとに対応付ける。
+
+**古いREADME:** READMEは現在の構成ではなく、意図したアーキテクチャを説明していることが多い。READMEの記述を事実として扱う前に、実際のファイル構成と照合する。
+
+**TypeScriptのパスエイリアス:** `tsconfig.json` の `paths` 設定により、`@/foo` のようなインポートはファイルシステムへ直接対応しない。構成を文書化する前に、エイリアスを実パスへ対応付ける。
+
+**生成・コンパイル出力:** `dist/`、`build/`、`generated/`、`.next/`、`out/`、`__pycache__/` のパターンは決して文書化しない。これらは成果物であり、ソースの規約だけを文書化する。
+
+**`.env.example` は必須設定を示す:** シークレットは決してコミットされない。必要な環境変数を把握するには `.env.example`、`.env.template`、または `.env.sample` を読む。
+
+**`devDependencies` ≠ 本番スタック:** 本番で動くのは `dependencies`（または `[tool.poetry.dependencies]` などの同等設定）だけである。リンター、フォーマッター、テストフレームワークは開発用ツールとして分けて文書化する。
+
+**テストのTODO ≠ 本番の負債:** `test/`、`tests/`、`__tests__/`、`spec/` 内のTODOはカバレッジ不足であり、本番の技術的負債ではない。`CONCERNS.md` では分けて扱う。
+
+**変更頻度の高いファイル = 脆弱な領域:** 直近のgit履歴に最も多く現れるファイルは変更率が高く、隠れた複雑性を持つ可能性がある。必ず `CONCERNS.md` に記録する。
+
+---
+
+## アンチパターン
+
+| ❌ しないこと | ✅ 代わりに行うこと |
 |---------|--------------|
-| "Uses Clean Architecture with Domain/Data layers." (when no such directories exist) | State only what directory structure actually shows. |
-| "This is a Next.js project." (without checking `package.json`) | Check `dependencies` first. State what's actually there. |
-| Guess the database from a variable name like `dbUrl` | Check manifest for `pg`, `mysql2`, `mongoose`, `prisma`, etc. |
-| Document `dist/` or `build/` naming patterns as conventions | Source files only. |
+| 「Domain/Data層を持つClean Architectureを使う」（そのようなディレクトリがない場合） | 実際のディレクトリ構成が示す内容だけを記述する。 |
+| 「これはNext.jsプロジェクトである」（`package.json`を確認せずに） | まず `dependencies` を確認し、実際の内容を記述する。 |
+| `dbUrl` のような変数名からデータベースを推測する | マニフェストで `pg`、`mysql2`、`mongoose`、`prisma` などを確認する。 |
+| `dist/` や `build/` の命名パターンを規約として文書化する | ソースファイルだけを扱う。 |
 
 ---
 
-## Enhanced Scan Output Sections
+## 拡張スキャン出力のセクション
 
-The `scan.py` script now produce the following sections in addition to the original output:
+`scan.py` スクリプトは、従来の出力に加えて次のセクションを生成する:
 
-- **CODE METRICS** — Total files, lines of code by language, largest files (complexity signals)
-- **CI/CD PIPELINES** — Detected GitHub Actions, GitLab CI, Jenkins, CircleCI, etc.
-- **CONTAINERS & ORCHESTRATION** — Docker, Docker Compose, Kubernetes, Vagrant configs
-- **SECURITY & COMPLIANCE** — Snyk, Dependabot, SECURITY.md, SBOM, security policies
-- **PERFORMANCE & TESTING** — Benchmark configs, profiling markers, load testing tools
+- **コードメトリクス** — 総ファイル数、言語別コード行数、最大ファイル（複雑性の兆候）
+- **CI/CDパイプライン** — 検出されたGitHub Actions、GitLab CI、Jenkins、CircleCIなど
+- **コンテナーとオーケストレーション** — Docker、Docker Compose、Kubernetes、Vagrantの設定
+- **セキュリティとコンプライアンス** — Snyk、Dependabot、SECURITY.md、SBOM、セキュリティポリシー
+- **パフォーマンスとテスト** — ベンチマーク設定、プロファイリング用マーカー、負荷テストツール
 
-Use these sections during Phase 2 to inform investigation questions and identify tool-specific patterns.
+フェーズ2ではこれらのセクションを使って調査項目を定め、ツール固有のパターンを特定する。
 
 ---
 
-## Bundled Assets
+## 同梱アセット
 
-| Asset | When to load |
+| アセット | 読み込むタイミング |
 |-------|-------------|
-| [`scripts/scan.py`](scripts/scan.py) | Phase 1 — run first, before reading any code (Python 3.8+ required) |
-| [`references/inquiry-checkpoints.md`](references/inquiry-checkpoints.md) | Phase 2 — load for per-template investigation questions |
-| [`references/stack-detection.md`](references/stack-detection.md) | Phase 2 — only if stack is ambiguous |
-| [`assets/templates/STACK.md`](assets/templates/STACK.md) | Phase 3 step 1 |
-| [`assets/templates/STRUCTURE.md`](assets/templates/STRUCTURE.md) | Phase 3 step 2 |
-| [`assets/templates/ARCHITECTURE.md`](assets/templates/ARCHITECTURE.md) | Phase 3 step 3 |
-| [`assets/templates/CONVENTIONS.md`](assets/templates/CONVENTIONS.md) | Phase 3 step 4 |
-| [`assets/templates/INTEGRATIONS.md`](assets/templates/INTEGRATIONS.md) | Phase 3 step 5 |
-| [`assets/templates/TESTING.md`](assets/templates/TESTING.md) | Phase 3 step 6 |
-| [`assets/templates/CONCERNS.md`](assets/templates/CONCERNS.md) | Phase 3 step 7 |
+| [`scripts/scan.py`](scripts/scan.py) | フェーズ1 — コードを読む前に最初に実行する（Python 3.8以上が必要） |
+| [`references/inquiry-checkpoints.md`](references/inquiry-checkpoints.md) | フェーズ2 — テンプレート別の調査質問を読み込む |
+| [`references/stack-detection.md`](references/stack-detection.md) | フェーズ2 — スタックが曖昧な場合だけ読み込む |
+| [`assets/templates/STACK.md`](assets/templates/STACK.md) | フェーズ3 手順1 |
+| [`assets/templates/STRUCTURE.md`](assets/templates/STRUCTURE.md) | フェーズ3 手順2 |
+| [`assets/templates/ARCHITECTURE.md`](assets/templates/ARCHITECTURE.md) | フェーズ3 手順3 |
+| [`assets/templates/CONVENTIONS.md`](assets/templates/CONVENTIONS.md) | フェーズ3 手順4 |
+| [`assets/templates/INTEGRATIONS.md`](assets/templates/INTEGRATIONS.md) | フェーズ3 手順5 |
+| [`assets/templates/TESTING.md`](assets/templates/TESTING.md) | フェーズ3 手順6 |
+| [`assets/templates/CONCERNS.md`](assets/templates/CONCERNS.md) | フェーズ3 手順7 |
 
-Template usage mode:
+テンプレートの使用モード:
 
-- Default mode: complete only the "Core Sections (Required)" in each template.
-- Extended mode: add optional sections only when the repo complexity justifies them.
+- 既定モード: 各テンプレートの「必須コアセクション」だけを完成させる。
+- 拡張モード: リポジトリの複雑性から必要と判断した場合だけ任意セクションを追加する。

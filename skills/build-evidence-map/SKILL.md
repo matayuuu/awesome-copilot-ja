@@ -1,107 +1,75 @@
 ---
 name: build-evidence-map
-description: 'Build an auditable evidence map for a contested technical choice, research synthesis, proposal review, or consequential decision. Use when Copilot must preserve supporting, contradicting, qualifying, and missing evidence with exact source regions instead of collapsing disagreement into prose.'
+description: '対立する技術選択、調査統合、提案レビュー、または重要な意思決定のために監査可能な根拠マップを作成します。Copilotが意見の相違を文章に押し込めず、支持、反証、限定、欠落の根拠を正確なソース範囲とともに保持する必要があるときに使います。'
 ---
 
-# Build Evidence Map
+# 根拠マップの作成
 
-Turn one contested question into a portable decision artifact that shows what
-supports the current position, what pushes against it, and what remains unknown.
-Do not use a graph to decorate an answer that has not been sourced.
+1つの対立する問いを、現在の立場を支持するもの、反対するもの、未知のまま残るものを示す持ち運び可能な意思決定成果物に変換します。
+出典のない回答を飾るためにグラフを使わないでください。
 
-For a simple factual claim or a general fact-checking request, use a verification
-workflow such as `doublecheck` instead. Use this skill when the relationships
-between evidence, intermediate claims, trade-offs, and missing facts matter.
+単純な事実の主張や一般的なファクトチェックには、代わりに `doublecheck` などの検証ワークフローを使います。
+根拠、中間主張、トレードオフ、欠落事実の関係が重要なときにこのSkillを使います。
 
-## Workflow
+## ワークフロー
 
-1. **Frame one decision.** Write one falsifiable question and one provisional
-   position. Narrow the question until a reader can identify what action or
-   belief the map is testing.
-2. **Collect bounded source regions.** Prefer direct observations and primary
-   sources. Record the URL or absolute local path, publisher, publication date,
-   retrieval date, section/page/line/timestamp locator, and a short checkable
-   excerpt. Read [references/evidence-ladder.md](references/evidence-ladder.md)
-   when source quality is disputed.
-3. **Atomize the reasoning.** Create only four node types:
-   - `position`: the single current verdict;
-   - `claim`: an intermediate proposition;
-   - `evidence`: a faithful statement of one source region;
-   - `unknown`: a specific missing fact that could change the verdict.
-4. **Type every edge.** Use `supports`, `contradicts`, `qualifies`, or
-   `missing`. Add a plain-language note explaining why the source node bears on
-   the target. Topical similarity is not support. Different scope, date, or
-   population is not automatically a contradiction.
-5. **Preserve counterevidence.** Do not delete contrary evidence because the
-   provisional verdict survives it. Represent scope differences with
-   `qualifies` edges.
-6. **Express uncertainty structurally.** Do not invent confidence percentages.
-   Add an `unknown`, narrow the position, or qualify a claim.
-7. **Write UTF-8 JSON** with a `.doubt.json` suffix. Follow
-   [references/map-schema.md](references/map-schema.md). Keep IDs short,
-   stable, and semantic.
-8. **Validate fail-closed.** Resolve
-   `scripts/validate.mjs` relative to this `SKILL.md`, then run it with Node.js
-   18 or newer:
+1. **1つの意思決定を定める。** 反証可能な問いを1つと、暫定的な立場を1つ書きます。読者がマップで検証する行動または信念を特定できるまで問いを絞ります。
+2. **範囲を限定したソース領域を集める。** 直接観測と一次ソースを優先します。URLまたは絶対ローカルパス、発行者、公開日、取得日、セクション/ページ/行/タイムスタンプのロケーター、短く確認可能な抜粋を記録します。ソース品質が争点になったら[references/evidence-ladder.md](references/evidence-ladder.md)を読みます。
+3. **推論を原子化する。** ノード種別は次の4つだけを作ります。
+   - `position`: 現在の判定1つ;
+   - `claim`: 中間的な命題;
+   - `evidence`: 1つのソース領域を忠実に表す記述;
+   - `unknown`: 判定を変え得る具体的な欠落事実。
+4. **すべてのエッジに型を付ける。** `supports`、`contradicts`、`qualifies`、`missing` を使います。ソースノードが対象に関係する理由を平易な注記で説明します。話題が似ているだけでは支持になりません。範囲、日付、母集団が異なるだけでは自動的に矛盾とはなりません。
+5. **反証を保持する。** 暫定判定が反証を乗り越えても、反対の根拠を削除しないでください。範囲の違いは `qualifies` エッジで表します。
+6. **不確実性を構造で表す。** 確信度の割合を捏造しないでください。`unknown` を追加するか、立場を狭めるか、主張を限定します。
+7. **UTF-8 JSONを書く。** 拡張子を `.doubt.json` とし、[references/map-schema.md](references/map-schema.md) に従います。IDは短く、安定し、意味のあるものにします。
+8. **fail-closedで検証する。** 次を解決します。
+   `scripts/validate.mjs` をこの `SKILL.md` からの相対パスとして解決し、Node.js
+   18以降で実行します。
 
    ```bash
    node <skill-directory>/scripts/validate.mjs decision.doubt.json
    ```
 
-   The bundled validator uses only Node.js built-ins and does not require npm or
-   network access. Fix every finding before reporting success. Only say the map
-   is valid when the command exits `0` and prints `VALID` followed by a
-   64-character receipt. A file hash, node count, JSON parse, or manual schema
-   review is not a Doubt receipt. If deterministic validation cannot run, report
-   that block instead of inventing success.
-
-   Render the validated map only when the user has already installed
-   `doubt-ai@0.8.0`; do not install or execute a remote package implicitly:
+   同梱バリデーターはNode.js組み込み機能だけを使い、npmやネットワークアクセスを必要としません。成功を報告する前にすべての指摘を修正します。コマンドが `0` で終了し、`VALID` に続いて64文字のレシートを出力した場合だけ、マップが有効だと述べます。ファイルハッシュ、ノード数、JSON解析、手作業のスキーマレビューはDoubtレシートではありません。決定的な検証を実行できない場合は、成功を捏造せず、そのブロックを報告します。
+   ユーザーがすでに `doubt-ai@0.8.0` をインストールしている場合だけ、検証済みマップをレンダリングします。リモートパッケージを暗黙にインストールまたは実行しないでください。
 
    ```bash
    doubt map decision.doubt.json --out decision.html
    ```
-9. **Verify source snapshots only with explicit network permission.** The
-   following command retrieves each recorded HTTP(S) source and fails closed if
-   an excerpt cannot be matched:
+9. **明示的なネットワーク許可がある場合だけソーススナップショットを検証する。** 次のコマンドは記録済みの各HTTP(S)ソースを取得し、抜粋が一致しない場合はfail-closedになります。
 
    ```bash
    doubt verify decision.doubt.json \
      --out decision.verified.doubt.json
    ```
 
-   Never run this command implicitly. Local file verification does not use the
-   network. Do not write a `verification` object by hand or hide a mismatch.
-10. **Inspect the deliverable.** Confirm that the question, verdict,
-    counterevidence, unknowns, edge notes, and exact source regions remain
-    readable. Treat JSON as the canonical editable artifact; HTML is a
-    shareable view.
+   このコマンドを暗黙に実行しないでください。ローカルファイルの検証ではネットワークを使いません。`verification` オブジェクトを手書きしたり、不一致を隠したりしないでください。
+10. **成果物を確認する。** 問い、判定、反証、未知、エッジ注記、正確なソース領域が読みやすいままかを確認します。JSONを正規の編集可能成果物、HTMLを共有用ビューとして扱います。
 
-## Quality gates
+## 品質ゲート
 
-A finished map must satisfy all of these:
+完成したマップは、次のすべてを満たす必要があります。
 
-- exactly one `position` has incoming reasoning;
-- every evidence node names one source and participates in an edge;
-- every source is used and has dates, a bounded locator, and a substantive
-  excerpt;
-- every non-position node has a directed path to the position;
-- the reasoning graph has no duplicate edges or directed cycles;
-- contrary or qualifying evidence is present when the source set contains it;
-- each decision-changing gap is an explicit `unknown` node;
-- every edge note explains support, contradiction, qualification, or absence;
-- the verdict is no broader than the evidence.
+- `position`への入力推論を持つノードがちょうど1つである
+- すべてのevidenceノードが1つのソースを示し、エッジに参加している
+- すべてのソースが使われ、日付、限定されたロケーター、実質的な抜粋を持つ
+- position以外のすべてのノードがpositionへの有向パスを持つ
+- 推論グラフに重複エッジや有向サイクルがない
+- ソース集合に反対または限定の根拠がある場合、それが存在する
+- 意思決定を変え得る空白が明示的な `unknown` ノードである
+- すべてのエッジ注記が支持、矛盾、限定、欠落のいずれかを説明する
+- 判定が根拠より広い範囲になっていない
 
-## Deliver the result
+## 結果を提供する
 
-Report:
+次を報告します。
 
-- the current position in one sentence;
-- the strongest counterevidence or qualification;
-- the most important unresolved unknown;
-- paths to the canonical JSON and any rendered HTML;
-- whether deterministic validation and explicit source verification ran.
+- 現在の立場を1文で;
+- 最も強い反証または限定;
+- 最も重要な未解決の未知;
+- 正規JSONとレンダリング済みHTMLのパス;
+- 決定的検証と明示的なソース検証を実行したか。
 
-Never describe a structurally valid map as proven true. Validation establishes
-traceability and graph integrity; source quality and inference quality still
-require human review.
+構造的に有効なマップを、真実が証明されたものとして説明しないでください。検証が確立するのは追跡可能性とグラフの整合性であり、ソース品質と推論品質にはなお人によるレビューが必要です。

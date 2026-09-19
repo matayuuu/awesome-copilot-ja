@@ -1,43 +1,43 @@
 ---
 name: azure-well-architected-review
-description: 'Perform an Azure Well-Architected Framework review of the current workload IaC and architecture, generating findings and GitHub issues for improvements.'
+description: '現在のワークロードの IaC とアーキテクチャに対して Azure Well-Architected Framework レビューを実施し、改善のための指摘事項と GitHub issue を作成します。'
 ---
 
-# Azure Well-Architected Review
+# Azure Well-Architected レビュー
 
-This workflow performs a structured Azure Well-Architected Framework (WAF) review against your workload's IaC files and deployed infrastructure. It identifies risks across all 5 WAF pillars and creates GitHub issues to track remediation.
+このワークフローは、ワークロードの IaC ファイルとデプロイ済みインフラストラクチャに対して、構造化された Azure Well-Architected Framework (WAF) レビューを実施します。5 つすべての WAF の柱にまたがるリスクを特定し、修復を追跡する GitHub issue を作成します。
 
-## Prerequisites
-- Azure CLI (`az`) configured and authenticated
-- IaC files present in the repository (Bicep, Terraform, or ARM templates)
-- GitHub MCP server configured and authenticated
+## 前提条件
+- Azure CLI (`az`) が構成され、認証済みであること
+- リポジトリに IaC ファイル（Bicep、Terraform、または ARM テンプレート）が存在すること
+- GitHub MCP server が構成され、認証済みであること
 
-## Workflow Steps
+## ワークフローの手順
 
-### Step 1: Load Well-Architected Framework Reference
-Fetch current Azure WAF best practices:
+### Step 1: Well-Architected Framework のリファレンスを読み込む
+最新の Azure WAF ベスト プラクティスを取得します:
 - `https://learn.microsoft.com/en-us/azure/well-architected/`
 - Service guides for the Azure services in use (`https://learn.microsoft.com/en-us/azure/well-architected/service-guides/`)
 - Workload-specific guidance relevant to the workload type (SaaS, mission-critical, AI, etc.)
 
-If the `microsoft.docs.mcp` MCP server is available, use it to query the latest pillar checklists and service-specific recommendations.
+`microsoft.docs.mcp` MCP server が利用可能な場合は、それを使って最新の柱別チェックリストとサービス固有の推奨事項を検索します。
 
-### Step 2: Discover IaC & Architecture
-Establish the review scope, then inventory both the code and the live environment:
+### Step 2: IaC とアーキテクチャを検出する
+レビューのスコープを確定し、コードと実環境の両方をインベントリ化します:
 
-1. **Confirm the Azure scope**: Ask the user which subscription(s)/resource group(s) are in scope, or infer them from IaC parameters and confirm.
-2. **Scan the repository for IaC files**:
+1. **Azure のスコープを確認する**: 対象となるサブスクリプション/リソース グループをユーザーに尋ねるか、IaC パラメーターから推測して確認する。
+2. **リポジトリから IaC ファイルを検索する**:
    - Bicep: `**/*.bicep`, `bicepconfig.json`
    - Terraform: `**/*.tf` (azurerm/azapi providers)
    - ARM templates: `**/azuredeploy*.json`, `**/*.template.json`, files with `$schema` containing `deploymentTemplate`
-3. **Inventory live resources** (always, even when IaC exists): `az resource list --resource-group <rg> --output json` (or subscription-wide), plus targeted `az <service> show` calls for configuration details the pillar checks need.
-4. **Compare IaC with live inventory**: Flag drift — resources present in Azure but absent from IaC (portal-created), resources defined in IaC but not deployed, and configuration mismatches. Record drift findings for Step 3 (they typically map to the Operational Excellence pillar).
+3. **実環境のリソースをインベントリ化する**（IaC がある場合も必ず実施）: `az resource list --resource-group <rg> --output json`（またはサブスクリプション全体）と、柱別チェックに必要な構成詳細を取得する対象を絞った `az <service> show` を実行する。
+4. **IaC と実環境のインベントリを比較する**: ドリフトを記録する。Azure に存在するが IaC にないリソース（ポータルで作成）、IaC に定義されているがデプロイされていないリソース、構成の不一致を対象とする。ドリフトの指摘事項を Step 3 用に記録する（通常は Operational Excellence の柱に対応する）。
 
-Identify key Azure services in use (compute, data, networking, security, observability) and generate a Mermaid architecture diagram.
+使用中の主要な Azure サービス（コンピューティング、データ、ネットワーク、セキュリティ、可観測性）を特定し、Mermaid アーキテクチャ図を生成します。
 
-### Step 3: Pillar-by-Pillar Review
+### Step 3: 柱ごとのレビュー
 
-#### Pillar 1: Reliability
+#### 柱 1: Reliability
 - [ ] Availability zones enabled for zonal services (VMs, VMSS, AKS node pools, App Service, SQL, Storage ZRS)
 - [ ] Production SKUs support the required SLA (no Basic/Free tiers on critical paths)
 - [ ] Azure SQL / Cosmos DB backup and point-in-time restore configured with appropriate retention
@@ -48,7 +48,7 @@ Identify key Azure services in use (compute, data, networking, security, observa
 - [ ] Retry policies with exponential backoff implemented for transient fault handling
 - [ ] Disaster recovery plan defined (documented RTO/RPO, tested failover)
 
-#### Pillar 2: Security
+#### 柱 2: Security
 - [ ] Managed identities used instead of service principals with secrets or connection strings
 - [ ] No hardcoded credentials, keys, or connection strings in IaC or code
 - [ ] Secrets stored in Azure Key Vault with RBAC authorization (not access policies)
@@ -61,7 +61,7 @@ Identify key Azure services in use (compute, data, networking, security, observa
 - [ ] Azure WAF (Application Gateway or Front Door) configured for public-facing web endpoints
 - [ ] Diagnostic settings send security logs to Log Analytics / Microsoft Sentinel
 
-#### Pillar 3: Cost Optimization
+#### 柱 3: Cost Optimization
 - [ ] Reservations or savings plans evaluated for steady-state compute (VMs, App Service, SQL)
 - [ ] Storage lifecycle management policies move blobs to cool/archive tiers
 - [ ] Right-sized SKUs based on actual utilization (no oversized VMs/App Service plans)
@@ -71,7 +71,7 @@ Identify key Azure services in use (compute, data, networking, security, observa
 - [ ] Consumption/serverless tiers used for spiky or low-volume workloads (Functions, Container Apps, SQL serverless)
 - [ ] Log Analytics retention and data-cap settings tuned to avoid ingestion overruns
 
-#### Pillar 4: Operational Excellence
+#### 柱 4: Operational Excellence
 - [ ] All infrastructure defined as IaC (no manual portal changes; deny assignments or policy where feasible)
 - [ ] Consistent tagging strategy applied across all resources (owner, environment, cost center)
 - [ ] Azure Monitor alerts defined for key metrics and service health
@@ -81,7 +81,7 @@ Identify key Azure services in use (compute, data, networking, security, observa
 - [ ] Azure Policy assignments enforce organizational standards (allowed locations, SKUs, tags)
 - [ ] Runbooks or operational documentation present
 
-#### Pillar 5: Performance Efficiency
+#### 柱 5: Performance Efficiency
 - [ ] Right-sized compute SKUs validated against load requirements
 - [ ] Caching implemented where beneficial (Azure Cache for Redis, CDN/Front Door caching)
 - [ ] Azure Front Door or CDN used for global static content delivery
@@ -90,13 +90,13 @@ Identify key Azure services in use (compute, data, networking, security, observa
 - [ ] Premium/zone-redundant storage used for latency-sensitive disk workloads
 - [ ] Connection pooling and async patterns used for database and HTTP clients
 
-### Step 4: Risk Classification
-For each finding, classify:
+### Step 4: リスクを分類する
+各指摘事項を次のように分類します:
 - **High Risk**: Security vulnerability, single point of failure, no backup/recovery
 - **Medium Risk**: Suboptimal reliability, cost inefficiency, performance concern
 - **Low Risk**: Best practice deviation, minor optimization opportunity
 
-### Step 5: User Confirmation
+### Step 5: ユーザー確認
 
 ```
 🏗️ Azure Well-Architected Review Summary
@@ -118,12 +118,12 @@ For each finding, classify:
 ❓ Proceed with creating GitHub issues? (y/n)
 ```
 
-**Gate**: Only proceed to Steps 6–7 if the user gives an explicit affirmative response (e.g. "y", "yes"). On a negative, ambiguous, or missing response, do **not** create any GitHub issues — output the full findings as formatted markdown to the console and stop.
+**ゲート**: ユーザーが明示的に肯定（例: "y"、"yes"）した場合のみ Steps 6–7 に進みます。否定、曖昧、または応答がない場合は、GitHub issue を **作成せず**、指摘事項全体を整形済み Markdown としてコンソールに出力して停止します。
 
-### Step 6: Create Individual Finding Issues
-Label with "well-architected" and the pillar name (e.g., "security", "reliability").
+### Step 6: 個別の指摘事項 issue を作成する
+"well-architected" と柱の名前（例: "security"、"reliability"）でラベル付けします。
 
-**Title**: `[WAF-<PILLAR>] [Brief Finding] — [Risk Level]`
+**タイトル**: `[WAF-<PILLAR>] [Brief Finding] — [Risk Level]`
 
 **Body**:
 ````markdown
@@ -170,8 +170,8 @@ az storage account update --name <name> --resource-group <rg> \
 **Well-Architected Recommendation**: [WAF checklist item this maps to]
 ````
 
-### Step 7: Create EPIC Tracking Issue
-Label with "well-architected" and "epic".
+### Step 7: EPIC 追跡 issue を作成する
+"well-architected" と "epic" でラベル付けします。
 
 **Title**: `[EPIC] Azure Well-Architected Review — X findings across 5 pillars`
 
@@ -180,15 +180,15 @@ Label with "well-architected" and "epic".
 - Medium findings have accepted mitigation plans
 - No regression in existing Azure Monitor alerts or Azure Policy compliance
 
-## Error Handling
-- **No IaC Files Found**: Limit review to live resource discovery via Azure CLI (`az resource list`) and note the gap
-- **Insufficient Azure Permissions**: List required read-only roles for the review (Reader, Security Reader)
-- **GitHub Creation Failure**: Output all findings as formatted markdown to console
+## エラー処理
+- **IaC ファイルが見つからない**: Azure CLI (`az resource list`) による実環境のリソース検出だけにレビューを限定し、その不足を記載する
+- **Azure の権限不足**: レビューに必要な読み取り専用ロール（Reader、Security Reader）を一覧表示する
+- **GitHub での作成に失敗**: すべての指摘事項を整形済み Markdown としてコンソールに出力する
 
-## Success Criteria
-- ✅ All 5 WAF pillars reviewed against IaC and live infrastructure
-- ✅ All findings classified by risk level and pillar
-- ✅ Actionable remediation steps with IaC examples for each finding
-- ✅ GitHub issues created for team tracking
-- ✅ Architecture diagram generated for EPIC context
-- ✅ Microsoft Learn documentation references included
+## 成功基準
+- ✅ 5 つすべての WAF の柱が IaC と実環境に対してレビューされている
+- ✅ すべての指摘事項がリスク レベルと柱で分類されている
+- ✅ 各指摘事項に IaC の例を含む実行可能な修復手順がある
+- ✅ チームで追跡するための GitHub issue が作成されている
+- ✅ EPIC のコンテキスト用アーキテクチャ図が生成されている
+- ✅ Microsoft Learn のドキュメント参照が含まれている

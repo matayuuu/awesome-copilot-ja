@@ -7,7 +7,7 @@ description: '.NETソリューション内の全プロジェクトを検出し�
 
 .NETソリューションを分析し、すべてのプロジェクトをOracle→PostgreSQLの移行対象かどうかで分類して、後続のエージェントやSkillが解析できる構造化された計画を作成する。
 
-## Workflow
+## ワークフロー
 
 ```
 Progress:

@@ -1,23 +1,23 @@
 ---
 name: aws-resource-health-diagnose
-description: 'Analyze AWS resource health, diagnose issues from CloudWatch logs and metrics, and create a remediation plan for identified problems.'
+description: 'AWS リソースの健全性を分析し、CloudWatch のログとメトリックから問題を診断して、特定した問題の修復計画を作成します。'
 ---
 
-# AWS Resource Health & Issue Diagnosis
+# AWS リソースの健全性と問題の診断
 
 This workflow analyzes a specific AWS resource to assess its health status, diagnose potential issues using CloudWatch logs and metrics, and develop a comprehensive remediation plan for any problems discovered.
 
-## Prerequisites
+## 前提条件
 - AWS CLI configured and authenticated
 - Target AWS resource identified (name, type, and optionally region/account)
 - CloudWatch logging and metrics enabled on the target resource
 
-## Workflow Steps
+## ワークフロー手順
 
-### Step 1: Get AWS Diagnostic Best Practices
+### ステップ 1: AWS 診断のベストプラクティスを取得
 Fetch `https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/` for monitoring and troubleshooting guidance to inform the diagnostic approach.
 
-### Step 2: Resource Discovery & Identification
+### ステップ 2: リソースを検出して識別
 Locate the target resource using the appropriate AWS CLI command for its type:
 
 ```bash
@@ -41,7 +41,7 @@ aws apigatewayv2 get-apis
 
 If multiple matches are found, prompt the user to specify region/account.
 
-### Step 3: Health Status Assessment
+### ステップ 3: 健全性ステータスを評価
 Run service-specific health checks:
 
 ```bash
@@ -72,7 +72,7 @@ Key health indicators by service type:
 - **SQS**: ApproximateNumberOfMessagesNotVisible, ApproximateAgeOfOldestMessage
 - **DynamoDB**: ConsumedReadCapacityUnits, ThrottledRequests, SuccessfulRequestLatency
 
-### Step 4: Log & Metrics Analysis
+### ステップ 4: ログとメトリックを分析
 Find log groups and run CloudWatch Logs Insights queries:
 
 ```bash
@@ -107,7 +107,7 @@ aws pi get-resource-metrics \
 
 Identify: recurring error patterns, correlation with deployments (CloudTrail), performance trends, dependency failures.
 
-### Step 5: Issue Classification & Root Cause Analysis
+### ステップ 5: 問題の分類と根本原因分析
 **Severity**:
 - **Critical**: Service unavailable, data loss, security incidents
 - **High**: Performance degradation, error rates >5%, intermittent failures
@@ -122,7 +122,7 @@ Identify: recurring error patterns, correlation with deployments (CloudTrail), p
 - Dependency Issues: downstream timeouts, SQS/SNS failures, external API limits
 - Security Issues: KMS key issues, certificate expiration
 
-### Step 6: Generate Remediation Plan
+### ステップ 6: 修復計画を生成
 
 **Immediate Actions** (Critical):
 ```bash
@@ -138,7 +138,7 @@ aws rds reboot-db-instance --db-instance-identifier <name>
 
 **Long-term Improvements**: Architectural changes for resilience, preventive monitoring, enable AWS Health Dashboard notifications via EventBridge.
 
-### Step 7: Report & User Confirmation
+### ステップ 7: レポートとユーザー確認
 
 Present findings:
 ```
@@ -163,14 +163,14 @@ Present findings:
 
 Then generate a full markdown report covering: health metrics, issues with root cause analysis, phased remediation steps with AWS CLI commands, CloudWatch alarm recommendations, and validation checklist.
 
-## Error Handling
+## エラー処理
 - **Resource Not Found**: Ask user to clarify name/region
 - **Authentication Issues**: Guide through `aws configure`
 - **Insufficient Permissions**: List required IAM actions (`logs:*`, `cloudwatch:*`, `pi:*`)
 - **No Logs Available**: Suggest enabling CloudWatch logging for the resource type
 - **Query Timeouts**: Use shorter time windows
 
-## Success Criteria
+## 成功条件
 - ✅ Resource health accurately assessed across all key metrics
 - ✅ All significant issues identified and classified by severity
 - ✅ Root cause analysis completed for major problems

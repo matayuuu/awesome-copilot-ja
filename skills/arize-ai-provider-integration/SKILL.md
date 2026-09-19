@@ -1,53 +1,53 @@
 ---
 name: arize-ai-provider-integration
-description: Creates, reads, updates, and deletes Arize AI integrations that store LLM provider credentials used by evaluators and other Arize features. Supports any LLM provider (e.g. OpenAI, Anthropic, Azure OpenAI, AWS Bedrock, Vertex AI, Gemini, NVIDIA NIM). Use when the user mentions AI integration, LLM provider credentials, create integration, list integrations, update credentials, delete integration, or connecting an LLM provider to Arize.
+description: 'Evaluatorやその他のArize機能が使うLLMプロバイダー資格情報を保存するArize AI統合を作成、取得、更新、削除する。OpenAI、Anthropic、Azure OpenAI、AWS Bedrock、Vertex AI、Gemini、NVIDIA NIMなど任意のLLMプロバイダーに対応する。AI統合、LLMプロバイダー資格情報、統合の作成・一覧・資格情報更新・削除、LLMプロバイダーのArize接続が話題になったときに使う。'
 metadata:
   author: arize
   version: "1.0"
-compatibility: Requires the ax CLI and a configured Arize profile.
+compatibility: ax CLIと構成済みのArizeプロファイルが必要。
 ---
 
-# Arize AI Integration Skill
+# Arize AI統合Skill
 
-> **`SPACE`** — Most `--space` flags and the `ARIZE_SPACE` env var accept a space **name** (e.g., `my-workspace`) or a base64 space **ID** (e.g., `U3BhY2U6...`). Find yours with `ax spaces list`.
-> **Note:** `ai-integrations create` does **not** accept `--space` — AI integrations are account-scoped. Use `--space` only with `list`, `get`, `update`, and `delete`.
+> **`SPACE`** — ほとんどの `--space` フラグと `ARIZE_SPACE` 環境変数は、space **名**（例: `my-workspace`）またはbase64 space **ID**（例: `U3BhY2U6...`）を受け付ける。`ax spaces list` で確認する。
+> **注:** `ai-integrations create` は `--space` を**受け付けない**。AI統合はアカウントスコープである。`--space` は `list`、`get`、`update`、`delete` でだけ使う。
 
-## Concepts
+## 概念
 
-- **AI Integration** = stored LLM provider credentials registered in Arize; used by evaluators to call a judge model and by other Arize features that need to invoke an LLM on your behalf
-- **Provider** = the LLM service backing the integration (e.g., `openAI`, `anthropic`, `awsBedrock`)
-- **Integration ID** = a base64-encoded global identifier for an integration (e.g., `TGxtSW50ZWdyYXRpb246MTI6YUJjRA==`); required for evaluator creation and other downstream operations
-- **Scoping** = visibility rules controlling which spaces or users can use an integration
-- **Auth type** = how Arize authenticates with the provider: `default` (provider API key), `proxy_with_headers` (proxy via custom headers), or `bearer_token` (bearer token auth)
+- **AI Integration** = Arizeに登録されたLLMプロバイダー資格情報。Evaluatorが判定モデルを呼び出すため、またArizeの他機能がユーザーに代わってLLMを呼び出すために使う。
+- **Provider** = 統合を支えるLLMサービス（例: `openAI`、`anthropic`、`awsBedrock`）。
+- **Integration ID** = 統合のbase64エンコード済みグローバル識別子（例: `TGxtSW50ZWdyYXRpb246MTI6YUJjRA==`）。Evaluator作成など後続操作に必要。
+- **Scoping** = 統合を使えるspaceまたはユーザーを制御する可視性ルール。
+- **Auth type** = Arizeがプロバイダーで認証する方法: `default`（プロバイダーAPIキー）、`proxy_with_headers`（カスタムヘッダー経由のプロキシ）、`bearer_token`（ベアラートークン認証）。
 
-## Prerequisites
+## 前提条件
 
-Proceed directly with the task — run the `ax` command you need. Do NOT check versions, env vars, or profiles upfront.
+タスクへ直接進み、必要な `ax` コマンドを実行する。事前にバージョン、環境変数、プロファイルを確認しない。
 
-If an `ax` command fails, troubleshoot based on the error:
-- `command not found` or version error → see references/ax-setup.md
-- `401 Unauthorized` / missing API key → run `ax profiles show` to inspect the current profile. If the profile is missing or the API key is wrong, follow references/ax-profiles.md to create/update it. If the user doesn't have their key, direct them to https://app.arize.com/admin > API Keys
-- Space unknown → run `ax spaces list` to pick by name, or ask the user
-- LLM provider call fails (missing OPENAI_API_KEY / ANTHROPIC_API_KEY) → run `ax ai-integrations list --space SPACE` to check for platform-managed credentials. If none exist, ask the user to provide the key or create an integration via the **arize-ai-provider-integration** skill
-- **Security:** Never read `.env` files or search the filesystem for credentials. Use `ax profiles` for Arize credentials and `ax ai-integrations` for LLM provider keys. If credentials are not available through these channels, ask the user.
+`ax` コマンドが失敗した場合は、エラーに基づいて対処する:
+- `command not found` またはバージョンエラー → references/ax-setup.md を参照する
+- `401 Unauthorized` / APIキー不足 → `ax profiles show` を実行して現在のプロファイルを確認する。プロファイルがない、またはAPIキーが誤っている場合は、references/ax-profiles.md に従って作成/更新する。ユーザーがキーを持っていない場合は https://app.arize.com/admin > API Keys へ案内する
+- Space不明 → `ax spaces list` を実行して名前で選ぶか、ユーザーに尋ねる
+- LLMプロバイダー呼び出し失敗（OPENAI_API_KEY / ANTHROPIC_API_KEY不足） → `ax ai-integrations list --space SPACE` を実行し、プラットフォーム管理の資格情報があるか確認する。なければ、ユーザーにキー提供を依頼するか、**arize-ai-provider-integration** Skillで統合を作成する
+- **セキュリティ:** `.env` ファイルを読んだり、資格情報をファイルシステム検索したりしない。Arize資格情報には `ax profiles`、LLMプロバイダーキーには `ax ai-integrations` を使う。これらの経路で資格情報が得られない場合は、ユーザーに尋ねる。
 
 ---
 
-## List AI Integrations
+## AI統合を一覧表示
 
-List all integrations accessible in a space:
+space内でアクセス可能なすべての統合を一覧表示する:
 
 ```bash
 ax ai-integrations list --space SPACE
 ```
 
-Filter by name (case-insensitive substring match):
+名前でフィルターする（大文字小文字を区別しない部分一致）:
 
 ```bash
 ax ai-integrations list --space SPACE --name "openai"
 ```
 
-Paginate large result sets:
+大きな結果セットをページングする:
 
 ```bash
 # Get first page
@@ -57,32 +57,32 @@ ax ai-integrations list --space SPACE --limit 20 -o json
 ax ai-integrations list --space SPACE --limit 20 --cursor CURSOR_TOKEN -o json
 ```
 
-**Key flags:**
+**主要フラグ:**
 
-| Flag | Description |
+| フラグ | 説明 |
 |------|-------------|
-| `--space` | Space name or ID to filter integrations |
-| `--name` | Case-insensitive substring filter on integration name |
-| `--limit` | Max results (1–100, default 15) |
-| `--cursor` | Pagination token from a previous response |
-| `-o, --output` | Output format: `table` (default) or `json` |
+| `--space` | 統合を絞り込むspace名またはID |
+| `--name` | 統合名に対する大文字小文字を区別しない部分一致フィルター |
+| `--limit` | 最大結果数（1–100、既定15） |
+| `--cursor` | 前回レスポンスのページングトークン |
+| `-o, --output` | 出力形式: `table`（既定）または `json` |
 
-**Response fields:**
+**レスポンスフィールド:**
 
-| Field | Description |
+| フィールド | 説明 |
 |-------|-------------|
-| `id` | Base64 integration ID — copy this for downstream commands |
-| `name` | Human-readable name |
-| `provider` | LLM provider enum (see Supported Providers below) |
-| `has_api_key` | `true` if credentials are stored |
-| `model_names` | Allowed model list, or `null` if all models are enabled |
-| `enable_default_models` | Whether default models for this provider are allowed |
-| `function_calling_enabled` | Whether tool/function calling is enabled |
-| `auth_type` | Authentication method: `default`, `proxy_with_headers`, or `bearer_token` |
+| `id` | Base64統合ID — 後続コマンド用にコピーする |
+| `name` | 人間が読める名前 |
+| `provider` | LLMプロバイダー列挙値（下記の対応プロバイダーを参照） |
+| `has_api_key` | 資格情報が保存されていれば `true` |
+| `model_names` | 許可モデル一覧。全モデル有効なら `null` |
+| `enable_default_models` | このプロバイダーの既定モデルを許可するか |
+| `function_calling_enabled` | tool/function callingが有効か |
+| `auth_type` | 認証方式: `default`、`proxy_with_headers`、`bearer_token` |
 
 ---
 
-## Get a Specific Integration
+## 特定の統合を取得
 
 ```bash
 ax ai-integrations get NAME_OR_ID
@@ -90,19 +90,19 @@ ax ai-integrations get NAME_OR_ID -o json
 ax ai-integrations get NAME_OR_ID --space SPACE   # required when using name instead of ID
 ```
 
-Use this to inspect an integration's full configuration or to confirm its ID after creation.
+統合の完全な構成を確認する、または作成後にIDを確認するために使う。
 
 ---
 
-## Create an AI Integration
+## AI統合を作成
 
-Before creating, always list integrations first — the user may already have a suitable one:
+作成前に必ず先に統合を一覧表示する。ユーザーがすでに適切な統合を持っている場合がある:
 
 ```bash
 ax ai-integrations list --space SPACE
 ```
 
-If no suitable integration exists, create one. The required flags depend on the provider.
+適切な統合がない場合は作成する。必要なフラグはプロバイダーによって異なる。
 
 ### OpenAI
 
@@ -134,7 +134,7 @@ ax ai-integrations create \
 
 ### AWS Bedrock
 
-AWS Bedrock uses IAM role-based auth. Provide the ARN of the role Arize should assume via `--provider-metadata`:
+AWS BedrockはIAMロールベース認証を使う。Arizeが引き受けるロールのARNを `--provider-metadata` で渡す:
 
 ```bash
 ax ai-integrations create \
@@ -145,7 +145,7 @@ ax ai-integrations create \
 
 ### Vertex AI
 
-Vertex AI uses GCP service account credentials. Provide the GCP project and region via `--provider-metadata`:
+Vertex AIはGCPサービスアカウント資格情報を使う。GCPプロジェクトとリージョンを `--provider-metadata` で渡す:
 
 ```bash
 ax ai-integrations create \
@@ -183,7 +183,7 @@ ax ai-integrations create \
   --api-key $CUSTOM_LLM_API_KEY
 ```
 
-### Supported Providers
+### 対応プロバイダー
 
 | Provider | Required extra flags |
 |----------|---------------------|
@@ -196,7 +196,7 @@ ax ai-integrations create \
 | `nvidiaNim` | `--api-key <key>`, `--base-url <nim-endpoint>` |
 | `custom` | `--base-url <endpoint>` |
 
-### Optional flags for any provider
+### 任意のプロバイダーで使えるオプション
 
 | Flag | Description |
 |------|-------------|
@@ -207,9 +207,9 @@ ax ai-integrations create \
 | `--headers` | Custom headers as JSON object or file path (for proxy auth) |
 | `--provider-metadata` | Provider-specific metadata as JSON object or file path |
 
-### After creation
+### 作成後
 
-Capture the returned integration ID (e.g., `TGxtSW50ZWdyYXRpb246MTI6YUJjRA==`) — it is needed for evaluator creation and other downstream commands. If you missed it, retrieve it:
+返された統合ID（例: `TGxtSW50ZWdyYXRpb246MTI6YUJjRA==`）を控える。Evaluator作成やその他の後続コマンドに必要である。見逃した場合は取得し直す:
 
 ```bash
 ax ai-integrations list --space SPACE -o json
@@ -219,9 +219,9 @@ ax ai-integrations get NAME_OR_ID
 
 ---
 
-## Update an AI Integration
+## AI統合を更新
 
-`update` is a partial update — only the flags you provide are changed. Omitted fields stay as-is.
+`update` は部分更新であり、指定したフラグだけが変更される。省略したフィールドはそのまま残る。
 
 ```bash
 # Rename
@@ -237,44 +237,44 @@ ax ai-integrations update NAME_OR_ID --model-name gpt-4o --model-name gpt-4o-min
 ax ai-integrations update NAME_OR_ID --base-url "https://new-endpoint.example.com/v1"
 ```
 
-Add `--space SPACE` when using a name instead of ID. Any flag accepted by `create` can be passed to `update`.
+IDではなく名前を使う場合は `--space SPACE` を追加する。`create` が受け付ける任意のフラグは `update` にも渡せる。
 
 ---
 
-## Delete an AI Integration
+## AI統合を削除
 
-**Warning:** Deletion is permanent. Evaluators that reference this integration will no longer be able to run.
+**警告:** 削除は永続的である。この統合を参照するEvaluatorは実行できなくなる。
 
 ```bash
 ax ai-integrations delete NAME_OR_ID --force
 ax ai-integrations delete NAME_OR_ID --space SPACE --force   # required when using name instead of ID
 ```
 
-Omit `--force` to get a confirmation prompt instead of deleting immediately.
+すぐ削除せず確認プロンプトを表示するには `--force` を省略する。
 
 ---
 
-## Troubleshooting
+## トラブルシューティング
 
-| Problem | Solution |
+| 問題 | 解決策 |
 |---------|----------|
-| `ax: command not found` | See references/ax-setup.md |
-| `401 Unauthorized` | API key may not have access to this space. Verify key and space ID at https://app.arize.com/admin > API Keys |
-| `No profile found` | Run `ax profiles show --expand`; set `ARIZE_API_KEY` env var or write `~/.arize/config.toml` |
-| `Integration not found` | Verify with `ax ai-integrations list --space SPACE` |
-| `has_api_key: false` after create | Credentials were not saved — re-run `update` with the correct `--api-key` or `--provider-metadata` |
-| Evaluator runs fail with LLM errors | Check integration credentials with `ax ai-integrations get INT_ID`; rotate the API key if needed |
-| `provider` mismatch | Cannot change provider after creation — delete and recreate with the correct provider |
+| `ax: command not found` | references/ax-setup.md を参照 |
+| `401 Unauthorized` | APIキーがこのspaceへアクセスできない可能性がある。https://app.arize.com/admin > API Keys でキーとspace IDを確認する |
+| `No profile found` | `ax profiles show --expand` を実行し、`ARIZE_API_KEY` 環境変数を設定するか `~/.arize/config.toml` を書く |
+| `Integration not found` | `ax ai-integrations list --space SPACE` で確認する |
+| 作成後に `has_api_key: false` | 資格情報が保存されていない。正しい `--api-key` または `--provider-metadata` で `update` を再実行する |
+| Evaluator実行がLLMエラーで失敗する | `ax ai-integrations get INT_ID` で統合資格情報を確認し、必要ならAPIキーをローテーションする |
+| `provider` 不一致 | 作成後にproviderは変更できない。削除して正しいproviderで再作成する |
 
 ---
 
-## Related Skills
+## 関連Skill
 
-- **arize-evaluator**: Create LLM-as-judge evaluators that use an AI integration → use `arize-evaluator`
-- **arize-experiment**: Run experiments that use evaluators backed by an AI integration → use `arize-experiment`
+- **arize-evaluator**: AI統合を使うLLM-as-judge Evaluatorを作成する → `arize-evaluator` を使う
+- **arize-experiment**: AI統合に支えられたEvaluatorを使う実験を実行する → `arize-experiment` を使う
 
 ---
 
-## Save Credentials for Future Use
+## 今後の利用に備えた資格情報の保存
 
-See references/ax-profiles.md § Save Credentials for Future Use.
+references/ax-profiles.md § Save Credentials for Future Use を参照する。

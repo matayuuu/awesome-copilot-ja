@@ -149,7 +149,7 @@ groups:
 - `applies-to` の既定値は `version-updates`
 - group に含まれない依存関係は個別 PR になる
 
-## Multi-Ecosystem Groups
+## 複数ecosystemのグループ化（Multi-Ecosystem Groups）
 
 異なる package ecosystem の更新を 1 つの PR にまとめます。
 
@@ -271,7 +271,7 @@ allow:
 
 ## 高度なオプション
 
-### versioning strategy
+### バージョン管理戦略（versioning strategy）
 
 | 値 | 動作 |
 |---|---|
@@ -285,7 +285,7 @@ allow:
 
 private registry はトップレベルの `registries` と、各 update entry の `registries` で参照します。token は `${{secrets.NPM_TOKEN}}` のように secret から取得します。
 
-## FAQ
+## よくある質問（FAQ）
 
 **複数の `dependabot.yml` を置けますか？**
 いいえ。GitHub がサポートするのは `.github/dependabot.yml` 1 ファイルだけです。ecosystem や directory ごとに複数の `updates` entry を使います。

@@ -1,47 +1,47 @@
 ---
 name: acreadiness-generate-instructions
-description: 'Generate tailored AI agent instruction files via AgentRC instructions command. Produces .github/copilot-instructions.md (default, recommended for Copilot in VS Code) plus optional per-area .instructions.md files with applyTo globs for monorepos. Use after running /acreadiness-assess to close gaps in the AI Tooling pillar.'
+description: 'AgentRC instructions コマンドで、対象リポジトリ向けのAI Agent指示ファイルを生成する。既定では .github/copilot-instructions.md（VS CodeのCopilot向けに推奨）を作り、モノレポでは applyTo glob 付きの領域別 .instructions.md ファイルも任意で生成する。AI Tooling の不足を埋めるため、/acreadiness-assess の後に使う。'
 argument-hint: "[--output .github/copilot-instructions.md|AGENTS.md] [--strategy flat|nested] [--areas | --area <name>] [--apply-to <glob>] [--claude-md] [--dry-run]"
 ---
 
-# /acreadiness-generate-instructions — write AI agent instructions
+# /acreadiness-generate-instructions — AI Agent指示を作成
 
-Use this skill whenever the user wants to **create**, **regenerate**, or **refresh** their custom instructions for AI coding agents (Copilot, Claude, etc.). This is the *Generate* step in AgentRC's **Measure → Generate → Maintain** loop and the single highest-leverage action for the **AI Tooling** pillar.
+ユーザーがAIコーディングAgent（Copilot、Claudeなど）のカスタム指示を **作成**、**再生成**、**更新**したいときに使う。これは AgentRC の **Measure → Generate → Maintain** ループの *Generate* 段階であり、**AI Tooling** の柱に対する最も効果の高い単一アクションである。
 
-## Output options
+## 出力オプション
 
-VS Code recognises several instruction file types — AgentRC generates the most common ones:
+VS Codeはいくつかの指示ファイル形式を認識し、AgentRCは一般的な形式を生成する:
 
-| File | Scope | When to use |
+| ファイル | 範囲 | 使う場面 |
 |---|---|---|
-| `.github/copilot-instructions.md` | Always-on, whole workspace | **Default** — VS Code Copilot's native instruction file |
-| `AGENTS.md` | Always-on, whole workspace | Multi-agent repos (Copilot + Claude + others) |
-| `.github/instructions/*.instructions.md` | Scoped by `applyTo` glob | Per-area / per-language rules in monorepos |
-| `CLAUDE.md` | Claude-specific | Add via `--claude-md` (nested only) |
+| `.github/copilot-instructions.md` | 常時有効、ワークスペース全体 | **既定** — VS Code Copilotのネイティブ指示ファイル |
+| `AGENTS.md` | 常時有効、ワークスペース全体 | マルチAgentリポジトリ（Copilot + Claudeなど） |
+| `.github/instructions/*.instructions.md` | `applyTo` globで限定 | モノレポの領域別・言語別ルール |
+| `CLAUDE.md` | Claude固有 | `--claude-md` で追加（nestedのみ） |
 
-## Strategies
+## 戦略
 
-- **`flat`** *(default)* — single `.github/copilot-instructions.md` at the chosen path. Simple, easy to review.
-- **`nested`** — hub at `.github/copilot-instructions.md` + per-topic detail files at `.github/instructions/<topic>.instructions.md`, each with an `applyTo` glob so VS Code only loads the topic when it's relevant. Better for large or multi-stack repos.
+- **`flat`** *(既定)* — 選択した場所に単一の `.github/copilot-instructions.md` を置く。単純で、レビューしやすい。
+- **`nested`** — `.github/copilot-instructions.md` をハブとし、`.github/instructions/<topic>.instructions.md` にトピック別詳細ファイルを置く。各ファイルに `applyTo` glob を付け、関連時だけVS Codeが読み込む。大規模または複数スタックのリポジトリに適する。
 
-> **Why `.github/instructions/` and not `.agents/`?** AgentRC's default nested layout writes to `.agents/`, which is the right home for *agent-agnostic* repos (Copilot + Claude + Cursor reading `AGENTS.md`). For VS Code Copilot specifically, the native location is `.github/instructions/` with `applyTo` frontmatter — that's what Copilot auto-discovers. This skill rewrites AgentRC's nested output to the VS Code-native location whenever the main output is `.github/copilot-instructions.md`. If you instead chose `--output AGENTS.md`, nested keeps AgentRC's default `.agents/` layout.
+> **なぜ `.agents/` ではなく `.github/instructions/` なのか?** AgentRCの既定のnestedレイアウトは `.agents/` に書き出す。これは `AGENTS.md` を読むCopilot、Claude、Cursorなどの*Agent非依存*リポジトリに適している。一方、VS Code Copilotのネイティブな場所は `applyTo` frontmatter付きの `.github/instructions/` であり、Copilotが自動検出する。このSkillは、主出力が `.github/copilot-instructions.md` の場合にAgentRCのnested出力をVS Codeネイティブの場所へ書き換える。`--output AGENTS.md` を選んだ場合、nestedはAgentRC既定の `.agents/` レイアウトを維持する。
 
-For monorepos, generate **area-scoped** instructions with `--areas`, `--area <name>`, or `--areas-only`. Areas are defined in `agentrc.config.json`. Per-area output is written as VS Code `.instructions.md` files with an `applyTo` glob (see below).
+モノレポでは、`--areas`、`--area <name>`、または `--areas-only` で**領域限定**の指示を生成する。領域は `agentrc.config.json` で定義する。領域別の出力は `applyTo` glob付きのVS Code `.instructions.md` ファイルとして書き出す（下記参照）。
 
-### Topic vs area `.instructions.md` files
+### トピック別と領域別の `.instructions.md` ファイル
 
-Both end up in `.github/instructions/` but they answer different questions:
+どちらも `.github/instructions/` に配置されるが、扱う問いが異なる:
 
-| Kind | Filename example | `applyTo` example | Where it comes from |
+| 種類 | ファイル名の例 | `applyTo` の例 | 生成元 |
 |---|---|---|---|
 | **Topic** (nested) | `testing.instructions.md` | `**/*.{test,spec}.{ts,tsx,js}` | AgentRC `--strategy nested` topic split |
 | **Area** (monorepo) | `frontend.instructions.md` | `apps/frontend/**` | `agentrc.config.json` areas + `--areas` |
 
-You can have both at once: a nested set of topic files plus per-area files for a monorepo.
+両方を同時に使える。topic別のnestedファイル一式と、モノレポ用の領域別ファイルを併用できる。
 
-## Per-area files with `applyTo`
+## `applyTo` 付き領域別ファイル
 
-When the user opts into areas, emit one VS Code-native `.instructions.md` file per area at `.github/instructions/<area>.instructions.md`. Each file MUST start with frontmatter declaring the glob the rules apply to:
+ユーザーが領域を有効にした場合、領域ごとに `.github/instructions/<area>.instructions.md` へVS Codeネイティブの `.instructions.md` ファイルを1つ出力する。各ファイルは、ルールを適用するglobを宣言するfrontmatterで必ず始める:
 
 ```markdown
 ---
@@ -53,55 +53,55 @@ applyTo: "apps/frontend/**"
 …AgentRC-generated content for this area…
 ```
 
-Workflow:
+ワークフロー:
 
-1. **Read `agentrc.config.json`** to discover declared areas and their `paths` / globs. If `paths` is missing, ask the user for the glob (e.g. `src/api/**`).
-2. **Run `agentrc instructions --areas`** (or `--area <name>`) to produce the per-area body content.
-3. **Wrap each area's content** in `.github/instructions/<area>.instructions.md` with the `applyTo` frontmatter taken from the area's `paths`. If the user passed `--apply-to <glob>` on a single-area call, use that glob verbatim.
-4. **Leave the main file alone** — the root `.github/copilot-instructions.md` stays as the always-on instructions; `.instructions.md` files only kick in for matching paths.
+1. **`agentrc.config.json`を読む** — 定義済みの領域と `paths` / globを確認する。`paths` がない場合は、ユーザーにglob（例: `src/api/**`）を尋ねる。
+2. **`agentrc instructions --areas`**（または `--area <name>`）を実行し、領域別の本文を生成する。
+3. **各領域の内容をラップする** — 領域の `paths` から取得した `applyTo` frontmatterを付けて `.github/instructions/<area>.instructions.md` に配置する。単一領域の呼び出しでユーザーが `--apply-to <glob>` を渡した場合は、そのglobをそのまま使う。
+4. **メインファイルは変更しない** — ルートの `.github/copilot-instructions.md` は常時有効な指示のままとし、`.instructions.md` は一致するパスにだけ適用する。
 
-Naming: lowercase, kebab-case area name. Examples: `.github/instructions/frontend.instructions.md`, `.github/instructions/api.instructions.md`, `.github/instructions/infra.instructions.md`.
+命名: 領域名は小文字のkebab-case。例: `.github/instructions/frontend.instructions.md`、`.github/instructions/api.instructions.md`、`.github/instructions/infra.instructions.md`。
 
-## Steps
+## 手順
 
-1. **Pick the target file**. **Default to `.github/copilot-instructions.md`.** Switch to `AGENTS.md` only if the user mentions multi-agent / Claude / Cursor support.
-2. **Always ask which strategy to use** — `flat` or `nested` — unless the user already specified one in their message or via `--strategy`. Present the trade-off briefly:
-   - **Flat** *(default)* — one `.github/copilot-instructions.md`. Simple, easy to review in a single PR. Best for small/medium repos with one stack.
-   - **Nested** — hub `.github/copilot-instructions.md` + per-topic `.github/instructions/<topic>.instructions.md` files (each with an `applyTo` glob so VS Code only loads them when relevant). Best for large or multi-stack repos. Add `--claude-md` to also emit `CLAUDE.md`.
-   Recommend `nested` proactively when the repo has > 5 top-level directories, multiple stacks, or already uses a monorepo tool (turbo/nx/pnpm workspaces).
-3. **Detect monorepo areas** by reading `agentrc.config.json`. If areas exist, ask the user whether they want **per-area `.instructions.md` files with `applyTo`** in addition to the root file. Default to "yes" when `agentrc.config.json` declares areas.
-4. **Run dry-run first** so the user can preview:
+1. **対象ファイルを選ぶ。** **既定は `.github/copilot-instructions.md`。** ユーザーがmulti-agent / Claude / Cursor対応に言及した場合だけ `AGENTS.md` に切り替える。
+2. ユーザーのメッセージまたは `--strategy` ですでに指定されていない限り、**常に戦略を確認する** — `flat` か `nested` か。トレードオフを簡潔に示す:
+   - **Flat** *(既定)* — `.github/copilot-instructions.md` を1つだけ置く。単純で、1つのPRでレビューしやすい。単一スタックの小〜中規模リポジトリに最適。
+   - **Nested** — ハブとなる `.github/copilot-instructions.md` と、トピック別の `.github/instructions/<topic>.instructions.md` ファイル（それぞれ `applyTo` glob付きで、関連時だけVS Codeが読み込む）を使う。大規模または複数スタックのリポジトリに最適。`--claude-md` を追加すると `CLAUDE.md` も出力する。
+   リポジトリに5個を超えるトップレベルディレクトリ、複数スタック、または既存のモノレポツール（turbo/nx/pnpm workspaces）がある場合は、積極的に `nested` を推奨する。
+3. **モノレポ領域を検出する**ため `agentrc.config.json` を読む。領域がある場合は、ルートファイルに加えて **`applyTo` 付きの領域別 `.instructions.md` ファイル**も必要かをユーザーに確認する。`agentrc.config.json` が領域を宣言している場合の既定は「yes」とする。
+4. **先にdry-runを実行する**ことで、ユーザーがプレビューできるようにする:
    ```bash
    npx -y github:microsoft/agentrc instructions --output <file> --strategy <flat|nested> [--areas|--area <name>] [--claude-md] --dry-run
    ```
-5. **Show a short summary** of what would change — files that would be created or overwritten, area count + their `applyTo` globs, model used (default `claude-sonnet-4.6`).
-6. **On confirmation, run the same command without `--dry-run`** (and optionally `--force` if files already exist).
-7. **Post-process layout for Copilot output**:
-   - **If `--output` ends in `copilot-instructions.md` and strategy is `nested`**: move/rewrite AgentRC's `.agents/<topic>.md` files to `.github/instructions/<topic>.instructions.md`. Add frontmatter to each file with an appropriate `applyTo` glob (see "Topic applyTo defaults" below). Delete the now-empty `.agents/` directory.
-   - **If `--areas` was used**: also write `.github/instructions/<area>.instructions.md` for every area, using each area's `paths` from `agentrc.config.json` as the `applyTo` glob (override with `--apply-to` for single-area calls).
-   - **If `--output AGENTS.md`** was chosen: keep AgentRC's native `.agents/` layout for nested — agent-agnostic readers expect it there.
-   Create the `.github/instructions/` directory if missing.
+5. **変更内容の短い概要を示す** — 作成または上書きされるファイル、領域数と各 `applyTo` glob、使用モデル（既定は `claude-sonnet-4.6`）。
+6. **確認後、同じコマンドを `--dry-run` なしで実行する**（既存ファイルがある場合は必要に応じて `--force`）。
+7. **Copilot出力用にレイアウトを後処理する**:
+   - **`--output` が `copilot-instructions.md` で終わり、戦略が `nested` の場合**: AgentRCの `.agents/<topic>.md` ファイルを `.github/instructions/<topic>.instructions.md` へ移動または書き換える。各ファイルに適切な `applyTo` glob付きfrontmatterを追加する（下記「トピック別 `applyTo` 既定値」を参照）。空になった `.agents/` ディレクトリを削除する。
+   - **`--areas` が使われた場合**: 各領域について `.github/instructions/<area>.instructions.md` も書き出し、`agentrc.config.json` の各領域の `paths` を `applyTo` globとして使う（単一領域呼び出しでは `--apply-to` で上書き）。
+   - **`--output AGENTS.md`** が選ばれた場合: nestedではAgentRCネイティブの `.agents/` レイアウトを維持する。Agent非依存の読み手はそこを期待する。
+   `.github/instructions/` ディレクトリがなければ作成する。
 
-### Topic `applyTo` defaults
+### トピック別 `applyTo` 既定値
 
-When promoting AgentRC's nested topic files to `.instructions.md`, use these defaults unless the user specifies otherwise:
+AgentRCのnestedトピックファイルを `.instructions.md` へ昇格する場合、ユーザーが別指定しない限り次の既定値を使う:
 
-| Topic | Default `applyTo` |
+| トピック | 既定の `applyTo` |
 |---|---|
 | `testing` | `**/*.{test,spec}.{ts,tsx,js,jsx,mjs,cjs}` |
 | `style` / `code-quality` / `formatting` | `**/*.{ts,tsx,js,jsx,mjs,cjs,py,go,rs,java,kt,cs}` |
 | `build` / `ci` | `**/{package.json,turbo.json,nx.json,.github/workflows/**}` |
 | `docs` | `**/*.md` |
 | `security` | `**` |
-| anything else / hub-level | `**` |
-8. **Verify** by reading the generated file(s) back and showing the user a 1-paragraph synopsis: stack detected, conventions captured, length, list of `.instructions.md` files with their globs.
-9. **Suggest next steps**:
-   - Re-run the `assess` skill to confirm the AI Tooling pillar score improved.
-   - If the user already has both `copilot-instructions.md` and `AGENTS.md`, recommend consolidating to a single source of truth (AgentRC flags this at maturity Level 2+).
+| その他 / ハブレベル | `**` |
+8. **検証する**ため生成ファイルを読み返し、検出されたスタック、取り込まれた規約、長さ、`.instructions.md` ファイルと各globの一覧を1段落でユーザーへ示す。
+9. **次の手順を提案する**:
+   - AI Toolingの柱スコアが改善したことを確認するため、`assess` Skillを再実行する。
+   - ユーザーがすでに `copilot-instructions.md` と `AGENTS.md` の両方を持っている場合は、単一の正本へ統合することを推奨する（AgentRCは成熟度Level 2以上でこれを指摘する）。
 
-## Notes
+## 注意事項
 
-- AgentRC reads your **actual code** — no templates. Output reflects detected languages, frameworks, and conventions.
-- `--claude-md` (nested strategy only) also emits `CLAUDE.md`.
-- VS Code applies `.instructions.md` files automatically when the active file matches `applyTo`. The root `.github/copilot-instructions.md` always loads.
-- Never run this skill non-interactively in CI; instructions are part of the repo and should land via PR.
+- AgentRCは**実際のコード**を読む。テンプレートではないため、出力は検出された言語、フレームワーク、規約を反映する。
+- `--claude-md`（nested戦略のみ）は `CLAUDE.md` も出力する。
+- VS Codeは、アクティブファイルが `applyTo` に一致したとき `.instructions.md` ファイルを自動適用する。ルートの `.github/copilot-instructions.md` は常に読み込まれる。
+- このSkillをCIで非対話的に実行しない。指示はリポジトリの一部であり、PRとして取り込むべきである。

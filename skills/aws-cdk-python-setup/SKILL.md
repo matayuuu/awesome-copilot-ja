@@ -1,14 +1,14 @@
 ---
 name: aws-cdk-python-setup
-description: Setup and initialization guide for developing AWS CDK (Cloud Development Kit) applications in Python. This skill enables users to configure environment prerequisites, create new CDK projects, manage dependencies, and deploy to AWS.
+description: 'Python で AWS CDK（Cloud Development Kit）アプリケーションを開発するためのセットアップと初期化ガイドです。環境の前提条件を構成し、新しい CDK プロジェクトを作成し、依存関係を管理して AWS にデプロイできるようにします。'
 ---
-# AWS CDK Python Setup Instructions
+# AWS CDK Python セットアップ手順
 
-This skill provides setup guidance for working with **AWS CDK (Cloud Development Kit)** projects using **Python**.
+この Skill は **Python** を使う **AWS CDK（Cloud Development Kit）** プロジェクトの作業に必要なセットアップ手順を提供します。
 
 ---
 
-## Prerequisites
+## 前提条件
 
 Before starting, ensure the following tools are installed:
 
@@ -19,15 +19,15 @@ Before starting, ensure the following tools are installed:
 
 ---
 
-## Installation Steps
+## インストール手順
 
-### 1. Install AWS CDK CLI
+### 1. AWS CDK CLI をインストール
 ```bash
 npm install -g aws-cdk
 cdk --version
 ```
 
-### 2. Configure AWS Credentials
+### 2. AWS 認証情報を構成
 ```bash
 # Install AWS CLI (if not installed)
 brew install awscli
@@ -37,7 +37,7 @@ aws configure
 ```
 Enter your AWS Access Key, Secret Access Key, default region, and output format when prompted.
 
-### 3. Create a New CDK Project
+### 3. 新しい CDK プロジェクトを作成
 ```bash
 mkdir my-cdk-project
 cd my-cdk-project
@@ -50,7 +50,7 @@ Your project will include:
 - `requirements.txt` — Python dependencies
 - `cdk.json` — Configuration file
 
-### 4. Set Up Python Virtual Environment
+### 4. Python 仮想環境をセットアップ
 ```bash
 # macOS/Linux
 source .venv/bin/activate
@@ -59,7 +59,7 @@ source .venv/bin/activate
 .venv\Scripts\activate
 ```
 
-### 5. Install Python Dependencies
+### 5. Python 依存関係をインストール
 ```bash
 pip install -r requirements.txt
 ```
@@ -69,21 +69,21 @@ Primary dependencies:
 
 ---
 
-## Development Workflow
+## 開発ワークフロー
 
-### Synthesize CloudFormation Templates
+### CloudFormation テンプレートを合成
 ```bash
 cdk synth
 ```
 Generates `cdk.out/` containing CloudFormation templates.
 
-### Deploy Stacks to AWS
+### スタックを AWS にデプロイ
 ```bash
 cdk deploy
 ```
 Reviews and confirms deployment to the configured AWS account.
 
-### Bootstrap (First Deployment Only)
+### ブートストラップ（初回デプロイのみ）
 ```bash
 cdk bootstrap
 ```
@@ -91,7 +91,7 @@ Prepares environment resources like S3 buckets for asset storage.
 
 ---
 
-## Best Practices
+## ベストプラクティス
 
 - Always activate the virtual environment before working.
 - Run `cdk diff` before deployment to preview changes.
@@ -101,7 +101,7 @@ Prepares environment resources like S3 buckets for asset storage.
 
 ---
 
-## Troubleshooting Tips
+## トラブルシューティングのヒント
 
 If issues occur, check:
 

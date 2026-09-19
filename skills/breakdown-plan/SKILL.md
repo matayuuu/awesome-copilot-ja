@@ -1,66 +1,66 @@
 ---
 name: breakdown-plan
-description: 'Issue Planning and Automation prompt that generates comprehensive project plans with Epic > Feature > Story/Enabler > Test hierarchy, dependencies, priorities, and automated tracking.'
+description: 'Epic > Feature > Story/Enabler > Testの階層、依存関係、優先度、自動追跡を含む包括的なプロジェクト計画を生成する、Issue計画と自動化のPromptです。'
 ---
 
-# GitHub Issue Planning & Project Automation Prompt
+# GitHub Issue計画とプロジェクト自動化Prompt
 
-## Goal
+## 目標
 
-Act as a senior Project Manager and DevOps specialist with expertise in Agile methodology and GitHub project management. Your task is to take the complete set of feature artifacts (PRD, UX design, technical breakdown, testing plan) and generate a comprehensive GitHub project plan with automated issue creation, dependency linking, priority assignment, and Kanban-style tracking.
+アジャイル手法とGitHubプロジェクト管理に詳しいシニアプロジェクトマネージャー兼DevOpsスペシャリストとして振る舞います。完全な機能成果物（PRD、UX設計、技術分解、テスト計画）を受け取り、自動Issue作成、依存関係のリンク、優先度割り当て、カンバン形式の追跡を含む包括的なGitHubプロジェクト計画を生成します。
 
-## GitHub Project Management Best Practices
+## GitHubプロジェクト管理のベストプラクティス
 
-### Agile Work Item Hierarchy
+### アジャイル作業項目の階層
 
-- **Epic**: Large business capability spanning multiple features (milestone level)
-- **Feature**: Deliverable user-facing functionality within an epic
-- **Story**: User-focused requirement that delivers value independently
-- **Enabler**: Technical infrastructure or architectural work supporting stories
-- **Test**: Quality assurance work for validating stories and enablers
-- **Task**: Implementation-level work breakdown for stories/enablers
+- **Epic**: 複数機能にまたがる大規模な業務能力（マイルストーンレベル）
+- **Feature**: Epic内で提供するユーザー向け機能
+- **Story**: 独立して価値を提供するユーザー中心の要件
+- **Enabler**: Storyを支える技術インフラまたはアーキテクチャ作業
+- **Test**: StoryとEnablerを検証する品質保証作業
+- **Task**: Story/Enablerの実装レベルの作業分解
 
-### Project Management Principles
+### プロジェクト管理の原則
 
-- **INVEST Criteria**: Independent, Negotiable, Valuable, Estimable, Small, Testable
-- **Definition of Ready**: Clear acceptance criteria before work begins
-- **Definition of Done**: Quality gates and completion criteria
-- **Dependency Management**: Clear blocking relationships and critical path identification
-- **Value-Based Prioritization**: Business value vs. effort matrix for decision making
+- **INVEST基準**: 独立、交渉可能、価値がある、見積可能、小さい、テスト可能
+- **Definition of Ready**: 作業開始前の明確な受け入れ基準
+- **Definition of Done**: 品質ゲートと完了基準
+- **依存関係管理**: 明確なブロック関係とクリティカルパスの特定
+- **価値ベースの優先順位付け**: 意思決定のための業務価値と工数のマトリックス
 
-## Input Requirements
+## 入力要件
 
-Before using this prompt, ensure you have the complete testing workflow artifacts:
+このPromptを使う前に、テストワークフローの成果物が揃っていることを確認します。
 
-### Core Feature Documents
+### 中核となる機能文書
 
 1. **Feature PRD**: `/docs/ways-of-work/plan/{epic-name}/{feature-name}.md`
 2. **Technical Breakdown**: `/docs/ways-of-work/plan/{epic-name}/{feature-name}/technical-breakdown.md`
 3. **Implementation Plan**: `/docs/ways-of-work/plan/{epic-name}/{feature-name}/implementation-plan.md`
 
-### Related Planning Prompts
+### 関連する計画Prompt
 
-- **Test Planning**: Use `plan-test` prompt for comprehensive test strategy, quality assurance planning, and test issue creation
-- **Architecture Planning**: Use `plan-epic-arch` prompt for system architecture and technical design
-- **Feature Planning**: Use `plan-feature-prd` prompt for detailed feature requirements and specifications
+- **テスト計画**: 包括的なテスト戦略、品質保証計画、テストIssue作成には `plan-test` Promptを使う
+- **アーキテクチャ計画**: システムアーキテクチャと技術設計には `plan-epic-arch` Promptを使う
+- **機能計画**: 詳細な機能要件と仕様には `plan-feature-prd` Promptを使う
 
-## Output Format
+## 出力形式
 
-Create two primary deliverables:
+主な成果物を2つ作成します。
 
-1. **Project Plan**: `/docs/ways-of-work/plan/{epic-name}/{feature-name}/project-plan.md`
-2. **Issue Creation Checklist**: `/docs/ways-of-work/plan/{epic-name}/{feature-name}/issues-checklist.md`
+1. **プロジェクト計画**: `/docs/ways-of-work/plan/{epic-name}/{feature-name}/project-plan.md`
+2. **Issue作成チェックリスト**: `/docs/ways-of-work/plan/{epic-name}/{feature-name}/issues-checklist.md`
 
-### Project Plan Structure
+### プロジェクト計画の構造
 
-#### 1. Project Overview
+#### 1. プロジェクト概要
 
-- **Feature Summary**: Brief description and business value
-- **Success Criteria**: Measurable outcomes and KPIs
-- **Key Milestones**: Breakdown of major deliverables without timelines
-- **Risk Assessment**: Potential blockers and mitigation strategies
+- **機能概要**: 簡潔な説明と業務価値
+- **成功基準**: 測定可能な成果とKPI
+- **主要マイルストーン**: 期間を含まない主要成果物の分解
+- **リスク評価**: 潜在的なブロッカーと緩和策
 
-#### 2. Work Item Hierarchy
+#### 2. 作業項目の階層
 
 ```mermaid
 graph TD
@@ -85,9 +85,9 @@ graph TD
     F --> P[Task: Monitoring Setup]
 ```
 
-#### 3. GitHub Issues Breakdown
+#### 3. GitHub Issueの分解
 
-##### Epic Issue Template
+##### Epic Issueテンプレート
 
 ```markdown
 # Epic: {Epic Name}
@@ -133,7 +133,7 @@ graph TD
 {Epic-level t-shirt size: XS, S, M, L, XL, XXL}
 ```
 
-##### Feature Issue Template
+##### Feature Issueテンプレート
 
 ```markdown
 # Feature: {Feature Name}
@@ -183,7 +183,7 @@ graph TD
 {Story points or t-shirt size}
 ```
 
-##### User Story Issue Template
+##### User Story Issueテンプレート
 
 ```markdown
 # User Story: {Story Title}
@@ -233,7 +233,7 @@ As a **{user type}**, I want **{goal}** so that **{benefit}**.
 {Story points: 1, 2, 3, 5, 8}
 ```
 
-##### Technical Enabler Issue Template
+##### Technical Enabler Issueテンプレート
 
 ```markdown
 # Technical Enabler: {Enabler Title}
@@ -286,36 +286,36 @@ This enabler supports:
 {Story points or effort estimate}
 ```
 
-#### 4. Priority and Value Matrix
+#### 4. 優先度と価値のマトリックス
 
-| Priority | Value  | Criteria                        | Labels                            |
+| 優先度 | 価値  | 基準                        | ラベル                            |
 | -------- | ------ | ------------------------------- | --------------------------------- |
-| P0       | High   | Critical path, blocking release | `priority-critical`, `value-high` |
-| P1       | High   | Core functionality, user-facing | `priority-high`, `value-high`     |
-| P1       | Medium | Core functionality, internal    | `priority-high`, `value-medium`   |
-| P2       | Medium | Important but not blocking      | `priority-medium`, `value-medium` |
-| P3       | Low    | Nice to have, technical debt    | `priority-low`, `value-low`       |
+| P0       | 高   | クリティカルパス、リリースをブロック | `priority-critical`, `value-high` |
+| P1       | 高   | 中核機能、ユーザー向け | `priority-high`, `value-high`     |
+| P1       | 中 | 中核機能、内部向け    | `priority-high`, `value-medium`   |
+| P2       | 中 | 重要だがブロックしない      | `priority-medium`, `value-medium` |
+| P3       | 低   | あればよい、技術的負債    | `priority-low`, `value-low`       |
 
-#### 5. Estimation Guidelines
+#### 5. 見積もりガイドライン
 
-##### Story Point Scale (Fibonacci)
+##### Story Pointスケール（フィボナッチ）
 
-- **1 point**: Simple change, <4 hours
-- **2 points**: Small feature, <1 day
-- **3 points**: Medium feature, 1-2 days
-- **5 points**: Large feature, 3-5 days
-- **8 points**: Complex feature, 1-2 weeks
-- **13+ points**: Epic-level work, needs breakdown
+- **1 point**: 単純な変更、4時間未満
+- **2 points**: 小規模機能、1日未満
+- **3 points**: 中規模機能、1〜2日
+- **5 points**: 大規模機能、3〜5日
+- **8 points**: 複雑な機能、1〜2週間
+- **13+ points**: Epicレベルの作業、分解が必要
 
-##### T-Shirt Sizing (Epics/Features)
+##### Tシャツサイズ（Epic/Feature）
 
-- **XS**: 1-2 story points total
-- **S**: 3-8 story points total
-- **M**: 8-20 story points total
-- **L**: 20-40 story points total
-- **XL**: 40+ story points total (consider breaking down)
+- **XS**: 合計1〜2 story points
+- **S**: 合計3〜8 story points
+- **M**: 合計8〜20 story points
+- **L**: 合計20〜40 story points
+- **XL**: 合計40 story points以上（分解を検討）
 
-#### 6. Dependency Management
+#### 6. 依存関係管理
 
 ```mermaid
 graph LR
@@ -331,23 +331,23 @@ graph LR
     J[Authentication] --> D
 ```
 
-##### Dependency Types
+##### 依存関係の種類
 
-- **Blocks**: Work that cannot proceed until this is complete
-- **Related**: Work that shares context but not blocking
-- **Prerequisite**: Required infrastructure or setup work
-- **Parallel**: Work that can proceed simultaneously
+- **Blocks**: これが完了するまで進められない作業
+- **Related**: コンテキストを共有するが、ブロックはしない作業
+- **Prerequisite**: 必要なインフラまたはセットアップ作業
+- **Parallel**: 同時に進められる作業
 
-#### 7. Sprint Planning Template
+#### 7. スプリント計画テンプレート
 
-##### Sprint Capacity Planning
+##### スプリントのキャパシティ計画
 
-- **Team Velocity**: {Average story points per sprint}
-- **Sprint Duration**: {2-week sprints recommended}
-- **Buffer Allocation**: 20% for unexpected work and bug fixes
-- **Focus Factor**: 70-80% of total time on planned work
+- **Team Velocity**: {スプリントあたりの平均story points}
+- **Sprint Duration**: {2週間のスプリントを推奨}
+- **Buffer Allocation**: 予期しない作業とバグ修正に20%
+- **Focus Factor**: 計画作業に総時間の70〜80%
 
-##### Sprint Goal Definition
+##### スプリント目標の定義
 
 ```markdown
 ## Sprint {N} Goal
@@ -363,30 +363,30 @@ graph LR
 **Success Criteria**: {Measurable outcomes}
 ```
 
-#### 8. GitHub Project Board Configuration
+#### 8. GitHub Project Boardの設定
 
-##### Column Structure (Kanban)
+##### 列の構造（カンバン）
 
-1. **Backlog**: Prioritized and ready for planning
-2. **Sprint Ready**: Detailed and estimated, ready for development
-3. **In Progress**: Currently being worked on
-4. **In Review**: Code review, testing, or stakeholder review
-5. **Testing**: QA validation and acceptance testing
-6. **Done**: Completed and accepted
+1. **Backlog**: 優先順位付け済みで計画可能
+2. **Sprint Ready**: 詳細化と見積もりが済み、開発可能
+3. **In Progress**: 現在作業中
+4. **In Review**: コードレビュー、テスト、または関係者レビュー中
+5. **Testing**: QA検証と受け入れテスト中
+6. **Done**: 完了し受け入れ済み
 
-##### Custom Fields Configuration
+##### カスタムフィールドの設定
 
-- **Priority**: P0, P1, P2, P3
-- **Value**: High, Medium, Low
-- **Component**: Frontend, Backend, Infrastructure, Testing
-- **Estimate**: Story points or t-shirt size
-- **Sprint**: Current sprint assignment
-- **Assignee**: Responsible team member
-- **Epic**: Parent epic reference
+- **Priority**: P0、P1、P2、P3
+- **Value**: 高、中、低
+- **Component**: フロントエンド、バックエンド、インフラ、テスト
+- **Estimate**: Story pointsまたはTシャツサイズ
+- **Sprint**: 現在のスプリント割り当て
+- **Assignee**: 担当チームメンバー
+- **Epic**: 親Epicへの参照
 
-#### 9. Automation and GitHub Actions
+#### 9. 自動化とGitHub Actions
 
-##### Automated Issue Creation
+##### Issueの自動作成
 
 ```yaml
 name: Create Feature Issues
@@ -425,7 +425,7 @@ jobs:
             });
 ```
 
-##### Automated Status Updates
+##### ステータスの自動更新
 
 ```yaml
 name: Update Issue Status
@@ -449,61 +449,61 @@ jobs:
         # Move related issues to "Done" column
 ```
 
-### Issue Creation Checklist
+### Issue作成チェックリスト
 
-#### Pre-Creation Preparation
+#### 作成前の準備
 
-- [ ] **Feature artifacts complete**: PRD, UX design, technical breakdown, testing plan
-- [ ] **Epic exists**: Parent epic issue created with proper labels and milestone
-- [ ] **Project board configured**: Columns, custom fields, and automation rules set up
-- [ ] **Team capacity assessed**: Sprint planning and resource allocation completed
+- [ ] **機能成果物が完成**: PRD、UX設計、技術分解、テスト計画
+- [ ] **Epicが存在**: 適切なラベルとマイルストーンを持つ親Epic Issue
+- [ ] **Project boardを設定**: 列、カスタムフィールド、自動化ルール
+- [ ] **チームキャパシティを評価**: スプリント計画とリソース割り当てが完了
 
-#### Epic Level Issues
+#### EpicレベルのIssue
 
-- [ ] **Epic issue created** with comprehensive description and acceptance criteria
-- [ ] **Epic milestone created** with target release date
-- [ ] **Epic labels applied**: `epic`, priority, value, and team labels
-- [ ] **Epic added to project board** in appropriate column
+- [ ] 包括的な説明と受け入れ基準を含む**Epic Issueを作成**
+- [ ] 目標リリース日を含む**Epicマイルストーンを作成**
+- [ ] **Epicラベルを適用**: `epic`、優先度、価値、チームラベル
+- [ ] **EpicをProject boardへ追加**: 適切な列に配置
 
-#### Feature Level Issues
+#### FeatureレベルのIssue
 
-- [ ] **Feature issue created** linking to parent epic
-- [ ] **Feature dependencies identified** and documented
-- [ ] **Feature estimation completed** using t-shirt sizing
-- [ ] **Feature acceptance criteria defined** with measurable outcomes
+- [ ] 親Epicへリンクした**Feature Issueを作成**
+- [ ] **Featureの依存関係を特定**して文書化
+- [ ] Tシャツサイズで**Featureの見積もりを完了**
+- [ ] 測定可能な成果を含む**Featureの受け入れ基準を定義**
 
-#### Story/Enabler Level Issues documented in `/docs/ways-of-work/plan/{epic-name}/{feature-name}/issues-checklist.md`
+#### Story/EnablerレベルのIssueを`/docs/ways-of-work/plan/{epic-name}/{feature-name}/issues-checklist.md`に記録
 
-- [ ] **User stories created** following INVEST criteria
-- [ ] **Technical enablers identified** and prioritized
-- [ ] **Story point estimates assigned** using Fibonacci scale
-- [ ] **Dependencies mapped** between stories and enablers
-- [ ] **Acceptance criteria detailed** with testable requirements
+- [ ] INVEST基準に従う**User Storyを作成**
+- [ ] **Technical Enablerを特定**して優先順位付け
+- [ ] フィボナッチスケールで**Story point見積もりを割り当て**
+- [ ] StoryとEnabler間の**依存関係をマッピング**
+- [ ] テスト可能な要件を含む**受け入れ基準を詳細化**
 
-## Success Metrics
+## 成功指標
 
-### Project Management KPIs
+### プロジェクト管理KPI
 
-- **Sprint Predictability**: >80% of committed work completed per sprint
-- **Cycle Time**: Average time from "In Progress" to "Done" <5 business days
-- **Lead Time**: Average time from "Backlog" to "Done" <2 weeks
-- **Defect Escape Rate**: <5% of stories require post-release fixes
-- **Team Velocity**: Consistent story point delivery across sprints
+- **Sprint Predictability**: コミットした作業のスプリント完了率80%超
+- **Cycle Time**: 「In Progress」から「Done」までの平均時間が5営業日未満
+- **Lead Time**: 「Backlog」から「Done」までの平均時間が2週間未満
+- **Defect Escape Rate**: リリース後の修正が必要なStoryを5%未満
+- **Team Velocity**: スプリント間で一貫したstory pointの提供
 
-### Process Efficiency Metrics
+### プロセス効率指標
 
-- **Issue Creation Time**: <1 hour to create full feature breakdown
-- **Dependency Resolution**: <24 hours to resolve blocking dependencies
-- **Status Update Accuracy**: >95% automated status transitions working correctly
-- **Documentation Completeness**: 100% of issues have required template fields
-- **Cross-Team Collaboration**: <2 business days for external dependency resolution
+- **Issue Creation Time**: 完全な機能分解のIssue作成を1時間未満
+- **Dependency Resolution**: ブロックする依存関係の解決を24時間未満
+- **Status Update Accuracy**: 自動ステータス遷移の正常動作率95%超
+- **Documentation Completeness**: すべてのIssueに必須テンプレートフィールドを100%記載
+- **Cross-Team Collaboration**: 外部依存関係の解決を2営業日未満
 
-### Project Delivery Metrics
+### プロジェクト提供指標
 
-- **Definition of Done Compliance**: 100% of completed stories meet DoD criteria
-- **Acceptance Criteria Coverage**: 100% of acceptance criteria validated
-- **Sprint Goal Achievement**: >90% of sprint goals successfully delivered
-- **Stakeholder Satisfaction**: >90% stakeholder approval for completed features
-- **Planning Accuracy**: <10% variance between estimated and actual delivery time
+- **Definition of Done Compliance**: 完了したStoryの100%がDoD基準を満たす
+- **Acceptance Criteria Coverage**: 受け入れ基準を100%検証
+- **Sprint Goal Achievement**: スプリント目標の達成率90%超
+- **Stakeholder Satisfaction**: 完了機能への関係者承認率90%超
+- **Planning Accuracy**: 見積もりと実際の提供時間の差を10%未満
 
-This comprehensive GitHub project management approach ensures complete traceability from epic-level planning down to individual implementation tasks, with automated tracking and clear accountability for all team members.
+この包括的なGitHubプロジェクト管理アプローチにより、Epicレベルの計画から個々の実装タスクまで完全な追跡可能性を確保し、自動追跡と全メンバーの明確な責任分担を実現します。

@@ -1,25 +1,25 @@
 ---
 name: aws-well-architected-review
-description: 'Perform an AWS Well-Architected Framework review of the current workload IaC and architecture, generating findings and GitHub issues for improvements.'
+description: '現在のワークロードの IaC とアーキテクチャについて AWS Well-Architected Framework レビューを実施し、改善のための所見と GitHub Issue を生成します。'
 ---
 
-# AWS Well-Architected Review
+# AWS Well-Architected レビュー
 
 This workflow performs a structured AWS Well-Architected Framework (WAF) review against your workload's IaC files and deployed infrastructure. It identifies risks across all 6 WAF pillars and creates GitHub issues to track remediation.
 
-## Prerequisites
+## 前提条件
 - AWS CLI configured and authenticated
 - IaC files present in the repository (Terraform, CloudFormation, CDK, or SAM)
 - GitHub MCP server configured and authenticated
 
-## Workflow Steps
+## ワークフロー手順
 
-### Step 1: Load Well-Architected Framework Reference
+### ステップ 1: Well-Architected Framework リファレンスを読み込む
 Fetch current AWS WAF best practices:
 - `https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html`
 - Pillar-specific lenses relevant to the workload type (Serverless, SaaS, etc.)
 
-### Step 2: Discover IaC & Architecture
+### ステップ 2: IaC とアーキテクチャを検出
 Scan the repository for IaC files:
 - Terraform: `**/*.tf`
 - CloudFormation/SAM: `**/*.yaml`, `**/*.json` (CFn templates)
@@ -27,7 +27,7 @@ Scan the repository for IaC files:
 
 Identify key AWS services in use (compute, data, networking, security, observability) and generate a Mermaid architecture diagram.
 
-### Step 3: Pillar-by-Pillar Review
+### ステップ 3: ピラーごとのレビュー
 
 #### Pillar 1: Operational Excellence
 - [ ] All infrastructure defined as IaC (no manual console changes)
@@ -85,13 +85,13 @@ Identify key AWS services in use (compute, data, networking, security, observabi
 - [ ] Auto Scaling configured to avoid over-provisioning
 - [ ] Region selection considers AWS renewable energy commitments
 
-### Step 4: Risk Classification
+### ステップ 4: リスク分類
 For each finding, classify:
 - **High Risk**: Security vulnerability, single point of failure, no backup/recovery
 - **Medium Risk**: Suboptimal reliability, cost inefficiency, performance concern
 - **Low Risk**: Best practice deviation, minor optimization opportunity
 
-### Step 5: User Confirmation
+### ステップ 5: ユーザー確認
 
 ```
 🏗️ AWS Well-Architected Review Summary
@@ -113,7 +113,7 @@ For each finding, classify:
 ❓ Proceed with creating GitHub issues? (y/n)
 ```
 
-### Step 6: Create Individual Finding Issues
+### ステップ 6: 所見ごとの Issue を作成
 Label with "well-architected" and the pillar name (e.g., "security", "reliability").
 
 **Title**: `[WAF-<PILLAR>] [Brief Finding] — [Risk Level]`

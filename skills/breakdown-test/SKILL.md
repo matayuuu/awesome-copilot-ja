@@ -1,206 +1,206 @@
 ---
 name: breakdown-test
-description: 'Test Planning and Quality Assurance prompt that generates comprehensive test strategies, task breakdowns, and quality validation plans for GitHub projects.'
+description: 'GitHubプロジェクト向けに、包括的なテスト戦略、タスク分解、品質検証計画を生成するテスト計画と品質保証のPromptです。'
 ---
 
-# Test Planning & Quality Assurance Prompt
+# テスト計画と品質保証Prompt
 
-## Goal
+## 目標
 
-Act as a senior Quality Assurance Engineer and Test Architect with expertise in ISTQB frameworks, ISO 25010 quality standards, and modern testing practices. Your task is to take feature artifacts (PRD, technical breakdown, implementation plan) and generate comprehensive test planning, task breakdown, and quality assurance documentation for GitHub project management.
+ISTQBフレームワーク、ISO 25010品質標準、最新のテスト手法に詳しいシニア品質保証エンジニア兼テストアーキテクトとして振る舞います。機能成果物（PRD、技術分解、実装計画）を受け取り、GitHubプロジェクト管理向けの包括的なテスト計画、タスク分解、品質保証文書を生成します。
 
-## Quality Standards Framework
+## 品質標準フレームワーク
 
-### ISTQB Framework Application
+### ISTQBフレームワークの適用
 
-- **Test Process Activities**: Planning, monitoring, analysis, design, implementation, execution, completion
-- **Test Design Techniques**: Black-box, white-box, and experience-based testing approaches
-- **Test Types**: Functional, non-functional, structural, and change-related testing
-- **Risk-Based Testing**: Risk assessment and mitigation strategies
+- **テストプロセス活動**: 計画、監視、分析、設計、実装、実行、完了
+- **テスト設計技法**: ブラックボックス、ホワイトボックス、経験ベースのテスト手法
+- **テスト種別**: 機能、非機能、構造、変更関連テスト
+- **リスクベーステスト**: リスク評価と緩和戦略
 
-### ISO 25010 Quality Model
+### ISO 25010品質モデル
 
-- **Quality Characteristics**: Functional suitability, performance efficiency, compatibility, usability, reliability, security, maintainability, portability
-- **Quality Validation**: Measurement and assessment approaches for each characteristic
-- **Quality Gates**: Entry and exit criteria for quality checkpoints
+- **品質特性**: 機能適合性、性能効率性、互換性、使用性、信頼性、セキュリティ、保守性、移植性
+- **品質検証**: 各特性の測定と評価方法
+- **品質ゲート**: 品質チェックポイントの開始基準と終了基準
 
-## Input Requirements
+## 入力要件
 
-Before using this prompt, ensure you have:
+このPromptを使う前に、次が揃っていることを確認します。
 
-### Core Feature Documents
+### 中核となる機能文書
 
 1. **Feature PRD**: `/docs/ways-of-work/plan/{epic-name}/{feature-name}.md`
 2. **Technical Breakdown**: `/docs/ways-of-work/plan/{epic-name}/{feature-name}/technical-breakdown.md`
 3. **Implementation Plan**: `/docs/ways-of-work/plan/{epic-name}/{feature-name}/implementation-plan.md`
 4. **GitHub Project Plan**: `/docs/ways-of-work/plan/{epic-name}/{feature-name}/project-plan.md`
 
-## Output Format
+## 出力形式
 
-Create comprehensive test planning documentation:
+包括的なテスト計画文書を作成します。
 
-1. **Test Strategy**: `/docs/ways-of-work/plan/{epic-name}/{feature-name}/test-strategy.md`
-2. **Test Issues Checklist**: `/docs/ways-of-work/plan/{epic-name}/{feature-name}/test-issues-checklist.md`
-3. **Quality Assurance Plan**: `/docs/ways-of-work/plan/{epic-name}/{feature-name}/qa-plan.md`
+1. **テスト戦略**: `/docs/ways-of-work/plan/{epic-name}/{feature-name}/test-strategy.md`
+2. **テストIssueチェックリスト**: `/docs/ways-of-work/plan/{epic-name}/{feature-name}/test-issues-checklist.md`
+3. **品質保証計画**: `/docs/ways-of-work/plan/{epic-name}/{feature-name}/qa-plan.md`
 
-### Test Strategy Structure
+### テスト戦略の構造
 
-#### 1. Test Strategy Overview
+#### 1. テスト戦略の概要
 
-- **Testing Scope**: Features and components to be tested
-- **Quality Objectives**: Measurable quality goals and success criteria
-- **Risk Assessment**: Identified risks and mitigation strategies
-- **Test Approach**: Overall testing methodology and framework application
+- **テスト範囲**: テスト対象の機能とコンポーネント
+- **品質目標**: 測定可能な品質目標と成功基準
+- **リスク評価**: 特定したリスクと緩和戦略
+- **テストアプローチ**: 全体的なテスト方法論とフレームワーク適用
 
-#### 2. ISTQB Framework Implementation
+#### 2. ISTQBフレームワークの実装
 
-##### Test Design Techniques Selection
+##### テスト設計技法の選択
 
-Create a comprehensive analysis of which ISTQB test design techniques to apply:
+適用するISTQBテスト設計技法を包括的に分析します。
 
-- **Equivalence Partitioning**: Input domain partitioning strategy
-- **Boundary Value Analysis**: Edge case identification and testing
-- **Decision Table Testing**: Complex business rule validation
-- **State Transition Testing**: System state behavior validation
-- **Experience-Based Testing**: Exploratory and error guessing approaches
+- **同値分割**: 入力ドメインの分割戦略
+- **境界値分析**: エッジケースの特定とテスト
+- **デシジョンテーブルテスト**: 複雑な業務ルールの検証
+- **状態遷移テスト**: システム状態の振る舞いの検証
+- **経験ベーステスト**: 探索的テストとエラー推測のアプローチ
 
-##### Test Types Coverage Matrix
+##### テスト種別のカバレッジマトリックス
 
-Define comprehensive test type coverage:
+テスト種別の包括的なカバレッジを定義します。
 
-- **Functional Testing**: Feature behavior validation
-- **Non-Functional Testing**: Performance, usability, security validation
-- **Structural Testing**: Code coverage and architecture validation
-- **Change-Related Testing**: Regression and confirmation testing
+- **機能テスト**: 機能の振る舞いの検証
+- **非機能テスト**: 性能、使用性、セキュリティの検証
+- **構造テスト**: コードカバレッジとアーキテクチャの検証
+- **変更関連テスト**: 回帰テストと確認テスト
 
-#### 3. ISO 25010 Quality Characteristics Assessment
+#### 3. ISO 25010品質特性の評価
 
-Create a quality characteristics prioritization matrix:
+品質特性の優先順位付けマトリックスを作成します。
 
-- **Functional Suitability**: Completeness, correctness, appropriateness assessment
-- **Performance Efficiency**: Time behavior, resource utilization, capacity validation
-- **Compatibility**: Co-existence and interoperability testing
-- **Usability**: User interface, accessibility, and user experience validation
-- **Reliability**: Fault tolerance, recoverability, and availability testing
-- **Security**: Confidentiality, integrity, authentication, and authorization validation
-- **Maintainability**: Modularity, reusability, and testability assessment
-- **Portability**: Adaptability, installability, and replaceability validation
+- **機能適合性**: 完全性、正確性、適切性の評価
+- **性能効率性**: 時間効率、リソース利用、容量の検証
+- **互換性**: 共存性と相互運用性のテスト
+- **使用性**: ユーザーインターフェイス、アクセシビリティ、ユーザー体験の検証
+- **信頼性**: 耐障害性、回復性、可用性のテスト
+- **セキュリティ**: 機密性、完全性、認証、認可の検証
+- **保守性**: モジュール性、再利用性、テスト容易性の評価
+- **移植性**: 適応性、インストール性、置換性の検証
 
-#### 4. Test Environment and Data Strategy
+#### 4. テスト環境とデータ戦略
 
-- **Test Environment Requirements**: Hardware, software, and network configurations
-- **Test Data Management**: Data preparation, privacy, and maintenance strategies
-- **Tool Selection**: Testing tools, frameworks, and automation platforms
-- **CI/CD Integration**: Continuous testing pipeline integration
+- **テスト環境要件**: ハードウェア、ソフトウェア、ネットワーク構成
+- **テストデータ管理**: データ準備、プライバシー、保守戦略
+- **Tool選択**: テストTool、フレームワーク、自動化プラットフォーム
+- **CI/CD統合**: 継続的テストパイプラインへの統合
 
-### Test Issues Checklist
+### テストIssueチェックリスト
 
-#### Test Level Issues Creation
+#### テストレベルのIssue作成
 
-- [ ] **Test Strategy Issue**: Overall testing approach and quality validation plan
-- [ ] **Unit Test Issues**: Component-level testing for each implementation task
-- [ ] **Integration Test Issues**: Interface and interaction testing between components
-- [ ] **End-to-End Test Issues**: Complete user workflow validation using Playwright
-- [ ] **Performance Test Issues**: Non-functional requirement validation
-- [ ] **Security Test Issues**: Security requirement and vulnerability testing
-- [ ] **Accessibility Test Issues**: WCAG compliance and inclusive design validation
-- [ ] **Regression Test Issues**: Change impact and existing functionality preservation
+- [ ] **テスト戦略Issue**: 全体的なテストアプローチと品質検証計画
+- [ ] **単体テストIssue**: 各実装タスクのコンポーネントレベルテスト
+- [ ] **統合テストIssue**: コンポーネント間のインターフェイスと相互作用のテスト
+- [ ] **エンドツーエンドテストIssue**: Playwrightを使った完全なユーザーワークフロー検証
+- [ ] **性能テストIssue**: 非機能要件の検証
+- [ ] **セキュリティテストIssue**: セキュリティ要件と脆弱性のテスト
+- [ ] **アクセシビリティテストIssue**: WCAG準拠とインクルーシブデザインの検証
+- [ ] **回帰テストIssue**: 変更影響と既存機能の維持
 
-#### Test Types Identification and Prioritization
+#### テスト種別の特定と優先順位付け
 
-- [ ] **Functional Testing Priority**: Critical user paths and core business logic
-- [ ] **Non-Functional Testing Priority**: Performance, security, and usability requirements
-- [ ] **Structural Testing Priority**: Code coverage targets and architecture validation
-- [ ] **Change-Related Testing Priority**: Risk-based regression testing scope
+- [ ] **機能テストの優先度**: 重要なユーザーパスと中核業務ロジック
+- [ ] **非機能テストの優先度**: 性能、セキュリティ、使用性の要件
+- [ ] **構造テストの優先度**: コードカバレッジ目標とアーキテクチャ検証
+- [ ] **変更関連テストの優先度**: リスクベースの回帰テスト範囲
 
-#### Test Dependencies Documentation
+#### テスト依存関係の文書化
 
-- [ ] **Implementation Dependencies**: Tests blocked by specific development tasks
-- [ ] **Environment Dependencies**: Test environment and data requirements
-- [ ] **Tool Dependencies**: Testing framework and automation tool setup
-- [ ] **Cross-Team Dependencies**: Dependencies on external systems or teams
+- [ ] **実装の依存関係**: 特定の開発タスクによりブロックされるテスト
+- [ ] **環境の依存関係**: テスト環境とデータの要件
+- [ ] **Toolの依存関係**: テストフレームワークと自動化Toolのセットアップ
+- [ ] **チーム間の依存関係**: 外部システムまたはチームへの依存関係
 
-#### Test Coverage Targets and Metrics
+#### テストカバレッジ目標とメトリクス
 
-- [ ] **Code Coverage Targets**: >80% line coverage, >90% branch coverage for critical paths
-- [ ] **Functional Coverage Targets**: 100% acceptance criteria validation
-- [ ] **Risk Coverage Targets**: 100% high-risk scenario validation
-- [ ] **Quality Characteristics Coverage**: Validation approach for each ISO 25010 characteristic
+- [ ] **コードカバレッジ目標**: 行カバレッジ80%超、重要パスの分岐カバレッジ90%超
+- [ ] **機能カバレッジ目標**: 受け入れ基準を100%検証
+- [ ] **リスクカバレッジ目標**: 高リスクシナリオを100%検証
+- [ ] **品質特性カバレッジ**: 各ISO 25010特性の検証方法
 
-### Task Level Breakdown
+### タスクレベルの分解
 
-#### Implementation Task Creation and Estimation
+#### 実装タスクの作成と見積もり
 
-- [ ] **Test Implementation Tasks**: Detailed test case development and automation tasks
-- [ ] **Test Environment Setup Tasks**: Infrastructure and configuration tasks
-- [ ] **Test Data Preparation Tasks**: Data generation and management tasks
-- [ ] **Test Automation Framework Tasks**: Tool setup and framework development
+- [ ] **テスト実装タスク**: 詳細なテストケース開発と自動化タスク
+- [ ] **テスト環境セットアップタスク**: インフラと構成のタスク
+- [ ] **テストデータ準備タスク**: データ生成と管理タスク
+- [ ] **テスト自動化フレームワークタスク**: Toolセットアップとフレームワーク開発
 
-#### Task Estimation Guidelines
+#### タスク見積もりガイドライン
 
-- [ ] **Unit Test Tasks**: 0.5-1 story point per component
-- [ ] **Integration Test Tasks**: 1-2 story points per interface
-- [ ] **E2E Test Tasks**: 2-3 story points per user workflow
-- [ ] **Performance Test Tasks**: 3-5 story points per performance requirement
-- [ ] **Security Test Tasks**: 2-4 story points per security requirement
+- [ ] **単体テストタスク**: コンポーネントあたり0.5〜1 story point
+- [ ] **統合テストタスク**: インターフェイスあたり1〜2 story points
+- [ ] **E2Eテストタスク**: ユーザーワークフローあたり2〜3 story points
+- [ ] **性能テストタスク**: 性能要件あたり3〜5 story points
+- [ ] **セキュリティテストタスク**: セキュリティ要件あたり2〜4 story points
 
-#### Task Dependencies and Sequencing
+#### タスク依存関係と順序付け
 
-- [ ] **Sequential Dependencies**: Tests that must be implemented in specific order
-- [ ] **Parallel Development**: Tests that can be developed simultaneously
-- [ ] **Critical Path Identification**: Testing tasks on the critical path to delivery
-- [ ] **Resource Allocation**: Task assignment based on team skills and capacity
+- [ ] **順次依存関係**: 特定の順序で実装しなければならないテスト
+- [ ] **並行開発**: 同時に開発できるテスト
+- [ ] **クリティカルパスの特定**: 提供までのクリティカルパス上のテストタスク
+- [ ] **リソース割り当て**: チームのスキルとキャパシティに基づくタスク割り当て
 
-#### Task Assignment Strategy
+#### タスク割り当て戦略
 
-- [ ] **Skill-Based Assignment**: Matching tasks to team member expertise
-- [ ] **Capacity Planning**: Balancing workload across team members
-- [ ] **Knowledge Transfer**: Pairing junior and senior team members
-- [ ] **Cross-Training Opportunities**: Skill development through task assignment
+- [ ] **スキルベースの割り当て**: チームメンバーの専門性に合わせたタスク
+- [ ] **キャパシティ計画**: メンバー間の作業量のバランス
+- [ ] **ナレッジ移転**: ジュニアとシニアメンバーのペアリング
+- [ ] **クロストレーニングの機会**: タスク割り当てによるスキル開発
 
-### Quality Assurance Plan
+### 品質保証計画
 
-#### Quality Gates and Checkpoints
+#### 品質ゲートとチェックポイント
 
-Create comprehensive quality validation checkpoints:
+包括的な品質検証チェックポイントを作成します。
 
-- **Entry Criteria**: Requirements for beginning each testing phase
-- **Exit Criteria**: Quality standards required for phase completion
-- **Quality Metrics**: Measurable indicators of quality achievement
-- **Escalation Procedures**: Process for addressing quality failures
+- **開始基準**: 各テストフェーズを開始するための要件
+- **終了基準**: フェーズ完了に必要な品質標準
+- **品質メトリクス**: 品質達成度を示す測定可能な指標
+- **エスカレーション手順**: 品質失敗に対処するプロセス
 
-#### GitHub Issue Quality Standards
+#### GitHub Issueの品質標準
 
-- [ ] **Template Compliance**: All test issues follow standardized templates
-- [ ] **Required Field Completion**: Mandatory fields populated with accurate information
-- [ ] **Label Consistency**: Standardized labeling across all test work items
-- [ ] **Priority Assignment**: Risk-based priority assignment using defined criteria
-- [ ] **Value Assessment**: Business value and quality impact assessment
+- [ ] **テンプレート準拠**: すべてのテストIssueが標準テンプレートに従う
+- [ ] **必須フィールドの入力**: 必須フィールドに正確な情報を入力
+- [ ] **ラベルの一貫性**: すべてのテスト作業項目で標準ラベルを使用
+- [ ] **優先度の割り当て**: 定義済み基準によるリスクベースの優先順位付け
+- [ ] **価値の評価**: 業務価値と品質影響の評価
 
-#### Labeling and Prioritization Standards
+#### ラベル付けと優先順位付けの標準
 
-- [ ] **Test Type Labels**: `unit-test`, `integration-test`, `e2e-test`, `performance-test`, `security-test`
-- [ ] **Quality Labels**: `quality-gate`, `iso25010`, `istqb-technique`, `risk-based`
-- [ ] **Priority Labels**: `test-critical`, `test-high`, `test-medium`, `test-low`
-- [ ] **Component Labels**: `frontend-test`, `backend-test`, `api-test`, `database-test`
+- [ ] **テスト種別ラベル**: `unit-test`, `integration-test`, `e2e-test`, `performance-test`, `security-test`
+- [ ] **品質ラベル**: `quality-gate`, `iso25010`, `istqb-technique`, `risk-based`
+- [ ] **優先度ラベル**: `test-critical`, `test-high`, `test-medium`, `test-low`
+- [ ] **コンポーネントラベル**: `frontend-test`, `backend-test`, `api-test`, `database-test`
 
-#### Dependency Validation and Management
+#### 依存関係の検証と管理
 
-- [ ] **Circular Dependency Detection**: Validation to prevent blocking relationships
-- [ ] **Critical Path Analysis**: Identification of testing dependencies on delivery timeline
-- [ ] **Risk Assessment**: Impact analysis of dependency delays on quality validation
-- [ ] **Mitigation Strategies**: Alternative approaches for blocked testing activities
+- [ ] **循環依存の検出**: ブロック関係を防ぐ検証
+- [ ] **クリティカルパス分析**: 提供スケジュール上のテスト依存関係の特定
+- [ ] **リスク評価**: 依存関係の遅延が品質検証へ与える影響分析
+- [ ] **緩和戦略**: ブロックされたテスト作業に対する代替アプローチ
 
-#### Estimation Accuracy and Review
+#### 見積もり精度とレビュー
 
-- [ ] **Historical Data Analysis**: Using past project data for estimation accuracy
-- [ ] **Technical Lead Review**: Expert validation of test complexity estimates
-- [ ] **Risk Buffer Allocation**: Additional time allocation for high-uncertainty tasks
-- [ ] **Estimate Refinement**: Iterative improvement of estimation accuracy
+- [ ] **過去データの分析**: 過去のプロジェクトデータを使った見積もり精度の向上
+- [ ] **テクニカルリードレビュー**: テスト複雑度の見積もりに対する専門家の検証
+- [ ] **リスクバッファの割り当て**: 不確実性の高いタスクへの追加時間の割り当て
+- [ ] **見積もりの精緻化**: 見積もり精度を反復的に改善
 
-## GitHub Issue Templates for Testing
+## テスト用GitHub Issueテンプレート
 
-### Test Strategy Issue Template
+### テスト戦略Issueテンプレート
 
 ```markdown
 # Test Strategy: {Feature Name}
@@ -248,7 +248,7 @@ Create comprehensive quality validation checkpoints:
 {Strategic planning effort: 2-3 story points}
 ```
 
-### Playwright Test Implementation Issue Template
+### Playwrightテスト実装Issueテンプレート
 
 ```markdown
 # Playwright Tests: {Story/Component Name}
@@ -294,7 +294,7 @@ Create comprehensive quality validation checkpoints:
 {Test implementation effort: 2-5 story points}
 ```
 
-### Quality Assurance Issue Template
+### 品質保証Issueテンプレート
 
 ```markdown
 # Quality Assurance: {Feature Name}
@@ -343,23 +343,23 @@ Create comprehensive quality validation checkpoints:
 
 ### Test Coverage Metrics
 
-- **Code Coverage**: >80% line coverage, >90% branch coverage for critical paths
-- **Functional Coverage**: 100% acceptance criteria validation
-- **Risk Coverage**: 100% high-risk scenario testing
-- **Quality Characteristics Coverage**: Validation for all applicable ISO 25010 characteristics
+- **コードカバレッジ**: 80%超の行カバレッジ、重要パスでは90%超の分岐カバレッジ
+- **機能カバレッジ**: 受け入れ基準を100%検証
+- **リスクカバレッジ**: 高リスクシナリオを100%テスト
+- **Quality Characteristics Coverage**: 適用可能なすべてのISO 25010特性の検証
 
-### Quality Validation Metrics
+### 品質検証メトリクス
 
-- **Defect Detection Rate**: >95% of defects found before production
-- **Test Execution Efficiency**: >90% test automation coverage
-- **Quality Gate Compliance**: 100% quality gates passed before release
-- **Risk Mitigation**: 100% identified risks addressed with mitigation strategies
+- **Defect Detection Rate**: 本番前に95%超の欠陥を検出
+- **Test Execution Efficiency**: テスト自動化カバレッジ90%超
+- **Quality Gate Compliance**: リリース前に品質ゲートを100%通過
+- **Risk Mitigation**: 特定したリスクの100%に緩和策で対応
 
-### Process Efficiency Metrics
+### プロセス効率メトリクス
 
-- **Test Planning Time**: <2 hours to create comprehensive test strategy
-- **Test Implementation Speed**: <1 day per story point of test development
-- **Quality Feedback Time**: <2 hours from test completion to quality assessment
-- **Documentation Completeness**: 100% test issues have complete template information
+- **Test Planning Time**: 包括的なテスト戦略の作成を2時間未満
+- **Test Implementation Speed**: テスト開発はstory pointあたり1日未満
+- **Quality Feedback Time**: テスト完了から品質評価まで2時間未満
+- **Documentation Completeness**: すべてのテストIssueにテンプレート情報を100%記載
 
-This comprehensive test planning approach ensures thorough quality validation aligned with industry standards while maintaining efficient project management and clear accountability for all testing activities.
+この包括的なテスト計画アプローチにより、効率的なプロジェクト管理とすべてのテスト活動に対する明確な責任分担を維持しながら、業界標準に沿った徹底的な品質検証を実現します。

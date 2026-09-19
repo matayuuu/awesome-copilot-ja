@@ -1,21 +1,21 @@
 ---
 name: aws-cost-optimize
-description: 'Analyze AWS resources used in the app (IaC files and/or resources in a target account/region) and optimize costs - creating GitHub issues for identified optimizations.'
+description: 'アプリで使用する AWS リソース（IaC ファイルまたは対象アカウント／リージョンのリソース）を分析し、コストを最適化します。特定した最適化ごとに GitHub Issue を作成します。'
 ---
 
-# AWS Cost Optimize
+# AWS コスト最適化
 
 This workflow analyzes Infrastructure-as-Code (IaC) files and AWS resources to generate cost optimization recommendations. It creates individual GitHub issues for each optimization opportunity plus one EPIC issue to coordinate implementation, enabling efficient tracking and execution of cost savings initiatives.
 
-## Prerequisites
+## 前提条件
 - AWS CLI configured and authenticated (`aws sts get-caller-identity` succeeds)
 - GitHub MCP server configured and authenticated
 - Target GitHub repository identified
 - AWS resources deployed (IaC files optional but helpful)
 
-## Workflow Steps
+## ワークフロー手順
 
-### Step 1: Get AWS Cost Optimization Best Practices
+### ステップ 1: AWS コスト最適化のベストプラクティスを取得
 **Action**: Retrieve cost optimization best practices before analysis
 **Tools**: `fetch` to retrieve AWS documentation
 **Process**:
@@ -24,7 +24,7 @@ This workflow analyzes Infrastructure-as-Code (IaC) files and AWS resources to g
    - Fetch the AWS Well-Architected Cost Optimization pillar summary
    - Use these practices to inform subsequent analysis and recommendations
 
-### Step 2: Discover AWS Infrastructure
+### ステップ 2: AWS インフラストラクチャを検出
 **Action**: Dynamically discover and analyze AWS resources and configurations
 **Tools**: AWS CLI + Local file system access
 **Process**:
@@ -48,7 +48,7 @@ This workflow analyzes Infrastructure-as-Code (IaC) files and AWS resources to g
    - Do NOT use application code files — only IaC files as the source of truth
    - If no IaC files found: STOP and report to user
 
-### Step 3: Collect Usage Metrics & Validate Current Costs
+### ステップ 3: 使用量メトリックを収集して現在のコストを検証
 **Action**: Gather utilization data and verify actual resource costs
 **Tools**: AWS CLI (CloudWatch, Cost Explorer)
 **Process**:
@@ -81,7 +81,7 @@ This workflow analyzes Infrastructure-as-Code (IaC) files and AWS resources to g
 
 3. **Calculate Baseline Metrics**: CPU/Memory averages, Lambda invocation rates, data transfer patterns, and a realistic current monthly total.
 
-### Step 4: Generate Cost Optimization Recommendations
+### ステップ 4: コスト最適化の推奨事項を生成
 **Action**: Analyze resources to identify optimization opportunities
 **Process**:
 1. **Apply Optimization Patterns**:
@@ -110,7 +110,7 @@ This workflow analyzes Infrastructure-as-Code (IaC) files and AWS resources to g
    High: Score > 20 | Medium: Score 5-20 | Low: Score < 5
    ```
 
-### Step 5: User Confirmation
+### ステップ 5: ユーザー確認
 **Action**: Present summary and get approval before creating GitHub issues
 
 ```
@@ -134,7 +134,7 @@ This workflow analyzes Infrastructure-as-Code (IaC) files and AWS resources to g
 
 Wait for user confirmation before proceeding.
 
-### Step 6: Create Individual Optimization Issues
+### ステップ 6: 最適化ごとの Issue を作成
 **Action**: Create separate GitHub issues for each optimization. Label with "cost-optimization" (green) and "aws" (orange).
 
 **Title**: `[COST-OPT] [Resource Type] - [Brief Description] - $X/month savings`

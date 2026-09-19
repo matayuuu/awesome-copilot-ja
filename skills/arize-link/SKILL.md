@@ -1,22 +1,22 @@
 ---
 name: arize-link
-description: Generates deep links to the Arize UI for traces, spans, sessions, datasets, labeling queues, evaluators, and annotation configs. Produces clickable URLs for sharing Arize resources with team members. Use when the user wants to link to or open a trace, span, session, dataset, evaluator, or annotation config in the Arize UI.
+description: 'Arize UI のトレース、スパン、セッション、データセット、ラベリングキュー、評価器、アノテーション設定へのディープリンクを生成します。チームで Arize リソースを共有するクリック可能な URL を作成します。ユーザーがこれらのリソースへのリンク作成や表示を求めたときに使用します。'
 metadata:
   author: arize
   version: "1.0"
 ---
 
-# Arize Link
+# Arize リンク
 
 Generate deep links to the Arize UI for traces, spans, sessions, datasets, labeling queues, evaluators, and annotation configs.
 
-## When to Use
+## 使用する場面
 
 - User wants a link to a trace, span, session, dataset, labeling queue, evaluator, or annotation config
 - You have IDs from exported data or logs and need to link back to the UI
 - User asks to "open" or "view" any of the above in Arize
 
-## Required Inputs
+## 必須入力
 
 Collect from the user or context (exported trace data, parsed URLs):
 
@@ -30,7 +30,7 @@ Collect from the user or context (exported trace data, parsed URLs):
 
 **All path IDs must be base64-encoded** (characters: `A-Za-z0-9+/=`). A raw numeric ID produces a valid-looking URL that 404s. If the user provides a number, ask them to copy the ID directly from their Arize browser URL (`https://app.arize.com/organizations/{org_id}/spaces/{space_id}/…`). If you have a raw internal ID (e.g. `Organization:1:abC1`), base64-encode it before inserting into the URL.
 
-## URL Templates
+## URL テンプレート
 
 Base URL: `https://app.arize.com` (override for on-prem)
 
@@ -67,7 +67,7 @@ The `version` value must be URL-encoded (e.g., trailing `=` → `%3D`).
 {base_url}/organizations/{org_id}/spaces/{space_id}/annotation-configs
 ```
 
-## Time Range
+## 時間範囲
 
 CRITICAL: `startA` and `endA` (epoch milliseconds) are **required** for trace/span/session links — omitting them defaults to the last 7 days and will show "no recent data" if the trace falls outside that window.
 
@@ -78,14 +78,14 @@ CRITICAL: `startA` and `endA` (epoch milliseconds) are **required** for trace/sp
 
 Prefer tight windows; 90-day windows load slowly.
 
-## Instructions
+## 手順
 
 1. Gather IDs from user, exported data, or URL context.
 2. Verify all path IDs are base64-encoded.
 3. Determine `startA`/`endA` using the priority order above.
 4. Substitute into the appropriate template and present as a clickable markdown link.
 
-## Troubleshooting
+## トラブルシューティング
 
 | Problem | Solution |
 |---|---|
@@ -94,10 +94,10 @@ Prefer tight windows; 90-day windows load slowly.
 | Span not highlighted | `span_id` may belong to a different trace. Verify against exported span data. |
 | `org_id` unknown | `ax` CLI doesn't expose it. Ask user to copy from `https://app.arize.com/organizations/{org_id}/spaces/{space_id}/…`. |
 
-## Related Skills
+## 関連 Skill
 
 - **arize-trace**: Export spans to get `trace_id`, `span_id`, and `start_time`.
 
-## Examples
+## 例
 
 See references/EXAMPLES.md for a complete set of concrete URLs for every link type.

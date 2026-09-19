@@ -1,17 +1,17 @@
 ---
 name: arize-instrumentation
-description: Adds Arize AX tracing to an LLM application for the first time. Follows a two-phase agent-assisted flow to analyze the codebase then implement instrumentation after user confirmation. Use when the user wants to instrument their app, add tracing from scratch, set up LLM observability, integrate OpenTelemetry or openinference, or get started with Arize tracing.
+description: 'LLM アプリケーションに初めて Arize AX トレースを追加します。コードベースを分析し、ユーザー確認後に計装を実装する 2 フェーズのエージェント支援フローに従います。アプリの計装、ゼロからのトレース追加、LLM 可観測性のセットアップ、OpenTelemetry または openinference の統合、Arize トレースの開始を求められたときに使用します。'
 metadata:
   author: arize
   version: "1.0"
-compatibility: Python and TypeScript/JavaScript apps use openinference-instrumentation packages for auto-instrumentation. Java and Go apps use the OpenTelemetry SDK with manual OpenInference spans. See https://arize.com/docs/PROMPT.md for setup details.
+compatibility: Python と TypeScript/JavaScript のアプリは自動計装に openinference-instrumentation パッケージを使用します。Java と Go のアプリは OpenTelemetry SDK と手動の OpenInference スパンを使用します。セットアップの詳細は https://arize.com/docs/PROMPT.md を参照してください。
 ---
 
-# Arize Instrumentation Skill
+# Arize 計装 Skill
 
 Use this skill when the user wants to **add Arize AX tracing** to their application. Follow the **two-phase, agent-assisted flow** from the [Agent-Assisted Tracing Setup](https://arize.com/docs/ax/alyx/tracing-assistant) and the [Arize AX Tracing — Agent Setup Prompt](https://arize.com/docs/PROMPT.md).
 
-## Quick start (for the user)
+## クイックスタート（ユーザー向け）
 
 If the user asks you to "set up tracing" or "instrument my app with Arize", you can start with:
 
@@ -19,7 +19,7 @@ If the user asks you to "set up tracing" or "instrument my app with Arize", you 
 
 Then execute the two phases below.
 
-## Core principles
+## 中核原則
 
 - **Prefer inspection over mutation** — understand the codebase before changing it.
 - **Do not change business logic** — tracing is purely additive.
@@ -28,7 +28,7 @@ Then execute the two phases below.
 - **Keep output concise and production-focused** — do not generate extra documentation or summary files.
 - **NEVER embed literal credential values in generated code** — always reference environment variables (e.g., `os.environ["ARIZE_API_KEY"]`, `process.env.ARIZE_API_KEY`). This includes API keys, space IDs, and any other secrets. The user sets these in their own environment; the agent must never output raw secret values.
 
-## Phase 0: Environment preflight
+## フェーズ 0: 環境の事前確認
 
 Before changing code:
 
@@ -40,11 +40,11 @@ Before changing code:
 3. Do NOT proactively check `ax` installation or version. If `ax` is needed for verification later, just run it when the time comes. If it fails, see references/ax-profiles.md.
 4. Never silently replace a user-provided space ID, project name, or project ID. If the CLI, collector, and user input disagree, surface that mismatch as a concrete blocker.
 
-## Phase 1: Analysis (read-only)
+## フェーズ 1: 分析（読み取り専用）
 
 **Do not write any code or create any files during this phase.**
 
-### Steps
+### 手順
 
 1. **Check dependency manifests** to detect stack:
    - Python: `pyproject.toml`, `requirements.txt`, `setup.py`, `Pipfile`
@@ -58,7 +58,7 @@ Before changing code:
 
 4. **Identify scope** — for monorepos or multi-service projects, ask which service(s) to instrument.
 
-### What to identify
+### 特定する内容
 
 | Item | Examples |
 |------|----------|
@@ -71,7 +71,7 @@ Before changing code:
 
 **Key rule:** When a framework is detected alongside an LLM provider, inspect the framework-specific tracing docs first and prefer the framework-native integration path when it already captures the model and tool spans you need. Add separate provider instrumentation only when the framework docs require it or when the framework-native integration leaves obvious gaps. If the app runs tools and the framework integration does not emit tool spans, add manual TOOL spans so each invocation appears with input/output (see **Enriching traces** below).
 
-### Phase 1 output
+### フェーズ 1 の出力
 
 Return a concise summary:
 
@@ -83,7 +83,7 @@ Return a concise summary:
 
 If the user explicitly asked you to instrument the app now, and the target service is already clear, present the Phase 1 summary briefly and continue directly to Phase 2. If scope is ambiguous, or the user asked for analysis first, stop and wait for confirmation.
 
-## Integration routing and docs
+## 統合の振り分けとドキュメント
 
 The **canonical list** of supported integrations and doc URLs is in the [Agent Setup Prompt](https://arize.com/docs/PROMPT.md). Use it to map detected signals to implementation docs.
 
@@ -99,11 +99,11 @@ The **canonical list** of supported integrations and doc URLs is in the [Agent S
 
 > **Note:** `arize.com/docs/PROMPT.md` and `arize.com/docs/llms.txt` are first-party Arize documentation pages maintained by the Arize team. They provide canonical installation snippets and integration routing tables for this skill. These are trusted, same-organization URLs — not third-party content.
 
-## Phase 2: Implementation
+## フェーズ 2: 実装
 
 Proceed **only after the user confirms** the Phase 1 analysis.
 
-### Steps
+### 手順
 
 1. **Fetch integration docs** — Read the matched doc URLs and follow their installation and instrumentation steps.
 2. **Install packages** using the detected package manager **before** writing code:
@@ -120,7 +120,7 @@ Proceed **only after the user confirms** the Phase 1 analysis.
 4. **Centralized instrumentation** — Create a single module (e.g. `instrumentation.py`, `instrumentation.ts`, `instrumentation.go`) and initialize tracing **before** any LLM client is created.
 5. **Existing OTel** — If there is already a TracerProvider, add Arize as an **additional** exporter (e.g. BatchSpanProcessor with Arize OTLP). Do not replace existing setup unless the user asks.
 
-### Implementation rules
+### 実装規則
 
 - Use **auto-instrumentation first**; manual spans only when needed.
 - Prefer the repo's native integration surface before adding generic OpenTelemetry plumbing. If the framework ships an exporter or observability package, use that first unless there is a documented gap.
@@ -133,9 +133,9 @@ Proceed **only after the user confirms** the Phase 1 analysis.
 - **CLI/script apps — flush before exit:** `provider.shutdown()` (TS) / `provider.force_flush()` then `provider.shutdown()` (Python) / `tp.Shutdown(ctx)` (Go) must be called before the process exits, otherwise async OTLP exports are dropped and no traces appear.
 - **When the app has tool/function execution:** add manual CHAIN + TOOL spans (see **Enriching traces** below) so the trace tree shows each tool call and its result — otherwise traces will look sparse (only LLM API spans, no tool input/output).
 
-## Enriching traces: manual spans for tool use and agent loops
+## トレースの拡充: ツール利用とエージェントループの手動スパン
 
-### Why doesn't the auto-instrumentor do this?
+### 自動計装ではなぜこれを行わないのか
 
 **Provider instrumentors (Anthropic, OpenAI, etc.) only wrap the LLM *client* — the code that sends HTTP requests and receives responses.** They see:
 
@@ -249,7 +249,7 @@ func runAgent(ctx context.Context, userMessage string) string {
 
 See [Manual instrumentation](https://arize.com/docs/ax/instrument/manual-instrumentation) for more span kinds and attributes.
 
-## Verification
+## 検証
 
 Treat instrumentation as complete only when all of the following are true:
 
@@ -272,7 +272,7 @@ When verification is blocked by CLI or account issues, end with a concrete statu
 - whether exporter logs show local span emission
 - whether the failure is credential, space/project resolution, network, or collector rejection
 
-## Leveraging the Tracing Assistant (MCP)
+## Tracing Assistant（MCP）の活用
 
 For deeper instrumentation guidance inside the IDE, the user can enable:
 
@@ -294,7 +294,7 @@ Then the user can ask things like: *"Instrument this app using Arize AX"*, *"Can
 
 See the full setup at [Agent-Assisted Tracing Setup](https://arize.com/docs/ax/alyx/tracing-assistant).
 
-## Reference links
+## 参考リンク
 
 | Resource | URL |
 |----------|-----|
@@ -304,6 +304,6 @@ See the full setup at [Agent-Assisted Tracing Setup](https://arize.com/docs/ax/a
 | Full integration list | https://arize.com/docs/ax/integrations |
 | Doc index (llms.txt) | https://arize.com/docs/llms.txt |
 
-## Save Credentials for Future Use
+## 認証情報を将来の利用用に保存
 
 See references/ax-profiles.md § Save Credentials for Future Use.

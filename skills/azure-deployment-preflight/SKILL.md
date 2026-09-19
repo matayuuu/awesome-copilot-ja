@@ -1,13 +1,13 @@
 ---
 name: azure-deployment-preflight
-description: 'Performs comprehensive preflight validation of Bicep deployments to Azure, including template syntax validation, what-if analysis, and permission checks. Use this skill before any deployment to Azure to preview changes, identify potential issues, and ensure the deployment will succeed. Activate when users mention deploying to Azure, validating Bicep files, checking deployment permissions, previewing infrastructure changes, running what-if, or preparing for azd provision.'
+description: 'テンプレート構文の検証、what-if 分析、権限確認を含む Azure Bicep デプロイの包括的な事前検証を実施します。Azure へのデプロイ前に変更をプレビューし、潜在的な問題を特定して、デプロイが成功することを確認するために使用します。Azure デプロイ、Bicep ファイルの検証、デプロイ権限の確認、インフラストラクチャ変更のプレビュー、what-if、azd provision の準備に言及されたときに有効化します。'
 ---
 
-# Azure Deployment Preflight Validation
+# Azure デプロイ事前検証
 
 This skill validates Bicep deployments before execution, supporting both Azure CLI (`az`) and Azure Developer CLI (`azd`) workflows.
 
-## When to Use This Skill
+## この Skill を使用する場面
 
 - Before deploying infrastructure to Azure
 - When preparing or reviewing Bicep files
@@ -15,11 +15,11 @@ This skill validates Bicep deployments before execution, supporting both Azure C
 - To verify permissions are sufficient for deployment
 - Before running `azd up`, `azd provision`, or `az deployment` commands
 
-## Validation Process
+## 検証プロセス
 
 Follow these steps in order. Continue to the next step even if a previous step fails—capture all issues in the final report.
 
-### Step 1: Detect Project Type
+### ステップ 1: プロジェクト種別を検出
 
 Determine the deployment workflow by checking for project indicators:
 
@@ -36,7 +36,7 @@ Determine the deployment workflow by checking for project indicators:
    - `<filename>.parameters.json` (JSON parameters)
    - `parameters.json` or `parameters/<env>.json` in same directory
 
-### Step 2: Validate Bicep Syntax
+### ステップ 2: Bicep 構文を検証
 
 Run Bicep CLI to check template syntax before attempting deployment validation:
 
@@ -53,7 +53,7 @@ bicep build <bicep-file> --stdout
 - Note the issue in the report
 - Continue to Step 3 (Azure will validate syntax during what-if)
 
-### Step 3: Run Preflight Validation
+### ステップ 3: 事前検証を実行
 
 Choose the appropriate validation based on project type detected in Step 1.
 
@@ -127,7 +127,7 @@ az deployment group what-if \
 
 Note the fallback in the report—the user may lack full deployment permissions.
 
-### Step 4: Capture What-If Results
+### ステップ 4: What-if 結果を取得
 
 Parse the what-if output to categorize resource changes:
 
@@ -142,7 +142,7 @@ Parse the what-if output to categorize resource changes:
 
 For modified resources, capture the specific property changes.
 
-### Step 5: Generate Report
+### ステップ 5: レポートを生成
 
 Create a Markdown report file in the **project root** named:
 - `preflight-report.md`
@@ -156,7 +156,7 @@ Use the template structure from [references/REPORT-TEMPLATE.md](references/REPOR
 4. **What-If Results** - Resources to create/modify/delete/unchanged
 5. **Recommendations** - Actionable next steps
 
-## Required Information
+## 必須情報
 
 Before running validation, gather:
 
@@ -169,7 +169,7 @@ Before running validation, gather:
 
 If required information is missing, prompt the user before proceeding.
 
-## Error Handling
+## エラー処理
 
 See [references/ERROR-HANDLING.md](references/ERROR-HANDLING.md) for detailed error handling guidance.
 
@@ -183,7 +183,7 @@ See [references/ERROR-HANDLING.md](references/ERROR-HANDLING.md) for detailed er
 | Tool not installed | Note in report, skip that validation step |
 | Resource group not found | Note in report, suggest creating it |
 
-## Tool Requirements
+## ツール要件
 
 This skill uses the following tools:
 
@@ -199,7 +199,7 @@ azd version
 bicep --version
 ```
 
-## Example Workflow
+## ワークフロー例
 
 1. User: "Validate my Bicep deployment before I run it"
 2. Agent detects `azure.yaml` → azd project
@@ -209,7 +209,7 @@ bicep --version
 6. Agent generates `preflight-report.md` in project root
 7. Agent summarizes findings to user
 
-## Reference Documentation
+## 参考ドキュメント
 
 - [Validation Commands Reference](references/VALIDATION-COMMANDS.md)
 - [Report Template](references/REPORT-TEMPLATE.md)

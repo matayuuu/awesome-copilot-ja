@@ -58,5 +58,5 @@ description: '信頼性、パフォーマンス、メッセージング、セキ
 
 ## 外部リンク
 
-- [Cloud Design Patterns - Azure Architecture Center](https://learn.microsoft.com/azure/architecture/patterns/)
+- [クラウド設計パターン - Azure Architecture Center](https://learn.microsoft.com/azure/architecture/patterns/)
 - [Azure Well-Architected Framework](https://learn.microsoft.com/azure/architecture/framework/)

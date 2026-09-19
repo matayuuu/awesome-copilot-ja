@@ -1,13 +1,13 @@
 ---
 name: aws-resource-query
-description: 'Query AWS resources using natural language. Covers EC2, S3, RDS, Lambda, ECS, EKS, Secrets Manager, IAM, VPC, networking, messaging, and more. Strictly read-only — no writes, deletes, or mutations.'
+description: '自然言語で AWS リソースを照会します。EC2、S3、RDS、Lambda、ECS、EKS、Secrets Manager、IAM、VPC、ネットワーク、メッセージングなどに対応します。厳密に読み取り専用で、書き込み、削除、変更は行いません。'
 ---
 
-# AWS Resource Query
+# AWS リソース照会
 
 Answer natural language questions about AWS resources by translating intent into read-only AWS CLI commands. This skill **never** runs commands that create, modify, or delete resources.
 
-## Safety Contract
+## 安全契約
 
 **STRICTLY READ-ONLY.** This skill exclusively uses:
 - `aws <service> describe-*`
@@ -25,26 +25,26 @@ Answer natural language questions about AWS resources by translating intent into
 If the user's query implies a write action, respond:
 > "This skill is read-only. I can show you the current state of [resource], but I cannot [create/modify/delete] it. Would you like to see what currently exists?"
 
-## Workflow
+## ワークフロー
 
-### Step 1: Parse Intent
+### ステップ 1: 意図を解析
 Identify: target service(s), scope (all / filtered / specific), detail level, and region.
 
-### Step 2: Confirm Account & Region
+### ステップ 2: アカウントとリージョンを確認
 ```bash
 aws sts get-caller-identity --query '{Account:Account,UserId:UserId}'
 aws configure get region
 ```
 Append `--region <region>` to all commands when the user specifies one.
 
-### Step 3: Execute & Format
+### ステップ 3: 実行して整形
 Run the matched read-only command(s) below and format results as a readable table. For large result sets show a count first and offer to filter further.
 
 ---
 
-## Intent → Command Mapping
+## 意図 → コマンド対応表
 
-### COMPUTE
+### コンピュート
 
 #### EC2 Instances
 ```bash
@@ -160,7 +160,7 @@ aws batch describe-compute-environments \
 
 ---
 
-### STORAGE
+### ストレージ
 
 #### S3
 ```bash
@@ -208,7 +208,7 @@ aws efs describe-file-systems \
 
 ---
 
-### DATABASES
+### データベース
 
 #### RDS
 ```bash
@@ -277,7 +277,7 @@ aws neptune describe-db-clusters \
 
 ---
 
-### NETWORKING
+### ネットワーク
 
 #### VPC & Subnets
 ```bash
@@ -367,7 +367,7 @@ aws directconnect describe-connections \
 
 ---
 
-### SECURITY & IDENTITY
+### セキュリティと ID
 
 #### IAM
 ```bash
@@ -478,7 +478,7 @@ aws configservice get-compliance-summary-by-config-rule \
 
 ---
 
-### MESSAGING & EVENTS
+### メッセージングとイベント
 
 ```bash
 # "SQS queues" / "list queues"
@@ -512,7 +512,7 @@ aws firehose list-delivery-streams --query 'DeliveryStreamNames' --output table
 
 ---
 
-### API GATEWAY & SERVERLESS
+### API Gateway とサーバーレス
 
 ```bash
 # "API Gateway APIs" / "REST APIs"
@@ -534,7 +534,7 @@ aws stepfunctions list-executions --state-machine-arn <arn> \
 
 ---
 
-### MONITORING & OBSERVABILITY
+### 監視と可観測性
 
 ```bash
 # "CloudWatch alarms" / "list alarms"
@@ -564,7 +564,7 @@ aws ecr describe-repositories \
 
 ---
 
-### COST & BILLING
+### コストと請求
 
 ```bash
 # "current month cost" / "how much am I spending"
@@ -593,7 +593,7 @@ aws support describe-trusted-advisor-checks --language en \
 
 ---
 
-### CROSS-SERVICE QUERIES
+### サービス横断クエリ
 
 ```bash
 # "resources tagged Environment=production" / "all production resources"
@@ -613,7 +613,7 @@ aws configservice list-discovered-resources --resource-type <type> \
 
 ---
 
-## Output Formatting Rules
+## 出力整形規則
 
 1. Always use `--output table` for list results; use `--output json` only when deep detail is explicitly requested
 2. Always use `--query` to extract only relevant fields — never dump raw JSON
@@ -621,7 +621,7 @@ aws configservice list-discovered-resources --resource-type <type> \
 4. When a command returns nothing, explain why (wrong region, no resources, insufficient permissions)
 5. Offer to drill into a specific resource: "Found 47 EC2 instances. Filter by state, type, or tag?"
 
-## Error Handling
+## エラー処理
 
 | Error | Response |
 |---|---|

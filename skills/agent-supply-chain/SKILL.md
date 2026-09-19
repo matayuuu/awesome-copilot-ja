@@ -1,22 +1,15 @@
 ---
 name: agent-supply-chain
-description: |
-  Verify supply chain integrity for AI agent plugins, tools, and dependencies. Use this skill when:
-  - Generating SHA-256 integrity manifests for agent plugins or tool packages
-  - Verifying that installed plugins match their published manifests
-  - Detecting tampered, modified, or untracked files in agent tool directories
-  - Auditing dependency pinning and version policies for agent components
-  - Building provenance chains for agent plugin promotion (dev → staging → production)
-  - Any request like "verify plugin integrity", "generate manifest", "check supply chain", or "sign this plugin"
+description: 'AIエージェントのプラグイン、ツール、依存関係のサプライチェーン整合性を検証するSkill。整合性マニフェストの生成、公開マニフェストとの照合、改ざん検出、依存関係のバージョン固定監査、プラグイン昇格時の来歴確認に使用します。'
 ---
 
-# Agent Supply Chain Integrity
+# エージェントのサプライチェーン整合性
 
-Generate and verify integrity manifests for AI agent plugins and tools. Detect tampering, enforce version pinning, and establish supply chain provenance.
+AIエージェントのプラグインとツール用の整合性マニフェストを生成・検証します。改ざんを検出し、バージョン固定を適用し、サプライチェーンの来歴を確立します。
 
-## Overview
+## 概要
 
-Agent plugins and MCP servers have the same supply chain risks as npm packages or container images — except the ecosystem has no equivalent of npm provenance, Sigstore, or SLSA. This skill fills that gap.
+エージェントプラグインとMCPサーバーには、npmパッケージやコンテナーイメージと同じサプライチェーンリスクがあります。ただし、このエコシステムにはnpm provenance、Sigstore、SLSAに相当する仕組みがありません。このSkillはその空白を補います。
 
 ```
 Plugin Directory → Hash All Files (SHA-256) → Generate INTEGRITY.json
@@ -26,19 +19,19 @@ Later: Plugin Directory → Re-Hash Files → Compare Against INTEGRITY.json
                                           Match? VERIFIED : TAMPERED
 ```
 
-## When to Use
+## 使用する場面
 
-- Before promoting a plugin from development to production
-- During code review of plugin PRs
-- As a CI step to verify no files were modified after review
-- When auditing third-party agent tools or MCP servers
-- Building a plugin marketplace with integrity requirements
+- プラグインを開発環境から本番環境へ昇格させる前
+- プラグインのPRをコードレビューするとき
+- レビュー後にファイルが変更されていないことをCIで確認するとき
+- サードパーティ製のエージェントツールやMCPサーバーを監査するとき
+- 整合性要件のあるプラグインマーケットプレースを構築するとき
 
 ---
 
-## Pattern 1: Generate Integrity Manifest
+## パターン1：整合性マニフェストを生成する
 
-Create a deterministic `INTEGRITY.json` with SHA-256 hashes of all plugin files.
+すべてのプラグインファイルのSHA-256ハッシュを含む、決定論的な`INTEGRITY.json`を作成します。
 
 ```python
 import hashlib
@@ -96,7 +89,7 @@ print(f"Generated manifest: {manifest['file_count']} files, "
       f"hash: {manifest['manifest_hash'][:16]}...")
 ```
 
-**Output (`INTEGRITY.json`):**
+**出力（`INTEGRITY.json`）：**
 ```json
 {
   "plugin_name": "my-plugin",
@@ -115,9 +108,9 @@ print(f"Generated manifest: {manifest['file_count']} files, "
 
 ---
 
-## Pattern 2: Verify Integrity
+## パターン2：整合性を検証する
 
-Check that current files match the manifest.
+現在のファイルがマニフェストと一致することを確認します。
 
 ```python
 # Requires: hash_file() and generate_manifest() from Pattern 1 above
@@ -164,7 +157,7 @@ else:
         print(f"  {e}")
 ```
 
-**Output on tampered plugin:**
+**改ざんされたプラグインでの出力：**
 ```
 FAILED: 3 issue(s)
   MODIFIED: skills/search/SKILL.md
@@ -174,9 +167,9 @@ FAILED: 3 issue(s)
 
 ---
 
-## Pattern 3: Dependency Version Audit
+## パターン3：依存関係のバージョンを監査する
 
-Check that agent dependencies use pinned versions.
+エージェントの依存関係でバージョンが固定されていることを確認します。
 
 ```python
 import re
@@ -215,9 +208,9 @@ def audit_versions(config_path: str) -> list[dict]:
 
 ---
 
-## Pattern 4: Promotion Gate
+## パターン4：昇格ゲート
 
-Use integrity verification as a gate before promoting plugins.
+プラグインを昇格させる前のゲートとして、整合性検証を使用します。
 
 ```python
 def promotion_check(plugin_dir: str) -> dict:
@@ -280,9 +273,9 @@ else:
 
 ---
 
-## CI Integration
+## CIへの統合
 
-Add to your GitHub Actions workflow:
+GitHub Actionsワークフローに追加します。
 
 ```yaml
 - name: Verify plugin integrity
@@ -318,22 +311,22 @@ Add to your GitHub Actions workflow:
 
 ---
 
-## Best Practices
+## ベストプラクティス
 
-| Practice | Rationale |
-|----------|-----------|
-| **Generate manifest after code review** | Ensures reviewed code matches production code |
-| **Include manifest in the PR** | Reviewers can verify what was hashed |
-| **Verify in CI before deploy** | Catches post-review modifications |
-| **Chain hash for tamper evidence** | Single hash represents entire plugin state |
-| **Exclude build artifacts** | Only hash source files — .git, __pycache__, node_modules excluded |
-| **Pin all dependency versions** | Unpinned deps = different code on every install |
+| 実践項目 | 理由 |
+|----------|------|
+| **コードレビュー後にマニフェストを生成する** | レビュー済みのコードが本番コードと一致することを保証する |
+| **PRにマニフェストを含める** | レビュー担当者がハッシュを検証できる |
+| **デプロイ前にCIで検証する** | レビュー後の変更を検出する |
+| **改ざんの証拠としてチェーンハッシュを使う** | 単一のハッシュでプラグイン全体の状態を表現できる |
+| **ビルド成果物を除外する** | ソースファイルだけをハッシュする（.git、__pycache__、node_modulesを除外） |
+| **すべての依存関係のバージョンを固定する** | 固定されていない依存関係では、インストールのたびに異なるコードになる |
 
 ---
 
-## Related Resources
+## 関連リソース
 
-- [OpenSSF SLSA](https://slsa.dev/) — Supply-chain Levels for Software Artifacts
-- [npm Provenance](https://docs.npmjs.com/generating-provenance-statements) — Sigstore-based package provenance
-- [Agent Governance Toolkit](https://github.com/microsoft/agent-governance-toolkit) — Includes integrity verification and plugin signing
+- [OpenSSF SLSA](https://slsa.dev/) — ソフトウェア成果物のサプライチェーンレベル
+- [npm Provenance](https://docs.npmjs.com/generating-provenance-statements) — Sigstoreベースのパッケージ来歴
+- [Agent Governance Toolkit](https://github.com/microsoft/agent-governance-toolkit) — 整合性検証とプラグイン署名を含む
 - [OWASP ASI-09: Supply Chain Integrity](https://owasp.org/www-project-agentic-ai-threats/)

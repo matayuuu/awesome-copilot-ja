@@ -1,15 +1,15 @@
 ---
 name: automate-this
-description: 'Analyze a screen recording of a manual process and produce targeted, working automation scripts. Extracts frames and audio narration from video files, reconstructs the step-by-step workflow, and proposes automation at multiple complexity levels using tools already installed on the user machine.'
+description: '手作業の画面録画を分析し、対象を絞った実用的な自動化スクリプトを作成します。動画ファイルからフレームと音声ナレーションを抽出し、手順ごとのワークフローを再構成して、ユーザーのマシンに既にインストールされているツールを使い、複数の複雑さの段階で自動化を提案します。'
 ---
 
-# Automate This
+# これを自動化
 
-Analyze a screen recording of a manual process and build working automation for it.
+手作業の画面録画を分析し、その作業を自動化する実用的な仕組みを構築します。
 
 The user records themselves doing something repetitive or tedious, hands you the video file, and you figure out what they're doing, why, and how to script it away.
 
-## Prerequisites Check
+## 前提条件の確認
 
 Before analyzing any recording, verify the required tools are available. Run these checks silently and only surface problems:
 
@@ -21,11 +21,11 @@ command -v whisper >/dev/null 2>&1 || command -v whisper-cpp >/dev/null 2>&1 || 
 - **ffmpeg is required.** If missing, tell the user: `brew install ffmpeg` (macOS) or the equivalent for their OS.
 - **Whisper is optional.** Only needed if the recording has narration. If missing AND the recording has an audio track, suggest: `pip install openai-whisper` or `brew install whisper-cpp`. If the user declines, proceed with visual analysis only.
 
-## Phase 1: Extract Content from the Recording
+## フェーズ 1: 録画から内容を抽出
 
 Given a video file path (typically on `~/Desktop/`), extract both visual frames and audio:
 
-### Frame Extraction
+### フレーム抽出
 
 Extract frames at one frame every 2 seconds. This balances coverage with context window limits.
 
@@ -41,7 +41,7 @@ Use `$WORK_DIR` for all subsequent temp file paths in the session. The per-run d
 
 If the recording is longer than 5 minutes (more than 150 frames), increase the interval to one frame every 4 seconds to stay within context limits. Tell the user you're sampling less frequently for longer recordings.
 
-### Audio Extraction and Transcription
+### 音声抽出と文字起こし
 
 Check if the video has an audio track:
 
@@ -68,7 +68,7 @@ fi
 
 If neither whisper binary is available and the recording has audio, inform the user they're missing narration context and ask if they want to install Whisper (`pip install openai-whisper` or `brew install whisper-cpp`) or proceed with visual-only analysis.
 
-## Phase 2: Reconstruct the Process
+## フェーズ 2: プロセスを再構成
 
 Analyze the extracted frames (and transcript, if available) to build a structured understanding of what the user did. Work through the frames sequentially and identify:
 
@@ -105,7 +105,7 @@ Does this match what you were doing? Anything I got wrong or missed?
 
 Do NOT proceed to Phase 3 until the user confirms the reconstruction is accurate.
 
-## Phase 3: Environment Fingerprint
+## フェーズ 3: 環境フィンガープリント
 
 Before proposing automation, understand what the user actually has to work with. Run these checks:
 
@@ -120,11 +120,11 @@ echo "=== Common Tools ===" && for cmd in curl jq playwright selenium osascript 
 
 Use this to constrain proposals to tools the user already has. Never propose automation that requires installing five new things unless the simpler path genuinely doesn't work.
 
-## Phase 4: Propose Automation
+## フェーズ 4: 自動化を提案
 
 Based on the reconstructed process and the user's environment, propose automation at up to three tiers. Not every process needs three tiers — use judgment.
 
-### Tier Structure
+### Tier の構成
 
 **Tier 1 — Quick Win (under 5 minutes to set up)**
 The smallest useful automation. A shell alias, a one-liner, a keyboard shortcut, an AppleScript snippet. Automates the single most painful step, not the whole process.
@@ -135,7 +135,7 @@ A standalone script (bash, Python, or Node — whichever the user has) that auto
 **Tier 3 — Full Automation (under 2 hours to set up)**
 The script from Tier 2, plus: scheduled execution (cron, launchd, or GitHub Actions), logging, error notifications, and any necessary integration scaffolding (API keys, auth tokens, etc.).
 
-### Proposal Format
+### 提案形式
 
 For each tier, provide:
 
@@ -160,7 +160,7 @@ For each tier, provide:
 [How to reverse any changes if something goes wrong]
 ```
 
-### Application-Specific Automation Strategies
+### アプリケーション固有の自動化戦略
 
 Use these strategies based on which applications appear in the recording:
 
@@ -204,7 +204,7 @@ Use these strategies based on which applications appear in the recording:
 - Clipboard-based transfers in the recording suggest the apps don't talk to each other — look for APIs, file-based handoffs, or direct integrations instead.
 - If the user copies from App A and pastes into App B, the automation should read from A's data source and write to B's input format directly.
 
-### Making Proposals Targeted
+### 提案を対象に合わせる
 
 Apply these principles to every proposal:
 
@@ -224,7 +224,7 @@ Apply these principles to every proposal:
 
 8. **Consider failure modes.** What happens if the website is down? If the file doesn't exist? If the format changes? Good proposals mention this and handle it.
 
-## Phase 5: Build and Test
+## フェーズ 5: 構築とテスト
 
 When the user picks a tier:
 
@@ -233,7 +233,7 @@ When the user picks a tier:
 3. If the test works, show how to run it for real.
 4. If it fails, diagnose and fix — don't give up after one attempt.
 
-## Cleanup
+## クリーンアップ
 
 After analysis is complete (regardless of outcome), clean up extracted frames and audio:
 

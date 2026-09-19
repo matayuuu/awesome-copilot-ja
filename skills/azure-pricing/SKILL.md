@@ -1,24 +1,24 @@
 ---
 name: azure-pricing
-description: 'Fetches real-time Azure retail pricing using the Azure Retail Prices API (prices.azure.com) and estimates Copilot Studio agent credit consumption. Use when the user asks about the cost of any Azure service, wants to compare SKU prices, needs pricing data for a cost estimate, mentions Azure pricing, Azure costs, Azure billing, or asks about Copilot Studio pricing, Copilot Credits, or agent usage estimation. Covers compute, storage, networking, databases, AI, Copilot Studio, and all other Azure service families.'
-compatibility: Requires internet access to prices.azure.com and learn.microsoft.com. No authentication needed.
+description: 'Azure Retail Prices API (prices.azure.com) を使って Azure の小売価格をリアルタイムに取得し、Copilot Studio エージェントのクレジット消費量を見積もります。Azure サービスの料金、SKU 価格の比較、コスト見積もり用の価格データ、Azure pricing、Azure costs、Azure billing、Copilot Studio pricing、Copilot Credits、エージェント使用量の見積もりについて尋ねられた場合に使用します。コンピューティング、ストレージ、ネットワーク、データベース、AI、Copilot Studio、その他すべての Azure サービス ファミリに対応します。'
+compatibility: prices.azure.com と learn.microsoft.com へのインターネット アクセスが必要です。認証は必要ありません。
 metadata:
   author: anthonychu
   version: "1.2"
 ---
 
-# Azure Pricing Skill
+# Azure 料金 Skill
 
-Use this skill to retrieve real-time Azure retail pricing data from the public Azure Retail Prices API. No authentication is required.
+このSkillを使って、公開されている Azure Retail Prices API から Azure の小売価格データをリアルタイムに取得します。認証は必要ありません。
 
-## When to Use This Skill
+## このSkillを使う場面
 
-- User asks about the cost of an Azure service (e.g., "How much does a D4s v5 VM cost?")
-- User wants to compare pricing across regions or SKUs
-- User needs a cost estimate for a workload or architecture
-- User mentions Azure pricing, Azure costs, or Azure billing
-- User asks about reserved instance vs. pay-as-you-go pricing
-- User wants to know about savings plans or spot pricing
+- Azure サービスの料金を尋ねられた場合（例: "How much does a D4s v5 VM cost?"）
+- リージョン間または SKU 間で料金を比較したい場合
+- ワークロードまたはアーキテクチャのコスト見積もりが必要な場合
+- Azure pricing、Azure costs、または Azure billing に言及された場合
+- 予約インスタンスと従量課金の料金を比較したい場合
+- Savings Plans または Spot pricing について知りたい場合
 
 ## API Endpoint
 
@@ -26,23 +26,23 @@ Use this skill to retrieve real-time Azure retail pricing data from the public A
 GET https://prices.azure.com/api/retail/prices?api-version=2023-01-01-preview
 ```
 
-Append `$filter` as a query parameter using OData filter syntax. Always use `api-version=2023-01-01-preview` to ensure savings plan data is included.
+OData フィルター構文を使い、クエリパラメーターとして `$filter` を追加します。Savings Plan のデータを含めるため、常に `api-version=2023-01-01-preview` を使用します。
 
-## Step-by-step Instructions
+## 手順
 
-If anything is unclear about the user's request, ask clarifying questions to identify the correct filter fields and values before calling the API.
+ユーザーの依頼に不明点がある場合は、API を呼び出す前に確認質問を行い、正しいフィールドと値を特定します。
 
-1. **Identify filter fields** from the user's request (service name, region, SKU, price type).
-2. **Resolve the region**: the API requires `armRegionName` values in lowercase with no spaces (e.g. "East US" → `eastus`, "West Europe" → `westeurope`, "Southeast Asia" → `southeastasia`). See [references/REGIONS.md](references/REGIONS.md) for a complete list.
-3. **Build the filter string** using the fields below and fetch the URL.
-4. **Parse the `Items` array** from the JSON response. Each item contains price and metadata.
-5. **Follow pagination** via `NextPageLink` if you need more than the first 1000 results (rarely needed).
-6. **Calculate cost estimates** using the formulas in [references/COST-ESTIMATOR.md](references/COST-ESTIMATOR.md) to produce monthly/annual estimates.
-7. **Present results** in a clear summary table with service, SKU, region, unit price, and monthly/annual estimates.
+1. ユーザーの依頼から **フィルターフィールド**（サービス名、リージョン、SKU、価格種別）を特定します。
+2. **リージョンを解決**します。API では `armRegionName` に小文字で空白なしの値が必要です（例: "East US" → `eastus`、"West Europe" → `westeurope`、"Southeast Asia" → `southeastasia`）。完全な一覧は [references/REGIONS.md](references/REGIONS.md) を参照してください。
+3. 下記のフィールドを使って **フィルター文字列を作成**し、URL を取得します。
+4. JSON 応答から **`Items` 配列を解析**します。各項目には価格とメタデータが含まれます。
+5. 最初の 1000 件を超える結果が必要な場合（通常は不要）は、`NextPageLink` を使って **ページネーションを継続**します。
+6. [references/COST-ESTIMATOR.md](references/COST-ESTIMATOR.md) の式を使って **コストを見積もり**、月額・年額を算出します。
+7. サービス、SKU、リージョン、単価、月額・年額見積もりを含む **わかりやすい概要表で結果を提示**します。
 
 ## Filterable Fields
 
-| Field | Type | Example |
+| フィールド | 型 | 例 |
 |---|---|---|
 | `serviceName` | string (exact, case-sensitive) | `'Functions'`, `'Virtual Machines'`, `'Storage'` |
 | `serviceFamily` | string (exact, case-sensitive) | `'Compute'`, `'Storage'`, `'Databases'`, `'AI + Machine Learning'` |
@@ -52,7 +52,7 @@ If anything is unclear about the user's request, ask clarifying questions to ide
 | `priceType` | string | `'Consumption'`, `'Reservation'`, `'DevTestConsumption'` |
 | `meterName` | string (contains supported) | `'Spot'` |
 
-Use `eq` for equality, `and` to combine, and `contains(field, 'value')` for partial matches.
+一致には `eq`、条件の組み合わせには `and`、部分一致には `contains(field, 'value')` を使用します。
 
 ## Example Filter Strings
 
@@ -79,13 +79,13 @@ serviceName eq 'Foundry Models' and armRegionName eq 'eastus' and priceType eq '
 serviceName eq 'Azure Cosmos DB' and armRegionName eq 'eastus' and priceType eq 'Consumption'
 ```
 
-## Full Example Fetch URL
+## 完全な取得 URL の例
 
 ```
 https://prices.azure.com/api/retail/prices?api-version=2023-01-01-preview&$filter=serviceName eq 'Functions' and armRegionName eq 'eastus' and priceType eq 'Consumption'
 ```
 
-URL-encode spaces as `%20` and quotes as `%27` when constructing the URL.
+URL を構築する際は、空白を `%20`、引用符を `%27` として URL エンコードします。
 
 ## Key Response Fields
 
@@ -115,25 +115,25 @@ URL-encode spaces as `%20` and quotes as `%27` when constructing the URL.
 }
 ```
 
-Only use items where `isPrimaryMeterRegion` is `true` unless the user specifically asks for non-primary meters.
+ユーザーが非プライマリーメーターを明示的に求めた場合を除き、`isPrimaryMeterRegion` が `true` の項目だけを使用します。
 
-## Supported serviceFamily Values
+## 対応する serviceFamily の値
 
 `Analytics`, `Compute`, `Containers`, `Data`, `Databases`, `Developer Tools`, `Integration`, `Internet of Things`, `Management and Governance`, `Networking`, `Security`, `Storage`, `Web`, `AI + Machine Learning`
 
-## Tips
+## ヒント
 
-- `serviceName` values are case-sensitive. When unsure, filter by `serviceFamily` first to discover valid `serviceName` values in the results.
-- If results are empty, try broadening the filter (e.g., remove `priceType` or region constraints first).
-- Prices are always in USD unless `currencyCode` is specified in the request.
-- For savings plan prices, look for the `savingsPlan` array on each item (only in `2023-01-01-preview`).
-- See [references/SERVICE-NAMES.md](references/SERVICE-NAMES.md) for a catalog of common service names and their correct casing.
-- See [references/COST-ESTIMATOR.md](references/COST-ESTIMATOR.md) for cost estimation formulas and patterns.
-- See [references/COPILOT-STUDIO-RATES.md](references/COPILOT-STUDIO-RATES.md) for Copilot Studio billing rates and estimation formulas.
+- `serviceName` の値は大文字と小文字を区別します。不明な場合は、まず `serviceFamily` でフィルターし、結果から有効な `serviceName` の値を確認します。
+- 結果が空の場合は、フィルターを広げてみます（まず `priceType` またはリージョンの制約を削除するなど）。
+- リクエストで `currencyCode` が指定されていない限り、価格は常に USD です。
+- Savings Plan の価格については、各項目の `savingsPlan` 配列を確認します（`2023-01-01-preview` でのみ使用できます）。
+- 一般的なサービス名と正しい大文字・小文字の一覧は [references/SERVICE-NAMES.md](references/SERVICE-NAMES.md) を参照してください。
+- コスト見積もりの式とパターンは [references/COST-ESTIMATOR.md](references/COST-ESTIMATOR.md) を参照してください。
+- Copilot Studio の請求レートと見積もり式は [references/COPILOT-STUDIO-RATES.md](references/COPILOT-STUDIO-RATES.md) を参照してください。
 
 ## Troubleshooting
 
-| Issue | Solution |
+| 問題 | 解決策 |
 |-------|----------|
 | Empty results | Broaden the filter — remove `priceType` or `armRegionName` first |
 | Wrong service name | Use `serviceFamily` filter to discover valid `serviceName` values |
@@ -145,45 +145,45 @@ Only use items where `isPrimaryMeterRegion` is `true` unless the user specifical
 
 # Copilot Studio Agent Usage Estimation
 
-Use this section when the user asks about Copilot Studio pricing, Copilot Credits, or agent usage costs.
+ユーザーが Copilot Studio の料金、Copilot Credits、またはエージェントの使用コストについて尋ねた場合は、このセクションを使用します。
 
-## When to Use This Section
+## このセクションを使う場面
 
-- User asks about Copilot Studio pricing or costs
-- User asks about Copilot Credits or agent credit consumption
-- User wants to estimate monthly costs for a Copilot Studio agent
-- User mentions agent usage estimation or the Copilot Studio estimator
-- User asks how much an agent will cost to run
+- Copilot Studio の料金またはコストを尋ねられた場合
+- Copilot Credits またはエージェントのクレジット消費量を尋ねられた場合
+- Copilot Studio エージェントの月額コストを見積もりたい場合
+- エージェント使用量の見積もりまたは Copilot Studio estimator に言及された場合
+- エージェントの実行にいくらかかるか尋ねられた場合
 
-## Key Facts
+## 主な事実
 
 - **1 Copilot Credit = $0.01 USD**
-- Credits are pooled across the entire tenant
-- Employee-facing agents with M365 Copilot licensed users get classic answers, generative answers, and tenant graph grounding at zero cost
-- Overage enforcement triggers at 125% of prepaid capacity
+- クレジットはテナント全体でプールされます。
+- M365 Copilot のライセンスユーザー向けエージェントでは、classic answers、generative answers、tenant graph grounding が無料になります。
+- 超過適用は、前払い容量の 125% で発動します。
 
-## Step-by-step Estimation
+## 見積もり手順
 
-1. **Gather inputs** from the user: agent type (employee/customer), number of users, interactions/month, knowledge %, tenant graph %, tool usage per session.
-2. **Fetch live billing rates** — use the built-in web fetch tool to download the latest rates from the source URLs listed below. This ensures the estimate always uses the most current Microsoft pricing.
-3. **Parse the fetched content** to extract the current billing rates table (credits per feature type).
-4. **Calculate the estimate** using the rates and formulas from the fetched content:
+1. ユーザーから **入力値を収集**します。エージェントの種類（employee/customer）、ユーザー数、月間インタラクション数、knowledge %、tenant graph %、セッションあたりのツール使用回数を確認します。
+2. **最新の請求レートを取得**します。組み込みの web fetch tool を使い、下記のソース URL から最新レートをダウンロードします。これにより、常に最新の Microsoft 価格を使って見積もれます。
+3. **取得した内容を解析**し、現在の請求レート表（機能種別ごとのクレジット数）を抽出します。
+4. 取得した内容のレートと式を使って **見積もりを計算**します。
    - `total_sessions = users × interactions_per_month`
    - Knowledge credits: apply tenant graph grounding rate, generative answer rate, and classic answer rate
    - Agent tools credits: apply agent action rate per tool call
    - Agent flow credits: apply flow rate per 100 actions
    - Prompt modifier credits: apply basic/standard/premium rates per 10 responses
-5. **Present results** in a clear table with breakdown by category, total credits, and estimated USD cost.
+5. カテゴリ別の内訳、合計クレジット、推定 USD コストを含む **わかりやすい表で結果を提示**します。
 
-## Source URLs to Fetch
+## 取得するソース URL
 
-When answering Copilot Studio pricing questions, fetch the latest content from these URLs to use as context:
+Copilot Studio の料金に関する質問へ回答する場合は、コンテキストとしてこれらの URL から最新の内容を取得します:
 
-| URL | Content |
+| URL | 内容 |
 |---|---|
 | https://learn.microsoft.com/en-us/microsoft-copilot-studio/requirements-messages-management | Billing rates table, billing examples, overage enforcement rules |
 | https://learn.microsoft.com/en-us/microsoft-copilot-studio/billing-licensing | Licensing options, M365 Copilot inclusions, prepaid vs pay-as-you-go |
 
-Fetch at least the first URL (billing rates) before calculating. The second URL provides supplementary context for licensing questions.
+計算前に、少なくとも最初の URL（請求レート）を取得してください。2 番目の URL はライセンスに関する質問の補足情報を提供します。
 
-See [references/COPILOT-STUDIO-RATES.md](references/COPILOT-STUDIO-RATES.md) for a cached snapshot of rates, formulas, and billing examples (use as fallback if web fetch is unavailable).
+レート、式、請求例のキャッシュされたスナップショットは [references/COPILOT-STUDIO-RATES.md](references/COPILOT-STUDIO-RATES.md) を参照してください（web fetch が利用できない場合のフォールバックとして使用します）。

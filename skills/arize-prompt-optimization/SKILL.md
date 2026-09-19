@@ -1,19 +1,19 @@
 ---
 name: arize-prompt-optimization
-description: Optimizes, improves, and debugs LLM prompts using production trace data, evaluations, and annotations. Extracts prompts from spans, gathers performance signal, and runs a data-driven optimization loop using the ax CLI. Use when the user mentions optimize prompt, improve prompt, make AI respond better, improve output quality, prompt engineering, prompt tuning, or system prompt improvement.
+description: '本番トレースデータ、評価、アノテーションを使って LLM プロンプトを最適化、改善、デバッグします。スパンからプロンプトを抽出し、性能シグナルを収集して、ax CLI によるデータ駆動の最適化ループを実行します。プロンプト最適化、応答改善、出力品質向上、プロンプトエンジニアリング、プロンプト調整、システムプロンプト改善を求められたときに使用します。'
 metadata:
   author: arize
   version: "1.0"
 compatibility: Requires the ax CLI and a configured Arize profile.
 ---
 
-# Arize Prompt Optimization Skill
+# Arize プロンプト最適化 Skill
 
 > **`SPACE`** — All `--space` flags and the `ARIZE_SPACE` env var accept a space **name** (e.g., `my-workspace`) or a base64 space **ID** (e.g., `U3BhY2U6...`). Find yours with `ax spaces list`.
 
-## Concepts
+## 概念
 
-### Where Prompts Live in Trace Data
+### トレースデータ内のプロンプトの場所
 
 LLM applications emit spans following OpenInference semantic conventions. Prompts are stored in different span attributes depending on the span kind and instrumentation:
 
@@ -28,13 +28,13 @@ LLM applications emit spans following OpenInference semantic conventions. Prompt
 | `attributes.output.value` | Model response text | See what the LLM produced |
 | `attributes.llm.output_messages` | Structured model output (including tool calls) | Inspect tool-calling responses |
 
-### Finding Prompts by Span Kind
+### スパン種別ごとのプロンプト検索
 
 - **LLM span** (`attributes.openinference.span.kind = 'LLM'`): Check `attributes.llm.input_messages` for structured chat messages, OR `attributes.input.value` for a serialized prompt. Check `attributes.llm.prompt_template.template` for the template.
 - **Chain/Agent span**: `attributes.input.value` contains the user's question. The actual LLM prompt lives on **child LLM spans** -- navigate down the trace tree.
 - **Tool span**: `attributes.input.value` has tool input, `attributes.output.value` has tool result. Not typically where prompts live.
 
-### Performance Signal Columns
+### 性能シグナルの列
 
 These columns carry the feedback data used for optimization:
 
@@ -50,7 +50,7 @@ These columns carry the feedback data used for optimization:
 | `attributes.output.value` | Trace data | What the LLM produced |
 | `{experiment_name}.output` | Experiment runs | Output from a specific experiment |
 
-## Prerequisites
+## 前提条件
 
 Proceed directly with the task — run the `ax` command you need. Do NOT check versions, env vars, or profiles upfront.
 
@@ -62,9 +62,9 @@ If an `ax` command fails, troubleshoot based on the error:
 - LLM provider call fails (missing OPENAI_API_KEY / ANTHROPIC_API_KEY) → run `ax ai-integrations list --space SPACE` to check for platform-managed credentials. If none exist, ask the user to provide the key or create an integration via the **arize-ai-provider-integration** skill
 - **Security:** Never read `.env` files or search the filesystem for credentials. Use `ax profiles` for Arize credentials and `ax ai-integrations` for LLM provider keys. If credentials are not available through these channels, ask the user.
 
-## Phase 1: Extract the Current Prompt
+## フェーズ 1: 現在のプロンプトを抽出
 
-### Find LLM spans containing prompts
+### プロンプトを含む LLM スパンを検索
 
 ```bash
 # Sample LLM spans (where prompts live)
@@ -77,7 +77,7 @@ ax spans export PROJECT --filter "attributes.llm.model_name = 'gpt-4o'" -l 10 --
 ax spans export PROJECT --filter "name = 'ChatCompletion'" -l 10 --stdout
 ```
 
-### Export a trace to inspect prompt structure
+### プロンプト構造を確認するためにトレースをエクスポート
 
 ```bash
 # Export all spans in a trace
@@ -87,7 +87,7 @@ ax spans export PROJECT --trace-id TRACE_ID
 ax spans export PROJECT --span-id SPAN_ID
 ```
 
-### Extract prompts from exported JSON
+### エクスポートした JSON からプロンプトを抽出
 
 ```bash
 # Extract structured chat messages (system + user + assistant)
@@ -106,7 +106,7 @@ jq '.[0].attributes.llm.prompt_template' trace_*/spans.json
 jq '.[0].attributes.input.value' trace_*/spans.json
 ```
 
-### Reconstruct the prompt as messages
+### メッセージとしてプロンプトを再構成
 
 Once you have the span data, reconstruct the prompt as a messages array:
 
@@ -119,9 +119,9 @@ Once you have the span data, reconstruct the prompt as a messages array:
 
 If the span has `attributes.llm.prompt_template.template`, the prompt uses variables. Preserve these placeholders (`{variable}` or `{{variable}}`) -- they are substituted at runtime.
 
-## Phase 2: Gather Performance Data
+## フェーズ 2: 性能データを収集
 
-### From traces (production feedback)
+### トレースから（本番フィードバック）
 
 ```bash
 # Find error spans -- these indicate prompt failures
@@ -143,7 +143,7 @@ ax spans export PROJECT \
 ax spans export PROJECT --trace-id TRACE_ID
 ```
 
-### From datasets and experiments
+### データセットと実験から
 
 ```bash
 # Export a dataset (ground truth examples)
@@ -155,7 +155,7 @@ ax experiments export EXPERIMENT_NAME --dataset DATASET_NAME --space SPACE
 # -> experiment_*/runs.json
 ```
 
-### Merge dataset + experiment for analysis
+### 分析用にデータセットと実験を結合
 
 Join the two files by `example_id` to see inputs alongside outputs and evaluations:
 
@@ -180,7 +180,7 @@ jq -s '
 jq '[.[] | select(.evaluations.correctness.score < 0.5)]' experiment_*/runs.json
 ```
 
-### Identify what to optimize
+### 最適化対象を特定
 
 Look for patterns across failures:
 
@@ -190,9 +190,9 @@ Look for patterns across failures:
 4. **Look for verbosity mismatches**: If outputs are too long/short vs ground truth
 5. **Check format compliance**: Are outputs in the expected format?
 
-## Phase 3: Optimize the Prompt
+## フェーズ 3: プロンプトを最適化
 
-### The Optimization Meta-Prompt
+### 最適化メタプロンプト
 
 Use this template to generate an improved version of the prompt. Fill in the three placeholders and send it to your LLM (GPT-4o, Claude, etc.):
 
@@ -298,7 +298,7 @@ jq '[.[] | select(.attributes.openinference.span.kind == "LLM") | {
 }]' trace_*/spans.json
 ```
 
-### Applying the revised prompt
+### 改訂プロンプトを適用
 
 After the LLM returns the revised messages array:
 
@@ -307,9 +307,9 @@ After the LLM returns the revised messages array:
 3. Check that format instructions are intact
 4. Test on a few examples before full deployment
 
-## Phase 4: Iterate
+## フェーズ 4: 反復
 
-### The optimization loop
+### 最適化ループ
 
 ```
 1. Extract prompt    -> Phase 1 (once)
@@ -321,7 +321,7 @@ After the LLM returns the revised messages array:
 7. Repeat from step 2
 ```
 
-### Measure improvement
+### 改善を測定
 
 ```bash
 # Compare scores across experiments
@@ -340,14 +340,14 @@ jq -s '
 ' experiment_a/runs.json experiment_b/runs.json
 ```
 
-### A/B compare two prompts
+### 2 つのプロンプトを A/B 比較
 
 1. Create two experiments against the same dataset, each using a different prompt version
 2. Export both: `ax experiments export EXP_A` and `ax experiments export EXP_B`
 3. Compare average scores, failure rates, and specific example flips
 4. Check for regressions -- examples that passed with prompt A but fail with prompt B
 
-## Prompt Engineering Best Practices
+## プロンプトエンジニアリングのベストプラクティス
 
 Apply these when writing or revising prompts:
 
@@ -363,7 +363,7 @@ Apply these when writing or revising prompts:
 | Reasoning instructions | Accuracy is critical | "Think step by step before answering" |
 | "I don't know" guidelines | Hallucination is a risk | "If the answer is not in the provided context, say 'I don't have enough information'" |
 
-### Variable preservation
+### 変数の保持
 
 When optimizing prompts that use template variables:
 
@@ -373,9 +373,9 @@ When optimizing prompts that use template variables:
 - Never rename variables -- the runtime substitution depends on exact names
 - If adding few-shot examples, use literal values, not variable placeholders
 
-## Workflows
+## ワークフロー
 
-### Optimize a prompt from a failing trace
+### 失敗トレースからプロンプトを最適化
 
 1. Find failing traces:
    ```bash
@@ -398,7 +398,7 @@ When optimizing prompts that use template variables:
 5. Fill in the optimization meta-prompt (Phase 3) with the prompt and error context
 6. Apply the revised prompt
 
-### Optimize using a dataset and experiment
+### データセットと実験を使って最適化
 
 1. Find the dataset and experiment:
    ```bash
@@ -414,7 +414,7 @@ When optimizing prompts that use template variables:
 4. Run the optimization meta-prompt
 5. Create a new experiment with the revised prompt to measure improvement
 
-### Debug a prompt that produces wrong format
+### 間違った形式を生成するプロンプトをデバッグ
 
 1. Export spans where the output format is wrong:
    ```bash
@@ -426,7 +426,7 @@ When optimizing prompts that use template variables:
 3. Add explicit format instructions to the prompt (JSON schema, examples, delimiters)
 4. Common fix: add a few-shot example showing the exact desired output format
 
-### Reduce hallucination in a RAG prompt
+### RAG プロンプトのハルシネーションを削減
 
 1. Find traces where the model hallucinated:
    ```bash
@@ -442,7 +442,7 @@ When optimizing prompts that use template variables:
 3. Check if the retrieved context actually contained the answer
 4. Add grounding instructions to the system prompt: "Only use information from the provided context. If the answer is not in the context, say so."
 
-## Troubleshooting
+## トラブルシューティング
 
 | Problem | Solution |
 |---------|----------|

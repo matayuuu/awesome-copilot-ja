@@ -78,31 +78,31 @@ AGENTS.mdは「エージェント向けREADME」として機能するMarkdownフ
 
 #### セキュリティ上の考慮事項
 
-- Security testing requirements
-- Secrets management
-- Authentication patterns
-- Permission models
+- セキュリティテストの要件
+- シークレット管理
+- 認証パターン
+- 権限モデル
 
 #### Monorepoの手順（該当する場合）
 
-- How to work with multiple packages
-- Cross-package dependencies
-- Selective building/testing
-- Package-specific commands
+- 複数packageを扱う方法
+- package間の依存関係
+- 選択的なbuild/test
+- package固有のコマンド
 
 #### Pull Requestの指針
 
-- Title format requirements
-- Required checks before submission
-- Review process
-- Commit message conventions
+- タイトル書式の要件
+- 提出前に必要なチェック
+- レビュープロセス
+- コミットメッセージの規約
 
 #### デバッグとトラブルシューティング
 
-- Common issues and solutions
-- Logging patterns
-- Debug configuration
-- Performance considerations
+- 一般的な問題と解決策
+- ログ記録のパターン
+- デバッグ構成
+- パフォーマンス上の考慮事項
 
 ## テンプレート例
 
@@ -196,24 +196,24 @@ AGENTS.mdは「エージェント向けREADME」として機能するMarkdownフ
 
 1. 次を理解するため、**プロジェクト構造を分析する**。
 
-   - Programming languages and frameworks used
-   - Package managers and build tools
-   - Testing frameworks
-   - Project architecture (monorepo, single package, etc.)
+   - 使用しているプログラミング言語とframework
+   - package managerとbuild tool
+   - テストframework
+   - プロジェクトのアーキテクチャ（monorepo、単一packageなど）
 
 2. 次を調べて**主要なWorkflowを特定する**。
 
-   - package.json scripts
-   - Makefile or other build files
-   - CI/CD configuration files
-   - Documentation files
+   - package.jsonのscript
+   - Makefileまたはその他のbuild file
+   - CI/CD構成ファイル
+   - 文書ファイル
 
 3. 次を網羅する**包括的なセクションを作成する**。
 
-   - All essential setup and development commands
-   - Testing strategies and commands
-   - Code style and conventions
-   - Build and deployment processes
+   - 必須のセットアップコマンドと開発コマンド
+   - テスト戦略とコマンド
+   - コードスタイルと規約
+   - buildとdeployのプロセス
 
 4. エージェントが直接実行できる**具体的で実行可能なコマンドを含める**
 

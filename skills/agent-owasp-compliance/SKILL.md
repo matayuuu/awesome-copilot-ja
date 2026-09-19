@@ -1,23 +1,15 @@
 ---
 name: agent-owasp-compliance
-description: |
-  Check any AI agent codebase against the OWASP Agentic Security Initiative (ASI) Top 10 risks.
-  Use this skill when:
-  - Evaluating an agent system's security posture before production deployment
-  - Running a compliance check against OWASP ASI 2026 standards
-  - Mapping existing security controls to the 10 agentic risks
-  - Generating a compliance report for security review or audit
-  - Comparing agent framework security features against the standard
-  - Any request like "is my agent OWASP compliant?", "check ASI compliance", or "agentic security audit"
+description: '任意のAI AgentコードベースをOWASP Agentic Security Initiative（ASI）Top 10リスクに照らして確認する。本番デプロイ前のセキュリティ態勢評価、OWASP ASI 2026基準への準拠チェック、既存のセキュリティ制御と10のAgentリスクの対応付け、セキュリティレビュー・監査用レポート生成、Agentフレームワークのセキュリティ機能比較、OWASP準拠やASI準拠を尋ねる依頼で使う。'
 ---
 
-# Agent OWASP ASI Compliance Check
+# Agent OWASP ASI準拠チェック
 
-Evaluate AI agent systems against the OWASP Agentic Security Initiative (ASI) Top 10 — the industry standard for agent security posture.
+AI Agentシステムを、Agentのセキュリティ態勢に関する業界標準であるOWASP Agentic Security Initiative（ASI）Top 10に照らして評価する。
 
-## Overview
+## 概要
 
-The OWASP ASI Top 10 defines the critical security risks specific to autonomous AI agents — not LLMs, not chatbots, but agents that call tools, access systems, and act on behalf of users. This skill checks whether your agent implementation addresses each risk.
+OWASP ASI Top 10は、自律型AI Agentに固有の重大なセキュリティリスクを定義する。LLMやチャットボットではなく、ツールを呼び出し、システムへアクセスし、ユーザーに代わって行動するAgentが対象である。このSkillは実装が各リスクに対処しているか確認する。
 
 ```
 Codebase → Scan for each ASI control:
@@ -34,26 +26,26 @@ Codebase → Scan for each ASI control:
 → Generate Compliance Report (X/10 covered)
 ```
 
-## The 10 Risks
+## 10のリスク
 
-| Risk | Name | What to Look For |
+| リスク | 名称 | 確認対象 |
 |------|------|-----------------|
-| ASI-01 | Prompt Injection | Input validation before tool calls, not just LLM output filtering |
-| ASI-02 | Insecure Tool Use | Tool allowlists, argument validation, no raw shell execution |
-| ASI-03 | Excessive Agency | Capability boundaries, scope limits, principle of least privilege |
-| ASI-04 | Unauthorized Escalation | Privilege checks before sensitive operations, no self-promotion |
-| ASI-05 | Trust Boundary Violation | Trust verification between agents, signed credentials, no blind trust |
-| ASI-06 | Insufficient Logging | Structured audit trail for all tool calls, tamper-evident logs |
-| ASI-07 | Insecure Identity | Cryptographic agent identity, not just string names |
-| ASI-08 | Policy Bypass | Deterministic policy enforcement, no LLM-based permission checks |
-| ASI-09 | Supply Chain Integrity | Signed plugins/tools, integrity verification, dependency auditing |
-| ASI-10 | Behavioral Anomaly | Drift detection, circuit breakers, kill switch capability |
+| ASI-01 | Prompt Injection | LLM出力フィルターだけでなく、ツール呼び出し前の入力検証 |
+| ASI-02 | Insecure Tool Use | ツール許可リスト、引数検証、生のシェル実行なし |
+| ASI-03 | Excessive Agency | 能力境界、スコープ制限、最小権限の原則 |
+| ASI-04 | Unauthorized Escalation | 機密操作前の権限チェック、自己昇格なし |
+| ASI-05 | Trust Boundary Violation | Agent間の信頼検証、署名付き資格情報、盲目的な信頼なし |
+| ASI-06 | Insufficient Logging | すべてのツール呼び出しの構造化監査証跡、改ざん検知ログ |
+| ASI-07 | Insecure Identity | 文字列名だけでなく、暗号学的なAgent ID |
+| ASI-08 | Policy Bypass | 決定論的なポリシー適用、LLMベースの権限チェックなし |
+| ASI-09 | Supply Chain Integrity | 署名済みプラグイン/ツール、完全性検証、依存関係監査 |
+| ASI-10 | Behavioral Anomaly | ドリフト検出、サーキットブレーカー、キルスイッチ機能 |
 
 ---
 
-## Check ASI-01: Prompt Injection Protection
+## ASI-01の確認: プロンプトインジェクション対策
 
-Look for input validation that runs **before** tool execution, not after LLM generation.
+LLM生成後ではなく、ツール実行**前**に行われる入力検証を探す。
 
 ```python
 import re
@@ -98,7 +90,7 @@ def check_asi_01(project_path: str) -> dict:
     }
 ```
 
-**What passing looks like:**
+**合格例:**
 ```python
 # GOOD: Validate before tool execution
 result = policy_engine.evaluate(user_input)
@@ -107,7 +99,7 @@ if result.action == "deny":
 tool_result = await execute_tool(validated_input)
 ```
 
-**What failing looks like:**
+**不合格例:**
 ```python
 # BAD: User input goes directly to tool
 tool_result = await execute_tool(user_input)  # No validation
@@ -115,17 +107,17 @@ tool_result = await execute_tool(user_input)  # No validation
 
 ---
 
-## Check ASI-02: Insecure Tool Use
+## ASI-02の確認: 安全でないツール利用
 
-Verify tools have allowlists, argument validation, and no unrestricted execution.
+ツールに許可リストと引数検証があり、無制限の実行がないことを確認する。
 
-**What to search for:**
+**検索すべきもの:**
 - Tool registration with explicit allowlists (not open-ended)
 - Argument validation before tool execution
 - No `subprocess.run(shell=True)` with user-controlled input
 - No `eval()` or `exec()` on agent-generated code without sandbox
 
-**Passing example:**
+**合格例:**
 ```python
 ALLOWED_TOOLS = {"search", "read_file", "create_ticket"}
 
@@ -138,39 +130,39 @@ def execute_tool(name: str, args: dict):
 
 ---
 
-## Check ASI-03: Excessive Agency
+## ASI-03の確認: 過剰な自律性
 
-Verify agent capabilities are bounded — not open-ended.
+Agentの能力が無制限ではなく、境界付けられていることを確認する。
 
-**What to search for:**
+**検索すべきもの:**
 - Explicit capability lists or execution rings
 - Scope limits on what the agent can access
 - Principle of least privilege applied to tool access
 
-**Failing:** Agent has access to all tools by default.
-**Passing:** Agent capabilities defined as a fixed allowlist, unknown tools denied.
+**不合格:** Agentが既定ですべてのツールへアクセスできる。
+**合格:** Agentの能力が固定の許可リストで定義され、未知のツールは拒否される。
 
 ---
 
-## Check ASI-04: Unauthorized Escalation
+## ASI-04の確認: 未承認の権限昇格
 
-Verify agents cannot promote their own privileges.
+Agentが自分の権限を昇格できないことを確認する。
 
-**What to search for:**
+**検索すべきもの:**
 - Privilege level checks before sensitive operations
 - No self-promotion patterns (agent changing its own trust score or role)
 - Escalation requires external attestation (human or SRE witness)
 
-**Failing:** Agent can modify its own configuration or permissions.
-**Passing:** Privilege changes require out-of-band approval (e.g., Ring 0 requires SRE attestation).
+**不合格:** Agentが自身の構成や権限を変更できる。
+**合格:** 権限変更には帯域外承認が必要（例: Ring 0にはSRE証明が必要）。
 
 ---
 
-## Check ASI-05: Trust Boundary Violation
+## ASI-05の確認: 信頼境界違反
 
-In multi-agent systems, verify that agents verify each other's identity before accepting instructions.
+マルチAgentシステムでは、指示を受け入れる前にAgent同士が互いのIDを検証することを確認する。
 
-**What to search for:**
+**検索すべきもの:**
 - Agent identity verification (DIDs, signed tokens, API keys)
 - Trust score checks before accepting delegated tasks
 - No blind trust of inter-agent messages
@@ -189,31 +181,31 @@ def accept_task(sender_id: str, task: dict):
 
 ---
 
-## Check ASI-06: Insufficient Logging
+## ASI-06の確認: 不十分なロギング
 
-Verify all agent actions produce structured, tamper-evident audit entries.
+すべてのAgent操作が、構造化され改ざんを検知できる監査エントリを生成することを確認する。
 
-**What to search for:**
+**検索すべきもの:**
 - Structured logging for every tool call (not just print statements)
 - Audit entries include: timestamp, agent ID, tool name, args, result, policy decision
 - Append-only or hash-chained log format
 - Logs stored separately from agent-writable directories
 
-**Failing:** Agent actions logged via `print()` or not logged at all.
-**Passing:** Structured JSONL audit trail with chain hashes, exported to secure storage.
+**不合格:** Agent操作が `print()` で記録される、またはまったく記録されない。
+**合格:** チェーンハッシュ付きの構造化JSONL監査証跡が安全なストレージへ書き出される。
 
 ---
 
-## Check ASI-07: Insecure Identity
+## ASI-07の確認: 安全でないID
 
-Verify agents have cryptographic identity, not just string names.
+Agentが単なる文字列名ではなく、暗号学的なIDを持つことを確認する。
 
-**Failing indicators:**
+**不合格の兆候:**
 - Agent identified by `agent_name = "my-agent"` (string only)
 - No authentication between agents
 - Shared credentials across agents
 
-**Passing indicators:**
+**合格の兆候:**
 - DID-based identity (`did:web:`, `did:key:`)
 - Ed25519 or similar cryptographic signing
 - Per-agent credentials with rotation
@@ -221,26 +213,26 @@ Verify agents have cryptographic identity, not just string names.
 
 ---
 
-## Check ASI-08: Policy Bypass
+## ASI-08の確認: ポリシー迂回
 
-Verify policy enforcement is deterministic — not LLM-based.
+ポリシー適用がLLMベースではなく決定論的であることを確認する。
 
-**What to search for:**
+**検索すべきもの:**
 - Policy evaluation uses deterministic logic (YAML rules, code predicates)
 - No LLM calls in the enforcement path
 - Policy checks cannot be skipped or overridden by the agent
 - Fail-closed behavior (if policy check errors, action is denied)
 
-**Failing:** Agent decides its own permissions via prompt ("Am I allowed to...?").
-**Passing:** PolicyEvaluator.evaluate() returns allow/deny in <0.1ms, no LLM involved.
+**不合格:** Agentがプロンプト（"Am I allowed to...?"）で自身の権限を判断する。
+**合格:** LLMを介さず、PolicyEvaluator.evaluate() が0.1ms未満でallow/denyを返す。
 
 ---
 
-## Check ASI-09: Supply Chain Integrity
+## ASI-09の確認: サプライチェーンの完全性
 
-Verify agent plugins and tools have integrity verification.
+Agentプラグインとツールに完全性検証があることを確認する。
 
-**What to search for:**
+**検索すべきもの:**
 - `INTEGRITY.json` or manifest files with SHA-256 hashes
 - Signature verification on plugin installation
 - Dependency pinning (no `@latest`, `>=` without upper bound)
@@ -248,22 +240,22 @@ Verify agent plugins and tools have integrity verification.
 
 ---
 
-## Check ASI-10: Behavioral Anomaly
+## ASI-10の確認: 行動異常
 
-Verify the system can detect and respond to agent behavioral drift.
+システムがAgentの行動ドリフトを検出し、対応できることを確認する。
 
-**What to search for:**
+**検索すべきもの:**
 - Circuit breakers that trip on repeated failures
 - Trust score decay over time (temporal decay)
 - Kill switch or emergency stop capability
 - Anomaly detection on tool call patterns (frequency, targets, timing)
 
-**Failing:** No mechanism to stop a misbehaving agent automatically.
-**Passing:** Circuit breaker trips after N failures, trust decays without activity, kill switch available.
+**不合格:** 不正動作するAgentを自動停止する仕組みがない。
+**合格:** N回失敗後にサーキットブレーカーが作動し、活動がなければ信頼が減衰し、キルスイッチが利用できる。
 
 ---
 
-## Compliance Report Format
+## 準拠レポート形式
 
 ```markdown
 # OWASP ASI Compliance Report
@@ -297,9 +289,9 @@ pip install agent-governance-toolkit
 
 ---
 
-## Quick Assessment Questions
+## 簡易評価の質問
 
-Use these to rapidly assess an agent system:
+Agentシステムを素早く評価するために使う:
 
 1. **Does user input pass through validation before reaching any tool?** (ASI-01)
 2. **Is there an explicit list of what tools the agent can call?** (ASI-02)
@@ -312,11 +304,11 @@ Use these to rapidly assess an agent system:
 9. **Are plugins/tools integrity-verified before use?** (ASI-09)
 10. **Is there a circuit breaker or kill switch?** (ASI-10)
 
-If you answer "no" to any of these, that's a gap to address.
+いずれかに「いいえ」と答えた場合は、対処すべきギャップである。
 
 ---
 
-## Related Resources
+## 関連リソース
 
 - [OWASP Agentic AI Threats](https://owasp.org/www-project-agentic-ai-threats/)
 - [Agent Governance Toolkit](https://github.com/microsoft/agent-governance-toolkit) — Reference implementation covering 10/10 ASI controls

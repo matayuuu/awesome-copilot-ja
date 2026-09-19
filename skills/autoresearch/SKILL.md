@@ -1,6 +1,6 @@
 ---
 name: autoresearch
-description: 'Autonomous iterative experimentation loop for any programming task. Guides the user through defining goals, measurable metrics, and scope constraints, then runs an autonomous loop of code changes, testing, measuring, and keeping/discarding results. Inspired by Karpathy''s autoresearch. USE FOR: autonomous improvement, iterative optimization, experiment loop, auto research, performance tuning, automated experimentation, hill climbing, try things automatically, optimize code, run experiments, autonomous coding loop. DO NOT USE FOR: one-shot tasks, simple bug fixes, code review, or tasks without a measurable metric.'
+description: 'あらゆるプログラミング作業向けの自律的な反復実験ループです。目標、測定可能な指標、範囲の制約を定義する手順を案内し、コード変更、テスト、測定、結果の保持または破棄を自律的に繰り返します。Karpathy の autoresearch に着想を得ています。自律的改善、反復最適化、実験ループ、自動研究、性能調整、自動実験、ヒルクライミング、自動試行、コード最適化、実験実行に使用します。単発作業、単純なバグ修正、コードレビュー、測定可能な指標がない作業には使用しません。'
 license: MIT
 compatibility: Requires git. The project must be a git repository. Requires terminal access to run commands.
 metadata:
@@ -8,7 +8,7 @@ metadata:
   inspired-by: https://github.com/karpathy/autoresearch
 ---
 
-# Autoresearch: Autonomous Iterative Experimentation
+# Autoresearch: 自律的な反復実験
 
 An autonomous experimentation loop for any programming task. You define the goal and how to measure it; the agent iterates autonomously -- modifying code, running experiments, measuring results, and keeping or discarding changes -- until interrupted.
 
@@ -16,7 +16,7 @@ This skill is inspired by [Karpathy's autoresearch](https://github.com/karpathy/
 
 ---
 
-## Agent Behavior Rules
+## エージェントの行動規則
 
 1. **DO** guide the user through the Setup phase interactively before starting the loop.
 2. **DO** establish a baseline measurement before making any changes.
@@ -31,12 +31,12 @@ This skill is inspired by [Karpathy's autoresearch](https://github.com/karpathy/
 
 ---
 
-## Phase 1: Setup (Interactive)
+## フェーズ 1: セットアップ（対話式）
 
 Before any experimentation begins, work with the user to establish these parameters.
 Ask the user directly for each item. Do not assume or skip any.
 
-### 1.1 Define the Goal
+### 1.1 目標を定義
 
 Ask the user:
 
@@ -48,7 +48,7 @@ Ask the user:
 
 Record the user's answer as the **goal**.
 
-### 1.2 Define the Metric
+### 1.2 指標を定義
 
 Ask the user:
 
@@ -67,7 +67,7 @@ Record:
 - `METRIC_EXTRACTION`: how to extract the numeric metric from output
 - `METRIC_DIRECTION`: `lower_is_better` or `higher_is_better`
 
-### 1.3 Define the Scope
+### 1.3 範囲を定義
 
 Ask the user:
 
@@ -79,7 +79,7 @@ Record:
 - `IN_SCOPE_FILES`: files/dirs the agent may edit
 - `OUT_OF_SCOPE_FILES`: files/dirs that must not be modified
 
-### 1.4 Define Constraints
+### 1.4 制約を定義
 
 Ask the user:
 
@@ -96,7 +96,7 @@ Ask the user:
 
 Record as `CONSTRAINTS`.
 
-### 1.5 Define the Experiment Budget (Optional)
+### 1.5 実験予算を定義（任意）
 
 Ask the user:
 
@@ -106,7 +106,7 @@ Ask the user:
 
 Record as `MAX_EXPERIMENTS` (number or `unlimited`).
 
-### 1.6 Simplicity Criterion
+### 1.6 単純性の基準
 
 Inform the user of the default simplicity policy:
 
@@ -117,7 +117,7 @@ Inform the user of the default simplicity policy:
 
 Record any adjustments as `SIMPLICITY_POLICY`.
 
-### 1.7 Confirm Setup
+### 1.7 セットアップを確認
 
 Summarize all parameters back to the user in a clear table:
 
@@ -137,7 +137,7 @@ Ask the user to confirm. Do not proceed until confirmed.
 
 ---
 
-## Phase 2: Branch & Baseline
+## フェーズ 2: ブランチとベースライン
 
 Once the user confirms:
 
@@ -161,13 +161,13 @@ Once the user confirms:
 
 ---
 
-## Phase 3: Experiment Loop
+## フェーズ 3: 実験ループ
 
 Run this loop continuously. Do not stop to ask the user. Run until:
 - `MAX_EXPERIMENTS` is reached, OR
 - The user manually interrupts
 
-### For each experiment:
+### 各実験で行うこと:
 
 ```
 LOOP:
@@ -208,7 +208,7 @@ LOOP:
   8. CONTINUE - Go to step 1.
 ```
 
-### Experiment Strategy
+### 実験戦略
 
 When generating experiment ideas, follow this priority order:
 
@@ -219,7 +219,7 @@ When generating experiment ideas, follow this priority order:
 5. **Simplification passes**: Periodically try removing code/complexity to see if the metric holds.
 6. **Radical changes**: After exhausting incremental ideas, try larger architectural changes.
 
-### Handling Constraints
+### 制約への対応
 
 - **Time budget**: If a run exceeds 2x the expected duration, kill it and treat as a crash.
 - **Existing tests**: If constraints require tests to pass, run them before/after and revert if they break.
@@ -227,7 +227,7 @@ When generating experiment ideas, follow this priority order:
 
 ---
 
-## Phase 4: Reporting
+## フェーズ 4: レポート
 
 When the loop ends (budget reached or user interrupts):
 
@@ -244,9 +244,9 @@ When the loop ends (budget reached or user interrupts):
 
 ---
 
-## Quick Reference
+## クイックリファレンス
 
-### Results TSV Format
+### 結果 TSV 形式
 
 Tab-separated, 5 columns:
 
@@ -258,7 +258,7 @@ experiment	commit	metric	status	description
 3	d4e5f6g	0.000000	crash	double model width (OOM)
 ```
 
-### Git Workflow
+### Git ワークフロー
 
 - All experiments happen on the `autoresearch/<tag>` branch
 - Each experiment is committed before running
@@ -266,7 +266,7 @@ experiment	commit	metric	status	description
 - Successful experiments advance the branch
 - `results.tsv` and `run.log` stay untracked (added to `.git/info/exclude`)
 
-### Key Principles
+### 主要原則
 
 1. **Measure everything**: No experiment without a measurement.
 2. **Revert failures**: The branch only advances on improvements.

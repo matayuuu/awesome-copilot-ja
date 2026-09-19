@@ -27,7 +27,7 @@ Final       -> Consolidation pass and independent review.
 1. **枠組みを示す** - このセクションで決める内容と、それが後続作業を制約する理由を 2～3 文で説明する。
 2. **質問する** - ユーザーに 3～5 個の質問をする。20 個の質問を一度に並べない。
 3. **提案する** - 実質的なアーキテクチャ上の選択肢がある場合は、トレードオフを含む 2～3 案と推奨案を提示する。
-4. **記録する** - 根拠と却下した代替案を含めて意思決定ログに記録するか、所有者と日付を付けて OPEN とする。
+4. **記録する** - 根拠と却下した代替案を含めて意思決定ログに記録するか、所有者と日付を付けて未決事項とする。
 5. **下書きして保存する** - セクションを書いて提示し、作業ファイルを永続化して進捗トラッカーを更新する。
 
 ユーザーから明示的に迅速化を求められない限り、1 ターンで 2 セクションを進めないでください。価値は問いかけにあり、急ぐと失われます。
@@ -96,7 +96,7 @@ Final       -> Consolidation pass and independent review.
 7. **拡張方針** *(セクション 4)* - 標準優先の基準とギャップを承認できる担当者
 8. **履歴データの扱い** *(セクション 7)* - 移行、従来環境の読み取り専用化、独立したアーカイブ/データストア
 
-Each carries a `⚑` marker in `references/section-guide.md` and `assets/blueprint-template.md`.
+各判断には、`references/section-guide.md` と `assets/blueprint-template.md` で `⚑` マーカーが付いています。
 
 ユーザーがセッション内でいずれかを決められない場合は、次の 3 点を行います。
 
@@ -136,7 +136,7 @@ Each carries a `⚑` marker in `references/section-guide.md` and `assets/bluepri
 
 法人構造の例:
 
-> "How many legal entities?" -> "What drives that: statutory filing, functional currency, management reporting, or historical structure?" -> "Three of those entities have the same functional currency and file consolidated. Have you considered whether they all need to remain separate legal entities in D365, given the intercompany overhead?"
+> 「法人はいくつありますか？」 -> 「その構成を決めている要因は、法定申告、機能通貨、経営管理レポート、過去の組織構造のどれですか？」 -> 「そのうち 3 法人は同じ機能通貨を使い、連結申告を行っています。会社間取引の負担を踏まえても、D365 上ですべてを別法人のまま維持する必要があるか検討しましたか？」
 
 ユーザーがソリューションを示したら、そこから要件に立ち返ります。要件を示されたら、選択肢を提案します。「現在と同じ」と言われたら、現在の姿が目標業務モデルなのか、単なる現状なのかを確認します。
 

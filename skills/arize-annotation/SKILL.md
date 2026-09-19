@@ -1,49 +1,49 @@
 ---
 name: arize-annotation
-description: Creates and manages annotation configs (categorical, continuous, freeform label schemas) and annotation queues (human review workflows) on Arize. Applies human annotations to project spans via the Python SDK. Use when the user mentions annotation config, annotation queue, label schema, human feedback, bulk annotate spans, update_annotations, labeling queue, annotate record, or human review.
+description: 'Arizeでアノテーション設定（カテゴリ、連続値、自由記述のラベルスキーマ）とアノテーションキュー（人手レビュー手順）を作成・管理する。Python SDKでプロジェクトのスパンへ人手アノテーションを適用する。アノテーション設定、キュー、ラベルスキーマ、人手フィードバック、スパンの一括アノテーション、update_annotations、ラベリングキュー、レコードへの注釈、人手レビューが話題になったときに使う。'
 metadata:
   author: arize
   version: "1.0"
-compatibility: Requires the ax CLI and a configured Arize profile.
+compatibility: ax CLIと構成済みのArizeプロファイルが必要。
 ---
 
-# Arize Annotation Skill
+# ArizeアノテーションSkill
 
-> **`SPACE`** — All `--space` flags and the `ARIZE_SPACE` env var accept a space **name** (e.g., `my-workspace`) or a base64 space **ID** (e.g., `U3BhY2U6...`). Find yours with `ax spaces list`.
+> **`SPACE`** — すべての `--space` フラグと `ARIZE_SPACE` 環境変数は、space **名**（例: `my-workspace`）またはbase64 space **ID**（例: `U3BhY2U6...`）を受け付ける。`ax spaces list` で確認する。
 
-This skill covers **annotation configs** (the label schema) and **annotation queues** (human review workflows), as well as programmatically annotating project spans via the Python SDK.
+このSkillは **アノテーション設定**（ラベルスキーマ）と **アノテーションキュー**（人手レビュー手順）、さらにPython SDKによるプロジェクトスパンのプログラム上のアノテーションを扱う。
 
-**Direction:** Human labeling in Arize attaches values defined by configs to **spans**, **dataset examples**, **experiment-related records**, and **queue items** in the product UI. This skill covers: `ax annotation-configs`, `ax annotation-queues`, and bulk span updates with `ArizeClient.spans.update_annotations`.
-
----
-
-## Prerequisites
-
-Proceed directly with the task — run the `ax` command you need. Do NOT check versions, env vars, or profiles upfront.
-
-If an `ax` command fails, troubleshoot based on the error:
-- `command not found` or version error → see references/ax-setup.md
-- `401 Unauthorized` / missing API key → run `ax profiles show` to inspect the current profile. If the profile is missing or the API key is wrong, follow references/ax-profiles.md to create/update it. If the user doesn't have their key, direct them to https://app.arize.com/admin > API Keys
-- Space unknown → run `ax spaces list` to pick by name, or ask the user
-- **Security:** Never read `.env` files or search the filesystem for credentials. Use `ax profiles` for Arize credentials and `ax ai-integrations` for LLM provider keys. If credentials are not available through these channels, ask the user.
+**方針:** Arizeの人手ラベリングでは、設定で定義した値を製品UIの **spans**、**dataset examples**、**experiment-related records**、**queue items** に付与する。このSkillは `ax annotation-configs`、`ax annotation-queues`、`ArizeClient.spans.update_annotations` によるスパン一括更新を扱う。
 
 ---
 
-## Concepts
+## 前提条件
 
-### What is an Annotation Config?
+タスクへ直接進み、必要な `ax` コマンドを実行する。事前にバージョン、環境変数、プロファイルを確認しない。
 
-An **annotation config** defines the schema for a single type of human feedback label. Before anyone can annotate a span, dataset record, experiment output, or queue item, a config must exist for that label in the space.
+`ax` コマンドが失敗した場合は、エラーに基づいて対処する:
+- `command not found` またはバージョンエラー → references/ax-setup.md を参照する
+- `401 Unauthorized` / APIキー不足 → `ax profiles show` を実行して現在のプロファイルを確認する。プロファイルがない、またはAPIキーが誤っている場合は、references/ax-profiles.md に従って作成/更新する。ユーザーがキーを持っていない場合は https://app.arize.com/admin > API Keys へ案内する
+- Space不明 → `ax spaces list` を実行して名前で選ぶか、ユーザーに尋ねる
+- **セキュリティ:** `.env` ファイルを読んだり、資格情報をファイルシステム検索したりしない。Arize資格情報には `ax profiles`、LLMプロバイダーキーには `ax ai-integrations` を使う。これらの経路で資格情報が得られない場合は、ユーザーに尋ねる。
 
-| Field | Description |
+---
+
+## 概念
+
+### アノテーション設定とは
+
+**アノテーション設定**は、1種類の人手フィードバックラベルのスキーマを定義する。スパン、データセットレコード、実験出力、キュー項目へ注釈を付ける前に、そのラベルの設定がspaceに存在していなければならない。
+
+| フィールド | 説明 |
 |-------|-------------|
-| **Name** | Descriptive identifier (e.g. `Correctness`, `Helpfulness`). Must be unique within the space. |
-| **Type** | `categorical` (pick from a list), `continuous` (numeric range), or `freeform` (free text). |
-| **Values** | For categorical: array of `{"label": str, "score": number}` pairs. |
-| **Min/Max Score** | For continuous: numeric bounds. |
-| **Optimization Direction** | Whether higher scores are better (`maximize`) or worse (`minimize`). Used to render trends in the UI. |
+| **Name** | 説明的な識別子（例: `Correctness`、`Helpfulness`）。space内で一意でなければならない。 |
+| **Type** | `categorical`（一覧から選択）、`continuous`（数値範囲）、`freeform`（自由記述）。 |
+| **Values** | categoricalの場合: `{"label": str, "score": number}` ペアの配列。 |
+| **Min/Max Score** | continuousの場合: 数値の下限/上限。 |
+| **Optimization Direction** | 高いスコアが良い（`maximize`）か悪い（`minimize`）か。UIで傾向を描画するために使う。 |
 
-### Where labels get applied (surfaces)
+### ラベルを適用する場所（サーフェス）
 
 | Surface | Typical path |
 |---------|----------------|
@@ -52,13 +52,13 @@ An **annotation config** defines the schema for a single type of human feedback 
 | **Experiment outputs** | Often reviewed alongside datasets or traces in the UI — see arize-experiment, arize-dataset |
 | **Annotation queue items** | `ax annotation-queues` CLI (below) and/or the Arize UI; configs must exist |
 
-Always ensure the relevant **annotation config** exists in the space before expecting labels to persist.
+ラベルが保存されることを期待する前に、関連する **annotation config** がspaceに存在することを必ず確認する。
 
 ---
 
-## Basic CRUD: Annotation Configs
+## 基本CRUD: アノテーション設定
 
-### List
+### 一覧
 
 ```bash
 ax annotation-configs list --space SPACE
@@ -66,7 +66,7 @@ ax annotation-configs list --space SPACE -o json
 ax annotation-configs list --space SPACE --limit 20
 ```
 
-### Create — Categorical
+### 作成 — カテゴリ
 
 Categorical configs present a fixed set of labels for reviewers to choose from.
 
@@ -80,14 +80,14 @@ ax annotation-configs create \
   --optimization-direction maximize
 ```
 
-Common binary label pairs:
+よく使うbinaryラベルペア:
 - `correct` / `incorrect`
 - `helpful` / `unhelpful`
 - `safe` / `unsafe`
 - `relevant` / `irrelevant`
 - `pass` / `fail`
 
-### Create — Continuous
+### 作成 — 連続値
 
 Continuous configs let reviewers enter a numeric score within a defined range.
 
@@ -101,7 +101,7 @@ ax annotation-configs create \
   --optimization-direction maximize
 ```
 
-### Create — Freeform
+### 作成 — 自由記述
 
 Freeform configs collect open-ended text feedback. No additional flags needed beyond name, space, and type.
 
@@ -112,7 +112,7 @@ ax annotation-configs create \
   --type freeform
 ```
 
-### Get
+### 取得
 
 ```bash
 ax annotation-configs get NAME_OR_ID
@@ -120,7 +120,7 @@ ax annotation-configs get NAME_OR_ID -o json
 ax annotation-configs get NAME_OR_ID --space SPACE   # required when using name instead of ID
 ```
 
-### Delete
+### 削除
 
 ```bash
 ax annotation-configs delete NAME_OR_ID
@@ -128,15 +128,15 @@ ax annotation-configs delete NAME_OR_ID --space SPACE   # required when using na
 ax annotation-configs delete NAME_OR_ID --force   # skip confirmation
 ```
 
-**Note:** Deletion is irreversible. Any annotation queue associations to this config are also removed in the product (queues may remain; fix associations in the Arize UI if needed).
+**注:** 削除は元に戻せない。この設定へのannotation queue関連付けも製品内で削除される（queue自体は残る場合がある。必要ならArize UIで関連付けを修正する）。
 
 ---
 
-## Annotation Queues: `ax annotation-queues`
+## アノテーションキュー: `ax annotation-queues`
 
-Annotation queues route records (spans, dataset examples, experiment runs) to human reviewers. Each queue is linked to one or more annotation configs that define what labels reviewers can apply.
+Annotation queueはレコード（span、dataset example、experiment run）を人間のレビュー担当者へルーティングする。各queueは、レビュー担当者が適用できるラベルを定義する1つ以上のannotation configへリンクされる。
 
-### List / Get
+### 一覧 / 取得
 
 ```bash
 ax annotation-queues list --space SPACE
@@ -146,9 +146,9 @@ ax annotation-queues get NAME_OR_ID --space SPACE
 ax annotation-queues get NAME_OR_ID --space SPACE -o json
 ```
 
-### Create
+### 作成
 
-At least one `--annotation-config-id` is required.
+少なくとも1つの `--annotation-config-id` が必要。
 
 ```bash
 ax annotation-queues create \
@@ -160,11 +160,11 @@ ax annotation-queues create \
   --assignment-method all   # or: random
 ```
 
-Repeat `--annotation-config-id` and `--annotator-email` to attach multiple configs or reviewers.
+複数の設定またはレビュー担当者を付けるには、`--annotation-config-id` と `--annotator-email` を繰り返す。
 
-### Update
+### 更新
 
-List flags (`--annotation-config-id`, `--annotator-email`) **fully replace** existing values when provided — pass all desired values, not just the new ones.
+リスト型フラグ（`--annotation-config-id`、`--annotator-email`）は、指定した場合に既存値を**完全に置換**する。新しい値だけでなく、必要な値をすべて渡す。
 
 ```bash
 ax annotation-queues update NAME_OR_ID --space SPACE --name "New Name"
@@ -174,23 +174,23 @@ ax annotation-queues update NAME_OR_ID --space SPACE \
   --annotation-config-id CONFIG_ID_B
 ```
 
-### Delete
+### 削除
 
 ```bash
 ax annotation-queues delete NAME_OR_ID --space SPACE
 ax annotation-queues delete NAME_OR_ID --space SPACE --force   # skip confirmation
 ```
 
-### List Records
+### レコード一覧
 
 ```bash
 ax annotation-queues list-records NAME_OR_ID --space SPACE
 ax annotation-queues list-records NAME_OR_ID --space SPACE --limit 50 -o json
 ```
 
-### Submit an Annotation for a Record
+### レコードへアノテーションを送信
 
-Annotations are upserted by config name — call once per annotation config. Supply at least one of `--score`, `--label`, or `--text`.
+アノテーションは設定名でupsertされる。annotation configごとに1回呼び出す。`--score`、`--label`、`--text` の少なくとも1つを指定する。
 
 ```bash
 ax annotation-queues annotate-record NAME_OR_ID RECORD_ID \
@@ -205,15 +205,15 @@ ax annotation-queues annotate-record NAME_OR_ID RECORD_ID \
   --space SPACE
 ```
 
-### Assign a Record
+### レコードを割り当て
 
-Assign users to review a specific record:
+特定レコードのレビュー担当ユーザーを割り当てる:
 
 ```bash
 ax annotation-queues assign-record NAME_OR_ID RECORD_ID --space SPACE
 ```
 
-### Delete Records
+### レコードを削除
 
 ```bash
 ax annotation-queues delete-records NAME_OR_ID --space SPACE
@@ -221,9 +221,9 @@ ax annotation-queues delete-records NAME_OR_ID --space SPACE
 
 ---
 
-## Applying Annotations to Spans (Python SDK)
+## スパンへアノテーションを適用（Python SDK）
 
-Use the Python SDK to bulk-apply annotations to **project spans** when you already have labels (e.g., from a review export or an external labeling tool).
+すでにラベルがある場合（レビュー書き出しや外部ラベリングツールなど）は、Python SDKで **project span** にアノテーションを一括適用する。
 
 ```python
 import pandas as pd
@@ -256,45 +256,45 @@ response = client.spans.update_annotations(
 )
 ```
 
-**DataFrame column schema:**
+**DataFrame列スキーマ:**
 
-| Column | Required | Description |
+| 列 | 必須 | 説明 |
 |--------|----------|-------------|
-| `context.span_id` | yes | The span to annotate |
-| `annotation.<name>.label` | one of | Categorical or freeform label |
-| `annotation.<name>.score` | one of | Numeric score |
-| `annotation.<name>.updated_by` | no | Annotator identifier (email or name) |
-| `annotation.<name>.updated_at` | no | Timestamp in milliseconds since epoch |
-| `annotation.notes` | no | Freeform notes on the span |
+| `context.span_id` | yes | アノテーション対象のspan |
+| `annotation.<name>.label` | いずれか1つ | categoricalまたはfreeformラベル |
+| `annotation.<name>.score` | いずれか1つ | 数値スコア |
+| `annotation.<name>.updated_by` | no | アノテーター識別子（emailまたは名前） |
+| `annotation.<name>.updated_at` | no | epochからのミリ秒タイムスタンプ |
+| `annotation.notes` | no | span上の自由記述メモ |
 
-**Limitation:** Annotations apply only to spans within 31 days prior to submission.
+**制限:** アノテーションは送信前31日以内のspanにのみ適用される。
 
 ---
 
-## Troubleshooting
+## トラブルシューティング
 
-| Problem | Solution |
+| 問題 | 解決策 |
 |---------|----------|
-| `ax: command not found` | See references/ax-setup.md |
-| `401 Unauthorized` | API key may not have access to this space. Verify at https://app.arize.com/admin > API Keys |
-| `Annotation config not found` | `ax annotation-configs list --space SPACE` (or use `ax annotation-configs get NAME_OR_ID --space SPACE`) |
-| `409 Conflict on create` | Name already exists in the space. Use a different name or get the existing config ID. |
-| Queue not found | `ax annotation-queues list --space SPACE`; verify the queue name or ID |
-| Record not appearing in queue | Ensure the annotation config linked to the queue exists; check `ax annotation-configs list --space SPACE` |
-| Span SDK errors or missing spans | Confirm `project_name`, `space_id`, and span IDs; use arize-trace to export spans |
+| `ax: command not found` | references/ax-setup.md を参照 |
+| `401 Unauthorized` | APIキーがこのspaceへアクセスできない可能性がある。https://app.arize.com/admin > API Keys で確認する |
+| `Annotation config not found` | `ax annotation-configs list --space SPACE`（または `ax annotation-configs get NAME_OR_ID --space SPACE`） |
+| `409 Conflict on create` | 名前がspace内にすでに存在する。別名を使うか、既存設定IDを取得する。 |
+| Queue not found | `ax annotation-queues list --space SPACE`; queue名またはIDを確認する |
+| レコードがqueueに表示されない | queueにリンクされたannotation configが存在することを確認する。`ax annotation-configs list --space SPACE` を確認する |
+| Span SDKエラーまたはspan不足 | `project_name`、`space_id`、span IDを確認する。arize-traceでspanを書き出す |
 
 ---
 
-## Related Skills
+## 関連Skill
 
-- **arize-trace**: Export spans to find span IDs and time ranges
-- **arize-dataset**: Find dataset IDs and example IDs
-- **arize-evaluator**: Automated LLM-as-judge alongside human annotation
-- **arize-experiment**: Experiments tied to datasets and evaluation workflows
-- **arize-link**: Deep links to annotation configs and queues in the Arize UI
+- **arize-trace**: span IDと時間範囲を見つけるためspanを書き出す
+- **arize-dataset**: dataset IDとexample IDを見つける
+- **arize-evaluator**: 人手アノテーションと併用する自動LLM-as-judge
+- **arize-experiment**: datasetと評価ワークフローに結び付く実験
+- **arize-link**: Arize UI内のannotation configとqueueへのディープリンク
 
 ---
 
-## Save Credentials for Future Use
+## 今後の利用に備えた資格情報の保存
 
-See references/ax-profiles.md § Save Credentials for Future Use.
+references/ax-profiles.md § Save Credentials for Future Use を参照する。

@@ -15,9 +15,9 @@ ${VERSIONING="Semantic|CalVer|Custom"} <!-- バージョニング方式 -->
 
 ## 生成するプロンプト
 
-"Generate a comprehensive copilot-instructions.md file that will guide GitHub Copilot to produce code consistent with our project's standards, architecture, and technology versions. The instructions must be strictly based on actual code patterns in our codebase and avoid making any assumptions. Follow this approach:
+「GitHub Copilotがプロジェクトの標準、アーキテクチャ、技術バージョンと一貫したコードを生成できるよう導く、包括的なcopilot-instructions.mdファイルを生成してください。指示はコードベース内の実際のコードパターンだけに厳密に基づき、推測を避ける必要があります。次の方法に従ってください。
 
-### 1. Core Instruction Structure
+### 1. 指示の基本構造
 
 ```markdown
 # GitHub Copilot Instructions
@@ -250,44 +250,44 @@ ${VERSIONING == "Custom" ?
 - When in doubt, prioritize consistency with existing code over external best practices
 ```
 
-### 2. Codebase Analysis Instructions
+### 2. コードベース分析の指示
 
-To create the copilot-instructions.md file, first analyze the codebase to:
+copilot-instructions.mdファイルを作成する前に、コードベースを分析して次を行う。
 
-1. **Identify Exact Technology Versions**:
-   - ${PROJECT_TYPE == "Auto-detect" ? "Detect all programming languages, frameworks, and libraries by scanning file extensions and configuration files" : `Focus on ${PROJECT_TYPE} technologies`}
-   - Extract precise version information from project files, package.json, .csproj, etc.
-   - Document version constraints and compatibility requirements
+1. **正確な技術バージョンを特定する**:
+   - ${PROJECT_TYPE == "Auto-detect" ? "ファイル拡張子と構成ファイルを走査し、すべてのプログラミング言語、framework、libraryを検出する" : `${PROJECT_TYPE}技術に重点を置く`}
+   - プロジェクトファイル、package.json、.csprojなどから正確なバージョン情報を抽出する
+   - バージョン制約と互換性要件を文書化する
 
-2. **Understand Architecture**:
-   - Analyze folder structure and module organization
-   - Identify clear layer boundaries and component relationships
-   - Document communication patterns between components
+2. **アーキテクチャを理解する**:
+   - フォルダー構造とmodule構成を分析する
+   - 明確なlayer境界とcomponent間の関係を特定する
+   - component間の通信パターンを文書化する
 
-3. **Document Code Patterns**:
-   - Catalog naming conventions for different code elements
-   - Note documentation styles and completeness
-   - Document error handling patterns
-   - Map testing approaches and coverage
+3. **コードパターンを文書化する**:
+   - コード要素ごとの命名規則を整理する
+   - 文書化のスタイルと網羅性を記録する
+   - エラー処理パターンを文書化する
+   - テスト手法とcoverageを対応付ける
 
-4. **Note Quality Standards**:
-   - Identify performance optimization techniques actually used
-   - Document security practices implemented in the code
-   - Note accessibility features present (if applicable)
-   - Document code quality patterns evident in the codebase
+4. **品質基準を記録する**:
+   - 実際に使われているパフォーマンス最適化手法を特定する
+   - コードに実装されているセキュリティ対策を文書化する
+   - 該当する場合は、存在するアクセシビリティ機能を記録する
+   - コードベースで確認できるコード品質パターンを文書化する
 
-### 3. Implementation Notes
+### 3. 実装上の注意
 
-The final copilot-instructions.md should:
-- Be placed in the .github/copilot directory
-- Reference only patterns and standards that exist in the codebase
-- Include explicit version compatibility requirements
-- Avoid prescribing any practices not evident in the code
-- Provide concrete examples from the codebase
-- Be comprehensive yet concise enough for Copilot to effectively use
+最終的なcopilot-instructions.mdは次を満たすこと。
+- .github/copilotディレクトリへ配置する
+- コードベースに存在するパターンと標準だけを参照する
+- 明示的なバージョン互換性要件を含める
+- コードから確認できない慣行を規定しない
+- コードベースから具体例を示す
+- 網羅的でありながら、Copilotが効果的に利用できる十分に簡潔な内容にする
 
-Important: Only include guidance based on patterns actually observed in the codebase. Explicitly instruct Copilot to prioritize consistency with existing code over external best practices or newer language features.
-"
+重要: コードベースで実際に観測したパターンに基づく指針だけを含める。外部のベストプラクティスや新しい言語機能よりも、既存コードとの一貫性を優先するようCopilotへ明示的に指示する。
+」
 
 ## 期待する出力
 

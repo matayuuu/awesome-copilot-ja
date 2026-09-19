@@ -1,23 +1,15 @@
 ---
 name: agent-governance
-description: |
-  Patterns and techniques for adding governance, safety, and trust controls to AI agent systems. Use this skill when:
-  - Building AI agents that call external tools (APIs, databases, file systems)
-  - Implementing policy-based access controls for agent tool usage
-  - Adding semantic intent classification to detect dangerous prompts
-  - Creating trust scoring systems for multi-agent workflows
-  - Building audit trails for agent actions and decisions
-  - Enforcing rate limits, content filters, or tool restrictions on agents
-  - Working with any agent framework (PydanticAI, CrewAI, OpenAI Agents, LangChain, AutoGen)
+description: 'AI Agentシステムへガバナンス、安全性、信頼性の制御を追加するパターンと技法。外部ツールを呼び出すAgent、ポリシーベースのアクセス制御、危険なプロンプトを検出する意図分類、マルチAgentの信頼スコア、監査証跡、レート制限、コンテンツフィルター、ツール制限、PydanticAI・CrewAI・OpenAI Agents・LangChain・AutoGenなどのAgentフレームワークで使う。'
 ---
 
-# Agent Governance Patterns
+# Agentガバナンスのパターン
 
-Patterns for adding safety, trust, and policy enforcement to AI agent systems.
+AI Agentシステムへ安全性、信頼、ポリシー適用を追加するためのパターン。
 
-## Overview
+## 概要
 
-Governance patterns ensure AI agents operate within defined boundaries — controlling which tools they can call, what content they can process, how much they can do, and maintaining accountability through audit trails.
+ガバナンスパターンは、AI Agentが定義された境界内で動くことを保証する。呼び出せるツール、処理できるコンテンツ、実行量を制御し、監査証跡で説明責任を維持する。
 
 ```
 User Request → Intent Classification → Policy Check → Tool Execution → Audit Log
@@ -25,18 +17,18 @@ User Request → Intent Classification → Policy Check → Tool Execution → A
               Threat Detection         Allow/Deny      Trust Update
 ```
 
-## When to Use
+## 使う場面
 
-- **Agents with tool access**: Any agent that calls external tools (APIs, databases, shell commands)
-- **Multi-agent systems**: Agents delegating to other agents need trust boundaries
-- **Production deployments**: Compliance, audit, and safety requirements
-- **Sensitive operations**: Financial transactions, data access, infrastructure management
+- **ツールアクセスを持つAgent**: 外部ツール（API、データベース、シェルコマンド）を呼び出すAgent
+- **マルチAgentシステム**: 他のAgentへ委譲するAgentには信頼境界が必要
+- **本番デプロイ**: コンプライアンス、監査、安全性の要件がある場合
+- **機密操作**: 金融取引、データアクセス、インフラ管理
 
 ---
 
-## Pattern 1: Governance Policy
+## パターン1: ガバナンスポリシー
 
-Define what an agent is allowed to do as a composable, serializable policy object.
+Agentに許可する操作を、合成可能でシリアライズ可能なポリシーオブジェクトとして定義する。
 
 ```python
 from dataclasses import dataclass, field
@@ -77,9 +69,9 @@ class GovernancePolicy:
         return None
 ```
 
-### Policy Composition
+### ポリシーの合成
 
-Combine multiple policies (e.g., org-wide + team + agent-specific):
+複数のポリシー（例: 組織全体 + チーム + Agent固有）を組み合わせる:
 
 ```python
 def compose_policies(*policies: GovernancePolicy) -> GovernancePolicy:
@@ -153,9 +145,9 @@ def load_policy(path: str) -> GovernancePolicy:
 
 ---
 
-## Pattern 2: Semantic Intent Classification
+## パターン2: 意図の意味分類
 
-Detect dangerous intent in prompts before they reach the agent, using pattern-based signals.
+パターンベースのシグナルを使い、危険な意図がAgentへ届く前に検出する。
 
 ```python
 from dataclasses import dataclass
@@ -205,13 +197,13 @@ def is_safe(content: str, threshold: float = 0.7) -> bool:
     return not any(s.confidence >= threshold for s in signals)
 ```
 
-**Key insight**: Intent classification happens *before* tool execution, acting as a pre-flight safety check. This is fundamentally different from output guardrails which only check *after* generation.
+**重要な洞察**: 意図分類はツール実行 *前* に行い、飛行前の安全チェックとして機能する。生成 *後* にだけ確認する出力ガードレールとは根本的に異なる。
 
 ---
 
-## Pattern 3: Tool-Level Governance Decorator
+## パターン3: ツールレベルのガバナンスデコレーター
 
-Wrap individual tool functions with governance checks:
+個別のツール関数をガバナンスチェックでラップする:
 
 ```python
 import functools
@@ -292,9 +284,9 @@ async def search(query: str) -> str:
 
 ---
 
-## Pattern 4: Trust Scoring
+## パターン4: 信頼スコア
 
-Track agent reliability over time with decay-based trust scores:
+減衰ベースの信頼スコアで、時間経過に伴うAgentの信頼性を追跡する:
 
 ```python
 from dataclasses import dataclass, field
@@ -374,9 +366,9 @@ class AgentTrustRegistry:
 
 ---
 
-## Pattern 5: Audit Trail
+## パターン5: 監査証跡
 
-Append-only audit log for all agent actions — critical for compliance and debugging:
+すべてのAgent操作を追記専用の監査ログへ記録する。コンプライアンスとデバッグに不可欠である:
 
 ```python
 from dataclasses import dataclass, field
@@ -431,7 +423,7 @@ class AuditTrail:
 
 ---
 
-## Pattern 6: Framework Integration
+## パターン6: フレームワーク統合
 
 ### PydanticAI
 
@@ -509,11 +501,11 @@ async def read_file(path: str) -> str:
 
 ---
 
-## Governance Levels
+## ガバナンスレベル
 
 Match governance strictness to risk level:
 
-| Level | Controls | Use Case |
+| レベル | 制御 | 用途 |
 |-------|----------|----------|
 | **Open** | Audit only, no restrictions | Internal dev/testing |
 | **Standard** | Tool allowlist + content filters | General production agents |
@@ -522,21 +514,21 @@ Match governance strictness to risk level:
 
 ---
 
-## Best Practices
+## ベストプラクティス
 
-| Practice | Rationale |
+| 実践 | 理由 |
 |----------|-----------|
-| **Policy as configuration** | Store policies in YAML/JSON, not hardcoded — enables change without deploys |
-| **Most-restrictive-wins** | When composing policies, deny always overrides allow |
-| **Pre-flight intent check** | Classify intent *before* tool execution, not after |
-| **Trust decay** | Trust scores should decay over time — require ongoing good behavior |
-| **Append-only audit** | Never modify or delete audit entries — immutability enables compliance |
-| **Fail closed** | If governance check errors, deny the action rather than allowing it |
-| **Separate policy from logic** | Governance enforcement should be independent of agent business logic |
+| **構成としてのポリシー** | ポリシーはハードコードせずYAML/JSONに保存する。デプロイなしで変更できる |
+| **最も制限的な方を優先** | ポリシー合成時は、denyが常にallowを上書きする |
+| **実行前の意図チェック** | ツール実行後ではなく、実行*前*に意図を分類する |
+| **信頼の減衰** | 信頼スコアは時間とともに減衰させ、継続的な良好動作を要求する |
+| **追記専用監査** | 監査エントリは変更も削除もしない。不変性がコンプライアンスを可能にする |
+| **フェイルクローズ** | ガバナンスチェックでエラーが発生したら、許可ではなく拒否する |
+| **ポリシーとロジックの分離** | ガバナンス適用はAgentのビジネスロジックから独立させる |
 
 ---
 
-## Quick Start Checklist
+## クイックスタートチェックリスト
 
 ```markdown
 ## Agent Governance Implementation Checklist
@@ -562,7 +554,7 @@ Match governance strictness to risk level:
 
 ---
 
-## Related Resources
+## 関連リソース
 
 - [Agent Governance Toolkit](https://github.com/microsoft/agent-governance-toolkit) — Full governance framework
 - [AgentMesh Integrations](https://github.com/microsoft/agent-governance-toolkit/tree/main/packages/agentmesh-integrations) — Framework-specific packages

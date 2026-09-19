@@ -1,97 +1,97 @@
 ---
 name: arize-evaluator
-description: Handles LLM-as-judge evaluation workflows on Arize including creating/updating evaluators, running evaluations on spans or experiments, managing tasks, trigger-run operations, column mapping, and continuous monitoring. Use when the user mentions create evaluator, LLM judge, hallucination, faithfulness, correctness, relevance, run eval, score spans, score experiment, trigger-run, column mapping, continuous monitoring, or improve evaluator prompt.
+description: 'ArizeでのLLM-as-judge評価ワークフローを扱う。Evaluatorの作成・更新、スパンまたは実験の評価実行、タスク管理、trigger-run操作、列マッピング、継続監視を含む。Evaluator作成、LLM judge、ハルシネーション、忠実性、正確性、関連性、評価実行、スパン採点、実験採点、trigger-run、列マッピング、継続監視、Evaluatorプロンプト改善が話題になったときに使う。'
 metadata:
   author: arize
   version: "1.0"
-compatibility: Requires the ax CLI and a configured Arize profile with an AI integration.
+compatibility: ax CLI、構成済みのArizeプロファイル、AI統合が必要。
 ---
 
 # Arize Evaluator Skill
 
-> **`SPACE`** — All `--space` flags and the `ARIZE_SPACE` env var accept a space **name** (e.g., `my-workspace`) or a base64 space **ID** (e.g., `U3BhY2U6...`). Find yours with `ax spaces list`.
+> **`SPACE`** — すべての `--space` フラグと `ARIZE_SPACE` 環境変数は、space **名**（例: `my-workspace`）またはbase64 space **ID**（例: `U3BhY2U6...`）を受け付ける。`ax spaces list` で確認する。
 
-This skill covers designing, creating, and running **LLM-as-judge evaluators** on Arize. An evaluator defines the judge; a **task** is how you run it against real data.
-
----
-
-## Prerequisites
-
-Proceed directly with the task — run the `ax` command you need. Do NOT check versions, env vars, or profiles upfront.
-
-If an `ax` command fails, troubleshoot based on the error:
-- `command not found` or version error → see references/ax-setup.md
-- `401 Unauthorized` / missing API key → run `ax profiles show` to inspect the current profile. If the profile is missing or the API key is wrong, follow references/ax-profiles.md to create/update it. If the user doesn't have their key, direct them to https://app.arize.com/admin > API Keys
-- Space unknown → run `ax spaces list` to pick by name, or ask the user
-- LLM provider call fails (missing OPENAI_API_KEY / ANTHROPIC_API_KEY) → run `ax ai-integrations list --space SPACE` to check for platform-managed credentials. If none exist, ask the user to provide the key or create an integration via the **arize-ai-provider-integration** skill
-- **Security:** Never read `.env` files or search the filesystem for credentials. Use `ax profiles` for Arize credentials and `ax ai-integrations` for LLM provider keys. If credentials are not available through these channels, ask the user.
-- **CRITICAL — Never fabricate evaluation results:** If an evaluation task fails, is cancelled, or produces no scores, report the failure clearly and explain what went wrong. Do NOT perform a "manual evaluation," invent quality scores, estimate percentages, or present any agent-generated analysis as if it came from the Arize evaluation system. Instead suggest: (1) fix the identified issue and retry, (2) try running from the Arize UI, (3) verify integration credentials with `ax ai-integrations list`, (4) contact support at https://arize.com/support
+このSkillはArizeで **LLM-as-judge evaluator** を設計、作成、実行する。Evaluatorは判定役を定義し、**task** は実データに対してそれを実行する方法を定義する。
 
 ---
 
-## Concepts
+## 前提条件
 
-### What is an Evaluator?
+タスクへ直接進み、必要な `ax` コマンドを実行する。事前にバージョン、環境変数、プロファイルを確認しない。
+
+`ax` コマンドが失敗した場合は、エラーに基づいて対処する:
+- `command not found` またはバージョンエラー → references/ax-setup.md を参照する
+- `401 Unauthorized` / APIキー不足 → `ax profiles show` を実行して現在のプロファイルを確認する。プロファイルがない、またはAPIキーが誤っている場合は、references/ax-profiles.md に従って作成/更新する。ユーザーがキーを持っていない場合は https://app.arize.com/admin > API Keys へ案内する
+- Space不明 → `ax spaces list` を実行して名前で選ぶか、ユーザーに尋ねる
+- LLMプロバイダー呼び出し失敗（OPENAI_API_KEY / ANTHROPIC_API_KEY不足） → `ax ai-integrations list --space SPACE` を実行し、プラットフォーム管理の資格情報があるか確認する。なければ、ユーザーにキー提供を依頼するか、**arize-ai-provider-integration** Skillで統合を作成する
+- **セキュリティ:** `.env` ファイルを読んだり、資格情報をファイルシステム検索したりしない。Arize資格情報には `ax profiles`、LLMプロバイダーキーには `ax ai-integrations` を使う。これらの経路で資格情報が得られない場合は、ユーザーに尋ねる。
+- **重要 — 評価結果を捏造しない:** 評価タスクが失敗、キャンセル、またはスコアなしの場合は、失敗を明確に報告し、何が起きたかを説明する。「手動評価」を行ったり、品質スコアや割合を作り出したり、Agent生成の分析をArize評価システム由来であるかのように示したりしない。代わりに、(1) 特定した問題を修正して再試行、(2) Arize UIからの実行を試す、(3) `ax ai-integrations list` で統合資格情報を確認、(4) https://arize.com/support へ問い合わせ、を提案する。
+
+---
+
+## 概念
+
+### Evaluatorとは
 
 An **evaluator** is an LLM-as-judge definition. It contains:
 
-| Field | Description |
+| フィールド | 説明 |
 |-------|-------------|
-| **Template** | The judge prompt. Uses `{variable}` placeholders (e.g. `{input}`, `{output}`, `{context}`) that get filled in at run time via a task's column mappings. |
-| **Classification choices** | The set of allowed output labels (e.g. `factual` / `hallucinated`). Binary is the default and most common. Each choice can optionally carry a numeric score. |
-| **AI Integration** | Stored LLM provider credentials (OpenAI, Anthropic, Bedrock, etc.) the evaluator uses to call the judge model. |
-| **Model** | The specific judge model (e.g. `gpt-4o`, `claude-sonnet-4-5`). |
-| **Invocation params** | Optional JSON of model settings like `{"temperature": 0}`. Low temperature is recommended for reproducibility. |
-| **Optimization direction** | Whether higher scores are better (`maximize`) or worse (`minimize`). Sets how the UI renders trends. |
-| **Data granularity** | Whether the evaluator runs at the **span**, **trace**, or **session** level. Most evaluators run at the span level. |
+| **テンプレート** | judgeプロンプト。`{input}`、`{output}`、`{context}` などの `{variable}` プレースホルダーを使い、実行時にtaskの列マッピングで埋められる。 |
+| **Classification choices** | 許可される出力ラベル集合（例: `factual` / `hallucinated`）。binaryが既定で最も一般的。各選択肢は任意で数値スコアを持てる。 |
+| **AI Integration** | judgeモデル呼び出しにEvaluatorが使う、保存済みLLMプロバイダー資格情報（OpenAI、Anthropic、Bedrockなど）。 |
+| **Model** | 具体的なjudgeモデル（例: `gpt-4o`、`claude-sonnet-4-5`）。 |
+| **Invocation params** | `{"temperature": 0}` のようなモデル設定の任意JSON。再現性のため低temperatureを推奨する。 |
+| **Optimization direction** | 高いスコアが良い（`maximize`）か悪い（`minimize`）か。UIの傾向表示方法を設定する。 |
+| **Data granularity** | Evaluatorが **span**、**trace**、**session** のどのレベルで実行されるか。ほとんどのEvaluatorはspanレベルで実行する。 |
 
-Evaluators are **versioned** — every prompt or model change creates a new immutable version. The most recent version is active.
+Evaluatorは**バージョン管理**される。プロンプトまたはモデルを変更するたびに、新しい不変バージョンが作成される。最新バージョンが有効になる。
 
-### What is a Task?
+### Taskとは
 
 A **task** is how you run one or more evaluators against real data. Tasks are attached to a **project** (live traces/spans) or a **dataset** (experiment runs). A task contains:
 
 | Field | Description |
 |-------|-------------|
-| **Evaluators** | List of evaluators to run. You can run multiple in one task. |
-| **Column mappings** | Maps each evaluator's template variables to actual field paths on spans or experiment runs (e.g. `"input" → "attributes.input.value"`). This is what makes evaluators portable across projects and experiments. |
-| **Query filter** | SQL-style expression to select which spans/runs to evaluate (e.g. `"span_kind = 'LLM'"`). Optional but important for precision. |
-| **Continuous** | For project tasks: whether to automatically score new spans as they arrive. |
-| **Sampling rate** | For continuous project tasks: fraction of new spans to evaluate (0–1). |
+| **Evaluators** | 実行するEvaluator一覧。1つのtaskで複数実行できる。 |
+| **Column mappings** | 各Evaluatorのtemplate変数を、spanまたはexperiment run上の実フィールドパス（例: `"input" → "attributes.input.value"`）へ対応付ける。これによりEvaluatorをプロジェクトや実験をまたいで移植できる。 |
+| **Query filter** | 評価するspan/runを選ぶSQL風の式（例: `"span_kind = 'LLM'"`）。任意だが精度のため重要。 |
+| **Continuous** | project taskの場合、新しいspan到着時に自動採点するか。 |
+| **Sampling rate** | continuous project taskの場合、評価する新規spanの割合（0–1）。 |
 
 ---
 
-## Data Granularity
+## データ粒度
 
-The `--data-granularity` flag controls what unit of data the evaluator scores. It defaults to `span` and only applies to **project tasks** (not dataset/experiment tasks — those evaluate experiment runs directly).
+`--data-granularity` フラグは、Evaluatorが採点するデータ単位を制御する。既定は `span` で、**project task** にのみ適用される（dataset/experiment taskには適用されない。これらはexperiment runを直接評価する）。
 
-| Level | What it evaluates | Use for | Result column prefix |
+| レベル | 評価対象 | 用途 | 結果列プレフィックス |
 |-------|-------------------|---------|---------------------|
 | `span` (default) | Individual spans | Q&A correctness, hallucination, relevance | `eval.{name}.label` / `.score` / `.explanation` |
 | `trace` | All spans in a trace, grouped by `context.trace_id` | Agent trajectory, task correctness — anything that needs the full call chain | `trace_eval.{name}.label` / `.score` / `.explanation` |
 | `session` | All traces in a session, grouped by `attributes.session.id` and ordered by start time | Multi-turn coherence, overall tone, conversation quality | `session_eval.{name}.label` / `.score` / `.explanation` |
 
-### How trace and session aggregation works
+### traceとsessionの集約方法
 
 For **trace** granularity, spans sharing the same `context.trace_id` are grouped together. Column values used by the evaluator template are comma-joined into a single string (each value truncated to 100K characters) before being passed to the judge model.
 
 For **session** granularity, the same trace-level grouping happens first, then traces are ordered by `start_time` and grouped by `attributes.session.id`. Session-level values are capped at 100K characters total.
 
-### The `{conversation}` template variable
+### `{conversation}` テンプレート変数
 
 At session granularity, `{conversation}` is a special template variable that renders as a JSON array of `{input, output}` turns across all traces in the session, built from `attributes.input.value` / `attributes.llm.input_messages` (input side) and `attributes.output.value` / `attributes.llm.output_messages` (output side).
 
 At span or trace granularity, `{conversation}` is treated as a regular template variable and resolved via column mappings like any other.
 
-### Multi-evaluator tasks
+### 複数Evaluatorのタスク
 
 A task can contain evaluators at different granularities. At runtime the system uses the **highest** granularity (session > trace > span) for data fetching and automatically **splits into one child run per evaluator**. Per-evaluator `query_filter` in the task's evaluators JSON further narrows which spans are included (e.g., only tool-call spans within a session).
 
 ---
 
-## Basic CRUD
+## 基本CRUD
 
-### AI Integrations
+### AI統合
 
 AI integrations store the LLM provider credentials the evaluator uses. For full CRUD — listing, creating for all providers (OpenAI, Anthropic, Azure, Bedrock, Vertex, Gemini, NVIDIA NIM, custom), updating, and deleting — use the **arize-ai-provider-integration** skill.
 
@@ -110,7 +110,7 @@ ax ai-integrations create \
 
 Copy the returned integration ID — it is required for `ax evaluators create --ai-integration-id`.
 
-### Evaluators
+### Evaluator
 
 ```bash
 # List / Get
@@ -161,29 +161,29 @@ ax evaluators update NAME_OR_ID \
 ax evaluators delete NAME_OR_ID
 ```
 
-**Key flags for `create`:**
+**`create` の主要フラグ:**
 
-| Flag | Required | Description |
+| フラグ | 必須 | 説明 |
 |------|----------|-------------|
-| `--name` | yes | Evaluator name (unique within space) |
-| `--space` | yes | Space name or ID to create in |
-| `--template-name` | yes | Eval column name — alphanumeric, spaces, hyphens, underscores |
-| `--commit-message` | yes | Description of this version |
-| `--ai-integration-id` | yes | AI integration ID (from above) |
-| `--model-name` | yes | Judge model (e.g. `gpt-4o`) |
-| `--template` | yes | Prompt with `{variable}` placeholders (single-quoted in bash) |
-| `--classification-choices` | yes | JSON object mapping choice labels to numeric scores e.g. `'{"correct": 1, "incorrect": 0}'` |
-| `--description` | no | Human-readable description |
-| `--include-explanations` | no | Include reasoning alongside the label |
-| `--use-function-calling` | no | Prefer structured function-call output |
-| `--invocation-params` | no | JSON of model params e.g. `'{"temperature": 0}'` |
-| `--data-granularity` | no | `span` (default), `trace`, or `session`. Only relevant for project tasks, not dataset/experiment tasks. See Data Granularity section. |
-| `--direction` | no | Optimization direction: `maximize` or `minimize`. Sets how the UI renders trends. |
-| `--provider-params` | no | JSON object of provider-specific parameters |
+| `--name` | yes | Evaluator名（space内で一意） |
+| `--space` | yes | 作成先space名またはID |
+| `--template-name` | yes | 評価列名。英数字、スペース、ハイフン、アンダースコア |
+| `--commit-message` | yes | このバージョンの説明 |
+| `--ai-integration-id` | yes | AI統合ID（上記から取得） |
+| `--model-name` | yes | judgeモデル（例: `gpt-4o`） |
+| `--template` | yes | `{variable}` プレースホルダー付きプロンプト（bashでは単一引用符で囲む） |
+| `--classification-choices` | yes | 選択ラベルを数値スコアへ対応付けるJSONオブジェクト。例: `'{"correct": 1, "incorrect": 0}'` |
+| `--description` | no | 人間が読める説明 |
+| `--include-explanations` | no | ラベルとともに理由付けを含める |
+| `--use-function-calling` | no | 構造化function-call出力を優先する |
+| `--invocation-params` | no | `{"temperature": 0}` などのモデルパラメーターJSON |
+| `--data-granularity` | no | `span`（既定）、`trace`、または `session`。project taskにのみ関係し、dataset/experiment taskには関係しない。データ粒度セクションを参照。 |
+| `--direction` | no | 最適化方向: `maximize` または `minimize`。UIでの傾向表示方法を設定する。 |
+| `--provider-params` | no | プロバイダー固有パラメーターのJSONオブジェクト |
 
-### Tasks
+### Task
 
-> `PROJECT_NAME`, `DATASET_NAME`, and `evaluator_id` all accept a name or base64 ID.
+> `PROJECT_NAME`、`DATASET_NAME`、`evaluator_id` はいずれも名前またはbase64 IDを受け付ける。
 
 ```bash
 # List / Get
@@ -236,74 +236,74 @@ ax tasks wait-for-run RUN_ID --timeout 300
 ax tasks cancel-run RUN_ID --force
 ```
 
-**Time format for trigger-run:** `2026-03-21T09:00:00` — no trailing `Z`.
+**trigger-runの時刻形式:** `2026-03-21T09:00:00` — 末尾に `Z` を付けない。
 
-**Additional trigger-run flags:**
+**追加のtrigger-runフラグ:**
 
-| Flag | Description |
+| フラグ | 説明 |
 |------|-------------|
-| `--max-spans` | Cap processed spans (default 10,000) |
-| `--override-evaluations` | Re-score spans that already have labels |
-| `--wait` / `-w` | Block until the run finishes |
-| `--timeout` | Seconds to wait with `--wait` (default 600) |
-| `--poll-interval` | Poll interval in seconds when waiting (default 5) |
+| `--max-spans` | 処理するspan数に上限を設ける（既定10,000） |
+| `--override-evaluations` | すでにラベルがあるspanを再採点する |
+| `--wait` / `-w` | 実行が終わるまでブロックする |
+| `--timeout` | `--wait` 時に待機する秒数（既定600） |
+| `--poll-interval` | 待機時のポーリング間隔秒数（既定5） |
 
-**Run status guide:**
+**実行ステータスガイド:**
 
-| Status | Meaning |
+| ステータス | 意味 |
 |--------|---------|
-| `completed`, 0 spans | The eval index lags 1–2 hours — spans ingested recently may not be indexed yet. Shift the window to data at least 2 hours old, or widen the time range to cover more historical data. |
-| `cancelled` ~1s | Integration credentials invalid |
-| `cancelled` ~3min | Found spans but LLM call failed — check model name or key |
-| `completed`, N > 0 | Success — check scores in UI |
+| `completed`, 0 spans | eval indexは1–2時間遅れる。最近取り込まれたspanはまだindexされていない可能性がある。少なくとも2時間前までのデータへwindowをずらすか、より古いデータを含むよう時間範囲を広げる。 |
+| `cancelled` ~1s | 統合資格情報が無効 |
+| `cancelled` ~3min | spanは見つかったがLLM呼び出しが失敗。モデル名またはキーを確認する |
+| `completed`, N > 0 | 成功。UIでスコアを確認する |
 
 ---
 
-## Workflow A: Create an evaluator for a project
+## ワークフローA: プロジェクト用Evaluatorを作成
 
-Use this when the user says something like *"create an evaluator for my Playground Traces project"*.
+ユーザーが *"create an evaluator for my Playground Traces project"* のように言ったときに使う。
 
-### Step 1: Confirm the project name
+### 手順1: プロジェクト名を確認
 
-`ax spans export` accepts a project name directly — no ID lookup needed. If you don't know the project name, list available projects:
+`ax spans export` はプロジェクト名を直接受け付ける。ID検索は不要。プロジェクト名が分からない場合は、利用可能なプロジェクトを一覧表示する:
 
 ```bash
 ax projects list --space SPACE -o json
 ```
 
-Find the entry whose `"name"` matches (case-insensitive) and use that name as `PROJECT` in subsequent commands. If you later hit a validation error with a name, fall back to using the project's `"id"` (a base64 string) instead.
+`"name"` が一致するエントリ（大文字小文字を区別しない）を見つけ、その名前を後続コマンドの `PROJECT` として使う。後で名前による検証エラーに遭遇した場合は、代わりにプロジェクトの `"id"`（base64文字列）へフォールバックする。
 
-### Step 2: Understand what to evaluate
+### 手順2: 何を評価するか理解
 
-If the user specified the evaluator type (hallucination, correctness, relevance, etc.) → skip to Step 3.
+ユーザーがEvaluator種別（hallucination、correctness、relevanceなど）を指定している場合 → 手順3へ進む。
 
-If not, sample recent spans to base the evaluator on actual data:
+指定がない場合は、実データに基づいてEvaluatorを作るため、最近のspanをサンプリングする:
 
 ```bash
 ax spans export PROJECT --space SPACE -l 10 --days 30 --stdout
 ```
 
-Inspect `attributes.input`, `attributes.output`, span kinds, and any existing annotations. Identify failure modes (e.g. hallucinated facts, off-topic answers, missing context) and propose **1–3 concrete evaluator ideas**. Let the user pick.
+`attributes.input`、`attributes.output`、span種別、既存アノテーションを確認する。失敗モード（例: 幻覚した事実、話題外の回答、文脈不足）を特定し、**1〜3個の具体的なEvaluator案**を提案する。ユーザーに選んでもらう。
 
-Each suggestion must include: the evaluator name (bold), a one-sentence description of what it judges, and the binary label pair in parentheses. Format each like:
+各提案には、Evaluator名（太字）、何を判定するかの1文説明、括弧内のbinaryラベルペアを含める。各項目は次の形式にする:
 
-1. **Name** — Description of what is being judged. (`label_a` / `label_b`)
+1. **名前** — 何を判定するかの説明。(`label_a` / `label_b`)
 
-Example:
-1. **Response Correctness** — Does the agent's response correctly address the user's financial query? (`correct` / `incorrect`)
-2. **Hallucination** — Does the response fabricate facts not grounded in retrieved context? (`factual` / `hallucinated`)
+例:
+1. **Response Correctness** — Agentの応答がユーザーの金融クエリへ正しく答えているか。(`correct` / `incorrect`)
+2. **Hallucination** — 応答が取得文脈に根拠のない事実を捏造しているか。(`factual` / `hallucinated`)
 
-### Step 3: Confirm or create an AI integration
+### 手順3: AI統合を確認または作成
 
 ```bash
 ax ai-integrations list --space SPACE -o json
 ```
 
-If a suitable integration exists, note its ID. If not, create one using the **arize-ai-provider-integration** skill. Ask the user which provider/model they want for the judge.
+適切な統合が存在する場合は、そのIDを記録する。なければ **arize-ai-provider-integration** Skillで作成する。judgeに使いたいプロバイダー/モデルをユーザーに尋ねる。
 
-### Step 4: Create the evaluator
+### 手順4: Evaluatorを作成
 
-Use the template design best practices below. Keep the evaluator name and variables **generic** — the task (Step 6) handles project-specific wiring via `column_mappings`.
+下記のテンプレート設計ベストプラクティスを使う。Evaluator名と変数は**汎用的**に保つ。プロジェクト固有の接続は、task（手順6）が `column_mappings` で扱う。
 
 ```bash
 ax evaluators create \
@@ -325,39 +325,39 @@ Model response: {output}
 Respond with exactly one of these labels: hallucinated, factual'
 ```
 
-### Step 5: Ask — backfill, continuous, or both?
+### 手順5: 確認 — バックフィル、継続、または両方か
 
-**Recommended approach:** Always start with a small backfill (~100 historical spans) to validate the evaluator before turning on continuous monitoring. This lets you catch column mapping errors, wrong span kinds, and template issues on known data before scoring all future production spans. Only enable continuous after a backfill confirms correct scoring.
+**推奨アプローチ:** 継続監視を有効化する前に、必ず小さなbackfill（過去span約100件）から始めてEvaluatorを検証する。これにより、将来の本番spanをすべて採点する前に、既知データ上で列マッピングエラー、誤ったspan種別、テンプレート問題を発見できる。backfillで正しく採点できることを確認してからcontinuousを有効化する。
 
-Before creating the task, ask:
+task作成前に次を尋ねる:
 
-> "Would you like to:
-> (a) Run a **backfill** on historical spans (one-time)?
-> (b) Set up **continuous** evaluation on new spans going forward?
-> (c) **Both** — backfill first to validate, then keep scoring new spans automatically? (recommended)"
+> "次のどれにしますか:
+> (a) 過去spanに対して**backfill**を実行する（1回限り）
+> (b) 今後の新しいspanに対して**continuous** evaluationを設定する
+> (c) **両方** — まずbackfillで検証し、その後新しいspanを自動採点し続ける（推奨）"
 
-### Step 6: Determine column mappings from real span data
+### 手順6: 実際のスパンデータから列マッピングを決める
 
-Do not guess paths. Pull a sample and inspect what fields are actually present:
+パスを推測しない。サンプルを取得し、実際に存在するフィールドを確認する:
 
 ```bash
 ax spans export PROJECT --space SPACE -l 5 --days 7 --stdout
 ```
 
-For each template variable (`{input}`, `{output}`, `{context}`), find the matching JSON path. Common starting points — **always verify on your actual data before using**:
+各template変数（`{input}`、`{output}`、`{context}`）について、一致するJSONパスを見つける。一般的な出発点は次のとおり。**使う前に必ず実データで確認する**:
 
-| Template var | LLM span | CHAIN span |
+| Template変数 | LLM span | CHAIN span |
 |---|---|---|
 | `input` | `attributes.input.value` | `attributes.input.value` |
 | `output` | `attributes.llm.output_messages.0.message.content` | `attributes.output.value` |
 | `context` | `attributes.retrieval.documents.contents` | — |
 | `tool_output` | `attributes.input.value` (fallback) | `attributes.output.value` |
 
-**Validate span kind alignment:** If the evaluator prompt assumes LLM final text but the task targets CHAIN spans (or vice versa), runs can cancel or score the wrong text. Make sure the `query_filter` on the task matches the span kind you mapped.
+**span種別の整合性を検証:** EvaluatorプロンプトがLLMの最終テキストを前提にしているのにtaskがCHAIN spanを対象にする（またはその逆）場合、runはキャンセルされるか誤ったテキストを採点する可能性がある。taskの `query_filter` がマッピングしたspan種別と一致することを確認する。
 
-**`query_filter` only works on indexed attributes:** The `query_filter` in the evaluators JSON is evaluated against the eval index, not the raw span store. Attributes under `attributes.metadata.*` or custom keys may not be indexed and will silently match nothing. Use well-known indexed attributes like `span_kind` or `attributes.llm.model_name` for filtering. If a filter returns 0 spans despite data existing, try removing the filter as a diagnostic step.
+**`query_filter` はindex済み属性にのみ効く:** evaluators JSON内の `query_filter` は、生のspan storeではなくeval indexに対して評価される。`attributes.metadata.*` 配下の属性やカスタムキーはindexされていない場合があり、静かに何にも一致しないことがある。フィルターには `span_kind` や `attributes.llm.model_name` のような既知のindex済み属性を使う。データが存在するのにフィルターが0 spanを返す場合は、診断手順としてフィルターを外してみる。
 
-**Full example `--evaluators` JSON:**
+**完全な `--evaluators` JSON例:**
 
 ```json
 [
@@ -373,11 +373,11 @@ For each template variable (`{input}`, `{output}`, `{context}`), find the matchi
 ]
 ```
 
-Include a mapping for **every** variable the template references. Omitting one causes runs to produce no valid scores.
+templateが参照する**すべての**変数にマッピングを含める。1つでも省略すると、runは有効なスコアを生成できない。
 
-### Step 7: Create the task
+### 手順7: Taskを作成
 
-**Backfill only (a):**
+**Backfillのみ (a):**
 ```bash
 ax tasks create \
   --name "Hallucination Backfill" \
@@ -387,7 +387,7 @@ ax tasks create \
   --no-continuous
 ```
 
-**Continuous only (b):**
+**Continuousのみ (b):**
 ```bash
 ax tasks create \
   --name "Hallucination Monitor" \
@@ -398,19 +398,19 @@ ax tasks create \
   --sampling-rate 0.1
 ```
 
-**Both (c):** Use `--is-continuous` on create, then also trigger a backfill run in Step 8.
+**両方 (c):** 作成時に `--is-continuous` を使い、その後手順8でbackfill runもトリガーする。
 
-### Step 8: Trigger a backfill run (if requested)
+### 手順8: バックフィル実行をトリガー（要求された場合）
 
-> **Eval index lag:** The eval index is built asynchronously from the primary trace store and can lag **1–2 hours**. For your first test run, use a time window ending at least 2 hours in the past. If you set `--data-end-time` to "now" on spans ingested in the last hour, the run will complete successfully but score 0 spans.
+> **Eval indexの遅延:** eval indexはprimary trace storeから非同期で構築され、**1〜2時間**遅れる場合がある。最初のテストrunでは、少なくとも2時間前に終了する時間windowを使う。直近1時間に取り込まれたspanに対して `--data-end-time` を「now」にすると、runは成功完了しても0 spanを採点することがある。
 
-First find what time range has data:
+まずデータがある時間範囲を見つける:
 ```bash
 ax spans export PROJECT --space SPACE -l 100 --days 1 --stdout   # try last 24h first
 ax spans export PROJECT --space SPACE -l 100 --days 7 --stdout   # widen if empty
 ```
 
-Use the `start_time` / `end_time` fields from real spans to set the window. For the first validation run, cap `--max-spans` at ~100 to get quick feedback:
+実際のspanの `start_time` / `end_time` フィールドを使ってwindowを設定する。最初の検証runでは、素早いフィードバックを得るため `--max-spans` を約100に制限する:
 
 ```bash
 ax tasks trigger-run TASK_ID \
@@ -420,66 +420,66 @@ ax tasks trigger-run TASK_ID \
   --wait
 ```
 
-Review scores and explanations before widening to the full backfill or enabling continuous.
+完全なbackfillへ広げる、またはcontinuousを有効化する前に、スコアと説明を確認する。
 
 ---
 
-## Workflow B: Create an evaluator for an experiment
+## ワークフローB: 実験用Evaluatorを作成
 
-Use this when the user says something like *"create an evaluator for my experiment"* or *"evaluate my dataset runs"*.
+ユーザーが *"create an evaluator for my experiment"* や *"evaluate my dataset runs"* のように言ったときに使う。
 
-**If the user says "dataset" but doesn't have an experiment:** A task must target an experiment (not a bare dataset). Ask:
+**ユーザーが「dataset」と言うがexperimentを持っていない場合:** taskの対象は裸のdatasetではなくexperimentでなければならない。次を尋ねる:
 > "Evaluation tasks run against experiment runs, not datasets directly. Would you like help creating an experiment on that dataset first?"
 
-If yes, use the **arize-experiment** skill to create one, then return here.
+はいの場合は、**arize-experiment** Skillで作成してから、ここへ戻る。
 
-### Step 1: Find the dataset and experiment names
+### 手順1: データセット名と実験名を探す
 
 ```bash
 ax datasets list --space SPACE
 ax experiments list --dataset DATASET_NAME --space SPACE -o json
 ```
 
-Note the dataset name and the experiment name(s) to score. These accept names or IDs in subsequent commands — names are preferred.
+採点対象のdataset名とexperiment名を記録する。後続コマンドでは名前またはIDを受け付けるが、名前を優先する。
 
-### Step 2: Understand what to evaluate
+### 手順2: 何を評価するか理解
 
-If the user specified the evaluator type → skip to Step 3.
+ユーザーがEvaluator種別を指定した場合 → 手順3へ進む。
 
-If not, inspect a recent experiment run to base the evaluator on actual data:
-
-```bash
-ax experiments export EXPERIMENT_NAME --dataset DATASET_NAME --space SPACE --stdout | python3 -c "import sys,json; runs=json.load(sys.stdin); print(json.dumps(runs[0], indent=2))"
-```
-
-Look at the `output`, `input`, `evaluations`, and `metadata` fields. Identify gaps (metrics the user cares about but doesn't have yet) and propose **1–3 evaluator ideas**. Each suggestion must include: the evaluator name (bold), a one-sentence description, and the binary label pair in parentheses — same format as Workflow A, Step 2.
-
-### Step 3: Confirm or create an AI integration
-
-Same as Workflow A, Step 3.
-
-### Step 4: Create the evaluator
-
-Same as Workflow A, Step 4. Keep variables generic.
-
-### Step 5: Determine column mappings from real run data
-
-Run data shape differs from span data. Inspect:
+指定がない場合は、実データに基づくEvaluatorにするため、最近のexperiment runを確認する:
 
 ```bash
 ax experiments export EXPERIMENT_NAME --dataset DATASET_NAME --space SPACE --stdout | python3 -c "import sys,json; runs=json.load(sys.stdin); print(json.dumps(runs[0], indent=2))"
 ```
 
-Common mapping for experiment runs:
-- `output` → `"output"` (top-level field on each run)
-- `input` → check if it's on the run or embedded in the linked dataset examples
+`output`、`input`、`evaluations`、`metadata` フィールドを見る。ギャップ（ユーザーが気にしているがまだ持っていない指標）を特定し、**1〜3個のEvaluator案**を提案する。各提案には、Evaluator名（太字）、1文説明、括弧内のbinaryラベルペアを含める。形式はワークフローAの手順2と同じ。
 
-If `input` is not on the run JSON, export dataset examples to find the path:
+### 手順3: AI統合を確認または作成
+
+ワークフローAの手順3と同じ。
+
+### 手順4: Evaluatorを作成
+
+ワークフローAの手順4と同じ。変数は汎用的に保つ。
+
+### 手順5: 実際の実行データから列マッピングを決める
+
+runデータの形状はspanデータと異なる。確認する:
+
+```bash
+ax experiments export EXPERIMENT_NAME --dataset DATASET_NAME --space SPACE --stdout | python3 -c "import sys,json; runs=json.load(sys.stdin); print(json.dumps(runs[0], indent=2))"
+```
+
+experiment runの一般的なマッピング:
+- `output` → `"output"`（各runのトップレベルフィールド）
+- `input` → run上にあるか、リンクされたdataset exampleに埋め込まれているか確認する
+
+run JSON上に `input` がない場合は、dataset exampleを書き出してパスを見つける:
 ```bash
 ax datasets export DATASET_NAME --space SPACE --stdout | python3 -c "import sys,json; ex=json.load(sys.stdin); print(json.dumps(ex[0], indent=2))"
 ```
 
-### Step 6: Create the task
+### 手順6: Taskを作成
 
 ```bash
 ax tasks create \
@@ -491,7 +491,7 @@ ax tasks create \
   --no-continuous
 ```
 
-### Step 7: Trigger and monitor
+### 手順7: トリガーして監視
 
 ```bash
 ax tasks trigger-run TASK_ID \
@@ -504,46 +504,46 @@ ax tasks get-run RUN_ID
 
 ---
 
-## Best Practices for Template Design
+## テンプレート設計のベストプラクティス
 
-### 1. Use generic, portable variable names
+### 1. 汎用的で移植可能な変数名を使う
 
-Use `{input}`, `{output}`, and `{context}` — not names tied to a specific project or span attribute (e.g. do not use `{attributes_input_value}`). The evaluator itself stays abstract; the **task's `column_mappings`** is where you wire it to the actual fields in a specific project or experiment. This lets the same evaluator run across multiple projects and experiments without modification.
+`{input}`、`{output}`、`{context}` を使い、特定プロジェクトやspan属性に結び付く名前（例: `{attributes_input_value}`）は使わない。Evaluator自体は抽象的に保ち、特定プロジェクトや実験の実フィールドへの接続は **taskの `column_mappings`** で行う。これにより、同じEvaluatorを変更なしで複数のプロジェクトや実験に適用できる。
 
-### 2. Default to binary labels
+### 2. 既定はbinaryラベルにする
 
-Use exactly two clear string labels (e.g. `hallucinated` / `factual`, `correct` / `incorrect`, `pass` / `fail`). Binary labels are:
-- Easiest for the judge model to produce consistently
-- Most common in the industry
-- Simplest to interpret in dashboards
+明確な文字列ラベルをちょうど2つ使う（例: `hallucinated` / `factual`、`correct` / `incorrect`、`pass` / `fail`）。binaryラベルは:
+- judgeモデルが一貫して生成しやすい
+- 業界で最も一般的
+- ダッシュボードで最も解釈しやすい
 
-If the user insists on more than two choices, that's fine — but recommend binary first and explain the tradeoff (more labels → more ambiguity → lower inter-rater reliability).
+ユーザーが3つ以上の選択肢を強く望む場合は問題ない。ただし最初にbinaryを推奨し、トレードオフ（ラベルが多い → 曖昧さが増える → 評価者間信頼性が下がる）を説明する。
 
-### 3. Be explicit about what the model must return
+### 3. モデルが返すべき内容を明示する
 
-The template must tell the judge model to respond with **only** the label string — nothing else. The label strings in the prompt must **exactly match** the labels in `--classification-choices` (same spelling, same casing).
+templateでは、judgeモデルに**ラベル文字列だけ**を返すよう指示する。それ以外は返させない。プロンプト内のラベル文字列は、`--classification-choices` のラベルと**完全一致**していなければならない（同じ綴り、同じ大文字小文字）。
 
-Good:
+良い例:
 ```
 Respond with exactly one of these labels: hallucinated, factual
 ```
 
-Bad (too open-ended):
+悪い例（自由度が高すぎる）:
 ```
 Is this hallucinated? Answer yes or no.
 ```
 
-### 4. Keep temperature low
+### 4. temperatureを低く保つ
 
-Pass `--invocation-params '{"temperature": 0}'` for reproducible scoring. Higher temperatures introduce noise into evaluation results.
+再現性のある採点のため、`--invocation-params '{"temperature": 0}'` を渡す。高いtemperatureは評価結果にノイズを入れる。
 
-### 5. Use `--include-explanations` for debugging
+### 5. デバッグには `--include-explanations` を使う
 
-During initial setup, always include explanations so you can verify the judge is reasoning correctly before trusting the labels at scale.
+初期設定中は常に説明を含め、大規模にラベルを信頼する前にjudgeが正しく推論していることを確認する。
 
-### 6. Pass the template in single quotes in bash
+### 6. bashではtemplateをシングルクォートで渡す
 
-Single quotes prevent the shell from interpolating `{variable}` placeholders. Double quotes will cause issues:
+シングルクォートは、shellが `{variable}` プレースホルダーを展開するのを防ぐ。ダブルクォートは問題を起こす可能性がある:
 
 ```bash
 # Correct
@@ -553,74 +553,74 @@ Single quotes prevent the shell from interpolating `{variable}` placeholders. Do
 --template "Judge this: {input} → {output}"
 ```
 
-### 7. Always set `--classification-choices` to match your template labels
+### 7. `--classification-choices` は常にtemplateラベルと一致させる
 
-The labels in `--classification-choices` must exactly match the labels referenced in `--template` (same spelling, same casing). Omitting `--classification-choices` causes task runs to fail with "missing rails and classification choices."
+`--classification-choices` のラベルは、`--template` で参照されるラベルと完全一致しなければならない（同じ綴り、同じ大文字小文字）。`--classification-choices` を省略すると、task runは "missing rails and classification choices" で失敗する。
 
 ---
 
-## Troubleshooting
+## トラブルシューティング
 
-| Problem | Solution |
+| 問題 | 解決策 |
 |---------|----------|
-| `ax: command not found` | See references/ax-setup.md |
-| `401 Unauthorized` | API key may not have access to this space. Verify at https://app.arize.com/admin > API Keys |
+| `ax: command not found` | references/ax-setup.md を参照 |
+| `401 Unauthorized` | APIキーがこのspaceへアクセスできない可能性がある。https://app.arize.com/admin > API Keys で確認する |
 | `Evaluator not found` | `ax evaluators list --space SPACE` |
 | `Integration not found` | `ax ai-integrations list --space SPACE` |
 | `Task not found` | `ax tasks list --space SPACE` |
-| `project and dataset-id are mutually exclusive` | Use only one when creating a task |
-| `experiment-ids required for dataset tasks` | Add `--experiment-ids` to `create` and `trigger-run` |
-| `sampling-rate only valid for project tasks` | Remove `--sampling-rate` from dataset tasks |
-| Validation error on `ax spans export` | Project name usually works; if you still get a validation error, look up the base64 project ID via `ax projects list --space SPACE -o json` and use the `id` field instead |
-| Template validation errors | Use single-quoted `--template '...'` in bash; single braces `{var}`, not double `{{var}}` |
-| Run stuck in `pending` | `ax tasks get-run RUN_ID`; then `ax tasks cancel-run RUN_ID` |
-| Run `cancelled` ~1s | Integration credentials invalid — check AI integration |
-| Run `cancelled` ~3min | Found spans but LLM call failed — wrong model name or bad key |
-| Run `completed`, 0 spans | Widen time window; eval index may not cover older data |
-| No scores in UI | Fix `column_mappings` to match real paths on your spans/runs |
-| Scores look wrong | Add `--include-explanations` and inspect judge reasoning on a few samples |
-| Evaluator cancels on wrong span kind | Match `query_filter` and `column_mappings` to LLM vs CHAIN spans |
-| Time format error on `trigger-run` | Use `2026-03-21T09:00:00` — no trailing `Z` |
-| Run failed: "missing rails and classification choices" | Add `--classification-choices '{"label_a": 1, "label_b": 0}'` to `ax evaluators create` — labels must match the template |
-| Run `completed`, all spans skipped | Query filter matched spans but column mappings are wrong or template variables don't resolve — export a sample span and verify paths |
-| `query_filter` set but 0 spans scored | The filter attribute may not be indexed in the eval index. `attributes.metadata.*` and custom attributes are often not indexed. Use `span_kind` or `attributes.llm.model_name` instead, or remove the filter to confirm spans exist in the window. |
+| `project and dataset-id are mutually exclusive` | task作成時はどちらか一方だけを使う |
+| `experiment-ids required for dataset tasks` | `create` と `trigger-run` に `--experiment-ids` を追加する |
+| `sampling-rate only valid for project tasks` | dataset taskから `--sampling-rate` を削除する |
+| `ax spans export` の検証エラー | 通常はproject名で動作する。まだ検証エラーが出る場合は、`ax projects list --space SPACE -o json` でbase64 project IDを調べ、代わりに `id` フィールドを使う |
+| Template検証エラー | bashではシングルクォートの `--template '...'` を使う。二重の `{{var}}` ではなく単一波括弧 `{var}` にする |
+| Runが `pending` のまま | `ax tasks get-run RUN_ID`、その後 `ax tasks cancel-run RUN_ID` |
+| Runが約1秒で `cancelled` | 統合資格情報が無効。AI統合を確認する |
+| Runが約3分で `cancelled` | spanは見つかったがLLM呼び出しに失敗。モデル名誤りまたはキー不正 |
+| Runが `completed`、0 spans | 時間windowを広げる。eval indexが古いデータを含まない可能性がある |
+| UIにスコアがない | span/run上の実パスに合うよう `column_mappings` を修正する |
+| スコアが誤って見える | `--include-explanations` を追加し、いくつかのサンプルでjudgeの推論を確認する |
+| 誤ったspan種別でEvaluatorがキャンセルされる | `query_filter` と `column_mappings` をLLM spanまたはCHAIN spanに合わせる |
+| `trigger-run` の時刻形式エラー | `2026-03-21T09:00:00` を使う。末尾の `Z` は付けない |
+| Run failed: "missing rails and classification choices" | `ax evaluators create` に `--classification-choices '{"label_a": 1, "label_b": 0}'` を追加する。ラベルはtemplateと一致させる |
+| Runが `completed`、全spanがスキップ | Query filterはspanに一致したが、column mappingが誤っているかtemplate変数が解決されていない。サンプルspanを書き出してパスを確認する |
+| `query_filter` 設定時に0 span採点 | filter属性がeval indexにindexされていない可能性がある。`attributes.metadata.*` とカスタム属性はindexされないことが多い。代わりに `span_kind` または `attributes.llm.model_name` を使うか、filterを外してwindow内にspanが存在することを確認する。 |
 
-### Diagnosing cancelled runs
+### キャンセルされた実行の診断
 
-When a task run is cancelled (status `cancelled`), follow this checklist in order:
+task runがキャンセルされた（status `cancelled`）場合は、次のチェックリストを順番に実施する:
 
-**1. Check integration credentials**
+**1. 統合資格情報を確認する**
 ```bash
 ax ai-integrations list --space SPACE -o json
 ```
-Verify the integration ID used by the evaluator exists and has valid credentials. If the integration was deleted or the API key expired, the run cancels within ~1 second.
+Evaluatorが使う統合IDが存在し、有効な資格情報を持つことを確認する。統合が削除済み、またはAPIキーが期限切れの場合、runは約1秒以内にキャンセルされる。
 
-**2. Verify the model name**
+**2. モデル名を確認する**
 ```bash
 ax evaluators get EVALUATOR_NAME --space SPACE -o json
 ```
-Check the `model_name` field. A typo or deprecated model causes the LLM call to fail and the run to cancel after ~3 minutes.
+`model_name` フィールドを確認する。誤字や非推奨モデルはLLM呼び出しを失敗させ、runは約3分後にキャンセルされる。
 
-**3. Export a sample span/run and compare paths to column_mappings**
+**3. サンプルspan/runを書き出し、パスをcolumn_mappingsと比較する**
 
-For project tasks:
+project taskの場合:
 ```bash
 ax spans export PROJECT --space SPACE -l 1 --days 7 --stdout | python3 -m json.tool
 ```
 
-For experiment tasks:
+experiment taskの場合:
 ```bash
 ax experiments export EXPERIMENT_NAME --dataset DATASET_NAME --space SPACE --stdout | python3 -c "import sys,json; runs=json.load(sys.stdin); print(json.dumps(runs[0], indent=2)) if runs else print('No runs')"
 ```
 
-Compare the exported JSON paths against the task's `column_mappings`. For each template variable, confirm the mapped path actually exists. Common mismatches:
-- Mapping `output` to `attributes.output.value` on an experiment run (should be just `output`)
-- Mapping `input` to `attributes.input.value` on a CHAIN span when the actual path is `attributes.llm.input_messages`
-- Mapping `context` to a path that doesn't exist on the span kind being filtered
+書き出したJSONパスをtaskの `column_mappings` と比較する。template変数ごとに、マッピングされたパスが実際に存在することを確認する。よくある不一致:
+- experiment runで `output` を `attributes.output.value` にマッピングする（正しくは単に `output`）
+- CHAIN spanで `input` を `attributes.input.value` にマッピングするが、実際のパスは `attributes.llm.input_messages`
+- filter対象のspan種別に存在しないパスへ `context` をマッピングする
 
-**4. Check that `data_start_time` is not epoch**
+**4. `data_start_time` がepochでないことを確認する**
 
-If `trigger-run` used a start time of `0`, `1970-01-01`, or an empty string, the time window is invalid. Always derive from real span timestamps:
+`trigger-run` が開始時刻として `0`、`1970-01-01`、または空文字列を使った場合、時間windowは無効である。常に実際のspanタイムスタンプから導出する:
 ```bash
 ax spans export PROJECT --space SPACE -l 5 --days 30 --stdout | python3 -c "
 import sys, json
@@ -630,13 +630,13 @@ for s in spans:
 "
 ```
 
-**5. Verify span kind matches evaluator scope**
+**5. span種別がEvaluator範囲と一致することを確認する**
 
-If the evaluator was created with `--data-granularity trace` but the task's `query_filter` is `span_kind = 'LLM'`, the run may find no qualifying data and cancel. Ensure the granularity and filter are consistent.
+Evaluatorが `--data-granularity trace` で作成されているのにtaskの `query_filter` が `span_kind = 'LLM'` の場合、runは対象データを見つけられずキャンセルされる可能性がある。granularityとfilterが一貫していることを確認する。
 
-**6. Check that all template variables resolve**
+**6. すべてのtemplate変数が解決されることを確認する**
 
-Every `{variable}` in the evaluator template must have a corresponding `column_mappings` entry that resolves to a non-null value. Test resolution against a real span:
+Evaluator template内の各 `{variable}` には、nullでない値へ解決される対応 `column_mappings` エントリが必要である。実際のspanに対して解決をテストする:
 ```bash
 ax spans export PROJECT --space SPACE -l 3 --days 7 --stdout | python3 -c "
 import sys, json
@@ -654,20 +654,20 @@ for i, span in enumerate(spans):
         print(f'  {var} ({path}): {status} — {str(val)[:80] if val else \"null\"}')
 "
 ```
-If any variable shows MISSING on all spans, fix the column mapping or adjust `query_filter` to target a different span kind.
+いずれかの変数が全spanでMISSINGを示す場合は、column mappingを修正するか、別のspan種別を対象にするよう `query_filter` を調整する。
 
 ---
 
-## Related Skills
+## 関連Skill
 
-- **arize-ai-provider-integration**: Full CRUD for LLM provider integrations (create, update, delete credentials)
-- **arize-trace**: Export spans to discover column paths and time ranges
-- **arize-experiment**: Create experiments and export runs for experiment column mappings
-- **arize-dataset**: Export dataset examples to find input fields when runs omit them
-- **arize-link**: Deep links to evaluators and tasks in the Arize UI
+- **arize-ai-provider-integration**: LLMプロバイダー統合の完全なCRUD（資格情報の作成、更新、削除）
+- **arize-trace**: 列パスと時間範囲を見つけるためspanを書き出す
+- **arize-experiment**: experiment column mapping用にexperimentを作成しrunを書き出す
+- **arize-dataset**: runがinputを省略している場合にinputフィールドを見つけるためdataset exampleを書き出す
+- **arize-link**: Arize UI内のEvaluatorとtaskへのdeep link
 
 ---
 
-## Save Credentials for Future Use
+## 今後の利用に備えた資格情報の保存
 
-See references/ax-profiles.md § Save Credentials for Future Use.
+references/ax-profiles.md § Save Credentials for Future Use を参照する。

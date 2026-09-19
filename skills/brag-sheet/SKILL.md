@@ -1,167 +1,156 @@
 ---
 name: brag-sheet
-description: >
-  Turn vague "what did I do?" into evidence-backed impact statements for performance
-  reviews, self-reviews, promotion packets, and weekly updates. Uniquely mines Copilot
-  CLI session logs to reconstruct forgotten work, plus git commits and GitHub PRs.
-  Enforces a 3-part impact contract (action → result → evidence). Works standalone
-  with zero dependencies. Trigger for: "brag", "log work", "what did I do",
-  "backfill my work history", "performance review", "self-review", "self assessment",
-  "write impact statement", "review prep", "promo packet", "promotion case",
-  "weekly update", "status report", "accomplishments", "what did I ship",
-  "I forgot to log my work", "summarize my work", "track my wins",
-  "what should I highlight", "end of half", "career growth", "work journal",
-  or any request to document, summarize, or organize work accomplishments.
+description: '曖昧な「何をしたか」を業績評価、自己評価、昇進資料、週次更新向けの根拠付きインパクト文へ変換します。Copilot CLIのセッションログ、gitコミット、GitHub PRを独自に調べ、忘れていた作業を復元します。3部構成のインパクト契約（行動 → 結果 → 根拠）を徹底します。依存関係なしで単独動作します。「brag」「log work」「what did I do」「backfill my work history」「performance review」「self-review」「self assessment」「write impact statement」「review prep」「promo packet」「promotion case」「weekly update」「status report」「accomplishments」「what did I ship」「I forgot to log my work」「summarize my work」「track my wins」「what should I highlight」「end of half」「career growth」「work journal」、または業績を文書化、要約、整理する依頼で起動します。'
 license: MIT
-compatibility: 'Cross-platform (Windows, macOS, Linux). Works with any GitHub Copilot CLI session. Optional: git, gh CLI.'
+compatibility: 'クロスプラットフォーム（Windows、macOS、Linux）。あらゆるGitHub Copilot CLIセッションで動作します。任意: git、gh CLI。'
 metadata:
   version: "1.1"
-argument-hint: 'Optional: time range ("last 2 weeks", "this half"), category ("infrastructure"), "backfill", or "review prep"'
+argument-hint: '任意: 期間（「last 2 weeks」、「this half」）、カテゴリ（「infrastructure」）、「backfill」、または「review prep」'
 ---
 
-# Brag Sheet — Work Impact Writer
+# Brag Sheet — 業務インパクトライター
 
-Turn engineering work into evidence-backed impact statements for performance reviews, self-reviews, promotion packets, and weekly updates. Uniquely mines Copilot CLI session logs, git history, and PRs to reconstruct forgotten work.
+エンジニアリング作業を、業績評価、自己評価、昇進資料、週次更新向けの根拠付きインパクト文に変換します。Copilot CLIのセッションログ、git履歴、PRを独自に調べ、忘れていた作業を復元します。
 
-USE FOR: "brag", "log work", "what did I do", "backfill", "performance review", "self-review", "promo packet", "weekly update", "status report", "write impact statement", "what did I ship", "I forgot to log my work", "review prep", "accomplishments"
-DO NOT USE FOR: project management, sprint planning, time tracking, ticket creation
+使用対象: 「brag」「log work」「what did I do」「backfill」「performance review」「self-review」「promo packet」「weekly update」「status report」「write impact statement」「what did I ship」「I forgot to log my work」「review prep」「accomplishments」
+使用対象外: プロジェクト管理、スプリント計画、時間記録、チケット作成
 
-## Quick Start
+## クイックスタート
 
-| User wants... | Mode | Output |
+| ユーザーの要望 | モード | 出力 |
 |---------------|------|--------|
-| Log one accomplishment | **Capture** | 1 impact-first entry |
-| "What did I do last week?" | **Backfill** | Entries grouped by week, mined from git/PRs/sessions |
-| Prep for review or promo | **Review Pack** | Entries grouped by impact theme + STAR narratives |
+| 1件の業績を記録する | **Capture** | インパクトを先にした1件のエントリ |
+| 「先週何をしたか」 | **Backfill** | git/PR/セッションから調べ、週ごとにまとめたエントリ |
+| 評価または昇進の準備 | **Review Pack** | インパクトテーマ別のエントリ + STAR形式の物語 |
 
-## Agent Behavior Rules
+## Agentの行動規則
 
-1. **DO** confirm the time range and scope before scanning sources. Don't assume "last week" — ask.
-2. **DO** check which tools are available (`save_to_brag_sheet`, `git`, `gh`) before choosing a workflow.
-3. **DO** always include all three parts: action → result → evidence. If evidence is missing, write `(evidence needed)` — never silently omit.
-4. **DO** show drafted entries to the user before saving. Never auto-save without confirmation.
-5. **DO** group related commits into a single entry. Ten commits on the same feature = one entry.
-6. **DO** preserve the user's voice. Reframe for impact, but don't invent accomplishments or inflate scope.
-7. **DO NOT** fabricate metrics, team sizes, or impact numbers. If the user doesn't provide a number, don't invent one.
-8. **DO NOT** write entries for work the user only described verbally without verifying. Ask: "Did this ship? Is there a PR or doc I can reference?"
-9. **DO NOT** skip the backfill scan steps or draft entries before scanning is complete.
-10. **DO NOT** pad weak periods with trivial entries. An honest gap is better than inflated fluff.
+1. **必ず**ソースをスキャンする前に期間と範囲を確認する。「先週」と決めつけず、尋ねます。
+2. **必ず**ワークフローを選ぶ前に利用可能なTool（`save_to_brag_sheet`、`git`、`gh`）を確認する。
+3. **必ず**3要素すべてを含める: 行動 → 結果 → 根拠。根拠がなければ `(evidence needed)` と書き、黙って省略しない。
+4. **必ず**保存前に下書きエントリをユーザーへ表示する。確認なしに自動保存しない。
+5. **必ず**関連するコミットを1つのエントリにまとめる。同じ機能への10コミットは1エントリです。
+6. **必ず**ユーザーの文体を維持する。インパクト向けに言い換えても、業績を創作したり範囲を誇張したりしない。
+7. **絶対に**メトリクス、チーム規模、インパクト数値を捏造しない。ユーザーが数値を示していなければ作らない。
+8. **絶対に**ユーザーが口頭で説明しただけで未検証の作業についてエントリを書かない。「出荷しましたか？参照できるPRや文書はありますか？」と尋ねる。
+9. **絶対に**バックフィルのスキャン手順を飛ばしたり、スキャン完了前にエントリを下書きしたりしない。
+10. **絶対に**弱い期間を些細なエントリで埋めない。誇張した内容より正直な空白がよい。
 
-## Entry Format
+## エントリ形式
 
-Every entry uses impact-first framing with three required parts:
+すべてのエントリは、次の3要素を持つインパクト優先の構成です。
 
 ```
 Did [action] → [result/impact] → [evidence]
 ```
 
-**Do not output an entry unless it includes all three parts.** If evidence is missing, ask for it or mark as "(evidence needed)".
+**3要素すべてを含まないエントリは出力しないでください。** 根拠がない場合は尋ねるか、`(evidence needed)` と記します。
 
-### Anti-Patterns
+### アンチパターン
 
-| ❌ Don't | ✅ Do instead |
+| ❌ しないこと | ✅ 代わりにすること |
 |---------|--------------|
-| "Fixed a bug in auth" | "Fixed token refresh race condition → eliminated 401s affecting 12% of API calls → PR #247" |
-| "Worked on dashboards" | "Built latency dashboard in Grafana → on-call detects P95 spikes in <2min → deployed to prod" |
-| Invent a metric: "saved 40% of eng time" | Ask: "Do you have a rough estimate, or should I keep this qualitative?" |
-| One entry per commit | Group related commits into one entry with highest-impact framing |
-| Passive voice: "The pipeline was improved" | Active voice: "Built CI matrix → caught Windows-only bug before release" |
-| List technologies used | State the outcome: "Migrated 4 services to IaC → deploy time 45min → 8min" |
-| Silently drop weak entries | Mark `(evidence needed)` and present for user to fill in |
+| 「認証のバグを修正した」 | 「トークン更新の競合状態を修正 → API呼び出しの12%に影響していた401を解消 → PR #247」 |
+| 「ダッシュボードに取り組んだ」 | 「Grafanaでレイテンシダッシュボードを構築 → オンコールがP95スパイクを2分未満で検知 → 本番へデプロイ」 |
+| 「エンジニアリング時間を40%削減した」のようにメトリクスを創作する | 「概算はありますか、それとも定性的な表現にしますか？」と尋ねる |
+| コミットごとに1エントリ | 関連コミットを最もインパクトの高い構成で1エントリにまとめる |
+| 受動態: 「パイプラインが改善された」 | 能動態: 「CIマトリックスを構築 → リリース前にWindows固有のバグを検出」 |
+| 使用した技術を列挙する | 結果を述べる: 「4サービスをIaCへ移行 → デプロイ時間45分から8分」 |
+| 弱いエントリを黙って落とす | `(evidence needed)` と記し、ユーザーが補えるよう提示する |
 
-## Evidence Ladder
+## 根拠の強さ
 
-Not every entry needs a metric. Use the strongest evidence available:
+すべてのエントリにメトリクスが必要なわけではありません。利用できる最も強い根拠を使います。
 
-| Strength | Evidence type | Example |
+| 強さ | 根拠の種類 | 例 |
 |----------|--------------|---------|
-| 🥇 Best | Quantified metric | "Reduced P95 latency from 800ms to 120ms" |
-| 🥈 Strong | PR, commit, or doc link | "PR #312, design doc in wiki" |
-| 🥉 Good | Observable outcome | "Unblocked Team X", "Resolved Sev2 incident Y" |
-| ✅ Acceptable | Qualitative + context | "Reduced toil for on-call rotation — see updated runbook" |
-| ⚠️ Weak | Activity only | "Worked on auth" — reframe or mark `(evidence needed)` |
+| 🥇 最良 | 定量メトリクス | 「P95レイテンシを800msから120msへ削減」 |
+| 🥈 強い | PR、コミット、文書リンク | 「PR #312、wikiの設計文書」 |
+| 🥉 良い | 観測可能な結果 | 「Team Xの作業を解放」「Sev2インシデントYを解決」 |
+| ✅ 許容 | 定性情報 + コンテキスト | 「オンコールの定型作業を削減 — 更新済みrunbookを参照」 |
+| ⚠️ 弱い | 活動のみ | 「認証に取り組んだ」 — 言い換えるか `(evidence needed)` と記す |
 
-Never invent a metric to fill the gap. Qualitative evidence with context beats fabricated numbers.
+空白を埋めるためにメトリクスを決して捏造しないでください。文脈付きの定性的根拠は、捏造した数値より優れています。
 
-## Categories
+## カテゴリ
 
-| ID | Emoji | Use for |
+| ID | Emoji | 用途 |
 |----|-------|---------|
-| `pr` | 🚀 | Merged PRs, shipped features |
-| `bugfix` | 🐛 | Bug fixes, incident patches |
-| `infrastructure` | 🏗️ | Infra, deployments, migrations |
-| `investigation` | 🔍 | Root cause analysis, debugging |
-| `collaboration` | 🤝 | Reviews, mentoring, design discussions |
-| `tooling` | 🔧 | Dev tools, scripts, automation |
-| `oncall` | 🚨 | Incident response, on-call wins |
-| `design` | 📐 | Design docs, architecture decisions |
-| `documentation` | 📝 | Docs, runbooks, guides |
+| `pr` | 🚀 | マージ済みPR、出荷した機能 |
+| `bugfix` | 🐛 | バグ修正、インシデント対応 |
+| `infrastructure` | 🏗️ | インフラ、デプロイ、移行 |
+| `investigation` | 🔍 | 根本原因分析、デバッグ |
+| `collaboration` | 🤝 | レビュー、メンタリング、設計議論 |
+| `tooling` | 🔧 | 開発Tool、スクリプト、自動化 |
+| `oncall` | 🚨 | インシデント対応、オンコールの成果 |
+| `design` | 📐 | 設計文書、アーキテクチャ決定 |
+| `documentation` | 📝 | ドキュメント、runbook、ガイド |
 
-## How to Help the User
+## ユーザーを支援する方法
 
-Follow this decision tree:
+次の判断木に従います。
 
-1. **If `save_to_brag_sheet` tool is available** → use extension tools directly (`save_to_brag_sheet`, `review_brag_sheet`, `generate_work_log`). Do not reference or attempt to call these tools unless they are confirmed available.
+1. **`save_to_brag_sheet` Toolが利用可能な場合** → extension Tool（`save_to_brag_sheet`、`review_brag_sheet`、`generate_work_log`）を直接使います。利用可能と確認できるまで、これらのToolを参照したり呼び出したりしないでください。
 
-2. **If git or gh CLI is available** → backfill from commits and PRs (see Backfill section below)
+2. **gitまたはgh CLIが利用可能な場合** → コミットとPRからバックフィルします（下の「バックフィル」セクションを参照）
 
-3. **Otherwise** → guided interview: "What did you work on?", "Who benefited?", "What's the evidence?"
+3. **それ以外の場合** → ガイド付きインタビュー: 「何に取り組みましたか？」「誰が恩恵を受けましたか？」「根拠は何ですか？」
 
-For each entry, walk through: **What** (the deliverable) → **Why** (who benefits) → **Evidence** (PR, metric, link). Output formatted markdown the user can paste into a review doc.
+各エントリで、**What**（成果物）→ **Why**（誰が恩恵を受けるか）→ **Evidence**（PR、メトリクス、リンク）を確認します。ユーザーが評価文書へ貼り付けられるMarkdown形式で出力します。
 
-## Backfill Workflow
+## バックフィルワークフロー
 
-When the user asks "what did I do last week" or "backfill my history":
+ユーザーが「先週何をしたか」または「履歴をバックフィルして」と依頼した場合:
 
-**Follow these steps in order. Do not draft entries until scanning is complete.**
+**次の手順を順番に実行します。スキャンが完了するまでエントリを下書きしないでください。**
 
-### Step 1: Scan available sources
+### 手順1: 利用可能なソースをスキャンする
 
-Check what's available, then mine each source:
+利用可能なものを確認してから、各ソースを調べます。
 ```bash
 git --version 2>/dev/null         # for commit mining
 gh --version 2>/dev/null          # for PR mining
 ls ~/.copilot/session-state/ 2>/dev/null  # Copilot session logs
 ```
 
-**Git commits** — recent commits by the user in the current repo:
+**Gitコミット** — 現在のリポジトリでユーザーが行った最近のコミット:
 ```bash
 git log --author="$(git config user.email)" --since="2 weeks ago" \
   --pretty=format:'%h|%ad|%s' --date=short --no-merges
 ```
 
-**PR history** — merged PRs across repos:
+**PR履歴** — 複数リポジトリにまたがるマージ済みPR:
 ```bash
 gh pr list --author @me --state merged --limit 20 \
   --json number,title,repository,mergedAt
 ```
 
-**Copilot session history** (unique to this skill):
-- Path: `~/.copilot/session-state/<session-id>/workspace.yaml`
-- Read fields: `summary`, `cwd`, `repository`, `branch`
-- Skip sessions without a `summary` field
-- Note: this directory may not exist on all machines
+**Copilotセッション履歴**（このSkill独自）:
+- パス: `~/.copilot/session-state/<session-id>/workspace.yaml`
+- 読み取るフィールド: `summary`、`cwd`、`repository`、`branch`
+- `summary`フィールドがないセッションはスキップ
+- 注: このディレクトリはすべてのマシンに存在するとは限りません
 
-If none of these sources are available, fall back to the guided interview.
+どのソースも利用できない場合は、ガイド付きインタビューへ切り替えます。
 
-### Step 2: Group related work
+### 手順2: 関連作業をまとめる
 
-Cluster related signals into one entry:
-- Same PR + its commits → 1 entry
-- Multiple commits on the same file/feature within 3 days → 1 entry
-- Copilot sessions referencing the same repo + branch → merge into PR entry if one exists
+関連するシグナルを1つのエントリにまとめます。
+- 同じPRとそのコミット → 1エントリ
+- 3日以内に同じファイル/機能へ行われた複数のコミット → 1エントリ
+- 同じリポジトリとブランチを参照するCopilotセッション → 該当するPRエントリがあれば統合
 
-### Step 3: Draft entries
+### 手順3: エントリを下書きする
 
-Write impact-first entries for each group. Assign categories.
+各グループについてインパクト優先のエントリを書き、カテゴリを割り当てます。
 
-### Step 4: Present and refine
+### 手順4: 提示して改善する
 
-Show all drafted entries to the user. Adjust based on feedback.
+下書きしたすべてのエントリをユーザーに示し、フィードバックに基づいて調整します。
 
-### Step 5: Output
+### 手順5: 出力
 
-Format as markdown grouped by week:
+週ごとにまとめたMarkdown形式にします。
 
 ```markdown
 ## Week of 2025-04-14
@@ -173,76 +162,76 @@ Format as markdown grouped by week:
 - **Built CI pipeline for copilot-brag-sheet** → 107 tests across 3 OSes × 3 Node versions → shipped v1.0.0
 ```
 
-## Performance Review Prep
+## 業績評価の準備
 
-When the user is preparing for a performance review (Connect, annual review, etc.):
+ユーザーが業績評価（Connect、年次評価など）の準備をしている場合:
 
-### Structure
+### 構成
 
-1. **Gather** — collect entries from the work log (or backfill using the workflow above)
-2. **Select** — pick the top 3–5 highest-impact items
-3. **Rewrite** each item with three parts:
-   - **What I did** — the specific action
-   - **Why it mattered** — who benefited, what changed
-   - **Proof** — PR number, metric delta, dashboard link, customer outcome
-4. **Organize** by impact theme (not chronologically):
-   - Delivering results / operational excellence
-   - Customer / team impact
-   - Collaboration / mentoring / leadership
-   - Growth / learning
-5. **Ask for gaps** — if evidence is missing, prompt the user: "What metric changed?", "Who was unblocked?", "What's the PR or incident ID?"
+1. **集める** — 作業ログからエントリを集めます（または上記のワークフローでバックフィルします）
+2. **選ぶ** — インパクトが最も大きい上位3〜5件を選びます
+3. 各項目を3要素で**書き直す**:
+   - **行ったこと** — 具体的な行動
+   - **重要だった理由** — 誰が恩恵を受け、何が変わったか
+   - **証拠** — PR番号、メトリクスの差分、ダッシュボードリンク、顧客への成果
+4. **整理する** — 時系列ではなくインパクトのテーマ別に整理します:
+   - 成果の達成 / 運用の卓越性
+   - 顧客 / チームへのインパクト
+   - コラボレーション / メンタリング / リーダーシップ
+   - 成長 / 学習
+5. **不足を確認する** — 根拠がない場合はユーザーに「何のメトリクスが変わりましたか？」「誰の作業が進みましたか？」「PRまたはインシデントIDは何ですか？」と尋ねます
 
-### Strong vs weak entries
+### 強いエントリと弱いエントリ
 
-| ✅ Strong | ❌ Weak |
+| ✅ 強い | ❌ 弱い |
 |----------|--------|
-| Outcome-first, quantified | Activity list ("worked on X") |
-| Tied to customer/team impact | No beneficiary mentioned |
-| Includes evidence (PR, metric) | No measurable result |
-| Shows ownership or leadership | Pure task completion |
+| 成果を先に示し、定量化されている | 活動の一覧（「Xに取り組んだ」） |
+| 顧客/チームへのインパクトに結び付いている | 恩恵を受けた人が示されていない |
+| 根拠（PR、メトリクス）がある | 測定可能な結果がない |
+| オーナーシップまたはリーダーシップを示している | 単なるタスク完了 |
 
-### Narrative format
+### ナラティブ形式
 
-For longer narrative sections, use STAR: **S**ituation → **T**ask → **A**ction → **R**esult.
+長いナラティブ部分にはSTARを使います: **S**ituation（状況）→ **T**ask（課題）→ **A**ction（行動）→ **R**esult（結果）。
 
-For Microsoft employees using the Connect preset, frame entries around Core Priorities: delivering results, customer obsession, teamwork, and growth mindset.
+Connectプリセットを使うMicrosoft社員の場合、Core Priorities（成果の達成、顧客第一、チームワーク、成長マインドセット）を軸にエントリを構成します。
 
-## Output Contract
+## 出力契約
 
-Before finishing, ensure:
-1. Every entry has action → result → evidence (mark `(evidence needed)` if missing)
-2. No fabricated metrics — only user-provided or source-verified data
-3. Entries shown to user before saving
-4. Time range explicitly stated
-5. Output is pasteable markdown with categories assigned
+完了前に次を確認します。
+1. すべてのエントリに行動 → 結果 → 根拠がある（不足時は`(evidence needed)`と記す）
+2. 捏造したメトリクスがなく、ユーザー提供またはソース検証済みのデータだけを使う
+3. 保存前にエントリをユーザーへ表示する
+4. 期間を明示する
+5. カテゴリを割り当てた、貼り付け可能なMarkdownとして出力する
 
-## Gotchas
+## 注意点
 
-### No recent commits in the current repo
-The user may work across multiple repos. Before concluding there's nothing to backfill:
-1. Ask if they want to scan a different repo or branch
-2. Check `gh pr list --author @me --state merged` for cross-repo PRs
-3. Fall back to the guided interview — not all impactful work leaves git traces (design docs, incident response, mentoring)
+### 現在のリポジトリに最近のコミットがない
+ユーザーは複数のリポジトリで作業している可能性があります。バックフィルするものがないと結論する前に:
+1. 別のリポジトリまたはブランチをスキャンするか尋ねる
+2. リポジトリをまたぐPRについて`gh pr list --author @me --state merged`を確認する
+3. ガイド付きインタビューへ戻る — すべての影響ある作業にgitの痕跡が残るとは限りません（設計文書、インシデント対応、メンタリングなど）
 
-### Review period doesn't match git history
-Performance reviews often cover 6–12 months. Explicitly set the date range:
+### 評価期間がgit履歴と一致しない
+業績評価は6〜12か月を対象にすることが多いため、期間を明示的に設定します。
 ```bash
 git log --author="$(git config user.name)" --since="2024-07-01" --until="2025-01-01" --oneline
 ```
-PR history (`gh pr list --state merged`) is more reliable for long time ranges than commit logs.
+長い期間では、PR履歴（`gh pr list --state merged`）の方がコミットログより信頼できます。
 
-### User can't quantify impact
-Not every entry needs a number. See the Evidence Ladder above. Acceptable evidence includes PR links, "unblocked Team X", or qualitative outcomes with context. Never invent a metric to fill the gap.
+### ユーザーがインパクトを定量化できない
+すべてのエントリに数値が必要なわけではありません。上の「根拠の強さ」を参照してください。許容される根拠にはPRリンク、「Team Xの作業を解放した」、文脈付きの定性的な成果があります。空白を埋めるためにメトリクスを決して捏造しないでください。
 
-### Copilot session directory doesn't exist
-`~/.copilot/session-state/` only exists if the user has run Copilot CLI sessions. Don't error — silently skip and note: "No Copilot session history found; scanning git and PRs only."
+### Copilotセッションディレクトリが存在しない
+`~/.copilot/session-state/`はユーザーがCopilot CLIセッションを実行した場合にだけ存在します。エラーにせず、静かにスキップして「Copilotセッション履歴が見つからないため、gitとPRだけをスキャンしました」と記録します。
 
-### "brag" might mean something else
-The user might say "brag about this feature to my team" (a launch announcement, not a work entry). Confirm intent if ambiguous.
+### 「brag」が別の意味かもしれない
+ユーザーが「この機能をチームに自慢して」と言う場合があります（業務エントリではなくローンチ告知かもしれません）。曖昧なら意図を確認します。
 
-### Pair programming or co-authored commits
-If multiple authors appear on the same commits, ask: "Should I credit this as your work, shared work, or skip it?"
+### ペアプログラミングまたは共同作成コミット
+同じコミットに複数の作者がいる場合は、「あなたの作業として記載しますか、共同作業としますか、それとも省略しますか？」と尋ねます。
 
-## Automatic Session Tracking (Optional)
+## 自動セッション追跡（任意）
 
-For automatic background tracking of every Copilot CLI session (files edited, PRs created, git actions), install the [copilot-brag-sheet](https://github.com/microsoft/copilot-brag-sheet) extension. It adds `save_to_brag_sheet`, `review_brag_sheet`, and `generate_work_log` tools to every session.
+すべてのCopilot CLIセッション（編集ファイル、作成PR、git操作）をバックグラウンドで自動追跡するには、[copilot-brag-sheet](https://github.com/microsoft/copilot-brag-sheet) extensionをインストールします。各セッションに `save_to_brag_sheet`、`review_brag_sheet`、`generate_work_log` Toolが追加されます。

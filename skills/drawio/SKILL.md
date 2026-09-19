@@ -1,6 +1,6 @@
 ---
 name: drawio
-description: Generate draw.io diagrams as .drawio files and export to PNG/SVG/PDF with embedded XML
+description: draw.io 図を .drawio ファイルとして生成し、XML を埋め込んだ PNG/SVG/PDF へエクスポートします
 ---
 
 # Draw.io 図作成スキル

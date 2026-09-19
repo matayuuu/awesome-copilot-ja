@@ -39,48 +39,46 @@ description: 'プロンプトの指示に従ってテキストベースの文書
 
 ### パラメーター
 
-- **#file:{{file}}** (required) - The plain or generic text documentation file to convert to markdown.
-If a corresponding `{{file}}.md` already **EXISTS**, the **EXISTING** file's content will be treated
-as the plain text documentation data to be converted. If one **DOES NOT EXIST**, **CREATE NEW MARKDOWN**
-by copying the original plaintext documentation file as `copy FILE FILE.md` in the same directory as
-the plain text documentation file.
-- **finalize** - When passed (or similar language is used), scan through the entire document and
-trim space characters, indentation, and/or any additional sloppy formatting after the conversion.
-- **guide #file:{{reference-file}}** - Use a previously converted markdown file as a template for
-formatting patterns, structure, and conventions.
-- **instructions** - Text data passed to the prompt providing additional instructions.
-- **platform={{name}}** - Specify the target platform for markdown rendering to ensure compatibility:
-  - **GitHub** (default) - GitHub-flavored markdown (GFM) with tables, task lists, strikethrough,
-  and alerts
-  - **StackOverflow** - CommonMark with StackOverflow-specific extensions
-  - **VS Code** - Optimized for VS Code's markdown preview renderer
-  - **GitLab** - GitLab-flavored markdown with platform-specific features
-  - **CommonMark** - Standard CommonMark specification
+- **#file:{{file}}**（必須）- Markdownへ変換するプレーンテキストまたは一般的なテキスト文書ファイル。
+対応する `{{file}}.md` がすでに**存在する**場合は、**既存**ファイルの内容を変換対象の
+プレーンテキスト文書データとして扱う。**存在しない**場合は、元のプレーンテキスト文書と
+同じディレクトリで `copy FILE FILE.md` を実行して、**新しいMarkdownを作成する**。
+- **finalize** - 指定された場合（または同様の表現が使われた場合）、文書全体を走査し、
+変換後に空白文字、インデント、その他の乱れた書式を整える。
+- **guide #file:{{reference-file}}** - 以前に変換したMarkdownファイルを、書式パターン、
+構造、規約のテンプレートとして使う。
+- **instructions** - 追加指示としてプロンプトへ渡すテキストデータ。
+- **platform={{name}}** - 互換性を確保するため、Markdownを表示する対象プラットフォームを指定する。
+  - **GitHub**（既定）- 表、タスクリスト、取り消し線、アラートに対応するGitHub Flavored Markdown（GFM）
+  - **StackOverflow** - StackOverflow固有の拡張を備えたCommonMark
+  - **VS Code** - VS CodeのMarkdownプレビュー表示向けに最適化
+  - **GitLab** - プラットフォーム固有機能を備えたGitLab Flavored Markdown
+  - **CommonMark** - 標準のCommonMark仕様
 
 ### オプション
 
-- **--header [1-4]** - Add markdown header tags to the document:
-  - **[1-4]** - Specifies the header level to add (# through ####)
-  - **#selection** - Data used to:
-    - Identify sections where updates should be applied
-    - Serve as a guide for applying headers to other sections or the entire document
-  - **Auto-apply** (if none provided) - Add headers based on content structure
-- **-p, --pattern** - Follow an existing pattern from:
-  - **#selection** - A selected pattern to follow when updating the file or a portion of it
-    - **IMPORTANT**: DO NOT only edit the selection when passed to `{{[-p, --pattern]}}`
-    - **NOTE**: The selection is **NOT** the **WORKING RANGE**
-    - Identify pattern(s) from the selection
-    - **Stopping Points**:
-      - If `{{[-s, --stop]}} eof` is passed or no clear endpoint is specified, convert to end of file
-      - If `-s [0-9]+` is passed, convert to the line number specified in the regex `[0-9]+`
-  - **Prompt instructions** - Instructional data passed with the prompt
-  - **Auto-detect** (if none provided) - Identify existing patterns in the file by:
-    - Analyzing where patterns occur
-    - Identifying data that does not match the pattern
-    - Applying patterns from one section to corresponding sections where the pattern is missing
+- **--header [1-4]** - 文書へMarkdown見出しを追加する。
+  - **[1-4]** - 追加する見出しレベル（#から####）を指定する
+  - **#selection** - 次の目的で使うデータ。
+    - 更新を適用するセクションを特定する
+    - 他のセクションまたは文書全体へ見出しを適用するための指針にする
+  - **自動適用**（指定がない場合）- 内容の構造に基づいて見出しを追加する
+- **-p, --pattern** - 次の情報にある既存パターンに従う。
+  - **#selection** - ファイルまたはその一部を更新するときに従う、選択されたパターン
+    - **重要**: `{{[-p, --pattern]}}` へ渡された選択範囲だけを編集してはならない
+    - **注**: 選択範囲は**作業範囲ではない**
+    - 選択範囲からパターンを特定する
+    - **停止位置**:
+      - `{{[-s, --stop]}} eof` が渡された場合、または明確な終点が指定されていない場合は、ファイル末尾まで変換する
+      - `-s [0-9]+` が渡された場合は、正規表現 `[0-9]+` で指定された行番号まで変換する
+  - **プロンプトの指示** - プロンプトとともに渡される指示データ
+  - **自動検出**（指定がない場合）- 次の方法でファイル内の既存パターンを特定する。
+    - パターンが現れる位置を分析する
+    - パターンに一致しないデータを特定する
+    - あるセクションのパターンを、対応するパターンが欠けているセクションへ適用する
 - **-s, --stop <[0-9]+ | eof>**
-  - **[0-9]+** - Line number to stop the **current** markdown conversion at
-  - **eof** - If passed, or any other text clearly indicating **end of file**, convert to end of file
+  - **[0-9]+** - **現在の**Markdown変換を停止する行番号
+  - **eof** - 指定された場合、またはその他のテキストで明確に**ファイル末尾**が示された場合、ファイル末尾まで変換する
 
 ### 定義済みの指示
 
@@ -96,12 +94,11 @@ formatting patterns, structure, and conventions.
 
 #### 定義済み
 
-- **rm-head-digits** - Remove any prepending numbers from the headers when updating or converting the
-plaintext to markdown.
-- **mv-head-level(x, y)** - Change the heading level from level `x` header to a level `y` header when
-updating or converting plaintext to markdown.
-- **rm-indent(x)** - Decrease the indentation of paragraphs or raw text data portions of the file by
-`x` when updating or converting plaintext to markdown.
+- **rm-head-digits** - プレーンテキストをMarkdownへ更新または変換するとき、見出しの先頭に付いた数字を削除する。
+- **mv-head-level(x, y)** - プレーンテキストをMarkdownへ更新または変換するとき、見出しレベルを
+`x` から `y` へ変更する。
+- **rm-indent(x)** - プレーンテキストをMarkdownへ更新または変換するとき、ファイル内の段落または
+生テキスト部分のインデントを `x` だけ減らす。
 
 > [!NOTE]
 > 一致する**定義済み指示**がない場合、現在のプロンプトでは `pre=name` を無視する。
@@ -116,7 +113,7 @@ updating or converting plaintext to markdown.
 /convert-plaintext-to-md #file
 ```
 
-**Agent**
+**エージェント**
 
 ```
 I see there is no corresponding `file.md`. Let me copy the plaintext document:
@@ -136,7 +133,7 @@ Now I'll apply markdown best practices to convert the plaintext documentation to
 /convert-plaintext-to-md #file.md --guide #CODE.md
 ```
 
-**Agent**
+**エージェント**
 
 ```
 I see that both the file and CODE markdown files have corresponding plaintext documentation. Let me
@@ -225,7 +222,7 @@ OK, after analyzing the guide file, I've updated file.md to:
 
 **注** - 自然言語による表現の違いを許容する。このため「変換済みMarkdownファイルを整えて」のような表現も対象になる。
 
-**Agent**
+**エージェント**
 
 ```
 I'll finalize file.md. I see the current converted markdown file has:
@@ -289,7 +286,7 @@ Let me trim a few things:
 /convert-plaintext-to-md #BUGS --p "regex()=> ^ {1,}([0-9]+\.[0-9]+\.[0-9]+) to ^### $1"
 ```
 
-**Agent**
+**エージェント**
 
 ```
 I see that there is no `BUGS.md` file. Let me copy the current plaintext BUGS documentation:
@@ -298,8 +295,8 @@ I see that there is no `BUGS.md` file. Let me copy the current plaintext BUGS do
     copy BUGS BUGS.md
     ```
 
-Now I'll update the copied file BUGS.md, converting it to proper markdown.
-Let me read the current contents:
+次に、コピーした BUGS.md を適切な Markdown に変換して更新します。
+現在の内容を確認します。
 
     ```markdown
     1 Section
@@ -309,7 +306,7 @@ Let me read the current contents:
       1.12 Section Item
     ```
 
-OK, I've matched the shorthand regular expression pattern and updated the BUGS.md to:
+短縮正規表現パターンに一致させ、BUGS.md を次のように更新しました。
 
     ```markdown
     1 Section

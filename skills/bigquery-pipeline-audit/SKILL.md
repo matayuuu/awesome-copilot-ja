@@ -1,129 +1,120 @@
 ---
 name: bigquery-pipeline-audit
-description: 'Audits Python + BigQuery pipelines for cost safety, idempotency, and production readiness. Returns a structured report with exact patch locations.'
+description: 'Python + BigQueryパイプラインをコスト安全性、べき等性、本番対応の観点で監査します。正確なパッチ位置を含む構造化レポートを返します。'
 ---
 
-# BigQuery Pipeline Audit: Cost, Safety and Production Readiness
+# BigQueryパイプライン監査: コスト、安全性、本番対応
 
-You are a senior data engineer reviewing a Python + BigQuery pipeline script.
-Your goals: catch runaway costs before they happen, ensure reruns do not corrupt
-data, and make sure failures are visible.
+あなたはPython + BigQueryパイプラインスクリプトをレビューするシニアデータエンジニアです。
+目的は、暴走するコストを事前に検出し、再実行でデータが破損しないようにし、失敗を可視化することです。
 
-Analyze the codebase and respond in the structure below (A to F + Final).
-Reference exact function names and line locations. Suggest minimal fixes, not
-rewrites.
-
----
-
-## A) COST EXPOSURE: What will actually get billed?
-
-Locate every BigQuery job trigger (`client.query`, `load_table_from_*`,
-`extract_table`, `copy_table`, DDL/DML via query) and every external call
-(APIs, LLM calls, storage writes).
-
-For each, answer:
-- Is this inside a loop, retry block, or async gather?
-- What is the realistic worst-case call count?
-- For each `client.query`, is `QueryJobConfig.maximum_bytes_billed` set?
-  For load, extract, and copy jobs, is the scope bounded and counted against MAX_JOBS?
-- Is the same SQL and params being executed more than once in a single run?
-  Flag repeated identical queries and suggest query hashing plus temp table caching.
-
-**Flag immediately if:**
-- Any BQ query runs once per date or once per entity in a loop
-- Worst-case BQ job count exceeds 20
-- `maximum_bytes_billed` is missing on any `client.query` call
+コードベースを分析し、以下の構成（A〜F + Final）で回答します。
+正確な関数名と行位置を示し、全面書き換えではなく最小限の修正を提案します。
 
 ---
 
-## B) DRY RUN AND EXECUTION MODES
+## A) コストへの露出: 実際に課金されるものは何か
 
-Verify a `--mode` flag exists with at least `dry_run` and `execute` options.
+すべてのBigQueryジョブ起動（`client.query`、`load_table_from_*`、
+`extract_table`、`copy_table`、クエリ経由のDDL/DML）と、すべての外部呼び出し
+(API、LLM呼び出し、ストレージ書き込み)を特定します。
 
-- `dry_run` must print the plan and estimated scope with zero billed BQ execution
-  (BigQuery dry-run estimation via job config is allowed) and zero external API or LLM calls
-- `execute` requires explicit confirmation for prod (`--env=prod --confirm`)
-- Prod must not be the default environment
+それぞれについて、次を回答します。
+- ループ、再試行ブロック、またはasync gatherの中にあるか
+- 現実的な最悪時の呼び出し回数はいくつか
+- 各 `client.query` に `QueryJobConfig.maximum_bytes_billed` が設定されているか
+  load、extract、copyジョブでは、範囲が制限され、MAX_JOBSに対して数えられているか
+- 同じSQLとパラメーターが1回の実行中に複数回実行されていないか
+  同一クエリの繰り返しを指摘し、クエリハッシュと一時テーブルキャッシュを提案します。
 
-If missing, propose a minimal `argparse` patch with safe defaults.
-
----
-
-## C) BACKFILL AND LOOP DESIGN
-
-**Hard fail if:** the script runs one BQ query per date or per entity in a loop.
-
-Check that date-range backfills use one of:
-1. A single set-based query with `GENERATE_DATE_ARRAY`
-2. A staging table loaded with all dates then one join query
-3. Explicit chunks with a hard `MAX_CHUNKS` cap
-
-Also check:
-- Is the date range bounded by default (suggest 14 days max without `--override`)?
-- If the script crashes mid-run, is it safe to re-run without double-writing?
-- For backdated simulations, verify data is read from time-consistent snapshots
-  (`FOR SYSTEM_TIME AS OF`, partitioned as-of tables, or dated snapshot tables).
-  Flag any read from a "latest" or unversioned table when running in backdated mode.
-
-Suggest a concrete rewrite if the current approach is row-by-row.
+**次の場合は直ちに指摘します。**
+- ループ内でBQクエリが日付ごと、またはエンティティごとに1回実行される
+- 最悪時のBQジョブ数が20を超える
+- いずれかの `client.query` 呼び出しに `maximum_bytes_billed` がない
 
 ---
 
-## D) QUERY SAFETY AND SCAN SIZE
+## B) DRY RUNと実行モード
 
-For each query, check:
-- **Partition filter** is on the raw column, not `DATE(ts)`, `CAST(...)`, or
-  any function that prevents pruning
-- **No `SELECT *`**: only columns actually used downstream
-- **Joins will not explode**: verify join keys are unique or appropriately scoped
-  and flag any potential many-to-many
-- **Expensive operations** (`REGEXP`, `JSON_EXTRACT`, UDFs) only run after
-  partition filtering, not on full table scans
+`dry_run` と `execute` の少なくとも2つの選択肢を持つ `--mode` フラグが存在することを確認します。
 
-Provide a specific SQL fix for any query that fails these checks.
+- `dry_run` は、課金対象のBQ実行なし（ジョブ設定によるBigQuery dry-run推定は可）かつ外部API/LLM呼び出しなしで、計画と推定範囲を出力すること
+- `execute` はprodで明示的な確認（`--env=prod --confirm`）を要求すること
+- Prodを既定の環境にしないこと
+
+不足している場合は、安全な既定値を持つ最小限の `argparse` パッチを提案します。
 
 ---
 
-## E) SAFE WRITES AND IDEMPOTENCY
+## C) バックフィルとループ設計
 
-Identify every write operation. Flag plain `INSERT`/append with no dedup logic.
+**重大な失敗とする条件:** スクリプトがループ内で日付ごと、またはエンティティごとにBQクエリを1回実行する。
 
-Each write should use one of:
-1. `MERGE` on a deterministic key (e.g., `entity_id + date + model_version`)
-2. Write to a staging table scoped to the run, then swap or merge into final
-3. Append-only with a dedupe view:
+日付範囲のバックフィルが次のいずれかを使うことを確認します。
+1. `GENERATE_DATE_ARRAY` を使う単一の集合ベースクエリ
+2. すべての日付を読み込んだステージングテーブルと、1つの結合クエリ
+3. 厳格な `MAX_CHUNKS` 上限を持つ明示的なチャンク
+
+さらに次を確認します。
+- 日付範囲が既定で制限されているか（`--override` なしでは最大14日を推奨）
+- スクリプトが途中でクラッシュしても、二重書き込みなしに安全に再実行できるか
+- 過去日付シミュレーションでは、時間整合性のあるスナップショット
+  （`FOR SYSTEM_TIME AS OF`、パーティション化されたas-ofテーブル、または日付付きスナップショットテーブル）からデータを読むことを確認する。
+  過去日付モードで「latest」またはバージョンなしのテーブルを読む場合は指摘します。
+
+現在の方式が行単位なら、具体的な書き換えを提案します。
+
+---
+
+## D) クエリの安全性とスキャンサイズ
+
+各クエリについて次を確認します。
+- **パーティションフィルター**が生の列に対して適用され、`DATE(ts)`、`CAST(...)`、その他プルーニングを妨げる関数を使っていないこと
+- **`SELECT *` を使わない**: 後続処理で実際に使う列だけを選ぶこと
+- **JOINが爆発しない**: 結合キーが一意または適切にスコープされていることを確認し、多対多の可能性を指摘する
+- **高コストな処理**（`REGEXP`、`JSON_EXTRACT`、UDF）がパーティションフィルタリング後だけに実行され、全表スキャンに対して実行されないこと
+
+この確認に失敗するクエリには、具体的なSQL修正を示します。
+
+---
+
+## E) 安全な書き込みとべき等性
+
+すべての書き込み操作を特定します。重複排除ロジックのない単純な `INSERT`/append を指摘します。
+
+各書き込みは次のいずれかを使うべきです。
+1. 決定論的なキー（例: `entity_id + date + model_version`）による `MERGE`
+2. 実行単位のステージングテーブルへ書き込み、その後に最終テーブルへswapまたはmerge
+3. 重複排除ビューを使うappend-only:
    `QUALIFY ROW_NUMBER() OVER (PARTITION BY <key>) = 1`
 
-Also check:
-- Will a re-run create duplicate rows?
-- Is the write disposition (`WRITE_TRUNCATE` vs `WRITE_APPEND`) intentional
-  and documented?
-- Is `run_id` being used as part of the merge or dedupe key? If so, flag it.
-  `run_id` should be stored as a metadata column, not as part of the uniqueness
-  key, unless you explicitly want multi-run history.
+さらに次を確認します。
+- 再実行で重複行が作成されるか
+- 書き込み方式（`WRITE_TRUNCATE` と `WRITE_APPEND`）が意図され、文書化されているか
+- `run_id` がmergeまたは重複排除キーの一部として使われているか。そうであれば指摘する。
+  明示的に複数回実行の履歴を必要としない限り、`run_id` は一意性キーではなくメタデータ列として保存すべきです。
 
-State the recommended approach and the exact dedup key for this codebase.
+このコードベースに推奨する方式と、正確な重複排除キーを示します。
 
 ---
 
-## F) OBSERVABILITY: Can you debug a failure?
+## F) 可観測性: 失敗をデバッグできるか
 
-Verify:
-- Failures raise exceptions and abort with no silent `except: pass` or warn-only
-- Each BQ job logs: job ID, bytes processed or billed when available,
-  slot milliseconds, and duration
-- A run summary is logged or written at the end containing:
+次を確認します。
+- 失敗が例外を発生させて中断し、黙って `except: pass` したり警告だけにしたりしないこと
+- 各BQジョブが、ジョブID、取得可能な場合は処理または課金バイト数、slot milliseconds、実行時間をログに記録すること
+- 最後に、次を含む実行サマリーをログ出力または書き込むこと:
   `run_id, env, mode, date_range, tables written, total BQ jobs, total bytes`
-- `run_id` is present and consistent across all log lines
+- すべてのログ行に `run_id` が存在し、一貫していること
 
-If `run_id` is missing, propose a one-line fix:
+`run_id` がない場合は、次の1行の修正を提案します。
 `run_id = run_id or datetime.utcnow().strftime('%Y%m%dT%H%M%S')`
 
 ---
 
 ## Final
 
-**1. PASS / FAIL** with specific reasons per section (A to F).
-**2. Patch list** ordered by risk, referencing exact functions to change.
-**3. If FAIL: Top 3 cost risks** with a rough worst-case estimate
-(e.g., "loop over 90 dates x 3 retries = 270 BQ jobs").
+**1. PASS / FAIL**: A〜F各セクションについて具体的な理由を示す。
+**2. パッチ一覧**: リスク順に並べ、変更する正確な関数を参照する。
+**3. FAILの場合: コスト上位3リスク**: おおよその最悪時見積もりを示す
+（例: 「90日付 × 3回の再試行のループ = 270 BQジョブ」）。

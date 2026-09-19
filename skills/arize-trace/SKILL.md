@@ -1,17 +1,17 @@
 ---
 name: arize-trace
-description: Downloads, exports, and inspects existing Arize traces and spans to understand what an LLM app is doing or debug runtime issues. Covers exporting traces by ID, spans by ID, sessions by ID, and root-cause investigation using the ax CLI. Use when the user wants to look at existing trace data, see what their LLM app is doing, export traces, download spans, investigate errors, or analyze behavior regressions.
+description: '既存の Arize トレースとスパンをダウンロード、エクスポート、調査して、LLM アプリの動作を理解したり実行時の問題をデバッグしたりします。ID によるトレース、スパン、セッションのエクスポートと、ax CLI を使った根本原因調査を扱います。既存のトレースデータの確認、LLM アプリの動作確認、トレースのエクスポート、スパンのダウンロード、エラー調査、動作回帰の分析を求められたときに使用します。'
 metadata:
   author: arize
   version: "1.0"
 compatibility: Requires the ax CLI and a configured Arize profile.
 ---
 
-# Arize Trace Skill
+# Arize トレース Skill
 
 > **`SPACE`** — All `--space` flags and the `ARIZE_SPACE` env var accept a space **name** (e.g., `my-workspace`) or a base64 space **ID** (e.g., `U3BhY2U6...`). Find yours with `ax spaces list`.
 
-## Concepts
+## 概念
 
 - **Trace** = a tree of spans sharing a `context.trace_id`, rooted at a span with `parent_id = null`
 - **Span** = a single operation (LLM call, tool call, retriever, chain, agent)
@@ -31,7 +31,7 @@ Use `ax spans export` to download individual spans, or `ax traces export` to dow
 
 **Default output directory:** Always use `--output-dir .arize-tmp-traces` on every `ax spans export` call. The CLI automatically creates the directory and adds it to `.gitignore`.
 
-## Prerequisites
+## 前提条件
 
 Proceed directly with the task — run the `ax` command you need. Do NOT check versions, env vars, or profiles upfront.
 
@@ -46,29 +46,29 @@ If an `ax` command fails, troubleshoot based on the error:
 
 **Deterministic verification rule:** If you already know a specific `trace_id` and can resolve a base64 project ID, prefer `ax spans export PROJECT --trace-id TRACE_ID` for verification. Use `ax traces export` mainly for exploration or when you need the trace lookup phase.
 
-## Export Spans: `ax spans export`
+## スパンをエクスポート: `ax spans export`
 
 The primary command for downloading trace data to a file.
 
-### By trace ID
+### トレース ID で
 
 ```bash
 ax spans export PROJECT --trace-id TRACE_ID --output-dir .arize-tmp-traces
 ```
 
-### By span ID
+### スパン ID で
 
 ```bash
 ax spans export PROJECT --span-id SPAN_ID --output-dir .arize-tmp-traces
 ```
 
-### By session ID
+### セッション ID で
 
 ```bash
 ax spans export PROJECT --session-id SESSION_ID --output-dir .arize-tmp-traces
 ```
 
-### Flags
+### フラグ
 
 | Flag | Default | Description |
 |------|---------|-------------|
@@ -93,7 +93,7 @@ When you have both a project ID and trace ID, this is the most reliable verifica
 ax spans export PROJECT --trace-id TRACE_ID --output-dir .arize-tmp-traces
 ```
 
-### Bulk export with `--all`
+### `--all` による一括エクスポート
 
 By default, `ax spans export` is capped at 500 spans by `-l`. Pass `--all` for unlimited bulk export.
 
@@ -141,7 +141,7 @@ Arrow Flight connects to `flight.arize.com:443` via gRPC+TLS -- this is a differ
 
 The `--all` flag is also available on `ax traces export`, `ax datasets export`, and `ax experiments export` with the same behavior (REST by default, Flight with `--all`).
 
-## Export Traces: `ax traces export`
+## トレースをエクスポート: `ax traces export`
 
 Export full traces -- all spans belonging to traces that match a filter. Uses a two-phase approach:
 
@@ -161,7 +161,7 @@ ax traces export PROJECT --filter "status_code = 'ERROR'" --stdout
 ax traces export PROJECT --space SPACE --filter "status_code = 'ERROR'" --all --output-dir .arize-tmp-traces
 ```
 
-### Flags
+### フラグ
 
 | Flag | Type | Default | Description |
 |------|------|---------|-------------|
@@ -177,12 +177,12 @@ ax traces export PROJECT --space SPACE --filter "status_code = 'ERROR'" --all --
 | `--all` | bool | false | Use Arrow Flight for both phases (see spans `--all` docs above) |
 | `-p, --profile` | string | default | Configuration profile |
 
-### How it differs from `ax spans export`
+### `ax spans export` との違い
 
 - `ax spans export` exports individual spans matching a filter
 - `ax traces export` exports complete traces -- it finds spans matching the filter, then pulls ALL spans for those traces (including siblings and children that may not match the filter)
 
-### Time-series index lag
+### 時系列インデックスの遅延
 
 Arize uses two storage tiers:
 
@@ -191,11 +191,11 @@ Arize uses two storage tiers:
 
 **Implication:** If you already have a `trace_id`, use `ax spans export PROJECT_ID --trace-id TRACE_ID` — it's faster and immediately consistent. Use time-range queries only for historical exploration, and set `--start-time` at least 12 hours in the past to guarantee results are indexed.
 
-## Filter Syntax Reference
+## フィルター構文リファレンス
 
 SQL-like expressions passed to `--filter`.
 
-### Common filterable columns
+### よく使うフィルター可能な列
 
 | Column | Type | Description | Example Values |
 |--------|------|-------------|----------------|
@@ -214,11 +214,11 @@ SQL-like expressions passed to `--filter`.
 | `attributes.error.message` | string | Error message | |
 | `event.attributes` | string | Error tracebacks | Use CONTAINS (not exact match) |
 
-### Operators
+### 演算子
 
 `=`, `!=`, `<`, `<=`, `>`, `>=`, `AND`, `OR`, `IN`, `CONTAINS`, `LIKE`, `IS NULL`, `IS NOT NULL`
 
-### Examples
+### 例
 
 ```
 status_code = 'ERROR'
@@ -230,34 +230,34 @@ attributes.error.type LIKE '%Transport%'
 event.attributes CONTAINS 'TimeoutError'
 ```
 
-### Tips
+### ヒント
 
 - Prefer `IN` over multiple `OR` conditions: `name IN ('a', 'b', 'c')` not `name = 'a' OR name = 'b' OR name = 'c'`
 - Start broad with `LIKE`, then switch to `=` or `IN` once you know exact values
 - Use `CONTAINS` for `event.attributes` (error tracebacks) -- exact match is unreliable on complex text
 - Always wrap string values in single quotes
 
-## Workflows
+## ワークフロー
 
-### Debug a failing trace
+### 失敗したトレースをデバッグ
 
 1. `ax traces export PROJECT --filter "status_code = 'ERROR'" -l 50 --output-dir .arize-tmp-traces`
 2. Read the output file, look for spans with `status_code: ERROR`
 3. Check `attributes.error.type` and `attributes.error.message` on error spans
 
-### Download a conversation session
+### 会話セッションをダウンロード
 
 1. `ax spans export PROJECT --session-id SESSION_ID --output-dir .arize-tmp-traces`
 2. Spans are ordered by `start_time`, grouped by `context.trace_id`
 3. If you only have a trace_id, export that trace first, then look for `attributes.session.id` in the output to get the session ID
 
-### Export for offline analysis
+### オフライン分析用にエクスポート
 
 ```bash
 ax spans export PROJECT --trace-id TRACE_ID --stdout | jq '.[]'
 ```
 
-## Troubleshooting rules
+## トラブルシューティング規則
 
 - If `ax traces export` fails before querying spans because of project-name resolution, retry with a base64 project ID.
 - If `ax spaces list` is unsupported, treat `ax projects list -o json` as the fallback discovery surface.
@@ -265,9 +265,9 @@ ax spans export PROJECT --trace-id TRACE_ID --stdout | jq '.[]'
 - If exporter verification is the goal and the CLI path is unreliable, use the app's runtime/exporter logs plus the latest local `trace_id` to distinguish local instrumentation success from Arize-side ingestion failure.
 
 
-## Span Column Reference (OpenInference Semantic Conventions)
+## スパン列リファレンス（OpenInference セマンティック規約）
 
-### Core Identity and Timing
+### 基本識別情報と時刻
 
 | Column | Description |
 |--------|-------------|
@@ -282,7 +282,7 @@ ax spans export PROJECT --trace-id TRACE_ID --stdout | jq '.[]'
 | `status_message` | Optional message (usually set on errors) |
 | `attributes.openinference.span.kind` | `LLM`, `CHAIN`, `TOOL`, `AGENT`, `RETRIEVER`, `RERANKER`, `EMBEDDING`, `GUARDRAIL`, `EVALUATOR` |
 
-### Where to Find Prompts and LLM I/O
+### プロンプトと LLM I/O の場所
 
 **Generic input/output (all span kinds):**
 
@@ -318,7 +318,7 @@ ax spans export PROJECT --trace-id TRACE_ID --stdout | jq '.[]'
 - **Chain/Agent span**: Check `attributes.input.value` for the user's question. Actual LLM prompts are on child LLM spans.
 - **Tool span**: Check `attributes.input.value` for tool input, `attributes.output.value` for tool result.
 
-### LLM Model and Cost
+### LLM モデルとコスト
 
 | Column | Description |
 |--------|-------------|
@@ -331,7 +331,7 @@ ax spans export PROJECT --trace-id TRACE_ID --stdout | jq '.[]'
 | `attributes.llm.cost.completion` | Output cost in USD |
 | `attributes.llm.cost.total` | Total cost in USD |
 
-### Tool Spans
+### ツールスパン
 
 | Column | Description |
 |--------|-------------|
@@ -339,7 +339,7 @@ ax spans export PROJECT --trace-id TRACE_ID --stdout | jq '.[]'
 | `attributes.tool.description` | Tool description |
 | `attributes.tool.parameters` | Tool parameter schema (JSON) |
 
-### Retriever Spans
+### リトリーバースパン
 
 | Column | Description |
 |--------|-------------|
@@ -349,7 +349,7 @@ ax spans export PROJECT --trace-id TRACE_ID --stdout | jq '.[]'
 | `attributes.retrieval.documents.contents` | Document text content |
 | `attributes.retrieval.documents.metadatas` | Document metadata |
 
-### Reranker Spans
+### 再ランキングスパン
 
 | Column | Description |
 |--------|-------------|
@@ -359,7 +359,7 @@ ax spans export PROJECT --trace-id TRACE_ID --stdout | jq '.[]'
 | `attributes.reranker.input_documents.*` | Input documents (ids, scores, contents, metadatas) |
 | `attributes.reranker.output_documents.*` | Reranked output documents |
 
-### Session, User, and Custom Metadata
+### セッション、ユーザー、カスタムメタデータ
 
 | Column | Description |
 |--------|-------------|
@@ -367,7 +367,7 @@ ax spans export PROJECT --trace-id TRACE_ID --stdout | jq '.[]'
 | `attributes.user.id` | End-user identifier |
 | `attributes.metadata.*` | Custom key-value metadata. Any key under this prefix is user-defined (e.g., `attributes.metadata.user_email`). Filterable. |
 
-### Errors and Exceptions
+### エラーと例外
 
 | Column | Description |
 |--------|-------------|
@@ -375,7 +375,7 @@ ax spans export PROJECT --trace-id TRACE_ID --stdout | jq '.[]'
 | `attributes.exception.message` | Exception message text |
 | `event.attributes` | Error tracebacks and detailed event data. Use `CONTAINS` for filtering. |
 
-### Evaluations and Annotations
+### 評価とアノテーション
 
 | Column | Description |
 |--------|-------------|
@@ -383,14 +383,14 @@ ax spans export PROJECT --trace-id TRACE_ID --stdout | jq '.[]'
 | `annotation.<name>.score` | Numeric score (e.g., `0.95`) |
 | `annotation.<name>.text` | Freeform annotation text |
 
-### Embeddings
+### 埋め込み
 
 | Column | Description |
 |--------|-------------|
 | `attributes.embedding.model_name` | Embedding model name |
 | `attributes.embedding.texts` | Text chunks that were embedded |
 
-## Troubleshooting
+## トラブルシューティング
 
 | Problem | Solution |
 |---------|----------|
@@ -405,13 +405,13 @@ ax spans export PROJECT --trace-id TRACE_ID --stdout | jq '.[]'
 | `unknown attribute` in filter | The attribute path is wrong or not indexed. Try browsing a small sample first to see actual column names: `ax spans export PROJECT -l 5 --stdout \| jq '.[0] \| keys'` |
 | `Timeout on large export` | Use `--days 7` to narrow the time range |
 
-## Related Skills
+## 関連 Skill
 
 - **arize-dataset**: After collecting trace data, create labeled datasets for evaluation → use `arize-dataset`
 - **arize-experiment**: Run experiments comparing prompt versions against a dataset → use `arize-experiment`
 - **arize-prompt-optimization**: Use trace data to improve prompts → use `arize-prompt-optimization`
 - **arize-link**: Turn trace IDs from exported data into clickable Arize UI URLs → use `arize-link`
 
-## Save Credentials for Future Use
+## 認証情報を将来の利用用に保存
 
 See references/ax-profiles.md § Save Credentials for Future Use.

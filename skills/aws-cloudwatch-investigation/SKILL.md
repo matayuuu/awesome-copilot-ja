@@ -1,20 +1,17 @@
 ---
 name: aws-cloudwatch-investigation
-description: >
-  Reusable investigation patterns for AWS CloudWatch: Logs Insights query templates,
-  alarm-to-deployment correlation, blast-radius narrowing decision tree, and
-  PromQL-style metric query patterns for structured incident triage.
+description: 'AWS CloudWatch の再利用可能な調査パターンです。Logs Insights クエリテンプレート、アラームとデプロイの相関分析、影響範囲を絞り込む意思決定ツリー、構造化されたインシデントトリアージ向けの PromQL 形式のメトリッククエリパターンを扱います。'
 ---
 
-# AWS CloudWatch Investigation Skill
+# AWS CloudWatch 調査 Skill
 
 Reusable patterns for investigating production incidents using CloudWatch Logs, Metrics, and Alarms. These patterns are designed to be composed together during incident triage.
 
 ---
 
-## Pattern 1: Logs Insights Query Templates
+## パターン 1: Logs Insights クエリテンプレート
 
-### Error Spike Detection
+### エラー急増の検出
 
 Find the top errors in a time window, grouped by error type:
 
@@ -26,7 +23,7 @@ fields @timestamp, @message, @logStream
 | limit 20
 ```
 
-### P99 Latency Breakdown by Operation
+### 操作別 P99 レイテンシー内訳
 
 Identify which operations are driving latency spikes:
 
@@ -43,7 +40,7 @@ fields @timestamp, @duration, operation
 | limit 15
 ```
 
-### Lambda Cold Start Detection
+### Lambda コールドスタートの検出
 
 Quantify cold start impact during an incident:
 
@@ -58,7 +55,7 @@ fields @timestamp, @duration, @initDuration, @memorySize, @maxMemoryUsed
 | sort @timestamp desc
 ```
 
-### Out-of-Memory (OOM) Detection
+### メモリ不足（OOM）の検出
 
 Find Lambda functions or containers killed by memory pressure:
 
@@ -81,7 +78,7 @@ fields @timestamp, @maxMemoryUsed, @memorySize
 | sort @timestamp desc
 ```
 
-### Timeout Detection
+### タイムアウトの検出
 
 Find invocations that hit the configured timeout:
 
@@ -94,9 +91,9 @@ fields @timestamp, @duration, @logStream, @requestId
 
 ---
 
-## Pattern 2: Alarm History to Deploy-Event Correlation
+## パターン 2: アラーム履歴とデプロイイベントの相関
 
-### Process
+### 手順
 
 1. **Get alarm transition time** — note the exact timestamp when the alarm entered ALARM state.
 2. **Query CloudTrail** for deployment-related events in a window of [alarm_time - 30min, alarm_time]:
@@ -126,7 +123,7 @@ ORDER BY eventTime DESC
    - Verify no other environmental changes (scaling events, config changes) in the same window
    - Look for canary/synthetic monitor failures that started at the same time
 
-### Output Format
+### 出力形式
 
 ```
 Deploy Correlation:
@@ -139,7 +136,7 @@ Deploy Correlation:
 
 ---
 
-## Pattern 3: Narrow the Blast Radius Decision Tree
+## パターン 3: 影響範囲を絞り込む判断木
 
 Use this tree to systematically scope an incident from broadest to most specific:
 
@@ -175,7 +172,7 @@ START
      - Proceed to log and trace analysis scoped to this resource
 ```
 
-### Shared Dependency Investigation
+### 共有依存関係の調査
 
 When blast radius spans multiple services, investigate in this order:
 
@@ -187,11 +184,11 @@ When blast radius spans multiple services, investigate in this order:
 
 ---
 
-## Pattern 4: PromQL-Style Metric Query Patterns
+## パターン 4: PromQL 形式のメトリッククエリパターン
 
 These patterns use CloudWatch metric math and GetMetricData to build composite signals. Express them as metric queries for dashboards or programmatic retrieval.
 
-### Error Rate as Percentage
+### パーセントで表すエラー率
 
 ```
 MetricDataQueries:
@@ -216,7 +213,7 @@ MetricDataQueries:
     Label: "Error Rate %"
 ```
 
-### Latency Anomaly Detection (Compare to Baseline)
+### レイテンシー異常の検出（ベースラインとの比較）
 
 ```
 MetricDataQueries:
@@ -242,7 +239,7 @@ MetricDataQueries:
     Label: "Latency vs Baseline (ratio > 2 = anomaly)"
 ```
 
-### Throttling Pressure Score
+### スロットリング圧力スコア
 
 Combine multiple throttling signals into a single pressure metric:
 
@@ -268,7 +265,7 @@ MetricDataQueries:
     Label: "Combined Throttle Pressure"
 ```
 
-### Concurrent Execution Headroom
+### 同時実行の余裕
 
 ```
 MetricDataQueries:
@@ -284,7 +281,7 @@ MetricDataQueries:
 
 ---
 
-## Pattern 5: Incident Timeline Reconstruction
+## パターン 5: インシデントタイムラインの再構成
 
 ### Process
 
@@ -325,7 +322,7 @@ Timeline:
 
 4. **Determine root event** — the earliest change that preceded all symptoms. Walk backward from the first symptom to the most recent mutation (deploy, config change, scaling event, or external dependency shift).
 
-### Gotchas
+### 注意点
 
 - CloudWatch metric timestamps are end-of-period. A 1-minute datapoint at 14:05 covers 14:04-14:05.
 - CloudTrail events can have up to 15-minute delivery delay. Use `eventTime`, not ingestion time.

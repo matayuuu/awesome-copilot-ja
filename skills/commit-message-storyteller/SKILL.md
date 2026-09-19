@@ -5,7 +5,7 @@ description: 'git diffまたはステージ済み変更を分析し、変更内�
 
 # コミットメッセージ・ストーリーテラー
 
-未加工のgit diffや変更説明を、[Conventional Commits](https://www.conventionalcommits.org/)仕様に従う明確で物語性のあるコミットメッセージへ変換します。「update file.js」ではなく、意図、背景、影響が伝わるメッセージを生成します。
+未加工のgit diffや変更説明を、[Conventional Commits](https://www.conventionalcommits.org/)仕様に従う明確で物語性のあるコミットメッセージへ変換します。「`file.js`を更新」ではなく、意図、背景、影響が伝わるメッセージを生成します。
 
 ## このSkillを使用する場面
 

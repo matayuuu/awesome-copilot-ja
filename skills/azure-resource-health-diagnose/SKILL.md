@@ -1,83 +1,83 @@
 ---
 name: azure-resource-health-diagnose
-description: 'Analyze Azure resource health, diagnose issues from logs and telemetry, and create a remediation plan for identified problems.'
+description: 'Azure リソースの正常性を分析し、ログとテレメトリから問題を診断して、特定した問題の修復計画を作成します。'
 ---
 
-# Azure Resource Health & Issue Diagnosis
+# Azure Resource Health と問題診断
 
-This workflow analyzes a specific Azure resource to assess its health status, diagnose potential issues using logs and telemetry data, and develop a comprehensive remediation plan for any problems discovered.
+このワークフローは、特定の Azure リソースを分析して正常性を評価し、ログとテレメトリデータを使って潜在的な問題を診断し、発見した問題に対する包括的な修復計画を作成します。
 
-## Prerequisites
-- Azure MCP server configured and authenticated
-- Target Azure resource identified (name and optionally resource group/subscription)
-- Resource must be deployed and running to generate logs/telemetry
-- Prefer Azure MCP tools (`azmcp-*`) over direct Azure CLI when available
+## 前提条件
+- Azure MCP server が構成され、認証済みであること
+- 対象 Azure リソースが特定されていること（名前、および必要に応じてリソース グループ/サブスクリプション）
+- ログ/テレメトリを生成するため、リソースがデプロイされ稼働していること
+- 利用可能な場合は、直接 Azure CLI より Azure MCP tools (`azmcp-*`) を優先すること
 
-## Workflow Steps
+## ワークフローの手順
 
-### Step 1: Get Azure Best Practices
-**Action**: Retrieve diagnostic and troubleshooting best practices
-**Tools**: Azure MCP best practices tool
-**Process**:
-1. **Load Best Practices**:
-   - Execute Azure best practices tool to get diagnostic guidelines
-   - Focus on health monitoring, log analysis, and issue resolution patterns
-   - Use these practices to inform diagnostic approach and remediation recommendations
+### Step 1: Azure のベスト プラクティスを取得する
+**アクション**: 診断とトラブルシューティングのベスト プラクティスを取得する
+**ツール**: Azure MCP best practices tool
+**プロセス**:
+1. **ベスト プラクティスを読み込む**:
+   - Azure best practices tool を実行して診断ガイドラインを取得する
+   - 正常性の監視、ログ分析、問題解決のパターンに重点を置く
+   - これらのプラクティスを診断アプローチと修復の推奨事項に反映する
 
-### Step 2: Resource Discovery & Identification
-**Action**: Locate and identify the target Azure resource
-**Tools**: Azure MCP tools + Azure CLI fallback
-**Process**:
-1. **Resource Lookup**:
-   - If only resource name provided: Search across subscriptions using `azmcp-subscription-list`
-   - Use `az resource list --name <resource-name>` to find matching resources
-   - If multiple matches found, prompt user to specify subscription/resource group
-   - Gather detailed resource information:
-     - Resource type and current status
-     - Location, tags, and configuration
-     - Associated services and dependencies
+### Step 2: リソースを検出して特定する
+**アクション**: 対象 Azure リソースを検索して特定する
+**ツール**: Azure MCP tools + Azure CLI fallback
+**プロセス**:
+1. **リソースを検索する**:
+   - リソース名だけが指定された場合は、`azmcp-subscription-list` を使ってサブスクリプション全体を検索する
+   - `az resource list --name <resource-name>` を使って一致するリソースを検索する
+   - 複数の一致が見つかった場合は、サブスクリプション/リソース グループを指定するようユーザーに求める
+   - 詳細なリソース情報を収集する:
+     - リソースの種類と現在の状態
+     - 場所、タグ、構成
+     - 関連サービスと依存関係
 
-2. **Resource Type Detection**:
-   - Identify resource type to determine appropriate diagnostic approach:
-     - **Web Apps/Function Apps**: Application logs, performance metrics, dependency tracking
-     - **Virtual Machines**: System logs, performance counters, boot diagnostics
-     - **Cosmos DB**: Request metrics, throttling, partition statistics
-     - **Storage Accounts**: Access logs, performance metrics, availability
-     - **SQL Database**: Query performance, connection logs, resource utilization
-     - **Application Insights**: Application telemetry, exceptions, dependencies
-     - **Key Vault**: Access logs, certificate status, secret usage
-     - **Service Bus**: Message metrics, dead letter queues, throughput
+2. **リソースの種類を検出する**:
+   - 適切な診断アプローチを決めるため、リソースの種類を特定する:
+     - **Web Apps/Function Apps**: アプリケーション ログ、パフォーマンス メトリック、依存関係の追跡
+     - **Virtual Machines**: システム ログ、パフォーマンス カウンター、ブート診断
+     - **Cosmos DB**: 要求メトリック、スロットリング、パーティション統計
+     - **Storage Accounts**: アクセス ログ、パフォーマンス メトリック、可用性
+     - **SQL Database**: クエリ パフォーマンス、接続ログ、リソース使用率
+     - **Application Insights**: アプリケーション テレメトリ、例外、依存関係
+     - **Key Vault**: アクセス ログ、証明書の状態、シークレットの使用状況
+     - **Service Bus**: メッセージ メトリック、配信不能キュー、スループット
 
-### Step 3: Health Status Assessment
-**Action**: Evaluate current resource health and availability
-**Tools**: Azure MCP monitoring tools + Azure CLI
-**Process**:
-1. **Basic Health Check**:
-   - Check resource provisioning state and operational status
-   - Verify service availability and responsiveness
-   - Review recent deployment or configuration changes
-   - Assess current resource utilization (CPU, memory, storage, etc.)
+### Step 3: 正常性を評価する
+**アクション**: 現在のリソースの正常性と可用性を評価する
+**ツール**: Azure MCP monitoring tools + Azure CLI
+**プロセス**:
+1. **基本的な正常性チェック**:
+   - リソースのプロビジョニング状態と運用状態を確認する
+   - サービスの可用性と応答性を検証する
+   - 最近のデプロイまたは構成変更を確認する
+   - 現在のリソース使用率（CPU、メモリ、ストレージなど）を評価する
 
-2. **Service-Specific Health Indicators**:
-   - **Web Apps**: HTTP response codes, response times, uptime
-   - **Databases**: Connection success rate, query performance, deadlocks
-   - **Storage**: Availability percentage, request success rate, latency
-   - **VMs**: Boot diagnostics, guest OS metrics, network connectivity
-   - **Functions**: Execution success rate, duration, error frequency
+2. **サービス固有の正常性指標**:
+   - **Web Apps**: HTTP 応答コード、応答時間、稼働時間
+   - **Databases**: 接続成功率、クエリ パフォーマンス、デッドロック
+   - **Storage**: 可用性の割合、要求成功率、待機時間
+   - **VMs**: ブート診断、ゲスト OS メトリック、ネットワーク接続
+   - **Functions**: 実行成功率、実行時間、エラー頻度
 
-### Step 4: Log & Telemetry Analysis
-**Action**: Analyze logs and telemetry to identify issues and patterns
-**Tools**: Azure MCP monitoring tools for Log Analytics queries
-**Process**:
-1. **Find Monitoring Sources**:
-   - Use `azmcp-monitor-workspace-list` to identify Log Analytics workspaces
-   - Locate Application Insights instances associated with the resource
-   - Identify relevant log tables using `azmcp-monitor-table-list`
+### Step 4: ログとテレメトリを分析する
+**アクション**: ログとテレメトリを分析して問題とパターンを特定する
+**ツール**: Log Analytics クエリ用の Azure MCP monitoring tools
+**プロセス**:
+1. **監視ソースを見つける**:
+   - `azmcp-monitor-workspace-list` を使って Log Analytics ワークスペースを特定する
+   - リソースに関連付けられた Application Insights インスタンスを見つける
+   - `azmcp-monitor-table-list` を使って関連するログ テーブルを特定する
 
-2. **Execute Diagnostic Queries**:
-   Use `azmcp-monitor-log-query` with targeted KQL queries based on resource type:
+2. **診断クエリを実行する**:
+   リソースの種類に基づく対象を絞った KQL クエリとともに `azmcp-monitor-log-query` を使用する:
 
-   **General Error Analysis**:
+   **一般的なエラー分析**:
    ```kql
    // Recent errors and exceptions
    union isfuzzy=true 
@@ -91,7 +91,7 @@ This workflow analyzes a specific Azure resource to assess its health status, di
    | order by TimeGenerated desc
    ```
 
-   **Performance Analysis**:
+   **パフォーマンス分析**:
    ```kql
    // Performance degradation patterns
    Perf
@@ -101,7 +101,7 @@ This workflow analyzes a specific Azure resource to assess its health status, di
    | where avg_CounterValue > 80
    ```
 
-   **Application-Specific Queries**:
+   **アプリケーション固有のクエリ**:
    ```kql
    // Application Insights - Failed requests
    requests
@@ -118,62 +118,62 @@ This workflow analyzes a specific Azure resource to assess its health status, di
    | summarize ConnectionFailures=count() by bin(TimeGenerated, 1h)
    ```
 
-3. **Pattern Recognition**:
-   - Identify recurring error patterns or anomalies
-   - Correlate errors with deployment times or configuration changes
-   - Analyze performance trends and degradation patterns
-   - Look for dependency failures or external service issues
+3. **パターンを認識する**:
+   - 繰り返し発生するエラー パターンや異常を特定する
+   - エラーをデプロイ時刻や構成変更と関連付ける
+   - パフォーマンスの傾向と劣化パターンを分析する
+   - 依存関係の障害や外部サービスの問題を調べる
 
-### Step 5: Issue Classification & Root Cause Analysis
-**Action**: Categorize identified issues and determine root causes
-**Process**:
-1. **Issue Classification**:
-   - **Critical**: Service unavailable, data loss, security breaches
-   - **High**: Performance degradation, intermittent failures, high error rates
-   - **Medium**: Warnings, suboptimal configuration, minor performance issues
-   - **Low**: Informational alerts, optimization opportunities
+### Step 5: 問題の分類と根本原因分析
+**アクション**: 特定した問題を分類し、根本原因を判断する
+**プロセス**:
+1. **問題を分類する**:
+   - **Critical**: サービス停止、データ損失、セキュリティ侵害
+   - **High**: パフォーマンス劣化、一時的な障害、高いエラー率
+   - **Medium**: 警告、最適でない構成、軽微なパフォーマンス問題
+   - **Low**: 情報アラート、最適化の機会
 
-2. **Root Cause Analysis**:
-   - **Configuration Issues**: Incorrect settings, missing dependencies
-   - **Resource Constraints**: CPU/memory/disk limitations, throttling
-   - **Network Issues**: Connectivity problems, DNS resolution, firewall rules
-   - **Application Issues**: Code bugs, memory leaks, inefficient queries
-   - **External Dependencies**: Third-party service failures, API limits
-   - **Security Issues**: Authentication failures, certificate expiration
+2. **根本原因を分析する**:
+   - **Configuration Issues**: 不正な設定、依存関係の不足
+   - **Resource Constraints**: CPU/メモリ/ディスクの制限、スロットリング
+   - **Network Issues**: 接続の問題、DNS 解決、ファイアウォール ルール
+   - **Application Issues**: コードのバグ、メモリ リーク、非効率なクエリ
+   - **External Dependencies**: サードパーティ サービスの障害、API 制限
+   - **Security Issues**: 認証の失敗、証明書の有効期限切れ
 
-3. **Impact Assessment**:
-   - Determine business impact and affected users/systems
-   - Evaluate data integrity and security implications
-   - Assess recovery time objectives and priorities
+3. **影響を評価する**:
+   - ビジネスへの影響と影響を受けるユーザー/システムを判断する
+   - データの整合性とセキュリティへの影響を評価する
+   - 目標復旧時間と優先順位を評価する
 
-### Step 6: Generate Remediation Plan
-**Action**: Create a comprehensive plan to address identified issues
-**Process**:
-1. **Immediate Actions** (Critical issues):
-   - Emergency fixes to restore service availability
-   - Temporary workarounds to mitigate impact
-   - Escalation procedures for complex issues
+### Step 6: 修復計画を生成する
+**アクション**: 特定した問題に対処する包括的な計画を作成する
+**プロセス**:
+1. **即時対応**（重大な問題）:
+   - サービスの可用性を回復する緊急修正
+   - 影響を緩和する一時的な回避策
+   - 複雑な問題のエスカレーション手順
 
-2. **Short-term Fixes** (High/Medium issues):
-   - Configuration adjustments and resource scaling
-   - Application updates and patches
-   - Monitoring and alerting improvements
+2. **短期修正**（高/中程度の問題）:
+   - 構成の調整とリソースのスケーリング
+   - アプリケーションの更新とパッチ適用
+   - 監視とアラートの改善
 
-3. **Long-term Improvements** (All issues):
-   - Architectural changes for better resilience
-   - Preventive measures and monitoring enhancements
-   - Documentation and process improvements
+3. **長期的な改善**（すべての問題）:
+   - 回復性を高めるアーキテクチャの変更
+   - 予防策と監視機能の強化
+   - ドキュメントとプロセスの改善
 
-4. **Implementation Steps**:
-   - Prioritized action items with specific Azure CLI commands
-   - Testing and validation procedures
-   - Rollback plans for each change
-   - Monitoring to verify issue resolution
+4. **実装手順**:
+   - 具体的な Azure CLI コマンドを含む優先順位付きアクション項目
+   - テストと検証の手順
+   - 各変更のロールバック計画
+   - 問題の解決を確認するための監視
 
-### Step 7: User Confirmation & Report Generation
-**Action**: Present findings and get approval for remediation actions
-**Process**:
-1. **Display Health Assessment Summary**:
+### Step 7: ユーザー確認とレポート生成
+**アクション**: 調査結果を提示し、修復アクションの承認を得る
+**プロセス**:
+1. **正常性評価の概要を表示する**:
    ```
    🏥 Azure Resource Health Assessment
    
@@ -203,7 +203,7 @@ This workflow analyzes a specific Azure resource to assess its health status, di
    ❓ Proceed with detailed remediation plan? (y/n)
    ```
 
-2. **Generate Detailed Report**:
+2. **詳細レポートを生成する**:
    ```markdown
    # Azure Resource Health Report: [Resource Name]
    
@@ -272,19 +272,19 @@ This workflow analyzes a specific Azure resource to assess its health status, di
    - [Monitoring enhancements]
    ```
 
-## Error Handling
-- **Resource Not Found**: Provide guidance on resource name/location specification
-- **Authentication Issues**: Guide user through Azure authentication setup
-- **Insufficient Permissions**: List required RBAC roles for resource access
-- **No Logs Available**: Suggest enabling diagnostic settings and waiting for data
-- **Query Timeouts**: Break down analysis into smaller time windows
-- **Service-Specific Issues**: Provide generic health assessment with limitations noted
+## エラー処理
+- **リソースが見つからない**: リソース名/場所の指定方法を案内する
+- **認証の問題**: Azure 認証の設定を案内する
+- **権限不足**: リソースへのアクセスに必要な RBAC ロールを一覧にする
+- **ログを利用できない**: 診断設定を有効にしてデータを待つよう提案する
+- **クエリのタイムアウト**: 分析をより短い時間枠に分割する
+- **サービス固有の問題**: 制限事項を明記した一般的な正常性評価を提供する
 
-## Success Criteria
-- ✅ Resource health status accurately assessed
-- ✅ All significant issues identified and categorized
-- ✅ Root cause analysis completed for major problems
-- ✅ Actionable remediation plan with specific steps provided
-- ✅ Monitoring and prevention recommendations included
-- ✅ Clear prioritization of issues by business impact
-- ✅ Implementation steps include validation and rollback procedures
+## 成功基準
+- ✅ リソースの正常性状態が正確に評価されている
+- ✅ 重要な問題がすべて特定され、分類されている
+- ✅ 主要な問題の根本原因分析が完了している
+- ✅ 具体的な手順を含む実行可能な修復計画が提供されている
+- ✅ 監視と予防に関する推奨事項が含まれている
+- ✅ ビジネスへの影響に基づき、問題の優先順位が明確になっている
+- ✅ 実装手順に検証とロールバックの手順が含まれている

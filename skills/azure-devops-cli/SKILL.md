@@ -1,6 +1,6 @@
 ---
 name: azure-devops-cli
-description: Manage Azure DevOps resources via CLI including projects, repos, pipelines, builds, pull requests, work items, artifacts, and service endpoints. Use when working with Azure DevOps, az commands, devops automation, CI/CD, or when user mentions Azure DevOps CLI.
+description: 'CLI を使って Azure DevOps のプロジェクト、リポジトリ、パイプライン、ビルド、Pull Request、作業項目、成果物、サービスエンドポイントを管理します。Azure DevOps、az コマンド、DevOps 自動化、CI/CD、Azure DevOps CLI に言及されたときに使用します。'
 ---
 
 # Azure DevOps CLI
@@ -9,7 +9,7 @@ Manage Azure DevOps resources using the Azure CLI with the Azure DevOps extensio
 
 **CLI Version:** 2.81.0 (current as of 2025)
 
-## Prerequisites
+## 前提条件
 
 ```bash
 # Install Azure CLI
@@ -20,7 +20,7 @@ curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash  # Linux
 az extension add --name azure-devops
 ```
 
-## Authentication
+## 認証
 
 ```bash
 # Login with PAT token
@@ -34,7 +34,7 @@ az devops configure --defaults organization=https://dev.azure.com/{org} project=
 az devops configure --list
 ```
 
-## CLI Structure
+## CLI 構造
 
 ```
 az devops          # Main DevOps commands
@@ -79,7 +79,7 @@ az artifacts       # Azure Artifacts
 └── universal      # Universal Packages
 ```
 
-## Reference Files
+## リファレンスファイル
 
 Read the relevant reference file based on the user's task. Each file contains complete command syntax and examples for its domain.
 

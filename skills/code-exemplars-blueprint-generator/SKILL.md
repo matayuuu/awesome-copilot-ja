@@ -74,7 +74,7 @@ ${PROJECT_TYPE == "Python" || PROJECT_TYPE == "Auto-detect" ? `#### Pythonのコ
 - **プレゼンテーション層**:
   - ユーザーインターフェイスコンポーネント
   - Controller／APIエンドポイント
-  - View Model／DTO
+  - ビューモデル／DTO
   
 - **ビジネスロジック層**:
   - サービス実装

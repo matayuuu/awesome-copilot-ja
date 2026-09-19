@@ -1,46 +1,46 @@
 ---
 name: acreadiness-assess
-description: 'Run the AgentRC readiness assessment on the current repository and produce a static HTML dashboard at reports/index.html. Wraps `npx github:microsoft/agentrc readiness` and hands off rendering to the @ai-readiness-reporter custom agent. Supports policies (--policy) for org-specific scoring. Use when asked to assess, audit, or score the AI readiness of a repo.'
+description: '現在のリポジトリで AgentRC の準備状況評価を実行し、reports/index.html に静的HTMLダッシュボードを生成する。`npx github:microsoft/agentrc readiness` をラップし、表示を @ai-readiness-reporter カスタムAgentへ委譲する。組織固有の採点向けにポリシー（--policy）をサポートする。リポジトリのAI対応度を評価、監査、採点する依頼で使う。'
 argument-hint: "[--policy <path-or-pkg>] [--per-area] — e.g. /acreadiness-assess, /acreadiness-assess --policy ./policies/strict.json"
 ---
 
-# /acreadiness-assess — AI-readiness assessment
+# /acreadiness-assess — AI対応度の評価
 
-Use this skill whenever the user asks for an **AI-readiness assessment**, a **readiness check**, an **audit**, or wants to **see how AI-ready** their repository is.
+ユーザーが **AI対応度の評価**、**準備状況チェック**、**監査**、またはリポジトリの **AI対応度を確認すること**を求めたときに使う。
 
-This skill is the *Measure* step in AgentRC's **Measure → Generate → Maintain** loop. The result is a self-contained HTML dashboard the user can open with `file://` or commit to the repo.
+このSkillは AgentRC の **Measure → Generate → Maintain** ループにおける *Measure* 段階である。結果は単独で動作するHTMLダッシュボードで、ユーザーは `file://` で開くかリポジトリへコミットできる。
 
-## Steps
+## 手順
 
-1. **Confirm prerequisites.** Node 20+ must be on PATH. If unsure, run `node --version`.
+1. **前提条件を確認する。** Node 20以上が PATH にある必要がある。不明な場合は `node --version` を実行する。
 
-2. **Decide on a policy** (optional but encouraged):
-   - If the user provided `--policy <source>`, capture it.
-   - Otherwise check `agentrc.config.json` for a `policies` array.
-   - If neither, run with no policy (built-in defaults).
-   - For a primer on policies, suggest the `acreadiness-policy` skill.
+2. **ポリシーを決める**（任意だが推奨）:
+   - ユーザーが `--policy <source>` を指定した場合は、その値を取得する。
+   - それ以外の場合は `agentrc.config.json` の `policies` 配列を確認する。
+   - どちらもなければ、ポリシーなし（組み込みの既定値）で実行する。
+   - ポリシーの入門として `acreadiness-policy` Skillを案内する。
 
-3. **Run the readiness scan** in the repo root with structured output:
+3. **準備状況スキャンを実行する**。構造化出力をリポジトリルートで取得する:
    ```bash
    npx -y github:microsoft/agentrc readiness --json [--policy <source>] [--per-area]
    ```
-   The `CommandResult<T>` JSON envelope is your input for the next step.
+   `CommandResult<T>` JSONエンベロープを次の手順の入力にする。
 
-4. **Hand off to the `ai-readiness-reporter` custom agent** to interpret the JSON and produce `reports/index.html`. The agent renders via the bundled template `report-template.html` (shipped alongside this skill) so every report has an identical look & feel. The agent:
-   - Reads the bundled `report-template.html` and substitutes placeholders with real data.
-   - Inlines all CSS, ships a single static file (works under `file://`).
-   - Renders maturity level, overall score, grade, pass-rate vs threshold.
-   - Breaks down all 9 pillars across **Repo Health** (8) and **AI Setup** (1) with *what it measures*, *why it matters for AI*, *current state*, and *a specific recommendation*.
-   - Tags every pillar with an **AI relevance** badge (High / Medium / Low).
-   - Surfaces **Extras** separately (they never affect the score).
-   - Shows the **Active Policy** including any disabled/overridden criteria and thresholds.
-   - Produces a **Prioritised Remediation Plan** (🔴 Fix First / 🟡 Fix Next / 🔵 Plan).
-   - Embeds the raw AgentRC JSON for reuse.
+4. **`ai-readiness-reporter` カスタムAgentへ委譲する**。JSONを解釈して `reports/index.html` を生成する。このAgentは同梱テンプレート `report-template.html` を使って描画するため、すべてのレポートで見た目が統一される。Agentは次を行う:
+   - 同梱の `report-template.html` を読み込み、プレースホルダーを実データで置換する。
+   - すべてのCSSをインライン化し、単一の静的ファイルとして提供する（`file://` で動作）。
+   - 成熟度、総合スコア、評価、しきい値に対する合格率を表示する。
+   - **Repo Health**（8）と **AI Setup**（1）の9つの柱を、*測定対象*、*AIにとっての重要性*、*現在の状態*、*具体的な推奨事項*で分解する。
+   - 各柱に **AIとの関連性** バッジ（High / Medium / Low）を付ける。
+   - **Extras** を分けて表示する（スコアには影響しない）。
+   - 無効化・上書きされた基準としきい値を含む **Active Policy** を表示する。
+   - **優先度付き修復計画**（🔴 まず修正 / 🟡 次に修正 / 🔵 計画）を生成する。
+   - 再利用できるよう生のAgentRC JSONを埋め込む。
 
-5. **Tell the user where the report lives** (`reports/index.html`) and how to open it. Summarise in chat: maturity level, overall score, top three lowest pillars, and the single highest-leverage next action (almost always: run the `acreadiness-generate-instructions` skill).
+5. **レポートの場所**（`reports/index.html`）と開き方をユーザーへ伝える。チャットでは成熟度、総合スコア、最も低い柱3つ、最も効果の高い次のアクション1つ（ほぼ常に `acreadiness-generate-instructions` Skillの実行）を要約する。
 
-## Notes
+## 注意事項
 
-- AgentRC also has a built-in HTML renderer (`--visual` / `--output report.html`) but its output is intentionally generic. This skill produces a tailored, opinionated dashboard via the custom agent — closer to a code review than a metrics dump.
-- For CI gating, recommend `agentrc readiness --fail-level <n>` (1–5).
-- The skill never modifies repository files other than creating `reports/index.html`.
+- AgentRCには組み込みHTMLレンダラー（`--visual` / `--output report.html`）もあるが、出力は意図的に汎用的である。このSkillはカスタムAgentを通じて、メトリクスの羅列ではなくコードレビューに近い、対象に合わせた判断付きダッシュボードを生成する。
+- CIゲートには `agentrc readiness --fail-level <n>`（1–5）を推奨する。
+- このSkillは `reports/index.html` の作成以外にリポジトリファイルを変更しない。

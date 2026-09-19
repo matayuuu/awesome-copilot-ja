@@ -1,36 +1,36 @@
 ---
 name: azure-smart-city-iot-solution-builder
-description: 'Design and plan end-to-end Azure IoT and Smart City solutions: requirements, architecture, security, operations, cost, and a phased delivery plan with concrete implementation artifacts.'
+description: 'Azure IoT と Smart City のエンドツーエンド ソリューションを設計・計画します。要件、アーキテクチャ、セキュリティ、運用、コスト、具体的な実装成果物を含む段階的な提供計画を扱います。'
 ---
 
 # Azure Smart City IoT Solution Builder
 
-Use this skill to rebuild and standardize a complete workflow for Azure IoT and Smart City solutions.
+このSkillを使って、Azure IoT と Smart City ソリューションの完全なワークフローを再構築し、標準化します。
 
-## When to use it
+## 使用する場面
 
-Use this skill when the user asks for things like:
+次のような依頼を受けた場合にこのSkillを使用します:
 
 - "I want to build an IoT solution on Azure"
 - "Smart City architecture for traffic, lighting, or waste"
 - "How do I connect devices, analytics, and alerts?"
 - "I need a roadmap and backlog for an urban platform"
 
-## Objectives
+## 目的
 
-- Convert a high-level idea into a deployable architecture.
-- Reuse existing Azure-focused skills whenever possible.
-- Produce concrete artifacts the team can implement.
+- 高レベルのアイデアをデプロイ可能なアーキテクチャに変換する。
+- 可能な限り既存の Azure に特化したSkillを再利用する。
+- チームが実装できる具体的な成果物を作成する。
 
-## Workflow
+## ワークフロー
 
-### 0) Mandatory documentation review (before any architecture)
+### 0) 必須ドキュメントレビュー（アーキテクチャを検討する前）
 
-Before proposing architecture or technology decisions that involve edge computing, review Azure IoT Edge documentation first:
+エッジ コンピューティングに関係するアーキテクチャまたは技術的な判断を提案する前に、まず Azure IoT Edge のドキュメントを確認します:
 
 - https://learn.microsoft.com/azure/iot-edge/
 
-Minimum pages to review:
+最低限確認するページ:
 
 - What is Azure IoT Edge
 - Runtime architecture
@@ -38,11 +38,11 @@ Minimum pages to review:
 - Version history/release notes
 - Relevant Linux/Windows quickstarts for the scenario
 
-If documentation cannot be consulted, state this explicitly and continue with clearly marked assumptions.
+ドキュメントを参照できない場合は、そのことを明示し、仮定を明確に示して続行します。
 
-### 1) Scope and constraints
+### 1) スコープと制約
 
-Collect and confirm:
+次の情報を収集して確認します:
 
 - City domain: mobility, parking, air quality, water, energy, public safety, waste, etc.
 - Scale: number of devices, telemetry frequency, retention, regions.
@@ -50,9 +50,9 @@ Collect and confirm:
 - Regulatory and privacy constraints.
 - Existing systems to integrate (SCADA, GIS, ERP, ticketing, APIs).
 
-### 2) Capability map
+### 2) 能力マップ
 
-Split the platform into layers:
+プラットフォームを次のレイヤーに分割します:
 
 - Device and edge: onboarding, identity, firmware, OTA, edge processing.
 - Ingestion and messaging: command and control, event routing, buffering.
@@ -60,7 +60,7 @@ Split the platform into layers:
 - Operations: observability, incident flow, SLOs.
 - Governance: RBAC, secrets, policies, network isolation.
 
-### 3) Azure service selection (reference)
+### 3) Azure サービスの選択（参考）
 
 - Device connectivity: Azure IoT Hub, Azure IoT Operations, IoT Edge.
 - Event streaming: Event Hubs, Service Bus, Event Grid.
@@ -70,40 +70,40 @@ Split the platform into layers:
 - Monitoring: Azure Monitor, Application Insights, Log Analytics.
 - Security: Key Vault, Defender for IoT, Private Endpoints, Managed Identity.
 
-### 4) Non-functional design
+### 4) 非機能設計
 
-Define and document:
+次の事項を定義して文書化します:
 
 - Reliability model (zones/regions, retries, dead-letter handling, replay).
 - Security controls (zero trust, encryption, secret rotation, least privilege).
 - Cost controls (retention tiers, rightsizing, autoscaling, workload scheduling).
 - Data lifecycle (raw, curated, aggregated, archived).
 
-### 5) Delivery plan
+### 5) 提供計画
 
-Create a phased execution:
+段階的な実行計画を作成します:
 
 - Phase 1: Pilot district or single use case.
 - Phase 2: Multi-domain integration.
 - Phase 3: City-scale rollout and optimization.
 
-For each phase, include:
+各フェーズに次の内容を含めます:
 
 - Exit criteria
 - Dependencies
 - Risks and mitigations
 - KPI set
 
-## Reuse other skills first
+## まず他のSkillを再利用する
 
-There are two sources of skills:
+Skillには2つのソースがあります:
 
 - Runtime-provided skills (external to this repository): only available when the Copilot host environment exposes them.
 - Local repository skills (this repository): available as local files under `skills/`.
 
-### Runtime-provided Azure skills (optional)
+### ランタイム提供の Azure Skill（任意）
 
-If they are available in the execution environment, delegate to these specialized skills for deeper guidance:
+実行環境で利用可能な場合は、より深いガイダンスのために次の専門Skillへ委譲します:
 
 - `azure-kubernetes`
 - `azure-messaging`
@@ -114,9 +114,9 @@ If they are available in the execution environment, delegate to these specialize
 - `azure-validate`
 - `azure-deploy`
 
-### Local repository alternatives (use in this repo)
+### ローカル リポジトリの代替（このリポジトリで使用）
 
-When runtime skills are not available, prioritize existing local skills in this repository:
+ランタイム Skill が利用できない場合は、このリポジトリにある既存のローカル Skill を優先します:
 
 - `azure-architecture-autopilot` for architecture generation and refinement.
 - `azure-resource-visualizer` for resource relationship diagrams.
@@ -125,11 +125,11 @@ When runtime skills are not available, prioritize existing local skills in this 
 - `azure-deployment-preflight` for pre-deployment checks.
 - `appinsights-instrumentation` for telemetry instrumentation patterns.
 
-If no specialized skill is available, continue with this skill and keep assumptions explicit.
+専門 Skill が利用できない場合は、このSkillで続行し、仮定を明示します。
 
-## Required output artifacts
+## 必須の出力成果物
 
-Always provide these outputs:
+常に次の出力を提供します:
 
 1. Smart City solution summary (scope, assumptions, constraints).
 2. Reference architecture (components and data flow).
@@ -137,9 +137,9 @@ Always provide these outputs:
 4. Cost and scaling strategy.
 5. Phased implementation backlog (epics and milestones).
 
-## Output template
+## 出力テンプレート
 
-Use `references/smart-city-solution-template.md` to standardize outputs for each scenario, with this response structure:
+各シナリオの出力を標準化するため、`references/smart-city-solution-template.md` を使用し、次の応答構成にします:
 
 1. Context and objectives
 2. Proposed architecture
@@ -148,9 +148,9 @@ Use `references/smart-city-solution-template.md` to standardize outputs for each
 5. Phased implementation plan
 6. Risks and open questions
 
-## Guidelines
+## ガイドライン
 
-- Do not jump to deployment before validating prerequisites.
-- Do not recommend single-region production for critical city workloads.
-- Do not omit operational ownership (who handles incidents, SLAs, change windows).
-- Clearly separate assumptions from confirmed facts.
+- 前提条件を検証する前にデプロイへ進まない。
+- 重要な都市ワークロードに単一リージョンの本番構成を推奨しない。
+- 運用責任（インシデント、SLA、変更時間帯を誰が担当するか）を省略しない。
+- 仮定と確認済みの事実を明確に分ける。

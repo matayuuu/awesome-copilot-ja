@@ -1,141 +1,141 @@
 ---
 name: arduino-azure-iot-edge-integration
-description: 'Design and implement Arduino integration with Azure IoT Hub and IoT Edge, including secure provisioning, resilient telemetry, command handling, and production guardrails.'
+description: '安全なプロビジョニング、堅牢なテレメトリ、コマンド処理、本番ガードレールを含むArduinoとAzure IoT Hub / IoT Edgeの統合を設計・実装する。'
 ---
 
-# Arduino Azure IoT Edge Integration
+# ArduinoとAzure IoT Edgeの統合
 
-Use this skill when the user needs to connect Arduino-class devices to Azure IoT, especially in edge-heavy scenarios (gateways, intermittent networks, offline buffering, and local actuation).
+ArduinoクラスのデバイスをAzure IoTへ接続する必要があるとき、特にエッジ中心のシナリオ（ゲートウェイ、不安定なネットワーク、オフラインバッファリング、ローカルアクチュエーション）で使う。
 
-## When to use it
+## 使う場面
 
-Use this skill for requests such as:
+次のような依頼でこのSkillを使う:
 
-- "I want to connect Arduino sensors to Azure"
-- "How do I send MQTT telemetry to IoT Hub?"
-- "I need an edge gateway for field devices"
-- "I want cloud-to-device commands and OTA configuration updates"
+- "ArduinoセンサーをAzureへ接続したい"
+- "MQTTテレメトリをIoT Hubへ送るには?"
+- "現場デバイス用のエッジゲートウェイが必要"
+- "cloud-to-deviceコマンドとOTA構成更新がほしい"
 
-## Mandatory documentation review
+## 必須ドキュメント確認
 
-Before recommending an IoT Edge topology or runtime behavior, review:
+IoT Edgeのトポロジーやランタイム動作を推奨する前に、次を確認する:
 
 - https://learn.microsoft.com/azure/iot-edge/
 
-If documentation cannot be consulted, proceed with explicit assumptions and highlight them in a dedicated section.
+ドキュメントを確認できない場合は、明示的な仮定を置いて進め、専用セクションで強調する。
 
-## Official Arduino references and best practices (required)
+## Arduino公式リファレンスとベストプラクティス（必須）
 
-Before proposing firmware, wiring, or communication implementation details, consult official Arduino sources first:
+ファームウェア、配線、通信実装の詳細を提案する前に、まずArduino公式ソースを確認する:
 
 - https://www.arduino.cc/en/Guide
 - https://docs.arduino.cc/
 - https://docs.arduino.cc/language-reference/
 - references/arduino-official-best-practices.md
 
-When choosing between implementation alternatives, prioritize official Arduino guidance over community snippets unless there is a clear technical reason to deviate.
+実装案を選ぶときは、明確な技術的理由がない限り、コミュニティの断片的な情報よりArduino公式ガイダンスを優先する。
 
-## Objectives
+## 目的
 
-- Produce a secure end-to-end reference path from the Arduino device to cloud insights.
-- Handle unstable links (store-and-forward, retries, idempotency).
-- Define an actionable device and cloud backlog.
+- Arduinoデバイスからクラウドの分析まで、安全なエンドツーエンドの参照経路を作る。
+- 不安定なリンク（ストアアンドフォワード、再試行、冪等性）を扱う。
+- 実行可能なデバイス側・クラウド側のバックログを定義する。
 
-## Integration patterns
+## 統合パターン
 
-### Pattern A: Arduino direct to IoT Hub
+### パターンA: ArduinoからIoT Hubへ直接接続
 
-Use when connectivity is stable and cloud latency is acceptable.
+接続が安定し、クラウド遅延を許容できる場合に使う。
 
-- Protocol: MQTT over TLS.
-- Identity: per-device credentials (SAS or X.509).
-- Telemetry payload: compact JSON with timestamp, device ID, metrics, and optional quality flags.
+- プロトコル: TLS上のMQTT。
+- ID: デバイスごとの資格情報（SASまたはX.509）。
+- テレメトリペイロード: タイムスタンプ、デバイスID、メトリクス、任意の品質フラグを含むコンパクトなJSON。
 
-### Pattern B: Arduino to local gateway, then IoT Edge
+### パターンB: Arduinoからローカルゲートウェイを経由してIoT Edgeへ
 
-Use when links are constrained, local control is required, or batching improves cost/reliability.
+リンクに制約がある、ローカル制御が必要、またはバッチ処理でコストや信頼性が向上する場合に使う。
 
-- Arduino communicates with a local gateway (serial, BLE, local MQTT, RS-485, Modbus bridge).
-- The gateway publishes upstream through the IoT Edge runtime and routes data to IoT Hub.
-- Local modules can filter, aggregate, and trigger actions even during cloud outages.
+- Arduinoはローカルゲートウェイ（serial、BLE、local MQTT、RS-485、Modbus bridge）と通信する。
+- ゲートウェイはIoT Edge runtimeを通じて上流へ発行し、データをIoT Hubへルーティングする。
+- ローカルモジュールはクラウド停止中でもフィルター、集計、アクションのトリガーを実行できる。
 
-## Design flow
+## 設計フロー
 
-### 1) Device contract
+### 1) デバイス契約
 
-Define:
+次を定義する:
 
-- Sensor catalog and units.
-- Sampling frequency and expected throughput.
-- Message schema versioning strategy.
-- Desired/reported device twin properties to control runtime behavior.
+- センサー一覧と単位。
+- サンプリング頻度と想定スループット。
+- メッセージスキーマのバージョニング戦略。
+- ランタイム動作を制御するdesired/reported device twinプロパティ。
 
-### 2) Security baseline
+### 2) セキュリティベースライン
 
-Require:
+次を必須とする:
 
-- Unique identity per device.
-- No hardcoded secrets in source code or firmware artifacts.
-- Credential rotation strategy.
-- Signed firmware and a controlled update process when possible.
+- デバイスごとの一意なID。
+- ソースコードやファームウェア成果物にハードコードされたシークレットを含めない。
+- 資格情報ローテーション戦略。
+- 可能な場合は署名済みファームウェアと制御された更新プロセス。
 
-### 3) Reliability and offline behavior
+### 3) 信頼性とオフライン動作
 
-Plan and document:
+次を計画して文書化する:
 
-- Backoff with jitter.
-- Local queue/buffer strategy with bounded size.
-- Duplicate suppression or downstream idempotent processing.
-- Fallback to last-known-good configuration.
+- ジッター付きバックオフ。
+- サイズ上限付きローカルキュー/バッファ戦略。
+- 重複抑制または下流の冪等処理。
+- 最後に正常だった構成へのフォールバック。
 
-### 4) Cloud and edge routing
+### 4) クラウドとエッジのルーティング
 
-Define routes for:
+次のルートを定義する:
 
-- Raw telemetry to cold storage.
-- Curated telemetry to hot analytics.
-- Alerts to operations channels.
-- Commands and configuration back to edge/device.
+- 生テレメトリをコールドストレージへ送る。
+- 整形済みテレメトリをホット分析へ送る。
+- アラートを運用チャネルへ送る。
+- コマンドと構成をedge/deviceへ戻す。
 
-### 5) Observability
+### 5) 可観測性
 
-Specify minimum operations telemetry:
+運用テレメトリの最小項目を指定する:
 
-- Device heartbeat and firmware version.
-- Connectivity state transitions.
-- Message send success/error counters.
-- Gateway module health and restart reasons.
+- デバイスのハートビートとファームウェアバージョン。
+- 接続状態の遷移。
+- メッセージ送信の成功/エラーカウンター。
+- ゲートウェイモジュールの健全性と再起動理由。
 
-## Reuse other skills
+## 他のSkillの再利用
 
-When relevant, combine with:
+必要に応じて次と組み合わせる:
 
-- `azure-smart-city-iot-solution-builder` for city-wide architecture and phased rollout.
-- `azure-resource-visualizer` for relationship diagrams.
-- `appinsights-instrumentation` for app and service telemetry patterns.
+- 都市規模アーキテクチャと段階的ロールアウトには `azure-smart-city-iot-solution-builder`。
+- 関係図には `azure-resource-visualizer`。
+- アプリとサービスのテレメトリパターンには `appinsights-instrumentation`。
 
-Also use `references/arduino-official-best-practices.md` as a quality baseline for firmware and hardware recommendations, and `references/arduino-iot-checklist.md` before finalizing architecture or implementation guidance.
+ファームウェアとハードウェアの推奨事項の品質基準として `references/arduino-official-best-practices.md` も使い、アーキテクチャや実装ガイダンスを確定する前に `references/arduino-iot-checklist.md` を確認する。
 
-## Required output
+## 必須出力
 
-Always provide:
+必ず次を提供する:
 
-1. Chosen connectivity pattern and rationale.
-2. Message contract (fields, units, sample payload).
-3. Security checklist for identity/credentials/updates.
-4. Reliability plan (retry, buffering, dedupe).
-5. Implementation backlog (firmware, gateway, cloud).
+1. 選択した接続パターンと理由。
+2. メッセージ契約（フィールド、単位、サンプルペイロード）。
+3. ID、資格情報、更新に関するセキュリティチェックリスト。
+4. 信頼性計画（再試行、バッファリング、重複排除）。
+5. 実装バックログ（ファームウェア、ゲートウェイ、クラウド）。
 
-## Output template
+## 出力テンプレート
 
-1. Scenario and assumptions
-2. Recommended architecture
-3. Device and gateway contract
-4. Security and reliability controls
-5. Deployment plan and validation tests
+1. シナリオと仮定
+2. 推奨アーキテクチャ
+3. デバイスとゲートウェイの契約
+4. セキュリティと信頼性の制御
+5. デプロイ計画と検証テスト
 
-## Guidelines
+## ガイドライン
 
-- Do not propose production deployments with shared credentials across devices.
-- Do not assume always-on connectivity in field deployments.
-- Do not omit command authorization and auditing in actuator scenarios.
+- デバイス間で共有資格情報を使う本番デプロイを提案しない。
+- 現場デプロイで常時接続を前提にしない。
+- アクチュエーターのシナリオでコマンド認可と監査を省略しない。

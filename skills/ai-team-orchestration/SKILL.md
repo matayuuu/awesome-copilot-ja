@@ -1,70 +1,70 @@
 ---
 name: ai-team-orchestration
-description: 'Bootstrap and run a lightweight multi-agent development team. Use when starting or adopting a project, planning work, coordinating implementation and optional QA, brainstorming with distinct perspectives, or preserving context across sessions.'
+description: '軽量なマルチAgent開発チームを立ち上げ、運用する。プロジェクトの開始・引き継ぎ、作業計画、実装と任意のQAの調整、異なる視点でのブレインストーミング、セッション間のコンテキスト保存に使う。'
 ---
 
-# AI Team Orchestration
+# AIチームのオーケストレーション
 
-Use three stable agents:
+3つの安定したAgentを使う:
 
-| Agent | Purpose |
+| Agent | 目的 |
 |---|---|
-| `@ai-team-producer` | Clarify scope, plan proportionately, coordinate, and merge |
-| `@ai-team-dev` | Implement, test, self-review, and prepare the pull request |
-| `@ai-team-qa` | Independently test behavior when dedicated QA is useful |
+| `@ai-team-producer` | 範囲を明確化し、適切に計画し、調整してマージする |
+| `@ai-team-dev` | 実装、テスト、自己レビュー、プルリクエスト準備を行う |
+| `@ai-team-qa` | 専任QAが有効な場合に動作を独立してテストする |
 
-Nova, Sage, and Milo are perspectives inside the Dev agent, not mandatory project layers.
+Nova、Sage、MiloはDev Agent内部の視点であり、必須のプロジェクト層ではない。
 
-## Default Workflow
+## 既定のワークフロー
 
-**Plan -> Implement -> Test -> optional review or QA -> Merge -> update project state**
+**計画 -> 実装 -> テスト -> 任意のレビューまたはQA -> マージ -> プロジェクト状態の更新**
 
-Keep the workflow proportional:
+ワークフローは規模に応じて保つ:
 
-- Skip formal planning for small, obvious changes.
-- Use a short plan for multi-step or cross-cutting work.
-- Add independent review or QA when risk, uncertainty, or repository policy justifies it.
-- Let branch protection, required checks, permissions, and merge queues enforce repository merge policy.
+- 小規模で明白な変更では正式な計画を省略する。
+- 複数手順または横断的な作業では短い計画を使う。
+- リスク、不確実性、またはリポジトリポリシーが必要とする場合に独立レビューやQAを追加する。
+- ブランチ保護、必須チェック、権限、マージキューでリポジトリのマージポリシーを適用する。
 
-## Start or Adopt a Project
+## プロジェクトの開始または引き継ぎ
 
-1. Read existing repository instructions and documentation.
-2. Discover the actual stack, architecture, commands, deployment model, and risks.
-3. Create or update `PROJECT_BRIEF.md` only when durable cross-session context is useful. Start from the [project brief template](./references/project-brief-template.md) and omit irrelevant sections.
-4. For substantial work, create a concise plan from the [sprint plan template](./references/sprint-plan-template.md).
-5. Use a separate branch or clone when parallel sessions could conflict, following the repository's own Git policy.
+1. 既存のリポジトリ指示と文書を読む。
+2. 実際のスタック、アーキテクチャ、コマンド、デプロイモデル、リスクを把握する。
+3. セッションをまたいで残す文脈が有用な場合だけ、`PROJECT_BRIEF.md` を作成または更新する。[project brief template](./references/project-brief-template.md) から始め、無関係なセクションは省略する。
+4. 実質的な作業では、[sprint plan template](./references/sprint-plan-template.md) から簡潔な計画を作る。
+5. 並列セッションが競合し得る場合は、リポジトリ自身のGitポリシーに従って別ブランチまたは別クローンを使う。
 
-## Execute
+## 実行
 
 ### Producer
 
-- Define the outcome, constraints, acceptance criteria, and explicit exclusions.
-- Choose review and QA based on risk rather than ceremony.
-- Keep durable project state concise and current.
+- 成果、制約、受け入れ条件、明示的な対象外を定義する。
+- 儀式ではなくリスクに基づいてレビューとQAを選ぶ。
+- 永続的なプロジェクト状態を簡潔かつ最新に保つ。
 
 ### Dev
 
-- Follow repository conventions and implement the smallest complete solution.
-- Run relevant checks and inspect the final diff.
-- Open or update the pull request with summary, verification, and limitations.
+- リポジトリ規約に従い、最小で完全な解決策を実装する。
+- 関連するチェックを実行し、最終差分を確認する。
+- 要約、検証、制限事項を添えてプルリクエストを作成または更新する。
 
 ### QA
 
-- Use only when dedicated behavioral verification adds value.
-- Test the requested change and important regressions.
-- Report reproducible findings and verify fixes.
+- 専任の動作検証に価値がある場合だけ使う。
+- 依頼された変更と重要なリグレッションをテストする。
+- 再現可能な所見を報告し、修正を検証する。
 
-## Brainstorms
+## ブレインストーミング
 
-Use the [brainstorm format](./references/brainstorm-format.md) for product or architecture decisions that benefit from competing perspectives. For ordinary implementation choices, let Dev decide using repository conventions.
+異なる視点が有効な製品またはアーキテクチャ判断には [brainstorm format](./references/brainstorm-format.md) を使う。通常の実装判断は、リポジトリ規約に従ってDevに任せる。
 
-## Context Recovery
+## コンテキストの復元
 
-Before ending a long or interrupted session:
+長いセッションまたは中断されたセッションを終える前に:
 
-1. Update the active plan or progress note if one exists.
-2. Record material decisions, blockers, and the next action in repository context.
-3. Use a cold-start prompt such as:
+1. アクティブな計画または進捗メモがあれば更新する。
+2. 重要な判断、ブロッカー、次のアクションをリポジトリ文脈へ記録する。
+3. 次のようなコールドスタート用プロンプトを使う:
 
 ```text
 Read the repository instructions, then read whichever sources exist for this
@@ -73,20 +73,20 @@ progress note.
 Continue from the recorded next action.
 ```
 
-## Tool and Model Inheritance
+## ツールとモデルの継承
 
-The bundled agents intentionally omit `tools` and `model` frontmatter:
+同梱Agentは意図的に `tools` と `model` frontmatterを省略している:
 
-- available built-in, MCP, and extension tools remain usable;
-- developers keep control of model selection;
-- role boundaries are defined by instructions and normal trust, permission, authentication, and approval controls.
+- 利用可能な組み込み、MCP、拡張Toolは引き続き使える。
+- 開発者がモデル選択を制御し続けられる。
+- 役割の境界は、指示と通常の信頼、権限、認証、承認制御で定義される。
 
-If the environment exposes too many tools, deselect irrelevant tools or MCP servers, or use VS Code virtual-tool management. Do not add a machine-specific plugin allowlist.
+環境が多すぎるToolを公開している場合は、無関係なToolやMCP serverを選択解除するか、VS Codeの仮想Tool管理を使う。マシン固有のプラグイン許可リストは追加しない。
 
-## Principles
+## 原則
 
-- Prefer working software and clear handoffs over process artifacts.
-- Follow repository policy instead of embedding universal Git commands.
-- Preserve unknown work and ask before destructive or privileged actions.
-- Keep bugs and important decisions in durable project systems, not only chat.
-- See [anti-patterns](./references/anti-patterns.md) for concise lessons.
+- プロセス成果物より、動作するソフトウェアと明確な引き継ぎを優先する。
+- 汎用Gitコマンドを埋め込むのではなく、リポジトリポリシーに従う。
+- 不明な作業を保持し、破壊的または特権的な操作の前に確認する。
+- バグと重要な判断はチャットだけでなく、永続的なプロジェクトシステムに残す。
+- 簡潔な教訓は [anti-patterns](./references/anti-patterns.md) を参照する。

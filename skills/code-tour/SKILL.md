@@ -34,7 +34,7 @@ GitHub code searchでさらに探せます: https://github.com/search?q=path%3A*
 | `isPrimary: true`（オンボーディングのエントリポイントを示す） | https://github.com/nickvdyck/webbundlr/blob/main/.tours/getting-started.tour |
 | `line`の代わりに`pattern`を使用（正規表現で固定したステップ） | https://github.com/nickvdyck/webbundlr/blob/main/.tours/architecture.tour |
 
-**Rawコンテンツのヒント:** Raw JSONへアクセスするには、`raw.githubusercontent.com`を先頭に使用し、`/blob/`を削除します。
+**未加工コンテンツのヒント:** 未加工のJSONへアクセスするには、`raw.githubusercontent.com`を先頭に使用し、`/blob/`を削除します。
 
 優れたツアーは、単にファイルへ注釈を付けたものではありません。重要なこと、その理由、次にすべきことを特定の人へ伝える**物語**です。対象者がこのRepositoryを初めて開いたときに、あってほしかったと思えるツアーを書くことが目標です。
 
@@ -69,7 +69,7 @@ python skills/code-tour/scripts/generate_from_docs.py \
 
 | スタック | 最初に読むエントリポイント |
 |-------|---------------------------|
-| **Node.js / TS** | `index.js/ts`, `server.js`, `app.js`, `src/main.ts`, `package.json` (scripts) |
+| **Node.js / TS** | `index.js/ts`, `server.js`, `app.js`, `src/main.ts`, `package.json`（スクリプト） |
 | **Python** | `main.py`, `app.py`, `__main__.py`, `manage.py` (Django), `app/__init__.py` (Flask/FastAPI) |
 | **Go** | `main.go`, `cmd/<name>/main.go`, `internal/` |
 | **Rust** | `src/main.rs`, `src/lib.rs`, `Cargo.toml` |
@@ -87,7 +87,7 @@ python skills/code-tour/scripts/generate_from_docs.py \
 | **ライブラリ／SDK** | 公開API、拡張ポイント、バージョン管理 | index／exports、types、changelog |
 | **CLI Tool** | コマンド解析、構成読み込み、出力形式 | main、commands/、config |
 | **Monorepo** | パッケージ境界、共有契約、ビルドグラフ | ルートのpackage.json／pnpm-workspace、shared/、packages/ |
-| **フレームワーク** | プラグインシステム、ライフサイクルフック、escape hatch | core/、plugins/、lifecycle |
+| **フレームワーク** | プラグインシステム、ライフサイクルフック、回避手段 | core/、plugins/、lifecycle |
 | **データパイプライン** | ソース → 変換 → シンク、スキーマの所有権 | ingest/、transform/、schema/、dbt model |
 | **フロントエンドアプリ** | コンポーネント階層、状態管理、ルーティング | pages/、store/、router、api/ |
 
@@ -218,7 +218,7 @@ PRツアーでは、`"ref"`をブランチに設定し、PRへの`uri`ステッ�
 | 関数／クラス本体が要点 | selection |
 | 行番号が変わりやすく、ファイルが頻繁に変化する | pattern |
 | PR／Issue／ドキュメントが「理由」を示す | uri |
-| 読者にterminalまたはexplorerを開いてほしい | viewまたはcommands |
+| 読者にターミナルまたはエクスプローラーを開いてほしい | viewまたはcommands |
 
 ---
 
@@ -284,8 +284,8 @@ Repositoryの規模にも合わせます。3ファイルのCLIに15ステップ�
 | **バイブコーダー** | 短時間で雰囲気をつかむ | エントリポイント、リクエストフロー、主要モジュール。最大8ステップ。 | 詳細な掘り下げ、エッジケース |
 | **新規参加者** | 構造的に立ち上がる | ディレクトリ、セットアップ、ビジネスコンテキスト、サービス境界。 | 高度な内部実装 |
 | **バグ修正担当** | 根本原因を素早く見つける | ユーザー操作 → トリガー → 障害点。再現のヒント + テストの場所。 | アーキテクチャツアー |
-| **RCA調査担当** | 失敗理由を理解する | 因果関係、副作用、race condition、可観測性。 | 正常系 |
-| **機能説明担当** | 1つの機能をend-to-endで理解する | UI → API → バックエンド → ストレージ。feature flag、エッジケース。 | 無関係な機能 |
+| **RCA調査担当** | 失敗理由を理解する | 因果関係、副作用、競合状態、可観測性。 | 正常系 |
+| **機能説明担当** | 1つの機能をエンドツーエンドで理解する | UI → API → バックエンド → ストレージ。機能フラグ、エッジケース。 | 無関係な機能 |
 | **PRレビュアー** | 変更を正しくレビューする | 変更の物語、不変条件、危険な領域、レビュアー向けチェックリスト。PRへのURIステップ。 | 無関係なコンテキスト |
 | **セキュリティレビュアー** | 信頼境界を理解する | 認証フロー、入力検証、secret処理、機密性の高いシンク。 | 無関係なビジネスロジック |
 | **リファクタリング担当** | 安全に再構成する | 境界、隠れた依存関係、結合の集中箇所、安全な抽出順序。 | 機能説明 |
@@ -315,7 +315,7 @@ Repositoryの規模にも合わせます。3ファイルのCLIに15ステップ�
 |---|---|
 | **X秒後に次のステップへ自動で進む** | 非対応。移動は常に手動で、読者が「次へ」をクリックする。CodeTourにはtimer、delay、自動再生の仕組みがない。 |
 | **ステップへ動画やGIFを埋め込む** | 非対応。descriptionはMarkdownテキストのみ。 |
-| **任意のshellコマンドを実行する** | 非対応。`commands`で実行できるのはVS Codeコマンド（例: `workbench.action.terminal.focus`）だけで、shellコマンドは実行できない。 |
+| **任意のシェルコマンドを実行する** | 非対応。`commands`で実行できるのはVS Codeコマンド（例: `workbench.action.terminal.focus`）だけで、シェルコマンドは実行できない。 |
 | **分岐／条件付きの次ステップ** | 非対応。ツアーは直線的である。`when`が制御するのはツアーを表示するかどうかであり、次にどのステップへ進むかではない。 |
 | **ファイルを開かずにステップを表示する** | 一部対応。contentだけのステップは動作するが、ステップ1には`file`または`directory`アンカーが必要で、ない場合はVS Codeに空白ページが表示される。 |
 
@@ -341,7 +341,7 @@ Repositoryの規模にも合わせます。3ファイルのCLIに15ステップ�
 - [ ] すべての`directory`が**Repositoryルートからの相対パス**であり、存在を確認した
 - [ ] すべての`pattern`正規表現がファイル内の実在する行に一致する
 - [ ] すべての`uri`が完全な実在するURLである（https://...）
-- [ ] `ref`を設定した場合、実在するbranch／tag／commitである
+- [ ] `ref`を設定した場合、実在するブランチ／タグ／コミットである
 - [ ] `nextTour`を設定した場合、別の`.tour`ファイルの`title`と完全に一致する
 - [ ] `.tour` JSONファイルだけを作成し、ソースコードには触れていない
 - [ ] 最初のステップに`file`または`directory`アンカーがある（contentだけの最初のステップはVS Codeで空白ページになる）

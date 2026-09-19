@@ -1,6 +1,6 @@
 ---
 name: azure-container-registry-cli
-description: 'Manage Azure Container Registry via the az acr CLI including registries, images, cloud builds, ACR Tasks, authentication, tokens, geo-replication, and networking. Use when working with ACR, az acr commands, pushing/importing/purging container images in Azure, or when the user mentions Azure Container Registry.'
+description: 'az acr CLI を使って Azure Container Registry を管理します。レジストリ、イメージ、クラウドビルド、ACR Tasks、認証、トークン、geo レプリケーション、ネットワークを扱います。ACR、az acr コマンド、Azure でのコンテナーイメージの push／import／purge、Azure Container Registry に言及されたときに使用します。'
 ---
 
 # Azure Container Registry CLI
@@ -9,7 +9,7 @@ Manage Azure Container Registry (ACR) resources using the `az acr` command group
 
 **CLI:** `az acr` ships with core Azure CLI — no extension required (the `acrtransfer` extension is only needed for export/import pipelines).
 
-## Prerequisites
+## 前提条件
 
 ```bash
 # Install Azure CLI
@@ -22,7 +22,7 @@ az login
 az account set --subscription {subscription-id}
 ```
 
-## Quick Start
+## クイックスタート
 
 ```bash
 # Create a registry (SKU: Basic | Standard | Premium)
@@ -45,14 +45,14 @@ az acr repository show-tags --name {registry} --repository app --orderby time_de
 az acr check-health --name {registry} --yes
 ```
 
-## Key Principles
+## 主要原則
 
 - **Prefer `az acr build` / ACR Tasks** over local `docker build` + `docker push`: builds run in Azure, work without a local daemon, and integrate with triggers.
 - **Prefer `az acr import`** to move images between registries: it is server-side, faster, and requires no local storage.
 - **Never enable the admin user for production** — use Microsoft Entra identities (RBAC roles `AcrPull`/`AcrPush`, or `Container Registry Repository Reader`/`Writer` on ABAC-enabled registries), repository-scoped tokens, or managed identities.
 - **Premium-only features**: geo-replication, private endpoints, retention policies, connected registries, agent pools. (Repository-scoped tokens work in all tiers; zone redundancy is automatic in all tiers in supported regions.)
 
-## CLI Structure
+## CLI 構造
 
 ```
 az acr
@@ -78,7 +78,7 @@ az acr
 └── export-pipeline / import-pipeline / pipeline-run  # acrtransfer extension
 ```
 
-## Reference Files
+## リファレンスファイル
 
 Read the relevant reference file based on the user's task. Each file contains complete command syntax and examples for its domain.
 

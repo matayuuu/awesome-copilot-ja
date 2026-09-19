@@ -1,11 +1,11 @@
 ---
 name: aspire
-description: 'Aspire skill covering the Aspire CLI, AppHost orchestration, service discovery, integrations, MCP server, VS Code extension, Dev Containers, GitHub Codespaces, templates, dashboard, and deployment. Use when the user asks to create, run, debug, configure, deploy, or troubleshoot an Aspire distributed application.'
+description: 'Aspire CLI、AppHost オーケストレーション、サービス検出、統合、MCP サーバー、VS Code 拡張、Dev Containers、GitHub Codespaces、テンプレート、ダッシュボード、デプロイを扱う Skill です。Aspire 分散アプリケーションの作成、実行、デバッグ、構成、デプロイ、トラブルシューティングを求められたときに使用します。'
 ---
 
-# Aspire — Polyglot Distributed-App Orchestration
+# Aspire — 多言語分散アプリケーションのオーケストレーション
 
-Aspire is a **code-first, polyglot toolchain** for building observable, production-ready distributed applications. It orchestrates containers, executables, and cloud resources from a single AppHost project — regardless of whether the workloads are C#, Python, JavaScript/TypeScript, Go, Java, Rust, Bun, Deno, or PowerShell.
+Aspire は、可観測で本番対応の分散アプリケーションを構築するための **コードファーストで多言語対応のツールチェーン**です。ワークロードが C#、Python、JavaScript/TypeScript、Go、Java、Rust、Bun、Deno、PowerShell のいずれであっても、単一の AppHost プロジェクトからコンテナー、実行ファイル、クラウドリソースをオーケストレーションします。
 
 > **Mental model:** The AppHost is a *conductor* — it doesn't play the instruments, it tells every service when to start, how to find each other, and watches for problems.
 
@@ -13,7 +13,7 @@ Detailed reference material lives in the `references/` folder — load on demand
 
 ---
 
-## References
+## リファレンス
 
 | Reference | When to load |
 |---|---|
@@ -29,11 +29,11 @@ Detailed reference material lives in the `references/` folder — load on demand
 
 ---
 
-## 1. Researching Aspire Documentation
+## 1. Aspire ドキュメントを調査
 
 The Aspire team ships an **MCP server** that provides documentation tools directly inside your AI assistant. See [MCP Server](references/mcp-server.md) for setup details.
 
-### Aspire CLI 13.2+ (recommended — has built-in docs search)
+### Aspire CLI 13.2 以降（推奨 — 組み込みドキュメント検索あり）
 
 If running Aspire CLI **13.2 or later** (`aspire --version`), the MCP server includes docs search tools:
 
@@ -47,7 +47,7 @@ These tools were added in [PR #14028](https://github.com/dotnet/aspire/pull/1402
 
 For more on this approach, see David Pine's post: https://davidpine.dev/posts/aspire-docs-mcp-tools/
 
-### Aspire CLI 13.1 (integration tools only)
+### Aspire CLI 13.1（統合ツールのみ）
 
 On 13.1, the MCP server provides integration lookup but **not** docs search:
 
@@ -58,7 +58,7 @@ On 13.1, the MCP server provides integration lookup but **not** docs search:
 
 For general docs queries on 13.1, use **Context7** as your primary source (see below).
 
-### Fallback: Context7
+### フォールバック: Context7
 
 Use **Context7** (`mcp_context7`) when the Aspire MCP docs tools are unavailable (13.1) or the MCP server isn't running:
 
@@ -79,7 +79,7 @@ libraryId: "/microsoft/aspire.dev", query: "Python integration AddPythonApp serv
 libraryId: "/communitytoolkit/aspire", query: "Golang Java Node.js community integrations"
 ```
 
-### Fallback: GitHub search (when Context7 is also unavailable)
+### フォールバック: GitHub 検索（Context7 も利用できない場合）
 
 Search the official docs repo on GitHub:
 - **Docs repo:** `microsoft/aspire.dev` — path: `src/frontend/src/content/docs/`
@@ -89,7 +89,7 @@ Search the official docs repo on GitHub:
 
 ---
 
-## 2. Prerequisites & Install
+## 2. 前提条件とインストール
 
 | Requirement | Details |
 |---|---|
@@ -113,7 +113,7 @@ dotnet new install Aspire.ProjectTemplates
 
 ---
 
-## 3. Project Templates
+## 3. プロジェクトテンプレート
 
 | Template | Command | Description |
 |---|---|---|
@@ -124,7 +124,7 @@ dotnet new install Aspire.ProjectTemplates
 
 ---
 
-## 4. AppHost Quick Start (Polyglot)
+## 4. AppHost クイックスタート（多言語）
 
 The AppHost orchestrates all services. Non-.NET workloads run as containers or executables.
 
@@ -158,7 +158,7 @@ For complete API signatures, see [Polyglot APIs](references/polyglot-apis.md).
 
 ---
 
-## 5. Core Concepts (Summary)
+## 5. 中核概念（概要）
 
 | Concept | Key point |
 |---|---|
@@ -174,7 +174,7 @@ For complete API signatures, see [Polyglot APIs](references/polyglot-apis.md).
 
 ---
 
-## 6. CLI Quick Reference
+## 6. CLI クイックリファレンス
 
 Valid commands in Aspire CLI 13.1:
 
@@ -197,9 +197,9 @@ Full command reference with flags: [CLI Reference](references/cli-reference.md).
 
 ---
 
-## 7. Common Patterns
+## 7. 一般的なパターン
 
-### Adding a new service
+### 新しいサービスを追加
 
 1. Create your service directory (any language)
 2. Add to AppHost: `Add*App()` or `AddProject<T>()`
@@ -207,7 +207,7 @@ Full command reference with flags: [CLI Reference](references/cli-reference.md).
 4. Gate on health: `.WaitFor()` if needed
 5. Run: `aspire run`
 
-### Migrating from Docker Compose
+### Docker Compose から移行
 
 1. `aspire new aspire-apphost-singlefile` (empty AppHost)
 2. Replace each `docker-compose` service with an Aspire resource
@@ -217,7 +217,7 @@ Full command reference with flags: [CLI Reference](references/cli-reference.md).
 
 ---
 
-## 8. Key URLs
+## 8. 主要 URL
 
 | Resource | URL |
 |---|---|

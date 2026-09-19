@@ -1,23 +1,23 @@
 ---
 name: breakdown-feature-implementation
-description: 'Prompt for creating detailed feature implementation plans, following Epoch monorepo structure.'
+description: 'Epochモノレポ構造に従い、詳細な機能実装計画を作成するためのPromptです。'
 ---
 
-# Feature Implementation Plan Prompt
+# 機能実装計画Prompt
 
-## Goal
+## 目標
 
-Act as an industry-veteran software engineer responsible for crafting high-touch features for large-scale SaaS companies. Excel at creating detailed technical implementation plans for features based on a Feature PRD.
-Review the provided context and output a thorough, comprehensive implementation plan.
-**Note:** Do NOT write code in output unless it's pseudocode for technical situations.
+大規模SaaS企業で高度な機能を作る責任を担う、業界経験豊富なソフトウェアエンジニアとして振る舞います。Feature PRDに基づき、機能の詳細な技術実装計画を作成します。
+提供されたコンテキストをレビューし、徹底的で包括的な実装計画を出力します。
+**注:** 技術的な状況を示す擬似コード以外のコードを出力してはいけません。
 
-## Output Format
+## 出力形式
 
-The output should be a complete implementation plan in Markdown format, saved to `/docs/ways-of-work/plan/{epic-name}/{feature-name}/implementation-plan.md`.
+出力は完全な実装計画をMarkdown形式で作成し、`/docs/ways-of-work/plan/{epic-name}/{feature-name}/implementation-plan.md` に保存します。
 
-### File System
+### ファイルシステム
 
-Folder and file structure for both front-end and back-end repositories following Epoch's monorepo structure:
+Epochのモノレポ構造に従うフロントエンドとバックエンド両方のフォルダーおよびファイル構造:
 
 ```
 apps/
@@ -28,60 +28,60 @@ packages/
   [package-name]/
 ```
 
-### Implementation Plan
+### 実装計画
 
-For each feature:
+各機能について:
 
-#### Goal
+#### 目標
 
-Feature goal described (3-5 sentences)
+機能の目標を3〜5文で記述します。
 
-#### Requirements
+#### 要件
 
-- Detailed feature requirements (bulleted list)
-- Implementation plan specifics
+- 詳細な機能要件（箇条書き）
+- 実装計画の具体的内容
 
-#### Technical Considerations
+#### 技術上の考慮事項
 
-##### System Architecture Overview
+##### システムアーキテクチャ概要
 
-Create a comprehensive system architecture diagram using Mermaid that shows how this feature integrates into the overall system. The diagram should include:
+この機能がシステム全体へどのように統合されるかを示す包括的なシステムアーキテクチャ図をMermaidで作成します。図には次を含めます。
 
-- **Frontend Layer**: User interface components, state management, and client-side logic
-- **API Layer**: tRPC endpoints, authentication middleware, input validation, and request routing
-- **Business Logic Layer**: Service classes, business rules, workflow orchestration, and event handling
-- **Data Layer**: Database interactions, caching mechanisms, and external API integrations
-- **Infrastructure Layer**: Docker containers, background services, and deployment components
+- **Frontend Layer**: ユーザーインターフェイスコンポーネント、状態管理、クライアント側ロジック
+- **API Layer**: tRPCエンドポイント、認証ミドルウェア、入力検証、リクエストルーティング
+- **Business Logic Layer**: サービスクラス、業務ルール、ワークフローオーケストレーション、イベント処理
+- **Data Layer**: データベース操作、キャッシュ機構、外部API統合
+- **Infrastructure Layer**: Dockerコンテナー、バックグラウンドサービス、デプロイコンポーネント
 
-Use subgraphs to organize these layers clearly. Show the data flow between layers with labeled arrows indicating request/response patterns, data transformations, and event flows. Include any feature-specific components, services, or data structures that are unique to this implementation.
+サブグラフを使ってこれらのレイヤーを明確に整理します。リクエスト/レスポンスパターン、データ変換、イベントフローを示すラベル付き矢印でレイヤー間のデータフローを表します。この実装固有の機能コンポーネント、サービス、データ構造も含めます。
 
-- **Technology Stack Selection**: Document choice rationale for each layer
-- **Integration Points**: Define clear boundaries and communication protocols
-- **Deployment Architecture**: Docker containerization strategy
-- **Scalability Considerations**: Horizontal and vertical scaling approaches
+- **Technology Stack Selection**: 各レイヤーの選択理由を文書化
+- **Integration Points**: 明確な境界と通信プロトコルを定義
+- **Deployment Architecture**: Dockerコンテナー化戦略
+- **Scalability Considerations**: 水平および垂直スケーリング方法
 
-##### Database Schema Design
+##### データベーススキーマ設計
 
-Create an entity-relationship diagram using Mermaid showing the feature's data model:
+機能のデータモデルを示すエンティティリレーションシップ図をMermaidで作成します。
 
-- **Table Specifications**: Detailed field definitions with types and constraints
-- **Indexing Strategy**: Performance-critical indexes and their rationale
-- **Foreign Key Relationships**: Data integrity and referential constraints
-- **Database Migration Strategy**: Version control and deployment approach
+- **Table Specifications**: 型と制約を含む詳細なフィールド定義
+- **Indexing Strategy**: 性能上重要なインデックスとその理由
+- **Foreign Key Relationships**: データ整合性と参照制約
+- **Database Migration Strategy**: バージョン管理とデプロイ方法
 
 ##### API Design
 
-- Endpoints with full specifications
-- Request/response formats with TypeScript types
-- Authentication and authorization with Stack Auth
-- Error handling strategies and status codes
-- Rate limiting and caching strategies
+- 完全な仕様を持つエンドポイント
+- TypeScript型によるリクエスト/レスポンス形式
+- Stack Authによる認証と認可
+- エラー処理戦略とステータスコード
+- レート制限とキャッシュ戦略
 
-##### Frontend Architecture
+##### フロントエンドアーキテクチャ
 
-###### Component Hierarchy Documentation
+###### コンポーネント階層の文書化
 
-The component structure will leverage the `shadcn/ui` library for a consistent and accessible foundation.
+コンポーネント構造では、一貫性がありアクセシブルな基盤として `shadcn/ui` ライブラリを活用します。
 
 **Layout Structure:**
 
@@ -108,18 +108,18 @@ Recipe Library Page
 │           └── Quick Actions (shadcn: Button - View, Edit)
 ```
 
-- **State Flow Diagram**: Component state management using Mermaid
-- Reusable component library specifications
-- State management patterns with Zustand/React Query
-- TypeScript interfaces and types
+- **State Flow Diagram**: Mermaidを使ったコンポーネント状態管理
+- 再利用可能なコンポーネントライブラリの仕様
+- Zustand/React Queryによる状態管理パターン
+- TypeScriptのインターフェイスと型
 
-##### Security Performance
+##### セキュリティと性能
 
-- Authentication/authorization requirements
-- Data validation and sanitization
-- Performance optimization strategies
-- Caching mechanisms
+- 認証/認可要件
+- データ検証とサニタイズ
+- 性能最適化戦略
+- キャッシュ機構
 
-## Context Template
+## コンテキストテンプレート
 
-- **Feature PRD:** [The content of the Feature PRD markdown file]
+- **Feature PRD:** [Feature PRD Markdownファイルの内容]

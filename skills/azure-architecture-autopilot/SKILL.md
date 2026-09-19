@@ -1,18 +1,9 @@
 ---
 name: azure-architecture-autopilot
-description: >
-  Design Azure infrastructure using natural language, or analyze existing Azure resources
-  to auto-generate architecture diagrams, refine them through conversation, and deploy with Bicep.
-
-  When to use this skill:
-  - "Create X on Azure", "Set up a RAG architecture" (new design)
-  - "Analyze my current Azure infrastructure", "Draw a diagram for rg-xxx" (existing analysis)
-  - "Foundry is slow", "I want to reduce costs", "Strengthen security" (natural language modification)
-  - Azure resource deployment, Bicep template generation, IaC code generation
-  - Microsoft Foundry, AI Search, OpenAI, Fabric, ADLS Gen2, Databricks, and all Azure services
+description: '自然言語で Azure インフラストラクチャを設計するか、既存の Azure リソースを分析してアーキテクチャ図を自動生成し、会話で改良して Bicep でデプロイします。新しい Azure 設計、既存インフラストラクチャの分析、自然言語による変更、Azure リソースのデプロイ、Bicep テンプレート生成、IaC コード生成、Microsoft Foundry、AI Search、OpenAI、Fabric、ADLS Gen2、Databricks などの Azure サービスを扱うときに使用します。'
 ---
 
-# Azure Architecture Builder
+# Azure アーキテクチャビルダー
 
 A pipeline that designs Azure infrastructure using natural language, or analyzes existing resources to visualize architecture and proceed through modification and deployment.
 
@@ -21,7 +12,7 @@ No `pip install` needed — it directly uses the bundled Python scripts
 to generate interactive HTML diagrams with 605+ official Azure icons.
 Ready to use immediately without network access or package installation.
 
-## Automatic User Language Detection
+## ユーザー言語の自動検出
 
 **🚨 Detect the language of the user's first message and provide all subsequent responses in that language. This is the highest-priority principle.**
 
@@ -32,7 +23,7 @@ Ready to use immediately without network access or package installation.
 **⚠️ Do not copy examples from this document verbatim to the user.**
 Use only the structure as reference, and adapt text to the user's language.
 
-## Tool Usage Guide (GHCP Environment)
+## ツール使用ガイド（GHCP 環境）
 
 | Feature | Tool Name | Notes |
 |---------|-----------|-------|
@@ -45,7 +36,7 @@ Use only the structure as reference, and adapt text to the user's language.
 > All sub-agents (explore/task/general-purpose) cannot use `web_fetch` or `web_search`.
 > Fact-checking that requires MS Docs lookups must be performed **directly by the main agent**.
 
-## External Tool Path Discovery
+## 外部ツールのパス検出
 
 `az`, `python`, `bicep`, etc. are often not on PATH.
 **Discover once before starting a Phase and cache the result. Do not re-discover every time.**
@@ -65,7 +56,7 @@ if (-not $azCmd) {
 
 Python path + embedded diagram engine: refer to the diagram generation section in `references/phase1-advisor.md`.
 
-## Progress Updates Required
+## 必須の進捗更新
 
 Use blockquote + emoji + bold format:
 ```markdown
@@ -75,7 +66,7 @@ Use blockquote + emoji + bold format:
 > **❌ [Failed]** — [Cause]
 ```
 
-## Parallel Preload Principle
+## 並列プリロードの原則
 
 While waiting for user input via `ask_user`, preload information needed for the next step in parallel.
 
@@ -88,9 +79,9 @@ While waiting for user input via `ask_user`, preload information needed for the 
 
 ---
 
-## Path Branching — Automatically Determined by User Request
+## パス分岐 — ユーザー要求から自動決定
 
-### Path A: New Design (New Build)
+### パス A: 新規設計（新規構築）
 
 **Trigger**: "create", "set up", "deploy", "build", etc.
 ```
@@ -103,7 +94,7 @@ Phase 3 (references/bicep-reviewer.md) — Code review + compilation verificatio
 Phase 4 (references/phase4-deployer.md) — validate → what-if → deploy
 ```
 
-### Path B: Existing Analysis + Modification (Analyze & Modify)
+### パス B: 既存分析と変更（分析と変更）
 
 **Trigger**: "analyze", "current resources", "scan", "draw a diagram", "show my infrastructure", etc.
 ```
@@ -116,7 +107,7 @@ Phase 1 (references/phase1-advisor.md) — Confirm modifications + update diagra
 Phase 2~4 — Same as above
 ```
 
-### When Path Determination Is Ambiguous
+### パス判定が曖昧な場合
 
 Ask the user directly:
 ```
@@ -131,7 +122,7 @@ ask_user({
 
 ---
 
-## Phase Transition Rules
+## フェーズ遷移規則
 
 - Each Phase reads and follows the instructions in its corresponding `references/*.md` file
 - When transitioning between Phases, always inform the user about the next step
@@ -139,23 +130,23 @@ ask_user({
 - **🚨 Required condition for Phase 1 → Phase 2 transition**: `01_arch_diagram_draft.html` must have been generated using the embedded diagram engine and shown to the user. **Do not proceed to Bicep generation without a diagram.** Completing spec collection alone does not mean Phase 1 is done — Phase 1 includes diagram generation + user confirmation.
 - Modification request after deployment → return to Phase 1, not Phase 0 (Delta Confirmation Rule)
 
-## Service Coverage & Fallback
+## サービス対応範囲とフォールバック
 
-### Optimized Services
+### 最適化済みサービス
 Microsoft Foundry, Azure OpenAI, AI Search, ADLS Gen2, Key Vault, Microsoft Fabric, Azure Data Factory, VNet/Private Endpoint, AML/AI Hub
 
-### Other Azure Services
+### その他の Azure サービス
 All supported — MS Docs are automatically consulted to generate at the same quality standard.
 **Do not send messages that cause user anxiety such as "out of scope" or "best-effort".**
 
-### Stable vs Dynamic Information Handling
+### 安定情報と動的情報の扱い
 
 | Category | Handling Method | Examples |
 |----------|----------------|---------|
 | **Stable** | Reference files first | `isHnsEnabled: true`, PE triple set |
 | **Dynamic** | **Always fetch MS Docs** | API version, model availability, SKU, region |
 
-## Quick Reference
+## クイックリファレンス
 
 | File | Role |
 |------|------|

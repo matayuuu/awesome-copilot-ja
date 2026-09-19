@@ -1,22 +1,15 @@
 ---
 name: agentic-eval
-description: |
-  Patterns and techniques for evaluating and improving AI agent outputs. Use this skill when:
-  - Implementing self-critique and reflection loops
-  - Building evaluator-optimizer pipelines for quality-critical generation
-  - Creating test-driven code refinement workflows
-  - Designing rubric-based or LLM-as-judge evaluation systems
-  - Adding iterative improvement to agent outputs (code, reports, analysis)
-  - Measuring and improving agent response quality
+description: 'AI Agentの出力を評価・改善するパターンと技法。自己批評・リフレクションループ、品質重視の生成向け評価器・最適化器パイプライン、テスト駆動のコード改善、ルーブリックまたはLLM-as-judge評価、コード・レポート・分析の反復改善、Agent応答品質の測定・改善で使う。'
 ---
 
-# Agentic Evaluation Patterns
+# Agentic評価のパターン
 
-Patterns for self-improvement through iterative evaluation and refinement.
+反復的な評価と改善を通じた自己改善のパターン。
 
-## Overview
+## 概要
 
-Evaluation patterns enable agents to assess and improve their own outputs, moving beyond single-shot generation to iterative refinement loops.
+評価パターンにより、Agentは自身の出力を評価・改善できる。単発生成を越え、反復的な改善ループへ移行する。
 
 ```
 Generate → Evaluate → Critique → Refine → Output
@@ -24,17 +17,17 @@ Generate → Evaluate → Critique → Refine → Output
     └──────────────────────────────┘
 ```
 
-## When to Use
+## 使う場面
 
-- **Quality-critical generation**: Code, reports, analysis requiring high accuracy
-- **Tasks with clear evaluation criteria**: Defined success metrics exist
-- **Content requiring specific standards**: Style guides, compliance, formatting
+- **品質が重要な生成**: 高い正確性が必要なコード、レポート、分析
+- **評価基準が明確なタスク**: 成功指標が定義されている場合
+- **特定の標準が必要なコンテンツ**: スタイルガイド、コンプライアンス、書式
 
 ---
 
-## Pattern 1: Basic Reflection
+## パターン1: 基本的なリフレクション
 
-Agent evaluates and improves its own output through self-critique.
+Agentが自己批評を通じて自身の出力を評価・改善する。
 
 ```python
 def reflect_and_refine(task: str, criteria: list[str], max_iterations: int = 3) -> str:
@@ -61,13 +54,13 @@ def reflect_and_refine(task: str, criteria: list[str], max_iterations: int = 3) 
     return output
 ```
 
-**Key insight**: Use structured JSON output for reliable parsing of critique results.
+**重要な洞察**: 批評結果を確実に解析するため、構造化JSON出力を使う。
 
 ---
 
-## Pattern 2: Evaluator-Optimizer
+## パターン2: 評価器と最適化器
 
-Separate generation and evaluation into distinct components for clearer responsibilities.
+生成と評価を別コンポーネントへ分離し、責任範囲を明確にする。
 
 ```python
 class EvaluatorOptimizer:
@@ -99,9 +92,9 @@ class EvaluatorOptimizer:
 
 ---
 
-## Pattern 3: Code-Specific Reflection
+## パターン3: コード固有のリフレクション
 
-Test-driven refinement loop for code generation.
+コード生成向けのテスト駆動改善ループ。
 
 ```python
 class CodeReflector:
@@ -119,10 +112,10 @@ class CodeReflector:
 
 ---
 
-## Evaluation Strategies
+## 評価戦略
 
-### Outcome-Based
-Evaluate whether output achieves the expected result.
+### 成果ベース
+出力が期待される結果を達成しているか評価する。
 
 ```python
 def evaluate_outcome(task: str, output: str, expected: str) -> str:
@@ -130,15 +123,15 @@ def evaluate_outcome(task: str, output: str, expected: str) -> str:
 ```
 
 ### LLM-as-Judge
-Use LLM to compare and rank outputs.
+LLMを使って出力を比較し、順位付けする。
 
 ```python
 def llm_judge(output_a: str, output_b: str, criteria: str) -> str:
     return llm(f"Compare outputs A and B for {criteria}. Which is better and why?")
 ```
 
-### Rubric-Based
-Score outputs against weighted dimensions.
+### ルーブリックベース
+重み付きの観点に照らして出力を採点する。
 
 ```python
 RUBRIC = {
@@ -154,36 +147,36 @@ def evaluate_with_rubric(output: str, rubric: dict) -> float:
 
 ---
 
-## Best Practices
+## ベストプラクティス
 
-| Practice | Rationale |
+| 実践 | 理由 |
 |----------|-----------|
-| **Clear criteria** | Define specific, measurable evaluation criteria upfront |
-| **Iteration limits** | Set max iterations (3-5) to prevent infinite loops |
-| **Convergence check** | Stop if output score isn't improving between iterations |
-| **Log history** | Keep full trajectory for debugging and analysis |
-| **Structured output** | Use JSON for reliable parsing of evaluation results |
+| **明確な基準** | 具体的で測定可能な評価基準を事前に定義する |
+| **反復回数の制限** | 無限ループを防ぐため最大反復回数（3～5）を設定する |
+| **収束チェック** | 反復間で出力スコアが改善しなければ停止する |
+| **履歴の記録** | デバッグと分析のため全経路を保持する |
+| **構造化出力** | 評価結果を確実に解析するためJSONを使う |
 
 ---
 
-## Quick Start Checklist
+## クイックスタートチェックリスト
 
 ```markdown
-## Evaluation Implementation Checklist
+## 評価実装チェックリスト
 
-### Setup
-- [ ] Define evaluation criteria/rubric
-- [ ] Set score threshold for "good enough"
-- [ ] Configure max iterations (default: 3)
+### セットアップ
+- [ ] 評価基準/ルーブリックを定義する
+- [ ] 「十分に良い」とするスコアしきい値を設定する
+- [ ] 最大反復回数を設定する（既定: 3）
 
-### Implementation
-- [ ] Implement generate() function
-- [ ] Implement evaluate() function with structured output
-- [ ] Implement optimize() function
-- [ ] Wire up the refinement loop
+### 実装
+- [ ] generate() 関数を実装する
+- [ ] 構造化出力を返す evaluate() 関数を実装する
+- [ ] optimize() 関数を実装する
+- [ ] 改善ループを接続する
 
-### Safety
-- [ ] Add convergence detection
-- [ ] Log all iterations for debugging
-- [ ] Handle evaluation parse failures gracefully
+### 安全性
+- [ ] 収束検出を追加する
+- [ ] デバッグ用にすべての反復をログに記録する
+- [ ] 評価結果の解析失敗を適切に扱う
 ```

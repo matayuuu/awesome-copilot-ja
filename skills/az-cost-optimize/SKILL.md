@@ -1,22 +1,22 @@
 ---
 name: az-cost-optimize
-description: 'Analyze Azure resources used in the app (IaC files and/or resources in a target rg) and optimize costs - creating GitHub issues for identified optimizations.'
+description: 'アプリで使用する Azure リソース（IaC ファイルまたは対象 rg のリソース）を分析し、コストを最適化します。特定した最適化ごとに GitHub Issue を作成します。'
 ---
 
-# Azure Cost Optimize
+# Azure コスト最適化
 
 This workflow analyzes Infrastructure-as-Code (IaC) files and Azure resources to generate cost optimization recommendations. It creates individual GitHub issues for each optimization opportunity plus one EPIC issue to coordinate implementation, enabling efficient tracking and execution of cost savings initiatives.
 
-## Prerequisites
+## 前提条件
 - Azure MCP server configured and authenticated
 - GitHub MCP server configured and authenticated  
 - Target GitHub repository identified
 - Azure resources deployed (IaC files optional but helpful)
 - Prefer Azure MCP tools (`azmcp-*`) over direct Azure CLI when available
 
-## Workflow Steps
+## ワークフロー手順
 
-### Step 1: Get Azure Best Practices
+### ステップ 1: Azure ベストプラクティスを取得
 **Action**: Retrieve cost optimization best practices before analysis
 **Tools**: Azure MCP best practices tool
 **Process**:
@@ -25,7 +25,7 @@ This workflow analyzes Infrastructure-as-Code (IaC) files and Azure resources to
    - Use these practices to inform subsequent analysis and recommendations as much as possible
    - Reference best practices in optimization recommendations, either from the MCP tool output or general Azure documentation
 
-### Step 2: Discover Azure Infrastructure
+### ステップ 2: Azure インフラストラクチャを検出
 **Action**: Dynamically discover and analyze Azure resources and configurations
 **Tools**: Azure MCP tools + Azure CLI fallback + Local file system access
 **Process**:
@@ -59,7 +59,7 @@ This workflow analyzes Infrastructure-as-Code (IaC) files and Azure resources to
    - Identify resource relationships and dependencies
    - Map resource utilization patterns where available
 
-### Step 3: Collect Usage Metrics & Validate Current Costs
+### ステップ 3: 使用量メトリックを収集して現在のコストを検証
 **Action**: Gather utilization data AND verify actual resource costs
 **Tools**: Azure MCP monitoring tools + Azure CLI
 **Process**:
@@ -102,7 +102,7 @@ This workflow analyzes Infrastructure-as-Code (IaC) files and Azure resources to
    - Document: Resource → Current SKU → Estimated monthly cost
    - Calculate realistic current monthly total before proceeding to recommendations
 
-### Step 4: Generate Cost Optimization Recommendations
+### ステップ 4: コスト最適化の推奨事項を生成
 **Action**: Analyze resources to identify optimization opportunities
 **Tools**: Local analysis using collected data
 **Process**:
@@ -148,7 +148,7 @@ This workflow analyzes Infrastructure-as-Code (IaC) files and Azure resources to
    - Assess implementation risks and prerequisites
    - Ensure all savings calculations have supporting evidence
 
-### Step 5: User Confirmation
+### ステップ 5: ユーザー確認
 **Action**: Present summary and get approval before creating GitHub issues
 **Process**:
 1. **Display Optimization Summary**:
@@ -177,7 +177,7 @@ This workflow analyzes Infrastructure-as-Code (IaC) files and Azure resources to
 
 2. **Wait for User Confirmation**: Only proceed if user confirms
 
-### Step 6: Create Individual Optimization Issues
+### ステップ 6: 最適化ごとの Issue を作成
 **Action**: Create separate GitHub issues for each optimization opportunity. Label them with "cost-optimization" (green color), "azure" (blue color).
 **MCP Tools Required**: `create_issue` for each recommendation
 **Process**:

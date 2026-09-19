@@ -1,49 +1,49 @@
 ---
 name: azure-static-web-apps
-description: Helps create, configure, and deploy Azure Static Web Apps using the SWA CLI. Use when deploying static sites to Azure, setting up SWA local development, configuring staticwebapp.config.json, adding Azure Functions APIs to SWA, or setting up GitHub Actions CI/CD for Static Web Apps.
+description: 'SWA CLI を使って Azure Static Web Apps の作成、構成、デプロイを支援します。静的サイトの Azure へのデプロイ、SWA のローカル開発、staticwebapp.config.json の構成、SWA への Azure Functions API の追加、Static Web Apps 用 GitHub Actions CI/CD の設定に使用します。'
 ---
 
-## Overview
+## 概要
 
-Azure Static Web Apps (SWA) hosts static frontends with optional serverless API backends. The SWA CLI (`swa`) provides local development emulation and deployment capabilities.
+Azure Static Web Apps (SWA) は、オプションのサーバーレス API バックエンドを備えた静的フロントエンドをホストします。SWA CLI (`swa`) はローカル開発のエミュレーションとデプロイ機能を提供します。
 
-**Key features:**
-- Local emulator with API proxy and auth simulation
-- Framework auto-detection and configuration
-- Direct deployment to Azure
-- Database connections support
+**主な機能:**
+- API プロキシと認証シミュレーションを備えたローカル エミュレーター
+- フレームワークの自動検出と構成
+- Azure への直接デプロイ
+- データベース接続のサポート
 
-**Config files:**
-- `swa-cli.config.json` - CLI settings, **created by `swa init`** (never create manually)
-- `staticwebapp.config.json` - Runtime config (routes, auth, headers, API runtime) - can be created manually
+**構成ファイル:**
+- `swa-cli.config.json` - CLI 設定、**`swa init` によって作成**（手動で作成しない）
+- `staticwebapp.config.json` - ランタイム構成（ルート、認証、ヘッダー、API ランタイム）- 手動で作成可能
 
-## General Instructions
+## 一般的な手順
 
-### Installation
+### インストール
 
 ```bash
 npm install -D @azure/static-web-apps-cli
 ```
 
-Verify: `npx swa --version`
+確認: `npx swa --version`
 
-### Quick Start Workflow
+### クイック スタート ワークフロー
 
-**IMPORTANT: Always use `swa init` to create configuration files. Never manually create `swa-cli.config.json`.**
+**重要: 構成ファイルの作成には常に `swa init` を使用します。`swa-cli.config.json` を手動で作成しないでください。**
 
-1. `swa init` - **Required first step** - auto-detects framework and creates `swa-cli.config.json`
-2. `swa start` - Run local emulator at `http://localhost:4280`
-3. `swa login` - Authenticate with Azure
-4. `swa deploy` - Deploy to Azure
+1. `swa init` - **最初に必ず行う手順** - フレームワークを自動検出し、`swa-cli.config.json` を作成する
+2. `swa start` - `http://localhost:4280` でローカル エミュレーターを実行する
+3. `swa login` - Azure で認証する
+4. `swa deploy` - Azure にデプロイする
 
-### Configuration Files
+### 構成ファイル
 
-**swa-cli.config.json** - Created by `swa init`, do not create manually:
-- Run `swa init` for interactive setup with framework detection
-- Run `swa init --yes` to accept auto-detected defaults
-- Edit the generated file only to customize settings after initialization
+**swa-cli.config.json** - `swa init` によって作成される。手動で作成しない:
+- フレームワーク検出を含む対話型セットアップには `swa init` を実行する
+- 自動検出された既定値を受け入れるには `swa init --yes` を実行する
+- 初期化後の設定をカスタマイズする場合のみ、生成されたファイルを編集する
 
-Example of generated config (for reference only):
+生成される構成の例（参照用のみ）:
 ```json
 {
   "$schema": "https://aka.ms/azure/static-web-apps-cli/schema",
@@ -60,7 +60,7 @@ Example of generated config (for reference only):
 }
 ```
 
-**staticwebapp.config.json** (in app source or output folder) - This file CAN be created manually for runtime configuration:
+**staticwebapp.config.json**（アプリのソースまたは出力フォルダー内）- このファイルはランタイム構成用に手動で作成できます:
 ```json
 {
   "navigationFallback": {
@@ -76,11 +76,11 @@ Example of generated config (for reference only):
 }
 ```
 
-## Command-line Reference
+## コマンドライン リファレンス
 
 ### swa login
 
-Authenticate with Azure for deployment.
+デプロイのために Azure で認証します。
 
 ```bash
 swa login                              # Interactive login
@@ -88,11 +88,11 @@ swa login --subscription-id <id>       # Specific subscription
 swa login --clear-credentials          # Clear cached credentials
 ```
 
-**Flags:** `--subscription-id, -S` | `--resource-group, -R` | `--tenant-id, -T` | `--client-id, -C` | `--client-secret, -CS` | `--app-name, -n`
+**フラグ:** `--subscription-id, -S` | `--resource-group, -R` | `--tenant-id, -T` | `--client-id, -C` | `--client-secret, -CS` | `--app-name, -n`
 
 ### swa init
 
-Configure a new SWA project based on an existing frontend and (optional) API. Detects frameworks automatically.
+既存のフロントエンドと（任意の）API に基づいて新しい SWA プロジェクトを構成します。フレームワークを自動的に検出します。
 
 ```bash
 swa init                    # Interactive setup
@@ -101,7 +101,7 @@ swa init --yes              # Accept defaults
 
 ### swa build
 
-Build frontend and/or API.
+フロントエンドや API をビルドします。
 
 ```bash
 swa build                   # Build using config
@@ -109,11 +109,11 @@ swa build --auto            # Auto-detect and build
 swa build myApp             # Build specific configuration
 ```
 
-**Flags:** `--app-location, -a` | `--api-location, -i` | `--output-location, -O` | `--app-build-command, -A` | `--api-build-command, -I`
+**フラグ:** `--app-location, -a` | `--api-location, -i` | `--output-location, -O` | `--app-build-command, -A` | `--api-build-command, -I`
 
 ### swa start
 
-Start local development emulator.
+ローカル開発エミュレーターを起動します。
 
 ```bash
 swa start                                    # Serve from outputLocation
@@ -123,24 +123,24 @@ swa start ./dist --api-location ./api        # With API folder
 swa start http://localhost:3000 --run "npm start"  # Auto-start dev server
 ```
 
-**Common framework ports:**
-| Framework | Port |
+**一般的なフレームワークのポート:**
+| フレームワーク | ポート |
 |-----------|------|
 | React/Vue/Next.js | 3000 |
 | Angular | 4200 |
 | Vite | 5173 |
 
-**Key flags:**
-- `--port, -p` - Emulator port (default: 4280)
-- `--api-location, -i` - API folder path
-- `--api-port, -j` - API port (default: 7071)
-- `--run, -r` - Command to start dev server
-- `--open, -o` - Open browser automatically
-- `--ssl, -s` - Enable HTTPS
+**主なフラグ:**
+- `--port, -p` - エミュレーターのポート（既定値: 4280）
+- `--api-location, -i` - API フォルダーのパス
+- `--api-port, -j` - API のポート（既定値: 7071）
+- `--run, -r` - 開発サーバーを起動するコマンド
+- `--open, -o` - ブラウザーを自動的に開く
+- `--ssl, -s` - HTTPS を有効にする
 
 ### swa deploy
 
-Deploy to Azure Static Web Apps.
+Azure Static Web Apps にデプロイします。
 
 ```bash
 swa deploy                              # Deploy using config
@@ -150,19 +150,19 @@ swa deploy --deployment-token <TOKEN>   # Use deployment token
 swa deploy --dry-run                    # Preview without deploying
 ```
 
-**Get deployment token:**
+**デプロイ トークンを取得する:**
 - Azure Portal: Static Web App → Overview → Manage deployment token
 - CLI: `swa deploy --print-token`
-- Environment variable: `SWA_CLI_DEPLOYMENT_TOKEN`
+- 環境変数: `SWA_CLI_DEPLOYMENT_TOKEN`
 
-**Key flags:**
-- `--env` - Target environment (`preview` or `production`)
-- `--deployment-token, -d` - Deployment token
-- `--app-name, -n` - Azure SWA resource name
+**主なフラグ:**
+- `--env` - 対象環境（`preview` または `production`）
+- `--deployment-token, -d` - デプロイ トークン
+- `--app-name, -n` - Azure SWA リソース名
 
 ### swa db
 
-Initialize database connections.
+データベース接続を初期化します。
 
 ```bash
 swa db init --database-type mssql
@@ -170,11 +170,11 @@ swa db init --database-type postgresql
 swa db init --database-type cosmosdb_nosql
 ```
 
-## Scenarios
+## シナリオ
 
-### Create SWA from Existing Frontend and Backend
+### 既存のフロントエンドとバックエンドから SWA を作成する
 
-**Always run `swa init` before `swa start` or `swa deploy`. Do not manually create `swa-cli.config.json`.**
+**`swa start` または `swa deploy` の前に必ず `swa init` を実行します。`swa-cli.config.json` を手動で作成しないでください。**
 
 ```bash
 # 1. Install CLI
@@ -196,16 +196,16 @@ npx swa login
 npx swa deploy --env production
 ```
 
-### Add Azure Functions Backend
+### Azure Functions バックエンドを追加する
 
-1. **Create API folder:**
+1. **API フォルダーを作成する:**
 ```bash
 mkdir api && cd api
 func init --worker-runtime node --model V4
 func new --name message --template "HTTP trigger"
 ```
 
-2. **Example function** (`api/src/functions/message.js`):
+2. **関数の例** (`api/src/functions/message.js`):
 ```javascript
 const { app } = require('@azure/functions');
 
@@ -219,14 +219,14 @@ app.http('message', {
 });
 ```
 
-3. **Set API runtime** in `staticwebapp.config.json`:
+3. `staticwebapp.config.json` に **API ランタイムを設定する**:
 ```json
 {
   "platform": { "apiRuntime": "node:20" }
 }
 ```
 
-4. **Update CLI config** in `swa-cli.config.json`:
+4. `swa-cli.config.json` の **CLI 構成を更新する**:
 ```json
 {
   "configurations": {
@@ -235,18 +235,18 @@ app.http('message', {
 }
 ```
 
-5. **Test locally:**
+5. **ローカルでテストする:**
 ```bash
 npx swa start ./dist --api-location ./api
 # Access API at http://localhost:4280/api/message
 ```
 
-**Supported API runtimes:** `node:18`, `node:20`, `node:22`, `dotnet:8.0`, `dotnet-isolated:8.0`, `python:3.10`, `python:3.11`
+**対応する API ランタイム:** `node:18`, `node:20`, `node:22`, `dotnet:8.0`, `dotnet-isolated:8.0`, `python:3.10`, `python:3.11`
 
-### Set Up GitHub Actions Deployment
+### GitHub Actions デプロイを設定する
 
-1. **Create SWA resource** in Azure Portal or via Azure CLI
-2. **Link GitHub repository** - workflow auto-generated, or create manually:
+1. Azure Portal または Azure CLI で **SWA リソースを作成する**
+2. **GitHub リポジトリをリンクする** - ワークフローは自動生成するか、手動で作成します:
 
 `.github/workflows/azure-static-web-apps.yml`:
 ```yaml
@@ -285,29 +285,29 @@ jobs:
           action: close
 ```
 
-3. **Add secret:** Copy deployment token to repository secret `AZURE_STATIC_WEB_APPS_API_TOKEN`
+3. **シークレットを追加する:** デプロイ トークンをリポジトリ シークレット `AZURE_STATIC_WEB_APPS_API_TOKEN` にコピーします
 
-**Workflow settings:**
-- `app_location` - Frontend source path
-- `api_location` - API source path
-- `output_location` - Built output folder
-- `skip_app_build: true` - Skip if pre-built
-- `app_build_command` - Custom build command
+**ワークフロー設定:**
+- `app_location` - フロントエンドのソース パス
+- `api_location` - API のソース パス
+- `output_location` - ビルド済み出力フォルダー
+- `skip_app_build: true` - 事前にビルド済みの場合はスキップ
+- `app_build_command` - カスタム ビルド コマンド
 
-## Troubleshooting
+## トラブルシューティング
 
-| Issue | Solution |
+| 問題 | 解決策 |
 |-------|----------|
-| 404 on client routes | Add `navigationFallback` with `rewrite: "/index.html"` to `staticwebapp.config.json` |
-| API returns 404 | Verify `api` folder structure, ensure `platform.apiRuntime` is set, check function exports |
-| Build output not found | Verify `output_location` matches actual build output directory |
-| Auth not working locally | Use `/.auth/login/<provider>` to access auth emulator UI |
-| CORS errors | APIs under `/api/*` are same-origin; external APIs need CORS headers |
-| Deployment token expired | Regenerate in Azure Portal → Static Web App → Manage deployment token |
-| Config not applied | Ensure `staticwebapp.config.json` is in `app_location` or `output_location` |
-| Local API timeout | Default is 45 seconds; optimize function or check for blocking calls |
+| クライアント ルートで 404 | `staticwebapp.config.json` に `rewrite: "/index.html"` を含む `navigationFallback` を追加する |
+| API が 404 を返す | `api` フォルダーの構成を確認し、`platform.apiRuntime` が設定されていることを確認して、関数のエクスポートを確認する |
+| ビルド出力が見つからない | `output_location` が実際のビルド出力ディレクトリと一致することを確認する |
+| ローカルで認証が動作しない | `/.auth/login/<provider>` を使って認証エミュレーター UI にアクセスする |
+| CORS エラー | `/api/*` 配下の API は同一オリジンである。外部 API には CORS ヘッダーが必要 |
+| デプロイ トークンの期限切れ | Azure Portal → Static Web App → Manage deployment token で再生成する |
+| 構成が適用されない | `staticwebapp.config.json` が `app_location` または `output_location` にあることを確認する |
+| ローカル API のタイムアウト | 既定値は 45 秒。関数を最適化するか、ブロッキング呼び出しを確認する |
 
-**Debug commands:**
+**デバッグ コマンド:**
 ```bash
 swa start --verbose log        # Verbose output
 swa deploy --dry-run           # Preview deployment

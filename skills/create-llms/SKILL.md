@@ -139,27 +139,27 @@ LLMがリポジトリを効果的に理解して探索するための入口と�
 
 ### 書式の検証
 
-- ✅ H1 header with project name
-- ✅ Blockquote summary (if included)
-- ✅ H2 sections for file lists
-- ✅ Proper markdown link format
-- ✅ No broken or invalid links
-- ✅ Consistent formatting throughout
+- ✅ プロジェクト名を含むH1見出し
+- ✅ 引用形式の要約（含める場合）
+- ✅ ファイル一覧用のH2セクション
+- ✅ 適切なMarkdownリンク形式
+- ✅ 壊れたリンクや無効なリンクがない
+- ✅ 全体を通して一貫した書式
 
 ### 内容の検証
 
-- ✅ Clear, unambiguous language
-- ✅ Comprehensive coverage of essential files
-- ✅ Logical organization of content
-- ✅ Appropriate file descriptions
-- ✅ Serves as effective LLM navigation tool
+- ✅ 明確で曖昧さのない言葉
+- ✅ 必須ファイルを包括的に網羅
+- ✅ 内容を論理的に整理
+- ✅ 適切なファイル説明
+- ✅ LLM向けの効果的なナビゲーションとして機能
 
 ### 仕様への準拠
 
-- ✅ Follows https://llmstxt.org/ format exactly
-- ✅ Uses required markdown structure
-- ✅ Implements optional sections appropriately
-- ✅ File located at repository root (`/llms.txt`)
+- ✅ https://llmstxt.org/ の形式へ正確に準拠
+- ✅ 必須のMarkdown構造を使用
+- ✅ 任意セクションを適切に実装
+- ✅ リポジトリルート（`/llms.txt`）へ配置
 
 ## 構造テンプレートの例
 

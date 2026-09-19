@@ -1,14 +1,14 @@
 ---
 name: azure-developer-cli
-description: 'Design, create, review, migrate, or troubleshoot Azure Developer CLI (azd) projects using current Microsoft guidance. Use for azd, azure.yaml, AZD templates, Bicep or Terraform under infra, AZD environments and secrets, hooks, deployment workflows, and azd-managed CI/CD.'
+description: '最新の Microsoft ガイダンスを使って Azure Developer CLI（azd）プロジェクトを設計、作成、レビュー、移行、トラブルシューティングします。azd、azure.yaml、AZD テンプレート、infra 配下の Bicep または Terraform、AZD 環境とシークレット、フック、デプロイワークフロー、azd 管理の CI/CD に使用します。'
 license: MIT
 ---
 
-# Azure Developer CLI best practices
+# Azure Developer CLI のベストプラクティス
 
 Use this skill to produce maintainable, secure, environment-aware `azd` projects. Prefer repository conventions when they are already coherent, and make the smallest complete change that improves the project.
 
-## Start with repository discovery
+## リポジトリの検出から開始
 
 Before editing:
 
@@ -24,7 +24,7 @@ Before editing:
 
 Do not assume the default `infra` path, the default Bicep provider, or a single service when `azure.yaml` says otherwise.
 
-## Apply safety guardrails
+## 安全ガードレールを適用
 
 - Never commit `.azure`, environment `.env` files, credentials, deployment outputs containing secrets, local Terraform state, or generated deployment artifacts.
 - Never put literal secrets in `azure.yaml`, IaC parameter files, hooks, source control, command arguments that will be logged, or IaC outputs.
@@ -34,7 +34,7 @@ Do not assume the default `infra` path, the default Bicep provider, or a single 
 - Do not replace Bicep with Terraform, Terraform with Bicep, or an established hosting service unless the user requests that architectural change.
 - Preserve resources and state owned outside the current `azd` project.
 
-## Use these defaults
+## これらの既定値を使用
 
 | Concern | Preferred default |
 | --- | --- |
@@ -50,9 +50,9 @@ Do not assume the default `infra` path, the default Bicep provider, or a single 
 | CI authentication | Workload identity federation/OIDC where supported |
 | Routine development | `azd up` for simple workflows; separate phases for controlled workflows |
 
-## Implementation workflow
+## 実装ワークフロー
 
-### 1. Model the application
+### 1. アプリケーションをモデル化
 
 - Define one `services` entry for each independently deployable component.
 - Keep service keys stable because they participate in resource discovery and deployment.
@@ -60,7 +60,7 @@ Do not assume the default `infra` path, the default Bicep provider, or a single 
 - Keep shared infrastructure in IaC rather than inventing a fake deployable service.
 - Declare dependencies with supported `azure.yaml` fields instead of relying on file order.
 
-### 2. Model infrastructure
+### 2. インフラストラクチャをモデル化
 
 - Keep `main.bicep` or `main.tf` as the orchestration entry point.
 - Split reusable or independently understandable infrastructure into modules.
@@ -70,7 +70,7 @@ Do not assume the default `infra` path, the default Bicep provider, or a single 
 - Add role assignments to identities rather than distributing service keys.
 - Use infrastructure layers only when separate scopes or lifecycle dependencies justify them.
 
-### 3. Model environments
+### 3. 環境をモデル化
 
 - Use predictable names such as `<project>-dev` for shared environments and `<alias>-dev` for personal environments.
 - Use `azd env set`, `azd env unset`, and `azd env set-secret` rather than editing `.env` directly.
@@ -78,7 +78,7 @@ Do not assume the default `infra` path, the default Bicep provider, or a single 
 - Use `azd env refresh` to synchronize deployment outputs after another actor changes an environment.
 - Configure AZD remote state when a team shares environment state.
 
-### 4. Add hooks only for lifecycle gaps
+### 4. ライフサイクルの不足を補う場合だけフックを追加
 
 - Prefer declarative IaC and native service configuration over hooks.
 - Use root hooks for project-wide behavior and service hooks for service-specific behavior.
@@ -87,7 +87,7 @@ Do not assume the default `infra` path, the default Bicep provider, or a single 
 - Make hooks idempotent, noninteractive in CI, and fail on errors unless failure is intentionally nonblocking.
 - Test a hook independently with `azd hooks run <hook-name>`.
 
-### 5. Build CI/CD deliberately
+### 5. CI/CD を意図的に構築
 
 - Keep the pipeline definition with the template and review generated changes from `azd pipeline config`.
 - Use short-lived federated credentials where the provider supports them.
@@ -96,7 +96,7 @@ Do not assume the default `infra` path, the default Bicep provider, or a single 
 - Add protected production environments and approval gates.
 - For Terraform, configure protected remote state before pipeline setup and account for current AZD authentication limitations.
 
-## Validate before finishing
+## 完了前に検証
 
 Run only checks applicable to the repository:
 
@@ -121,7 +121,7 @@ Verify that:
 - No secret appears in tracked content or command output.
 - Documentation explains prerequisites, environment creation, deployment, verification, and cleanup.
 
-## Report the result
+## 結果を報告
 
 State:
 
