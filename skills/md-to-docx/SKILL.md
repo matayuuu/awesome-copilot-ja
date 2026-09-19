@@ -1,6 +1,6 @@
 ---
 name: md-to-docx
-description: Markdown ファイルを、埋め込み PNG 画像付きのプロフェッショナルな Word (.docx) ドキュメントへ変換する — 純粋な JavaScript で、外部ツールを使わない
+description: 'Markdown ファイルを、埋め込み PNG 画像付きのプロフェッショナルな Word (.docx) ドキュメントへ変換する — 純粋な JavaScript で、外部ツールを使わない'
 ---
 
 # Markdown を Word (.docx) に変換するスキル

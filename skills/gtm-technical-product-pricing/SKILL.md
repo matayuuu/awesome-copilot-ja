@@ -1,6 +1,6 @@
 ---
 name: gtm-technical-product-pricing
-description: 技術製品の価格戦略。従量課金と席課金の選択、フリーミアムの閾値設計、エンタープライズ価格の会話設計、値上げ時期の判断、または価格をポジショニングのシグナルとして使う場合に使う。
+description: '技術製品の価格戦略。従量課金と席課金の選択、フリーミアムの閾値設計、エンタープライズ価格の会話設計、値上げ時期の判断、または価格をポジショニングのシグナルとして使う場合に使う。'
 license: MIT
 metadata:
   author: Smit Patel (https://linkedin.com/in/smitkpatel)

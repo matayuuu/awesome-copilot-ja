@@ -1,6 +1,6 @@
 ---
 name: draw-io-diagram-generator
-description: draw.io ダイアグラムファイル（.drawio、.drawio.svg、.drawio.png）の作成、編集、生成時に使用します。mxGraph XML の作成、シェイプライブラリ、スタイル文字列、フローチャート、システムアーキテクチャ、シーケンス図、ER 図、UML クラス図、ネットワークトポロジ、レイアウト戦略、hediet.vscode-drawio VS Code 拡張機能、依頼から開けるファイルを完成させるまでのエージェントワークフローを扱います。
+description: 'draw.io ダイアグラムファイル（.drawio、.drawio.svg、.drawio.png）の作成、編集、生成時に使用します。mxGraph XML の作成、シェイプライブラリ、スタイル文字列、フローチャート、システムアーキテクチャ、シーケンス図、ER 図、UML クラス図、ネットワークトポロジ、レイアウト戦略、hediet.vscode-drawio VS Code 拡張機能、依頼から開けるファイルを完成させるまでのエージェントワークフローを扱います。'
 ---
 
 # Draw.io 図ジェネレーター

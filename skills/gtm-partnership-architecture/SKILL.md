@@ -1,6 +1,6 @@
 ---
 name: gtm-partnership-architecture
-description: 収益とプラットフォーム導入を生むパートナー・エコシステムを構築・拡大する。パートナープログラムの新規構築、パートナーの階層化、共同マーケティング、内製か提携かの判断、またはcrawl-walk-run型の展開を設計するときに使う。
+description: '収益とプラットフォーム導入を生むパートナー・エコシステムを構築・拡大する。パートナープログラムの新規構築、パートナーの階層化、共同マーケティング、内製か提携かの判断、またはcrawl-walk-run型の展開を設計するときに使う。'
 license: MIT
 metadata:
   author: Smit Patel (https://linkedin.com/in/smitkpatel)

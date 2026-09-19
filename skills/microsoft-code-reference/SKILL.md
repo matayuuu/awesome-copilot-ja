@@ -1,6 +1,6 @@
 ---
 name: microsoft-code-reference
-description: Microsoft API リファレンスを検索し、動作するコード サンプルを見つけ、SDK コードが正しいことを検証します。Azure SDK、.NET ライブラリ、または Microsoft API を扱うときに、適切なメソッドの検索、パラメーターの確認、動作する例の取得、エラーのトラブルシューティングに使用します。公式ドキュメントを照会して、存在しないメソッド、誤ったシグネチャ、非推奨のパターンを検出します。
+description: 'Microsoft API リファレンスを検索し、動作するコード サンプルを見つけ、SDK コードが正しいことを検証します。Azure SDK、.NET ライブラリ、または Microsoft API を扱うときに、適切なメソッドの検索、パラメーターの確認、動作する例の取得、エラーのトラブルシューティングに使用します。公式ドキュメントを照会して、存在しないメソッド、誤ったシグネチャ、非推奨のパターンを検出します。'
 compatibility: Microsoft Learn MCP Server (https://learn.microsoft.com/api/mcp) で最適に動作します。フォールバックとして mslearn CLI も使用できます。
 ---
 

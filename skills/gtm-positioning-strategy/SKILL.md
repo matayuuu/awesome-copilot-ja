@@ -1,6 +1,6 @@
 ---
 name: gtm-positioning-strategy
-description: 防御可能な市場ポジションを見つけて確立する。メッセージが競合と似ている、認知があるのにコンバージョンが弱い、製品を再ポジショニングする、またはポジショニングの主張を検証するときに使う。Crawl-Walk-Run展開手法と、エンタープライズ案件の進展を改善した言葉の変更を含む。
+description: '防御可能な市場ポジションを見つけて確立する。メッセージが競合と似ている、認知があるのにコンバージョンが弱い、製品を再ポジショニングする、またはポジショニングの主張を検証するときに使う。Crawl-Walk-Run展開手法と、エンタープライズ案件の進展を改善した言葉の変更を含む。'
 license: MIT
 metadata:
   author: Smit Patel (https://linkedin.com/in/smitkpatel)

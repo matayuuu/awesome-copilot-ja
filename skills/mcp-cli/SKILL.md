@@ -1,6 +1,6 @@
 ---
 name: mcp-cli
-description: CLI を介して MCP（Model Context Protocol）サーバーを操作するためのインターフェース。MCP サーバーを通じて外部ツール、API、データソースを操作したり、利用可能な MCP サーバーやツールを一覧表示したり、コマンドラインから MCP ツールを呼び出したりする必要がある場合に使用します。
+description: 'CLI を介して MCP（Model Context Protocol）サーバーを操作するためのインターフェース。MCP サーバーを通じて外部ツール、API、データソースを操作したり、利用可能な MCP サーバーやツールを一覧表示したり、コマンドラインから MCP ツールを呼び出したりする必要がある場合に使用します。'
 ---
 
 # MCP-CLI

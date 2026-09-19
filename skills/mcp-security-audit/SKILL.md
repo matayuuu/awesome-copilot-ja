@@ -1,15 +1,7 @@
 ---
 name: mcp-security-audit
-description: |
-  MCP（Model Context Protocol）サーバー構成のセキュリティ問題を監査する。次の場合にこのスキルを使用する。
-  - `.mcp.json` ファイルのセキュリティリスクをレビューする場合
-  - MCP サーバーの引数にハードコードされたシークレットまたはシェルインジェクションパターンがないか確認する場合
-  - MCP サーバーが固定バージョン（`@latest` ではない）を使用していることを検証する場合
-  - MCP サーバー構成で固定されていない依存関係を検出する場合
-  - プロジェクトが登録する MCP サーバーと、承認済み一覧に含まれるかどうかを監査する場合
-  - MCP 構成での環境変数利用とハードコードされた資格情報を確認する場合
-  - 「MCP 構成は安全か」「MCP サーバーを監査して」「`.mcp.json` を確認して」のような依頼
-  keywords: [mcp, security, audit, secrets, shell-injection, supply-chain, governance]
+description: 'MCP（Model Context Protocol）サーバー構成のセキュリティ問題を監査する。次の場合にこのスキルを使用する。`.mcp.json` ファイルのセキュリティリスクをレビューする場合。MCP サーバーの引数にハードコードされたシークレットまたはシェルインジェクションパターンがないか確認する場合。MCP サーバーが固定バージョン（`@latest` ではない）を使用していることを検証する場合。MCP サーバー構成で固定されていない依存関係を検出する場合。プロジェクトが登録する MCP サーバーと、承認済み一覧に含まれるかどうかを監査する場合。MCP 構成での環境変数利用とハードコードされた資格情報を確認する場合。「MCP 構成は安全か」「MCP サーバーを監査して」「`.mcp.json` を確認して」のような依頼。'
+keywords: [mcp, security, audit, secrets, shell-injection, supply-chain, governance]
 ---
 
 # MCPセキュリティ監査

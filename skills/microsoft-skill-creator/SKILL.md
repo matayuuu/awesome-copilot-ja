@@ -1,6 +1,6 @@
 ---
 name: microsoft-skill-creator
-description: Learn MCP ツールを使って Microsoft テクノロジー向けの Agent Skill を作成する。Azure、.NET、M365、VS Code、Bicep などの技術、ライブラリ、フレームワーク、サービスを教える Skill の作成に使う。深く調査し、基本知識をローカルに保存しつつ動的な追加調査も可能なハイブリッド Skill を生成する。
+description: 'Learn MCP ツールを使って Microsoft テクノロジー向けの Agent Skill を作成する。Azure、.NET、M365、VS Code、Bicep などの技術、ライブラリ、フレームワーク、サービスを教える Skill の作成に使う。深く調査し、基本知識をローカルに保存しつつ動的な追加調査も可能なハイブリッド Skill を生成する。'
 context: fork
 compatibility: Works best with Microsoft Learn MCP Server (https://learn.microsoft.com/api/mcp). Can also use the mslearn CLI as a fallback.
 ---
