@@ -3,6 +3,10 @@
 
 A community-created collection of custom agents, instructions, skills, hooks, workflows, and plugins to supercharge your GitHub Copilot experience.
 
+## 日本語ローカルアプリ
+
+全リソースの日本語説明、検索、お気に入り保存、並べ替えを備えたローカル版を利用できます。リポジトリのルートで `npm ci`、`npm run local:dev` を実行し、[http://127.0.0.1:4317/](http://127.0.0.1:4317/) を開いてください。[起動方法・保存先・翻訳の更新方法](local-app/README.md)
+
 > [!TIP]
 > **Explore the full collection on the website →** [awesome-copilot.github.com](https://awesome-copilot.github.com)
 >

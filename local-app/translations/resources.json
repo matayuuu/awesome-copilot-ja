@@ -1,0 +1,750 @@
+{
+  "cookbook:community-samples": {
+    "sourceHash": "7860aa951449d025c87053f08c194595e6d79048ad72bd4272645732cf76915a",
+    "ja": "コミュニティが提供する GitHub Copilot 向けのプロジェクトと使用例。"
+  },
+  "cookbook:copilot-sdk": {
+    "sourceHash": "3738f0c6c4c603e84b25733ea2a5781792a4c9cd17447d9f65868b13d2c68a30",
+    "ja": "複数の言語で GitHub Copilot SDK を使った開発を始められる、すぐに使えるレシピ集。"
+  },
+  "extension:brainmaxxing": {
+    "sourceHash": "c716531daa42484bfbfc5b138f6bf03145dbafe622bfbddb051b3e543da1a86e",
+    "ja": "コードベースに基づく概念の理解度クイズと、対話型の BrainMax Canvas ダッシュボード。"
+  },
+  "extension:cache-stats": {
+    "sourceHash": "9948e6afd0f791ff2827b23feb832be5e0cb09c5f4a214a0f4322828df4bc91a",
+    "ja": "モデルを呼び出さずに、現在の GitHub Copilot セッションのプロンプトキャッシュの再利用、有効期限、トークン構成、AIU コストをリアルタイムで表示します。"
+  },
+  "extension:chat-fork-map": {
+    "sourceHash": "651b8fb7359831edfa2e75a98afe3fd53412ac148f5c73404ad6477d6cec149e",
+    "ja": "分岐する Copilot の会話をマップ化し、複雑なタスクや学習で並行する追加質問や探索経路を、文脈を失わずにたどれるようにします。従来の会話一覧で複数のスレッドを管理するよりも、視覚的な配置によって幅優先の探索が容易になります。"
+  },
+  "extension:coffilot": {
+    "sourceHash": "c1df2b07b0b9221f8fc82d437c4cd1f79c6476f0008bce59eafb07a3458ff392",
+    "ja": "jdubois が提供する、Java に特化した Copilot のキャンバス拡張機能。"
+  },
+  "extension:connector-namespaces": {
+    "sourceHash": "21c037efd905438ee54f5b7c8e9c0362f9f09cb80b6de05126ede0e3e0ed983d",
+    "ja": "Azure Connector Namespace からホスト型 MCP サーバーを検出、接続、管理するための、対話型 GitHub Copilot キャンバス。"
+  },
+  "extension:daily-focus-board": {
+    "sourceHash": "dbc3b3617009782a77811634a1f357226d62682dd936c800c3b5d381589a42ef",
+    "ja": "GHCP キャンバスに表示される、実行機能を支える親しみやすい日次フォーカスボード。AI パートナーが読み書きできる JSON ファイルにデータを保存します。タスクの状態管理（未着手 → 進行中 → 完了）、進捗メモ、数値カウンター、集中モード、無理のない翌日への持ち越し、思いつきを書き出す欄、動きを抑えた表示、リアルタイム時計を備えます。"
+  },
+  "extension:microsoft-foundry": {
+    "sourceHash": "7233925bde348377db4003f451811418c8a65cabbca1e9cca689bf5a911745b8",
+    "ja": "Microsoft Foundry にデプロイするエージェントの設計、構成、テスト、デプロイに使うスキルと、対話型 Copilot キャンバス。"
+  },
+  "extension:mobile-canvas": {
+    "sourceHash": "54f088df084a91453cb612ebaf59b2a4f5470912f3ff9c5b9b12c476a8cdbc98",
+    "ja": "GitHub Copilot キャンバスから、ローカルの iOS シミュレーターと Android エミュレーターの表示、作成、起動、操作を行います。同じデバイス制御機能を、MCP を通じてエージェントにも公開します。"
+  },
+  "extension:radius": {
+    "sourceHash": "6c2f83dd7523efeba87c737d1b7217a6ab1b218027dd86975dd501429342ff17",
+    "ja": "GitHub Copilot アプリと CLI から Radius を使い、アプリケーションのモデル化、可視化、デプロイを行います。"
+  },
+  "extension:upgrade-agent": {
+    "sourceHash": "a2ae150eb7eac01b4f88ef973aba8a8891348e0c8802cc99b3629d74aa2897cc",
+    "ja": "アプリケーションのアップグレードと移行を支援する AI アシスタント。レガシーコードのモダナイゼーションと、.NET アプリケーションの現行フレームワークへのアップグレードを支援します。"
+  },
+  "extension:usage-insights": {
+    "sourceHash": "cefafc4cf41399cea698efa063d905a6dbda9395bdfc6b5b7893d8a53b0a6235",
+    "ja": "現在および過去の GitHub Copilot のトークン使用量と AI クレジット使用量を確認します。エージェント別の集計と、キャンバス内でセッションの詳細を掘り下げる機能を備えます。"
+  },
+  "plugin:agent-council": {
+    "sourceHash": "7dd0b71f11e813ee143834177568db063c8c4a8b4d664acd7886d180d7b47d14",
+    "ja": "テキスト成果物の公開前に判定を行う、実行環境を問わず利用できる 5 エージェント構成の品質ゲート。役割を与えられた 5 つの LLM 審議エージェントが、互いの意見を読んで反論する 2 ラウンドの非同期プロトコルを実行し、SHIP・REVISE・HOLD のいずれかの判定、構造化された修正指示、完全な監査用記録を返します。"
+  },
+  "plugin:ai-ready": {
+    "sourceHash": "d7618176ef153d51bf0eb879cf4af8722f6012a7b4cf18c6ce09419ed3eb874d",
+    "ja": "任意のリポジトリを分析し、AGENTS.md、copilot-instructions.md、CI ワークフロー、Issue テンプレートなど、AI 活用に適した設定を生成します。PR レビューの傾向を抽出し、利用する技術スタックに合わせたファイルを作成します。"
+  },
+  "plugin:anarlog": {
+    "sourceHash": "a29be47ad09e79a48b3a2a32908a9db61941c3596458393f70ea15661cae73cb",
+    "ja": "Anarlog の会議メモ、要約、文字起こし、参加者、アクション項目、定例会議の履歴を検索します。"
+  },
+  "plugin:apify": {
+    "sourceHash": "0480c6819fa7ce468a1b0138bb41d771e3de73d0dfb5fd95c75332ab1d44136a",
+    "ja": "Apify Store の数千もの信頼できるスクレイパー、クローラー、自動化機能を使い、あらゆる Web サイトからのデータ抽出を開発者向けに支援します。既製の Actor を組み込んで、主要なソーシャルメディア、動画、EC、検索エンジン、地図、旅行サイトにアクセスできます。Apify で新しい Actor の開発、デバッグ、公開、収益化も行えます。"
+  },
+  "plugin:atlassian-twg-cli": {
+    "sourceHash": "53e9166b5e836919c56db928d0262244265fdd15642120f2071316f37fcb1448",
+    "ja": "GitHub Copilot で使う Atlassian Teamwork Graph CLI（`twg`）をインストールして構成します。設定後は、Jira、Confluence、Bitbucket、接続済みツールにまたがる、アクセス権限のある業務コンテキストを CLI から取得できます。"
+  },
+  "plugin:azure": {
+    "sourceHash": "4c6e3c8591f71f6f729cfb0134d817fb7a98dbc0e3692338454c7da82fa5dcd7",
+    "ja": "クラウドリソース管理、デプロイ、Azure サービス向けの Microsoft Azure MCP Server とスキル。Copilot から直接、Azure インフラストラクチャの管理、アプリケーションの監視、リソースのデプロイを行います。"
+  },
+  "plugin:bd-skills": {
+    "sourceHash": "ad71bfe272038196ad206b56e6a08e9002d9efd315238277461d6b67fce43861",
+    "ja": "GitHub Copilot によるモバイルアプリのテレメトリ調査、クラッシュ診断、[bitdrift](bitdrift.ai) のワークフローとダッシュボードの管理、iOS・Android・React Native アプリへの Capture SDK の組み込み、User Journey 監視の構成を支援します。CLI 操作、SDK 計装、ドキュメント検索、ユーザージャーニー監視の 4 スキルを含みます。実アカウントの操作には bd CLI と [bitdrift](bitdrift.ai) のアカウントおよび認証が必要です。"
+  },
+  "plugin:blea": {
+    "sourceHash": "ae568b2ca85edef6601a0b112b578541f0813477b10c96e1f156b92f19818d0a",
+    "ja": "エージェントでの利用を重視した、安全な Bluetooth Low Energy 診断。Skill、CLI、ローカル MCP サーバーを通じて、持ち運び可能な証拠データの取得・差分比較・再生と、安全策を備えた書き込みを提供します。"
+  },
+  "plugin:brainmaxxing": {
+    "sourceHash": "c716531daa42484bfbfc5b138f6bf03145dbafe622bfbddb051b3e543da1a86e",
+    "ja": "コードベースに基づく概念の理解度クイズと、対話型の BrainMax Canvas ダッシュボード。"
+  },
+  "plugin:cache-stats": {
+    "sourceHash": "9948e6afd0f791ff2827b23feb832be5e0cb09c5f4a214a0f4322828df4bc91a",
+    "ja": "モデルを呼び出さずに、現在の GitHub Copilot セッションのプロンプトキャッシュの再利用、有効期限、トークン構成、AIU コストをリアルタイムで表示します。"
+  },
+  "plugin:catalyst-by-zoho": {
+    "sourceHash": "4b15df7ea5ade11279f291a460a5f5d6436f9d2ece27a7fbd2e36f420300e9d9",
+    "ja": "フルスタックのサーバーレスクラウド基盤 Catalyst by Zoho 向けの公式 GitHub Copilot プラグイン。サービス、SDK、CLI ワークフロー、アーキテクチャパターン、料金、移行ガイド、Zoho MCP リソース管理を扱うスキルを含みます。"
+  },
+  "plugin:chat-fork-map": {
+    "sourceHash": "651b8fb7359831edfa2e75a98afe3fd53412ac148f5c73404ad6477d6cec149e",
+    "ja": "分岐する Copilot の会話をマップ化し、複雑なタスクや学習で並行する追加質問や探索経路を、文脈を失わずにたどれるようにします。従来の会話一覧で複数のスレッドを管理するよりも、視覚的な配置によって幅優先の探索が容易になります。"
+  },
+  "plugin:chrome-devtools-plugin": {
+    "sourceHash": "ef85e94016704b2a4f61aaed5ff91b52f5540bebba5504cf603db8ecb19d72d0",
+    "ja": "Chrome DevTools と Puppeteer を使い、Chrome で信頼性の高い自動化、詳細なデバッグ、パフォーマンス分析を行います。"
+  },
+  "plugin:cockroachdb": {
+    "sourceHash": "030bd26f10c42705370b60b7e1f7c0f5b2e560232b7076779aef12696e31045a",
+    "ja": "GitHub Copilot を CockroachDB クラスターに接続し、MCP 経由で SQL の実行と調査を行います。DBA・開発者・運用担当者向けエージェント、CockroachDB のベストプラクティスに関するスキル、破壊的なステートメントをブロックする安全フックを備えます。"
+  },
+  "plugin:connector-namespaces": {
+    "sourceHash": "21c037efd905438ee54f5b7c8e9c0362f9f09cb80b6de05126ede0e3e0ed983d",
+    "ja": "Azure Connector Namespace からホスト型 MCP サーバーを検出、接続、管理するための、対話型 GitHub Copilot キャンバス。"
+  },
+  "plugin:copilot-goal-skill": {
+    "sourceHash": "760d8c3deb02d9ceb0bd64cac6aaa12f803be915a63703be52e86c4d90090425",
+    "ja": "独立した検証を伴う、目標主導のタスクオーケストレーション。ユーザーへの聞き取りで明確な目標を定義した後、作業を行う Builder サブエージェントと、新しいコンテキストで結果を判定する Inspector サブエージェントを交互に実行します。Inspector は Builder の主張をそのまま信用せず検証します。各サブエージェントの操作は Git コミットで監査できます。「この目標を達成して」「これを動くようにして」「完了するまで実装して」と依頼された場合や、独立した品質レビューで検証された自律的なタスク完遂を求める場合に使います。"
+  },
+  "plugin:crowdstrike-falcon-foundry": {
+    "sourceHash": "8a866cad147774214632f97eb9e19d873838d5aaaf7137e001d978f3b1b7afa4",
+    "ja": "CrowdStrike Falcon Foundry アプリを構築するための AI コーディングアシスタント用スキル。雛形生成、デプロイと、API 連携、コレクション、関数、UI 拡張、UI ページ、ワークフローのベストプラクティスを扱います。"
+  },
+  "plugin:crowdstrike-falcon-fusion": {
+    "sourceHash": "73e85aa805c0071df17a88a5996e8d2c15e6dbd87b7c42ebf739971dac9395bb",
+    "ja": "CrowdStrike Falcon Fusion ワークフローを構築するための AI コーディングアシスタント用スキル。アクションの検出、YAML 作成、デプロイ、実行監視と、トリガー、条件、ループ、HTTP Actions のベストプラクティスを扱います。"
+  },
+  "plugin:datadog": {
+    "sourceHash": "7c44ecccbbe8526fb01f34a13c68585e7b8f80b6ed30b4b2fc22bdc42cc93777",
+    "ja": "事前構成済みの Datadog MCP サーバーを通じて、Copilot / VS Code で Datadog を直接利用します。自然な会話でログ、メトリック、トレース、ダッシュボードなどを照会できます。"
+  },
+  "plugin:dataverse": {
+    "sourceHash": "e3272426b22e782746670c60c27c2595513719ff58aa7cc8080b8cfd242c31c3",
+    "ja": "自然言語で Microsoft Dataverse ソリューションを構築、管理します。テーブルと列の作成、ソリューションのライフサイクル、データ操作、MCP サーバーの構成を扱います。"
+  },
+  "plugin:dotnet": {
+    "sourceHash": "219ea93b33e5a10ec22f6a35ac856574accc3e9a32a8056661178e5dc404d90f",
+    "ja": "日常的な C#/.NET コーディングで使う汎用スキル。すべての .NET 開発者に役立つことを目指しています。"
+  },
+  "plugin:dotnet-diag": {
+    "sourceHash": "9ce6286869c155f228192cbf14a254cb40e4ab3454f6f1ff2b98c771e37ffec8",
+    "ja": ".NET のパフォーマンス調査、デバッグ、インシデント分析のためのスキル。"
+  },
+  "plugin:dotnet-test": {
+    "sourceHash": "c7cd10310b42b4eccb0a6e13e11c84f158764c3e18f6896a9fc2d0a286b3aac4",
+    "ja": "調査・計画・実装を行うマルチエージェントパイプラインで、多言語の単体テストを生成します。.NET/C#、Python、TypeScript/JavaScript、Java、Go、Ruby、Rust、C++、Kotlin、Swift、PowerShell のテストを作成、実行します。加えて、.NET に特化したテスト実行、カバレッジと CRAP の分析、テスト容易性レビュー、プラットフォーム検出、MSTest/xUnit の移行も扱います。"
+  },
+  "plugin:elasticsearch": {
+    "sourceHash": "f29d4625a37baad800038be9ff2bb45aed10c1ec10f1d1ef9059319e026feb53",
+    "ja": "GitHub Copilot 向けの Elastic 公式プラグイン。自然言語から ES|QL クエリへの変換、データ取り込み、Elasticsearch のセキュリティ管理（認証、認可、監査）、クラスターのトラブルシューティングを行います。Elastic 公式のエージェントスキルリポジトリを利用します。"
+  },
+  "plugin:excel-cli": {
+    "sourceHash": "39ddb0581d11d46c29919511916a0a136de4473d3013fedf13868f1db93505e9",
+    "ja": "コーディングエージェント向けの、トークン効率に優れた Excel ネイティブ自動化。Excel 自体が 300 以上の操作を実行することで、ブック本来の再現性を維持します。Python in Excel、VBA、Power Query、DAX/データモデル、ピボットテーブル、グラフ、テーブル、書式設定、外部接続、What-If 分析に対応します。Windows と Excel が必要です。"
+  },
+  "plugin:excel-mcp": {
+    "sourceHash": "94415144ed13d278107f999d32b5792dbff2c83b989749d759f259133f064a77",
+    "ja": "複雑なブックを扱う、極めて包括的な Excel ネイティブ自動化。Excel 自体が 300 以上の操作を実行することで、ブック本来の再現性を維持します。Python in Excel、VBA、Power Query、DAX/データモデル、ピボットテーブル、グラフ、テーブル、書式設定、外部接続、What-If 分析に対応します。Windows と Excel が必要です。"
+  },
+  "plugin:figma": {
+    "sourceHash": "70fe46478937b8ca7e94b6c20ac472ed79c0b1ef47a31aa0f0934320630a4177",
+    "ja": "Figma MCP サーバーと、一般的なワークフロー向けスキルを含むプラグイン。"
+  },
+  "plugin:foundation-models": {
+    "sourceHash": "326daa5c2eaec5cd689a1673ae77fbd0fb2feb2dba6d853b150193fa293733d4",
+    "ja": "開発者の Mac にインストールされた SDK を使い、iOS、macOS、visionOS、watchOS 向けの Apple Foundation Models コードをコーディングエージェントが作成、レビューするのを支援します。モデルの記憶に頼らず、実際の API シグネチャと利用可能条件を確認し、生成結果の型チェックを行います。"
+  },
+  "plugin:gh-skills-builder": {
+    "sourceHash": "116dd4aaebd62006974129516a4fcba7c5b06e1efc0ff954915b72d657b06291",
+    "ja": "リポジトリ: https://github.com/arilivigni/gh-skills-builder\nGitHub 上で GitHub を自分のペースで学ぶ GitHub Skills 演習を作成したい人向けのプラグインです。\nhttps://learn.github.com/skills\n例:\nhttps://github.com/skills/agent-orchestration-build-your-ai-dream-team\nhttps://github.com/skills/agentic-workflows-that-read-the-room"
+  },
+  "plugin:git-ape": {
+    "sourceHash": "59753948163c81d1d31f43d87604874bdd3a3381f71242d31bda314ab8a92980",
+    "ja": "GitHub Copilot 向けのインテリジェントな Azure デプロイエージェントシステム。ガイド付き ARM テンプレート生成、セキュリティゲート、コスト分析、デプロイワークフローを備えます。"
+  },
+  "plugin:github-copilot-modernization": {
+    "sourceHash": "8ee9e94aaa07ba5c8567d5dcbbceddd5812eb214d66eb710cd22de32e1532f6d",
+    "ja": "GitHub Copilot CLI 向けに、マルチエージェントオーケストレーションでアプリケーションを自律的にモダナイズします。Java のアップグレード（8→21、Spring Boot 2.x→3.x）、.NET のモダナイゼーション、Azure 移行、CVE/脆弱性の修正、アプリケーションの再設計（モノリスからマイクロサービスへ）に対応します。3 階層のエージェント構成（オーケストレーター → コーディネーター → 実行担当）を備え、組織ポリシーをワークフローに組み込む企業向けルールブックにも対応します。"
+  },
+  "plugin:keep-the-why": {
+    "sourceHash": "ae688cadf55d8f06fe886e0203f03eec24ac94d23720b142994894139861fe5d",
+    "ja": "アーキテクチャ上の判断、採用しなかった代替案、回避策、インシデントからの学び、運用上の制約、過去の経緯など、コードだけでは説明できないコードベースの背景にある理由を保存または復元します。"
+  },
+  "plugin:microsoft-docs": {
+    "sourceHash": "f0e03c1b79f8448e910d966d0044c357e6f7dcff0fdedc3bc42560f01e1180a4",
+    "ja": "Azure、.NET、Windows などの Microsoft 公式ドキュメント、API リファレンス、コードサンプルにアクセスします。"
+  },
+  "plugin:microsoft-events": {
+    "sourceHash": "f5878815f967ce45a572228e66a229a4223e57c468679e12dea3841e2dbd2fbd",
+    "ja": "プロジェクトと Microsoft Build / Ignite のセッションを結び付けます。開発環境から、関連する講演を見つけ、使用中の技術スタックの新情報を調べ、次の取り組みを計画できます。"
+  },
+  "plugin:microsoft-foundry": {
+    "sourceHash": "7233925bde348377db4003f451811418c8a65cabbca1e9cca689bf5a911745b8",
+    "ja": "Microsoft Foundry にデプロイするエージェントの設計、構成、テスト、デプロイに使うスキルと、対話型 Copilot キャンバス。"
+  },
+  "plugin:mobile-canvas": {
+    "sourceHash": "54f088df084a91453cb612ebaf59b2a4f5470912f3ff9c5b9b12c476a8cdbc98",
+    "ja": "GitHub Copilot キャンバスから、ローカルの iOS シミュレーターと Android エミュレーターの表示、作成、起動、操作を行います。同じデバイス制御機能を、MCP を通じてエージェントにも公開します。"
+  },
+  "plugin:modern-web-guidance": {
+    "sourceHash": "ebf28f0ff17e18ba1da25857b697932050b574ecbd8e89be0d6160020a798db9",
+    "ja": "Modern Web Guidance は、古い回避策ではなく、最新で安全かつ高性能な API を使って AI コーディングエージェントが Web アプリケーションを構築できるようにするエージェントスキルと CLI ツールです。\nGoogle Chrome チームの支援のもと、専門家が厳選した Web プラットフォームのベストプラクティスをエージェントのコンテキストウィンドウへ直接渡し、肥大化したレガシーコードの生成を防ぎます。"
+  },
+  "plugin:modernize-dotnet": {
+    "sourceHash": "f8d55decff271887db840c61811267441c849c62aadb92d89d8d1064e59136f8",
+    "ja": "AI を活用した .NET のモダナイゼーションとアップグレードのアシスタント。.NET Framework と .NET のアプリケーションを最新バージョンの .NET へアップグレードするのを支援します。"
+  },
+  "plugin:modernize-java": {
+    "sourceHash": "73dbf2ebb03178334dba5ba4704089c69dd85ac2573272043d97cf3234a5427a",
+    "ja": "GitHub Copilot modernization – Java Upgrade CLI Plugin は、コマンドラインからの Java アプリケーションのアップグレードを支援します。ターミナルと CI/CD パイプラインにインテリジェントなモダナイゼーション機能を提供し、プロジェクト分析とアップグレード計画の生成、コードベースの自動変換、ビルド問題の修正、既知の CVE に対する検証、ファイル変更と更新された依存関係の詳細な要約出力を行います。"
+  },
+  "plugin:msgraph-developer-skills": {
+    "sourceHash": "32c1c8c1b143662aa558011d1b3ed439bf197dbe0352386daa8747a38b5de0fe",
+    "ja": "用途に特化した最小限の API クライアントで、Microsoft Graph アプリケーションを構築、モダナイズします。必要な Microsoft Graph エンドポイントと最小権限を特定し、[Kiota](https://aka.ms/kiota) または AI 支援ワークフローで対象を絞ったクライアントを生成し、推奨される認証と SDK のパターンを適用します。"
+  },
+  "plugin:netlify": {
+    "sourceHash": "7ce0bf8172f270b486dad656369f42d8c925ed8aa9e22622f0fc64e41ef5b5ab",
+    "ja": "Functions、Edge Functions、Blobs、データベース、Identity、Image CDN、Forms、構成、CLI、フレームワーク、キャッシュ、AI Gateway、デプロイを扱う Netlify プラットフォームのスキル。プロジェクト、デプロイ、環境変数を作成、管理する Netlify 公式 MCP サーバーも含みます。"
+  },
+  "plugin:pm-skills": {
+    "sourceHash": "0622346c0f14b497192ebb75e48fe3a271ff2930b333f873b57d1dc67340b415",
+    "ja": "プロダクト分析、仕様書作成、戦略、ナラティブ、ステークホルダー間の合意形成のための MCP サーバーと 12 のスキル。Copilot から直接、競合分析、追加の質問が不要な仕様書の作成、指標の設計、経営層に提示できる文書の作成を行います。"
+  },
+  "plugin:radius": {
+    "sourceHash": "6c2f83dd7523efeba87c737d1b7217a6ab1b218027dd86975dd501429342ff17",
+    "ja": "GitHub Copilot アプリと CLI から Radius を使い、アプリケーションのモデル化、可視化、デプロイを行います。"
+  },
+  "plugin:rayfin": {
+    "sourceHash": "0282f972a7266cdbf04ca69b3075a6087d7a379b1aec6fcf80a6005bfc676ac1",
+    "ja": "Rayfin の利用開始を案内するルータースキル。Rayfin CLI で新しいアプリの雛形を作成した後、プロジェクトにインストールされたバージョン固定のスキルを使用します。"
+  },
+  "plugin:remotion": {
+    "sourceHash": "5a29cb5632a7271cff9f040f18eae3f5cb029ea989035252d0580048198a463b",
+    "ja": "エージェントを活用して動画を制作します。"
+  },
+  "plugin:rhost": {
+    "sourceHash": "4297fd14a470279562d6764b748b804633b819c23187822a2ca1b9db8f71d511",
+    "ja": "インストール済みの rhost CLI を使い、SSH で到達可能な Linux ホスト上で通常のコマンドを実行します。標準入力、出力、終了時の挙動をローカルに近い形で扱えます。"
+  },
+  "plugin:skills-for-copilot-studio": {
+    "sourceHash": "36ff2f8ff1c0c916c2690b587e280e5cc481e4b777d6abf98da0fe928f500630",
+    "ja": "AI コーディングエージェント向けの Microsoft Copilot Studio プラグイン。"
+  },
+  "plugin:sonarqube": {
+    "sourceHash": "a3511c4b2d467726d70d7b3d61c0706e37ab8d0364a904e3b1bef581b3a9cc72",
+    "ja": "SonarQube は、数百万人の開発者がバグ、脆弱性、シークレットの漏えいを検出するために利用する、AI コードの品質・セキュリティ検証プラットフォームです。このプラグインは、7,500 種類以上の問題、シークレットスキャン、エージェントによる分析、40 以上の言語にわたる品質ゲートにより、その基準をコーディングの反復作業に組み込みます。"
+  },
+  "plugin:stripe": {
+    "sourceHash": "b85c28ea8aabdce631e1b43d3610a255399c71973b766b1bad400c7ea80f609c",
+    "ja": "決済の受け付けとビジネスの成長を支援します。Stripe のエージェントプラグインには、ベストプラクティス、アップグレードガイダンス、Stripe の MCP サーバーが含まれます。"
+  },
+  "plugin:sumo-logic": {
+    "sourceHash": "4307764607c3f86da5090ab711ba5785c51b6ac719a034009107f2c28270465d",
+    "ja": "Copilot から直接、Sumo Logic のログ、アラート、ダッシュボード、SIEM の分析情報を照会します。"
+  },
+  "plugin:timebase": {
+    "sourceHash": "dbabef0731559d04b77033de1ea88c344cb8961a3dd02b0ac9de7f3461d85908",
+    "ja": "金融市場などの時系列データを扱う高性能データベース TimeBase に AI エージェントを接続します。QQL クエリと TimeBase クライアントコードの生成に対応した MCP ツールとスキルを利用します。"
+  },
+  "plugin:tmforge": {
+    "sourceHash": "01391067e3711d3241f3d0921502749b20d852350d4f6afd530a8d5a55711498",
+    "ja": "tmforge プラグインに付属する Strider エージェントは、根拠に基づく STRIDE 脅威モデリングを GitHub Copilot に追加します。構造化されたリスク評価、決定論的な検証、Markdown レポートを備えます。任意の tmforge 連携では、Microsoft Threat Modeling Tool（.tm7）モデルの作成、更新、検証に対応します。"
+  },
+  "plugin:ui-theme-designer": {
+    "sourceHash": "c152cd956c48c41b92ce4e2c1d6306dc71c3d3ce41375f811bb5c3681ebe889c",
+    "ja": "UI theme designer、SAP Design System、SAP Fiori デザイントークンを扱うための知識とツールを AI コーディングエージェントに提供します。"
+  },
+  "plugin:ui5": {
+    "sourceHash": "c289e3a595a34d9a091cb95b74f7e0ca0d19655da4cebac2ca09e0ff2993851e",
+    "ja": "GitHub Copilot 向けの SAPUI5 / OpenUI5 プラグイン。UI5 プロジェクトの作成と検証、API ドキュメントへのアクセス、UI5 リンターの実行、UI5 開発のガイドラインとベストプラクティスの取得を行います。"
+  },
+  "plugin:ui5-modernization": {
+    "sourceHash": "c6fbc46905b9bdb50744ee912dd4d07fe94ffd3d41eb22968df6fdf92a175303",
+    "ja": "SAPUI5/OpenUI5 アプリケーションをモダナイズするための、ワークフローと専用の修正パターンを備えた包括的な UI5 モダナイゼーションツールキット。"
+  },
+  "plugin:ui5-typescript-conversion": {
+    "sourceHash": "7f30ee74c25f2ff11ef1a7e874991501030882bea7a4e0ff73016825f4219737",
+    "ja": "GitHub Copilot 向けの SAPUI5 / OpenUI5 プラグイン。JavaScript ベースの UI5 プロジェクトを TypeScript に変換します。"
+  },
+  "plugin:upgrade-agent": {
+    "sourceHash": "a2ae150eb7eac01b4f88ef973aba8a8891348e0c8802cc99b3629d74aa2897cc",
+    "ja": "アプリケーションのアップグレードと移行を支援する AI アシスタント。レガシーコードのモダナイゼーションと、.NET アプリケーションの現行フレームワークへのアップグレードを支援します。"
+  },
+  "plugin:usage-insights": {
+    "sourceHash": "cefafc4cf41399cea698efa063d905a6dbda9395bdfc6b5b7893d8a53b0a6235",
+    "ja": "現在および過去の GitHub Copilot のトークン使用量と AI クレジット使用量を確認します。エージェント別の集計と、キャンバス内でセッションの詳細を掘り下げる機能を備えます。"
+  },
+  "plugin:vercel-plugin": {
+    "sourceHash": "970f114e1849c38fec37fd86fe5e728897ff88f72bec9002294599777e90fd46",
+    "ja": "Web アプリとエージェントを構築、デプロイします。関係性を表すナレッジグラフ、主要製品ごとのスキル、専門エージェント、Vercel の規約を備えた、Vercel エコシステム全体を扱うプラグイン。あらゆる AI エージェントを Vercel の専門家にします。"
+  },
+  "plugin:whatidid": {
+    "sourceHash": "f82a26fc2cbc87fa708a35b7d1997ee84d6830528a22a80ae3c8d4f53708a381",
+    "ja": "Copilot セッションを成果の裏付けに変えます。ローカルのセッションログから、研究に基づく工数推定、スキル分析、ROI 指標を含む HTML レポートを生成します。"
+  },
+  "plugin:winappcli": {
+    "sourceHash": "6bc7bc1d5f8ced741f8d946468f9c69999e1cf87593a6473b510f4ca79348ff6",
+    "ja": "Windows アプリの開発、パッケージ化、配布を支援します。Windows インストーラー（MSIX）の作成、コード署名、証明書、Windows SDK と Windows App SDK のセットアップ、Windows API（プッシュ通知、バックグラウンドタスク、共有ターゲット）向けのパッケージ ID、appxmanifest の作成、Microsoft Store 配布を扱います。Electron、.NET、C++、Rust、Flutter、Tauri アプリに対応します。"
+  },
+  "plugin:winui": {
+    "sourceHash": "e8b97dcff511e871510f15801d070d2f0f90cacf86aaa11345081668b575df02",
+    "ja": "WinUI 3 アプリ開発のためのエージェントとスキル。新しい WinUI 3 デスクトップアプリの作成、他のフレームワーク（WPF、WinForms、Electron、Tauri、Flutter）から WinUI 3 への変換、既存 WinUI 3 アプリへの機能追加を行います。MSIX パッケージ化、コード署名、UI 自動化テスト、Windows App SDK のガイダンスを含みます。"
+  },
+  "recipe:community-samples/copilot-sdk-java-examples": {
+    "sourceHash": "bff03dff5ecd307a2d9259f9123bc08aac8435876239c1430ddead2464e00ac7",
+    "ja": "GitHub Copilot Java SDK と Jetty で構築した Web ベースのチャットアプリケーション。認証状態、JSON API、チャット、CLI 接続の例を含みます。"
+  },
+  "recipe:community-samples/copilot-sdk-web-app": {
+    "sourceHash": "5fc9f6e0cd797d8c4782a1036c614d6081a956f01ced2dfa4e2a043f85107548",
+    "ja": "GitHub Copilot SDK、.NET Aspire、React で構築したフルスタックのチャットアプリケーション。GitHub OAuth、セッション履歴、モデル選択を備えます。"
+  },
+  "recipe:community-samples/nodejs-agentic-issue-resolver": {
+    "sourceHash": "6661bd8c4350e5c8ca62e6dcccd6866b5c3f7fefe36e83a61c81908fc41ce81c",
+    "ja": "コードベースを自律的に探索、修正する、耐障害性を備えたエージェント型ワークフロー。Copilot SDK Technical Preview 向けに最適化されています。"
+  },
+  "recipe:copilot-sdk/accessibility-report": {
+    "sourceHash": "e585e9635d5ae8c28ad5cfe71910328d215a16676a26d7f03cab7386096baae3",
+    "ja": "Playwright MCP サーバーを使い、WCAG アクセシビリティレポートを生成します。"
+  },
+  "recipe:copilot-sdk/error-handling": {
+    "sourceHash": "d6e8be94434ffc38ef40eb5f50a127f0cb6c7fd753e42e76c6abd7416af971ca",
+    "ja": "接続失敗、タイムアウト、クリーンアップなどに関するエラーを適切に処理します。"
+  },
+  "recipe:copilot-sdk/managing-local-files": {
+    "sourceHash": "932c60b2aff96cca80b0e4e4017e24978df3a5efb660fbe0351d9c66a673ed16",
+    "ja": "AI を活用したグループ化の方法で、メタデータに基づいてファイルを整理します。"
+  },
+  "recipe:copilot-sdk/multiple-sessions": {
+    "sourceHash": "ab6a2564f9267e17e1ebdcf5b48c4a66fba3f300bd95447a34f3067efcb10a42",
+    "ja": "複数の独立した会話を同時に管理します。"
+  },
+  "recipe:copilot-sdk/persisting-sessions": {
+    "sourceHash": "e0b6014f0c30b1de3d669cd7173bd969079010f11790c417d3f9801f570257c6",
+    "ja": "セッションを保存し、再起動後に再開します。"
+  },
+  "recipe:copilot-sdk/pr-visualization": {
+    "sourceHash": "92d55cd402812e45225d9fd1a50e1ff06eb6ff8fad78c3fd5ecf8c47f9e17f41",
+    "ja": "GitHub MCP Server を使い、PR の経過期間を示す対話型グラフを生成します。"
+  },
+  "skill:acquire-codebase-knowledge": {
+    "sourceHash": "b529a68cd65d8220f2bf28cfd85b446e723383a5245100be749bd23b4d350ced",
+    "ja": "既存コードベースの構造把握、文書化、オンボーディングをユーザーが明示的に求めた場合に使います。「このコードベースをマップ化して」「このアーキテクチャを文書化して」「このリポジトリを案内して」「コードベースのドキュメントを作成して」などで起動します。リポジトリ全体の調査を求められていない限り、通常の機能実装、バグ修正、限定的なコード編集では起動しません。"
+  },
+  "skill:acreadiness-assess": {
+    "sourceHash": "5afb1ec3fe442490a73c3f0f6f3306746474cd520481a421cd85ced353a00b5a",
+    "ja": "現在のリポジトリで AgentRC の準備状況評価を実行し、reports/index.html に静的 HTML ダッシュボードを生成します。`npx github:microsoft/agentrc readiness` をラップし、描画は @ai-readiness-reporter カスタムエージェントに委譲します。組織固有の採点にはポリシー（--policy）を利用できます。リポジトリの AI 対応状況の評価、監査、採点を依頼された場合に使います。"
+  },
+  "skill:acreadiness-generate-instructions": {
+    "sourceHash": "3107747b78bd03e1d2da0e66f3053da6f17c7d704bdff838feab27c212d38da4",
+    "ja": "AgentRC の instructions コマンドで、対象に合わせた AI エージェント指示ファイルを生成します。.github/copilot-instructions.md（既定。VS Code の Copilot に推奨）に加え、必要に応じてモノレポ用の applyTo グロブを指定した領域別の .instructions.md ファイルを生成します。/acreadiness-assess の実行後に、AI Tooling 評価領域の不足を補うために使います。"
+  },
+  "skill:acreadiness-policy": {
+    "sourceHash": "e19197d1d8bf3797aee688780e504dcaf7586a7c1a4a0824bf87b3664ad7512c",
+    "ja": "AgentRC ポリシーの選択、作成、適用を支援します。ポリシーでは、無関係なチェックの無効化、影響度やレベルの上書き、合格率のしきい値設定、組織の基本設定とチーム別上書きの連結によって、準備状況の採点をカスタマイズできます。厳格モード、AI 関連のみの採点、独自の重み付け、CI ゲート、組織全体の標準化を求められた場合に使います。"
+  },
+  "skill:ad-campaign-analyzer": {
+    "sourceHash": "753382f19f3b474335e374ee1599c831d20665416d49cd349c112e3aa174718f",
+    "ja": "ユーザーが広告キャンペーンの実績データを示し、削減、拡大、テストすべき対象を尋ねた場合に使います。「広告キャンペーンを分析して」「広告費の無駄はどこ」「広告予算を再配分して」「実際に効果がある広告はどれ」「ROAS 分析」などで起動します。実績データを伴わないキャンペーン計画やクリエイティブ生成では起動しません。"
+  },
+  "skill:add-educational-comments": {
+    "sourceHash": "3c49491a831ebfc9a8367fc55b574896406dece9505a34b7e4b605c8e07b1b02",
+    "ja": "指定されたファイルに学習に役立つコメントを追加します。ファイルが指定されていなければ、コメントを付ける対象を尋ねます。"
+  },
+  "skill:adobe-illustrator-scripting": {
+    "sourceHash": "820d6e3c302608b3698560b905f5d1bcecc4b9e5652a26b736c61a3964c20c51",
+    "ja": "ExtendScript（JavaScript/JSX）を使い、Adobe Illustrator の自動化スクリプトを作成、デバッグ、最適化します。ドキュメント、レイヤー、パス、テキストフレーム、色、シンボル、アートボードなど、Illustrator の DOM オブジェクトを操作するスクリプトの作成や変更時に使います。JavaScript オブジェクトモデル全体、座標系、測定単位、書き出しワークフロー、スクリプト作成のベストプラクティスを扱います。"
+  },
+  "skill:agent-governance": {
+    "sourceHash": "10ea953a119f4d7000ba34f4e7d6ca2b3fee26be2147c2c608f0179dde94eac4",
+    "ja": "AI エージェントシステムにガバナンス、安全性、信頼性の制御を追加するためのパターンと手法。次の場合に使います。\n- 外部ツール（API、データベース、ファイルシステム）を呼び出す AI エージェントの構築\n- エージェントのツール利用に対するポリシーベースのアクセス制御の実装\n- 危険なプロンプトを検出する意味的な意図分類の追加\n- マルチエージェントワークフローの信頼度スコアリングシステムの作成\n- エージェントの操作や判断に関する監査証跡の構築\n- レート制限、コンテンツフィルター、ツール制限の適用\n- 各種エージェントフレームワーク（PydanticAI、CrewAI、OpenAI Agents、LangChain、AutoGen）の利用"
+  },
+  "skill:agent-owasp-compliance": {
+    "sourceHash": "98a39e2975f006af1b4163df38228bbf434fa15a6d7269c428f4dface5d8c5d4",
+    "ja": "任意の AI エージェントのコードベースを、OWASP Agentic Security Initiative（ASI）Top 10 のリスクに照らして確認します。\n次の場合に使います。\n- 本番デプロイ前のエージェントシステムのセキュリティ態勢評価\n- OWASP ASI 2026 基準への準拠確認\n- 既存のセキュリティ制御とエージェント特有の 10 のリスクの対応付け\n- セキュリティレビューや監査用の準拠レポート作成\n- エージェントフレームワークのセキュリティ機能と基準の比較\n- 「自分のエージェントは OWASP に準拠しているか」「ASI 準拠を確認して」「エージェントのセキュリティ監査」などの依頼"
+  },
+  "skill:agent-skill-stack": {
+    "sourceHash": "22a496f5a8ad38a5ba21210fdf3fb07bbce5c7fec97338b3ca762721efe5141e",
+    "ja": "自然言語で示された目標を最初から最後まで達成するために、互換性のある最小限の AI Agent Skills の組み合わせを探索、評価、構成します。複数段階のワークフローに適したスキル、プロジェクトに合うスキル、導入済みスキルの監査や競合確認、スキルの検索漏れへの対処、人間らしい文章への調整や準拠確認といった間接的な補助手段、管理されたインストールを伴うプロジェクト専用 Skill Stack を求める場合に使います。ローカルのスキル、レジストリ、GitHub、OpenCLI を検索し、採用状況、検証済みの適合性、安全性、重複を比較します。既知または一般的なスキルを 1 つ探す場合には使わず、汎用の find-skills ワークフローを使います。"
+  },
+  "skill:agent-supply-chain": {
+    "sourceHash": "f0e87ca55c3def519bc11eb5dbd7887e4b88f780bba835c59744a3457041a218",
+    "ja": "AI エージェントのプラグイン、ツール、依存関係のサプライチェーンの完全性を検証します。次の場合に使います。\n- エージェントプラグインやツールパッケージの SHA-256 完全性マニフェストの生成\n- インストール済みプラグインと公開マニフェストの一致確認\n- エージェントのツールディレクトリにある改ざん、変更、未追跡ファイルの検出\n- エージェント構成要素の依存関係固定とバージョンポリシーの監査\n- エージェントプラグインの昇格（開発 → ステージング → 本番）に伴う来歴の連鎖の構築\n- 「プラグインの完全性を検証して」「マニフェストを生成して」「サプライチェーンを確認して」「このプラグインに署名して」などの依頼"
+  },
+  "skill:agentic-eval": {
+    "sourceHash": "9aec0f21433e53db9602421bd9cc0ce57daec15682aed69e44ea9a4bef02f010",
+    "ja": "AI エージェントの出力を評価、改善するためのパターンと手法。次の場合に使います。\n- 自己批評と振り返りのループの実装\n- 高い品質が求められる生成処理での評価器・最適化器パイプラインの構築\n- テスト駆動のコード改善ワークフローの作成\n- ルーブリック方式や LLM-as-judge 方式の評価システムの設計\n- エージェントの出力（コード、レポート、分析）への反復改善の追加\n- エージェントの応答品質の測定と改善"
+  },
+  "skill:ai-prompt-engineering-safety-review": {
+    "sourceHash": "275d44c08d560cf1fd7dbd7fcd49f02050136f00667b8a6344a57007d7dd81f9",
+    "ja": "AI プロンプトエンジニアリングの包括的な安全性レビューと改善のためのプロンプト。安全性、バイアス、セキュリティ脆弱性、有効性の観点でプロンプトを分析し、幅広いフレームワーク、テスト手法、学習用コンテンツを用いた詳細な改善提案を提供します。"
+  },
+  "skill:ai-team-orchestration": {
+    "sourceHash": "852ec9737c2d44a5402bd15210f196c6be7217d0d83460c03d058ef0f5024b5c",
+    "ja": "軽量なマルチエージェント開発チームを立ち上げ、運用します。プロジェクトの開始や引き継ぎ、作業計画、実装と任意の QA の調整、異なる視点でのブレインストーミング、セッションをまたぐコンテキストの保持に使います。"
+  },
+  "skill:apple-appstore-reviewer": {
+    "sourceHash": "e2a3a4012706062058c4e9514d030d13862533ac1f404abae07d8b2b3e5054ff",
+    "ja": "Apple App Store 向けの最適化の余地や審査で却下される理由を探す指示に従い、コードベースをレビューします。"
+  },
+  "skill:architecture-blueprint-generator": {
+    "sourceHash": "2824aae37da2f70ed39e081d2a616226131a253e380725d981c3bf669bc94f4c",
+    "ja": "コードベースを分析して詳細なアーキテクチャ文書を作成する、包括的なプロジェクトアーキテクチャの設計図ジェネレーター。技術スタックとアーキテクチャパターンを自動検出し、図の生成、実装パターンの文書化を行い、アーキテクチャの一貫性維持と新規開発の指針となる拡張可能な設計図を提供します。"
+  },
+  "skill:arduino-azure-iot-edge-integration": {
+    "sourceHash": "2e6081fab13e86a9b8db12a3aea44248f06f00cff5a65032d50d218bd87e106c",
+    "ja": "Arduino と Azure IoT Hub / IoT Edge の連携を設計、実装します。安全なプロビジョニング、耐障害性のあるテレメトリ、コマンド処理、本番運用の安全策を含みます。"
+  },
+  "skill:arize-ai-provider-integration": {
+    "sourceHash": "debc32baca0acfcc38eed1016b9c107b29a5dcb5e965b83c5d9fd43e735cc931",
+    "ja": "評価器などの Arize 機能が使用する LLM プロバイダーの資格情報を保存する、Arize AI 連携の作成、参照、更新、削除を行います。任意の LLM プロバイダー（OpenAI、Anthropic、Azure OpenAI、AWS Bedrock、Vertex AI、Gemini、NVIDIA NIM など）に対応します。AI 連携、LLM プロバイダーの資格情報、連携の作成・一覧取得・削除、資格情報の更新、Arize への LLM プロバイダー接続が話題になった場合に使います。"
+  },
+  "skill:arize-annotation": {
+    "sourceHash": "c577a99c752a415d7b3b04c55e112df380341e6175c906027ea0551af03e5f48",
+    "ja": "Arize のアノテーション設定（カテゴリ型、連続値型、自由記述型のラベルスキーマ）とアノテーションキュー（人によるレビューワークフロー）を作成、管理します。Python SDK を通じてプロジェクトのスパンに人によるアノテーションを適用します。アノテーション設定、アノテーションキュー、ラベルスキーマ、人によるフィードバック、スパンへの一括注釈、update_annotations、ラベル付けキュー、レコードへの注釈、人によるレビューが話題になった場合に使います。"
+  },
+  "skill:arize-dataset": {
+    "sourceHash": "0e0be796c82abffe5b819a8e33028d53e9ccfe389cadf770407ce01af25ca435",
+    "ja": "Arize のデータセットとサンプルを作成、管理、照会します。ax CLI を使ったデータセットの CRUD、サンプル追加、データのエクスポート、ファイルからのデータセット作成を扱います。テストデータや評価用サンプルが必要な場合、またはデータセットの作成・一覧取得・エクスポート、サンプル追加、データセットのバージョン、ゴールデンデータセット、テストセットが話題になった場合に使います。"
+  },
+  "skill:arize-evaluator": {
+    "sourceHash": "88ae86504821d79df5a110679e750ee9bcfb6fbfddba83b1b5a3568e2fb9b467",
+    "ja": "Arize の LLM-as-judge 評価ワークフローを扱います。評価器の作成と更新、スパンや実験への評価実行、タスク管理、trigger-run 操作、列マッピング、継続的監視を含みます。評価器の作成、LLM による判定、ハルシネーション、忠実性、正確性、関連性、評価実行、スパンや実験の採点、trigger-run、列マッピング、継続的監視、評価器のプロンプト改善が話題になった場合に使います。"
+  },
+  "skill:arize-experiment": {
+    "sourceHash": "bbfbb3eb629a01e5e8381874d5506d010044762213099c07f0ad409cd8f7bb21",
+    "ja": "モデルの性能を評価、比較する Arize 実験を作成、実行、分析します。ax CLI を使った実験の CRUD、実行結果のエクスポート、結果比較、評価ワークフローを扱います。実験の作成と実行、モデル比較、モデル性能、AI 評価、実験結果、ベンチマーク、モデルの A/B テスト、精度測定が話題になった場合に使います。"
+  },
+  "skill:arize-instrumentation": {
+    "sourceHash": "bc64876eb08880df3e216140c3dcdcdf92c1385e32296ed7eb0ffcf41261f6e4",
+    "ja": "LLM アプリケーションに初めて Arize AX のトレースを追加します。エージェント支援の 2 段階の手順でコードベースを分析し、ユーザーの確認後に計装を実装します。アプリの計装、トレースの新規導入、LLM オブザーバビリティの設定、OpenTelemetry または openinference の統合、Arize トレースの利用開始を求める場合に使います。"
+  },
+  "skill:arize-link": {
+    "sourceHash": "eb3a9f3e14a03ab150c7f629b9334ad246d8f1588595f6da6da41411bbccea78",
+    "ja": "トレース、スパン、セッション、データセット、ラベル付けキュー、評価器、アノテーション設定を Arize UI で開くディープリンクを生成します。チームメンバーとの Arize リソース共有に使える、クリック可能な URL を作成します。Arize UI でトレース、スパン、セッション、データセット、評価器、アノテーション設定へのリンクを作成したい場合や、それらを開きたい場合に使います。"
+  },
+  "skill:arize-prompt-optimization": {
+    "sourceHash": "304195e7bca78fe7457813ba30ec5e1fdee7fbd57b8fd04f61dc42a5b69ff909",
+    "ja": "本番のトレースデータ、評価、アノテーションを使い、LLM プロンプトの最適化、改善、デバッグを行います。スパンからプロンプトを抽出し、性能を示す情報を集め、ax CLI でデータ駆動の最適化ループを実行します。プロンプトの最適化や改善、AI の応答改善、出力品質の改善、プロンプトエンジニアリング、プロンプト調整、システムプロンプトの改善が話題になった場合に使います。"
+  },
+  "skill:arize-trace": {
+    "sourceHash": "655ba836e759a8fb0842de969ea59a02c87c46da32371f5375a41ac7920b2e2c",
+    "ja": "既存の Arize トレースとスパンをダウンロード、エクスポート、調査し、LLM アプリの動作把握や実行時の問題のデバッグを行います。ax CLI による ID 指定でのトレース・スパン・セッションのエクスポートと、根本原因の調査を扱います。既存のトレースデータの閲覧、LLM アプリの動作確認、トレースのエクスポート、スパンのダウンロード、エラー調査、動作のリグレッション分析を求める場合に使います。"
+  },
+  "skill:aspire": {
+    "sourceHash": "e9ddda74ae984fa96da83fc4eb079cf8575d84c30712af3a733b3c3366f96cc1",
+    "ja": "Aspire CLI、AppHost のオーケストレーション、サービス検出、各種連携、MCP サーバー、VS Code 拡張機能、Dev Containers、GitHub Codespaces、テンプレート、ダッシュボード、デプロイを扱う Aspire スキル。Aspire 分散アプリケーションの作成、実行、デバッグ、構成、デプロイ、トラブルシューティングを依頼された場合に使います。"
+  },
+  "skill:audit-integrity": {
+    "sourceHash": "981adee2e670e43f173d673ce906375fb56dfec54660654cd2d810d7b487adf4",
+    "ja": "すべての AppSec エージェントで共有する監査の誠実性フレームワーク。合理化によるごまかしを防ぐガード、自己批評ループ、再試行プロトコル、必ず守る行動、自己省察の品質ゲート（1〜10 点で採点し、合格しきい値は 8 点以上）、学びと記憶のガバナンスを備えた自己学習システムにより、セキュリティ分析エージェントの出力品質、知的誠実さ、継続的な改善を徹底します。"
+  },
+  "skill:automate-this": {
+    "sourceHash": "4d773557d536aaa321809350ab9352f593c20f8a36278a58fee2bdd123ca4cda",
+    "ja": "手作業の画面録画を分析し、対象を絞った動作する自動化スクリプトを作成します。動画ファイルからフレームと音声ナレーションを抽出し、段階的なワークフローを再構成して、ユーザーのマシンにインストール済みのツールを使う複数の複雑さの自動化案を提案します。"
+  },
+  "skill:autoresearch": {
+    "sourceHash": "515d1e92d24f741d105f93e1674fe9aab805267e35c7d14e1656de99078b9ff9",
+    "ja": "あらゆるプログラミングタスクに使える、自律的な反復実験ループ。目標、測定可能な指標、作業範囲の制約の定義をユーザーに案内し、コード変更、テスト、測定、結果の採用または破棄を自律的に繰り返します。Karpathy の autoresearch に着想を得ています。用途: 自律的改善、反復最適化、実験ループ、自動研究、パフォーマンス調整、自動実験、山登り法、自動的な試行、コード最適化、実験実行、自律的コーディングループ。対象外: 1 回で完結するタスク、単純なバグ修正、コードレビュー、測定可能な指標がないタスク。"
+  },
+  "skill:aws-cdk-python-setup": {
+    "sourceHash": "5f9f3439d1386d4b2806315e5aa4340a67494ebdee9d139081f769d6c37589b1",
+    "ja": "Python で AWS CDK（Cloud Development Kit）アプリケーションを開発するためのセットアップと初期化のガイド。環境の前提条件の構成、新しい CDK プロジェクトの作成、依存関係の管理、AWS へのデプロイを支援します。"
+  },
+  "skill:aws-cloudwatch-investigation": {
+    "sourceHash": "2cbac6725963d0ee048211e7abc809cbcc9bd1fbd5c51561db3d24b5dd5b1f86",
+    "ja": "AWS CloudWatch 向けの再利用可能な調査パターン。構造化されたインシデントのトリアージに使う Logs Insights クエリテンプレート、アラームとデプロイの相関分析、影響範囲を絞り込む判断ツリー、PromQL 形式のメトリッククエリパターンを提供します。"
+  },
+  "skill:aws-cost-optimize": {
+    "sourceHash": "07c159d29f6a45359ae688758ce32ccbf168cba2b4477c74f850fb84c222fd38",
+    "ja": "アプリが利用する AWS リソース（IaC ファイル、または対象アカウントとリージョンのリソース）を分析してコストを最適化し、特定した改善案を GitHub Issue として作成します。"
+  },
+  "skill:aws-resource-health-diagnose": {
+    "sourceHash": "7d99a4c09b812f533cb77da80256656a694167b6a13e853deac2d2328f231126",
+    "ja": "AWS リソースの正常性を分析し、CloudWatch のログとメトリックから問題を診断して、特定した問題の修復計画を作成します。"
+  },
+  "skill:aws-resource-query": {
+    "sourceHash": "c13cb110f4927f19134ccb8e32948a4f4ec64081def7f16c078c5f4fe0f3cd3d",
+    "ja": "自然言語で AWS リソースを照会します。EC2、S3、RDS、Lambda、ECS、EKS、Secrets Manager、IAM、VPC、ネットワーク、メッセージングなどを扱います。厳密に読み取り専用で、書き込み、削除、変更は行いません。"
+  },
+  "skill:aws-well-architected-review": {
+    "sourceHash": "b2f022fb3f1488eccba13cb6e431723b392cc231dd379e725305b2804a8422af",
+    "ja": "現在のワークロードの IaC とアーキテクチャを AWS Well-Architected Framework に基づいてレビューし、指摘事項と改善用の GitHub Issue を作成します。"
+  },
+  "skill:az-cost-optimize": {
+    "sourceHash": "df1e96e175a35801b5ca681882c2e3f65600a2750becba0e6457785566548a78",
+    "ja": "アプリが利用する Azure リソース（IaC ファイル、または対象リソースグループ内のリソース）を分析してコストを最適化し、特定した改善案を GitHub Issue として作成します。"
+  },
+  "skill:azure-architecture-autopilot": {
+    "sourceHash": "417418a32e41f055bbff674219a9d212f3e6a62c103cddb56284c6e954d868f1",
+    "ja": "自然言語で Azure インフラストラクチャを設計するか、既存の Azure リソースを分析して構成図を自動生成し、会話を通じて改善して Bicep でデプロイします。\n使用場面: 「Azure に X を作成して」「RAG アーキテクチャを構築して」（新規設計）、「現在の Azure インフラを分析して」「rg-xxx の構成図を描いて」（既存環境の分析）、「Foundry が遅い」「コストを減らしたい」「セキュリティを強化して」（自然言語での変更）、Azure リソースのデプロイ、Bicep テンプレート生成、IaC コード生成。Microsoft Foundry、AI Search、OpenAI、Fabric、ADLS Gen2、Databricks をはじめ、すべての Azure サービスを対象とします。"
+  },
+  "skill:azure-container-registry-cli": {
+    "sourceHash": "c115f223b785f424da9a41cf785405aa790bdb82110a16f4f45eae8e2b00bd2a",
+    "ja": "az acr CLI で Azure Container Registry を管理します。レジストリ、イメージ、クラウドビルド、ACR Tasks、認証、トークン、geo レプリケーション、ネットワークを扱います。ACR、az acr コマンド、Azure でのコンテナーイメージのプッシュ・インポート・消去を扱う場合や、Azure Container Registry が話題になった場合に使います。"
+  },
+  "skill:azure-deployment-preflight": {
+    "sourceHash": "07a515f8e487ec7634cad76e87ad8bb1e76d813d1ca8fb8abdb92b05f48aca82",
+    "ja": "Azure への Bicep デプロイに対し、テンプレート構文の検証、what-if 分析、権限確認を含む包括的な事前検証を行います。Azure へのデプロイ前に、変更のプレビュー、潜在的な問題の特定、デプロイが成功するかの確認に使います。Azure へのデプロイ、Bicep ファイルの検証、デプロイ権限の確認、インフラ変更のプレビュー、what-if の実行、azd provision の準備が話題になった場合に起動します。"
+  },
+  "skill:azure-developer-cli": {
+    "sourceHash": "ea91dbea2d6d3faf0733ebc2b6964e487b09986e0a497532a0838a8ced80237d",
+    "ja": "最新の Microsoft ガイダンスに基づいて、Azure Developer CLI（azd）プロジェクトの設計、作成、レビュー、移行、トラブルシューティングを行います。azd、azure.yaml、AZD テンプレート、infra 配下の Bicep または Terraform、AZD の環境とシークレット、フック、デプロイワークフロー、azd が管理する CI/CD に使います。"
+  },
+  "skill:azure-devops-cli": {
+    "sourceHash": "eabef70c24173f97a8bb6138d6932aacf1fc189981aa2b4649affca6fa1c07ac",
+    "ja": "CLI から Azure DevOps のプロジェクト、リポジトリ、パイプライン、ビルド、プルリクエスト、作業項目、アーティファクト、サービスエンドポイントを管理します。Azure DevOps、az コマンド、DevOps の自動化、CI/CD を扱う場合や、Azure DevOps CLI が話題になった場合に使います。"
+  },
+  "skill:azure-pricing": {
+    "sourceHash": "fc443f5c63c655c14f841f0024df3a9b20973daea0191758e125e67edfecf154",
+    "ja": "Azure Retail Prices API（prices.azure.com）で Azure の小売価格をリアルタイムに取得し、Copilot Studio エージェントのクレジット消費量を見積もります。Azure サービスの費用、SKU 間の料金比較、コスト見積もり用の価格データ、Azure の料金・コスト・請求、Copilot Studio の料金、Copilot Credits、エージェント使用量の見積もりについて尋ねられた場合に使います。コンピューティング、ストレージ、ネットワーク、データベース、AI、Copilot Studio をはじめ、すべての Azure サービスファミリーを扱います。"
+  },
+  "skill:azure-resource-health-diagnose": {
+    "sourceHash": "ae658b7c3f07a4136cec280fea3a8acc3bf348997a136f0be4713fc8ab5cc10f",
+    "ja": "Azure リソースの正常性を分析し、ログとテレメトリから問題を診断して、特定した問題の修復計画を作成します。"
+  },
+  "skill:azure-resource-visualizer": {
+    "sourceHash": "9a9493f8ef71327d3fd545e984f56489fa420ce5aec6526b87976b648c6fd043",
+    "ja": "Azure リソースグループを分析し、個々のリソース間の関係を示す詳細な Mermaid 構成図を生成します。Azure リソースの構成図や、リソース同士の関係の理解を助ける説明を求められた場合に使います。"
+  },
+  "skill:azure-smart-city-iot-solution-builder": {
+    "sourceHash": "2124daddf3b5c431b36dc9c614d56a7db176587463f61b3bbb8d29da1fbfed8a",
+    "ja": "Azure IoT とスマートシティのエンドツーエンドのソリューションを設計、計画します。要件、アーキテクチャ、セキュリティ、運用、コストと、具体的な実装成果物を伴う段階的な提供計画を扱います。"
+  },
+  "skill:azure-static-web-apps": {
+    "sourceHash": "8ad73c062cec4f5f4651249eb982f4cf093e17201d19fe3b77b430ce3dec728c",
+    "ja": "SWA CLI を使った Azure Static Web Apps の作成、構成、デプロイを支援します。Azure への静的サイトのデプロイ、SWA のローカル開発環境設定、staticwebapp.config.json の構成、SWA への Azure Functions API の追加、Static Web Apps 向け GitHub Actions CI/CD の設定に使います。"
+  },
+  "skill:azure-well-architected-review": {
+    "sourceHash": "2b9edde880447b6af45f6010711e8b9250ff768ff8cce9e880ed3d444208ecfb",
+    "ja": "現在のワークロードの IaC とアーキテクチャを Azure Well-Architected Framework に基づいてレビューし、指摘事項と改善用の GitHub Issue を作成します。"
+  },
+  "skill:batch-files": {
+    "sourceHash": "9e57c4c283b7e20c371f8230dccea62224e283e6b3c25d36caf365da34268e62",
+    "ja": "CMD スクリプトの作成、デバッグ、保守を扱う、専門家レベルの Windows バッチファイル（.bat/.cmd）スキル。「バッチファイルを作成して」「.bat スクリプトを書いて」「Windows の作業を自動化して」「CMD スクリプト」「バッチ自動化」「スケジュールタスク用スクリプト」「Windows シェルスクリプト」といった依頼や、ワークスペース内の .bat/.cmd ファイルを扱う場合に使います。cmd.exe の構文、環境変数、制御フロー、文字列処理、エラー処理、システムツールとの連携を扱います。"
+  },
+  "skill:bench-read": {
+    "sourceHash": "0cfb2d42de804c1fc2a8c49f18d749044674d1034cc5e40aa82642f6828d0f71",
+    "ja": "各デスクが互いとオペレーターに向けて調査結果、判定、成果物を残すワークスペースである、共有 bench から成果物を読み取ります。"
+  },
+  "skill:bigquery-pipeline-audit": {
+    "sourceHash": "e95fe69e64b1005295ae0cb8650de3b46cf8e7d0ab3bd7e73517979990a43ee4",
+    "ja": "Python + BigQuery パイプラインを、コスト上の安全性、冪等性、本番運用への準備状況の観点で監査します。正確な修正箇所を含む構造化レポートを返します。"
+  },
+  "skill:brag-sheet": {
+    "sourceHash": "126221461ce13860e7c249a6c6cf199ad82c01535c4378da0d70b126167c086b",
+    "ja": "曖昧な「自分は何をしたのか」を、人事評価、自己評価、昇進申請資料、週次報告に使える、証拠に裏付けられた成果の説明に変えます。Git コミットと GitHub PR に加え、Copilot CLI のセッションログを独自に分析して、忘れていた作業を復元します。「行動 → 結果 → 証拠」の 3 要素を必須とし、依存関係なしで単独動作します。起動例: 「成果をまとめて」「作業を記録して」「何をしたか」「作業履歴を補完して」「人事評価」「自己レビュー」「自己評価」「成果の説明を書いて」「評価準備」「昇進申請資料」「昇進の根拠」「週次報告」「状況報告」「実績」「何をリリースしたか」「作業を記録し忘れた」「作業を要約して」「成果を追跡して」「何を強調すべきか」「半期末」「キャリア成長」「業務日誌」など、仕事の成果の文書化、要約、整理を求める依頼。"
+  },
+  "skill:breakdown-feature-implementation": {
+    "sourceHash": "620155858b2a80421768fe227349c22e37a0c8826c45170bc8f6d59773dbffda",
+    "ja": "Epoch モノレポの構成に従い、詳細な機能実装計画を作成するためのプロンプト。"
+  },
+  "skill:breakdown-plan": {
+    "sourceHash": "4d7084d85eaeedefe435526e741207599e7a0b330e7841823157f3a6f2ff0019",
+    "ja": "Epic > Feature > Story/Enabler > Test の階層、依存関係、優先順位、自動追跡を備えた包括的なプロジェクト計画を生成する、Issue 計画と自動化のプロンプト。"
+  },
+  "skill:breakdown-test": {
+    "sourceHash": "02b3dc1b275ed06d06e5e2d20fc57ce4aa7924ecf7b583d1c594092e9faeac14",
+    "ja": "GitHub プロジェクト向けに、包括的なテスト戦略、タスク分解、品質検証計画を生成する、テスト計画と品質保証のプロンプト。"
+  },
+  "skill:build-evidence-map": {
+    "sourceHash": "2760d14c9ee99186b716b71c0a9241fc3eea543dd498f0548215a531f9299f3b",
+    "ja": "意見が分かれる技術選択、調査の統合、提案レビュー、重大な意思決定に対し、監査可能な根拠マップを構築します。意見の相違を文章にまとめて曖昧にするのではなく、支持する証拠、反証、条件付きの証拠、不足している証拠を、出典の正確な該当箇所とともに Copilot が保持する必要がある場合に使います。"
+  },
+  "skill:dotnet-best-practices": {
+    "sourceHash": "abc694cb5ec390f5609e99bf7daae8f4fee96e0521398db450592c76935f8f58",
+    "ja": ".NET/C# コードが、そのソリューションやプロジェクトに適したベストプラクティスを満たすようにします。"
+  },
+  "skill:dotnet-design-pattern-review": {
+    "sourceHash": "840f97ec57a2e0a62c56a7f2df2144ca7b384a0350455af9531456ab47265d9b",
+    "ja": "C#/.NET コードのデザインパターンの実装をレビューし、改善を提案します。"
+  },
+  "skill:dotnet-mcp-builder": {
+    "sourceHash": "707a479c24e7cc9a615bdad59b4ca30b04905ba6fdbc4ba141901a97bd7a6e51",
+    "ja": "現行の ModelContextProtocol 2.x NuGet パッケージを使い、C#/.NET で Model Context Protocol（MCP）サーバーを構築します。古いバージョン（0.x プレビューや 1.x 時代の既定値）、v2 で HTTP が既定でステートレスになった変更、2026-07-28 仕様での非推奨化（roots/sampling/logging）、MCP Apps と Tasks の拡張パッケージ、elicitation の URL モード、セッション単位の HTTP 構成、OAuth とリバースプロキシへのデプロイ固有事項、MapMcp / STDIO / Streamable HTTP のエラー調査など、指針がないとモデルが誤りやすい点を支援します。STDIO と Streamable HTTP トランスポート（SSE は非推奨）、ツール、プロンプト、リソース、補完、基本的な .NET MCP クライアントも扱います。ModelContextProtocol、McpServerTool、MapMcp、WithStdioServerTransport、「C# の MCP サーバー」「dotnet の MCP ツール」「これを MCP として公開して」など、.NET MCP サーバーに関する作業が明示または示唆された場合や、.NET の文脈で基本要素（prompt/resource/elicitation/MCP App）が挙げられた場合に起動します。他言語での MCP 作業は対象外です。"
+  },
+  "skill:dotnet-timezone": {
+    "sourceHash": "abcad2cb431161ae80cf6acc78f7a308eb88c99cdb46ca97b13e6cb4bf99a44c",
+    "ja": "C# アプリケーション向けの .NET タイムゾーン処理ガイダンス。TimeZoneInfo、DateTimeOffset、NodaTime、UTC 変換、夏時間、タイムゾーンをまたぐスケジュール、クロスプラットフォームの Windows/IANA タイムゾーン ID を扱う場合に使います。.NET 利用者が都市、住所、地域、国のタイムゾーンと、コピーしてすぐ使える C# コードを必要とする場合にも使います。"
+  },
+  "skill:dotnet-upgrade": {
+    "sourceHash": "93c38099bcebee5906de80f33d1595916e401eb03aba8b8d4cccce5beb1df254",
+    "ja": ".NET フレームワークのアップグレードを包括的に分析、実行するための、すぐに使えるプロンプト集。"
+  },
+  "skill:doublecheck": {
+    "sourceHash": "df33727d40720fafea8f99b5257758db9042893c4bcb675b13e9d9539baa6304",
+    "ja": "AI 出力を検証する 3 層のパイプライン。検証可能な主張を抽出し、Web 検索でそれを支持する、または反証する情報源を探し、ハルシネーションのパターンを見つける批判的なレビューを行い、人による確認のために出典リンク付きの構造化された検証レポートを作成します。"
+  },
+  "skill:draw-io-diagram-generator": {
+    "sourceHash": "291b3d495262e1f0890ee65cc2f08fc0e1a689360fe0253e8b9b33cde151684a",
+    "ja": "draw.io の図ファイル（.drawio、.drawio.svg、.drawio.png）の作成、編集、生成に使います。mxGraph XML の記述、図形ライブラリ、スタイル文字列、フローチャート、システム構成図、シーケンス図、ER 図、UML クラス図、ネットワークトポロジー、レイアウト戦略、VS Code の hediet.vscode-drawio 拡張機能と、依頼からすぐに開けるファイルの完成までのエージェントワークフロー全体を扱います。"
+  },
+  "skill:drawio": {
+    "sourceHash": "4b269ba0d6e63bf9e1b65dcab64dcdbf12f9215ad6fb9154c1a13e24db3441cd",
+    "ja": "draw.io の図を .drawio ファイルとして生成し、XML を埋め込んだ PNG/SVG/PDF にエクスポートします。"
+  },
+  "skill:geofeed-tuner": {
+    "sourceHash": "db138ceb423410491375a9524234d6a09e22883fe829f67f029dcbbff54e858a",
+    "ja": "IP 位置情報フィード、RFC 8805、geofeed が話題になった場合や、CSV 形式の自己公開型 IP 位置情報フィードの作成、調整、検証、公開を支援する場合に使います。IP 位置情報の精度や geofeed 作成のベストプラクティスについて相談するネットワーク運用者、ISP、携帯通信事業者、クラウドプロバイダー、ホスティング企業、IXP、衛星通信事業者を対象とします。RFC 8805 への準拠にとどまらない明確な推奨方針で、CSV 形式の IP 位置情報フィードの作成、改良、改善を支援します。プライベートまたは内部 IP アドレスの管理には使わず、公開ルーティング可能な IP アドレスだけを対象とします。"
+  },
+  "skill:git-commit": {
+    "sourceHash": "b30a26202cf410a4339304884e1084f2d40fdba470abd2d595c18da1b62df327",
+    "ja": "Conventional Commits 形式のメッセージ分析、適切なステージング、メッセージ生成を伴う git commit を実行します。変更のコミット、Git コミットの作成、または「/commit」を求められた場合に使います。対応内容: （1）変更から種別とスコープを自動検出、（2）差分から Conventional Commits メッセージを生成、（3）種別・スコープ・説明を必要に応じて上書きできる対話型コミット、（4）論理的にグループ化するための適切なファイルのステージング。"
+  },
+  "skill:issue-fields-migration": {
+    "sourceHash": "7f7dfb985def5ddaefd326b0950268d709fffb6554c77f4caaf57a29f81cdb0c",
+    "ja": "リポジトリのラベル（優先度ラベルから Priority フィールドへの移行など）と Project V2 フィールドの 2 種類のソースから、GitHub Issue フィールドへメタデータを一括移行します。「ラベルを Issue フィールドへ移行して」「プロジェクトフィールドを Issue フィールドへ移行して」「ラベルを Issue フィールドに変換して」「プロジェクトのフィールド値を Issue フィールドへコピーして」といった依頼や、Issue フィールドの導入についての相談に使います。Issue フィールドは、単一選択、テキスト、数値、日付を扱う組織レベルの型付きメタデータで、ラベルによる代用を、構造化され検索可能なリポジトリ横断のフィールドに置き換えます。"
+  },
+  "skill:java-add-graalvm-native-image-support": {
+    "sourceHash": "a92340ea2333379b3f89af3fce49566e8149701abaa40df4e6b60ad18985fa8c",
+    "ja": "Java アプリケーションにネイティブイメージ対応を追加する GraalVM Native Image の専門家。Oracle のベストプラクティスを用いてプロジェクトをビルドし、ビルドエラーの分析と修正を行い、コンパイルが成功するまで繰り返します。"
+  },
+  "skill:java-helidon": {
+    "sourceHash": "de3271e8b75b4446e95cb09d1ab6ca868df5c49fec0a42e59e6b02695166dd87",
+    "ja": "Helidon 4（SE と MP）によるアプリケーション開発のベストプラクティスを取得します。Java 21 以降のプロジェクトで、Helidon SE / Helidon MP、HttpService のルーティング、Helidon DB Client、MicroProfile Config、Helidon Security、Helidon のテストを扱う場合に使います。"
+  },
+  "skill:java-mcp-server-generator": {
+    "sourceHash": "8247f533b99644b5dff519f9bad7de28cfebbe21800bc3a797065c742dc2edaf",
+    "ja": "公式 MCP Java SDK を使用し、Reactive Streams と任意の Spring Boot 連携を備えた、完全な Model Context Protocol サーバープロジェクトを Java で生成します。"
+  },
+  "skill:make-repo-contribution": {
+    "sourceHash": "bca74166250ba47555bb93baee7a27c78190c4f2644d608f9798284905fc92d2",
+    "ja": "コードの変更はすべて、リポジトリに記載されたガイダンスに従う必要があります。Issue の登録、ブランチ作成、コミット生成、プルリクエスト（PR）作成の前に、正しい手順を守るための調査を行います。Issue の作成、コミットメッセージの作成、コードのプッシュ、PR の作成を依頼された際に、すべてを正しく進めるために使います。"
+  },
+  "skill:markdown-to-html": {
+    "sourceHash": "30be5647350b5ff7a6f135a74687ea001b007305c92aae8fbc5f3d269289066e",
+    "ja": "`marked.js`、`pandoc`、`gomarkdown/markdown` などと同様に Markdown ファイルを HTML へ変換します。独自の Markdown → HTML 変換スクリプトの作成や、`jekyll/jekyll`、`gohugoio/hugo` など、Markdown 文書を HTML に変換する Web テンプレートシステムの作業にも対応します。「Markdown を HTML に変換して」「md を HTML に変換して」「Markdown をレンダリングして」「Markdown から HTML を生成して」という依頼や、.md ファイル、または Markdown を HTML 出力に変換する Web テンプレートシステムを扱う場合に使います。GFM、CommonMark、標準的な Markdown 方言を用いた CLI と Node.js のワークフローに対応します。"
+  },
+  "skill:mcp-copilot-studio-server-generator": {
+    "sourceHash": "4c0e774a1996245ab0d87d482afd2a5f564728abf72660ae342dc1d8fc5dd549",
+    "ja": "適切なスキーマ制約と Streamable HTTP 対応を備え、Copilot Studio との連携に最適化された完全な MCP サーバー実装を生成します。"
+  },
+  "skill:mcp-create-adaptive-cards": {
+    "sourceHash": "76738e17cece78535301e336be01448b0950fe44d79e79c550ae7c6859e88e37",
+    "ja": "mcp-create-adaptive-cards.prompt.md から変換されたスキル。"
+  },
+  "skill:mcp-create-declarative-agent": {
+    "sourceHash": "742527662537dfb830f60cec29698f8f0fc4716fd40234ad39a1881563b04c6c",
+    "ja": "mcp-create-declarative-agent.prompt.md から変換されたスキル。"
+  },
+  "skill:mcp-deploy-manage-agents": {
+    "sourceHash": "e62c5ba6dbae754d5a9e9743aa872116aaad2d029d86a66bb81ed1e863d81d0f",
+    "ja": "mcp-deploy-manage-agents.prompt.md から変換されたスキル。"
+  },
+  "skill:mcp-implementation-security-review": {
+    "sourceHash": "e138a10f1edc0a267e79fe3e398969772a6106e9694c8c8f8436274ec96432bb",
+    "ja": "MCP（Model Context Protocol）のサーバー、クライアント、ツールハンドラーの実装ソースコードを、認証、セッション、レート制限、入力スキーマ検証、公式 SDK の利用、RCE の攻撃経路、OWASP MCP Top 10 を含むセキュリティ基準に照らしてレビューし、ファイルと行番号の根拠を備えたレポートを作成します。次の場合に使います。\n- リリース前の MCP サーバー実装のセキュリティレビュー\n- 基本制御（MCP-01〜MCP-05）と OWASP MCP Top 10 に対するサーバーの確認\n- RCE の攻撃経路（コマンド/コードインジェクション、安全でない逆シリアル化、パストラバーサル、SSTI、依存関係の乗っ取り、SSRF）のツール監査\n- ネットワークに公開されたサーバーの認証、セッション、レート制限、入力検証の確認\n- 信頼できないサーバー応答やセッション ID を扱う MCP クライアントコードのレビュー\n- 「この MCP サーバーのセキュリティをレビューして」「自分の MCP サーバー実装は安全か」などの依頼"
+  },
+  "skill:mcp-release-qa": {
+    "sourceHash": "fc7d36a5769823598c7706294bcbfa030f05ca17fcc02f9f9aa7f59ac4f9ffca",
+    "ja": "実際のプロトコルセッションの実行、実行時の機能とソース・ドキュメントの比較、失敗時の経路のテスト、再現可能な証拠の記録によって、リリース前の MCP サーバーを検証します。MCP サーバー、ツール、リソース、プロンプト、カタログ、インストール経路の提供やレビュー時に使います。"
+  },
+  "skill:mcp-security-audit": {
+    "sourceHash": "236b1bfd41e498bc5e1924530b041caf88bbe7f1f5eddad9c477d98ce20248e3",
+    "ja": "MCP（Model Context Protocol）サーバーの構成を監査し、セキュリティ上の問題を確認します。次の場合に使います。\n- .mcp.json ファイルのセキュリティリスクのレビュー\n- MCP サーバー引数にハードコードされたシークレットやシェルインジェクションのパターンがないかの確認\n- MCP サーバーが @latest ではなく固定バージョンを使用しているかの検証\n- MCP サーバー構成にある未固定の依存関係の検出\n- プロジェクトが登録する MCP サーバーと承認リストへの掲載状況の監査\n- MCP 構成が資格情報のハードコードではなく環境変数を使用しているかの確認\n- 「自分の MCP 構成は安全か」「MCP サーバーを監査して」「.mcp.json を確認して」などの依頼\nキーワード: [mcp, security, audit, secrets, shell-injection, supply-chain, governance]"
+  },
+  "skill:meeting-minutes": {
+    "sourceHash": "a604fe6e2fefec591f18f23e28c91ef82fa3fc116a724bcf0f1dbf0312a8c587",
+    "ja": "社内会議向けに、簡潔で次の行動が明確な議事録を生成します。メタデータ、出席者、議題、決定事項、アクション項目（担当者と期限）、フォローアップの手順を含みます。"
+  },
+  "skill:memory-merger": {
+    "sourceHash": "4fc1a75bd97bd93d3a034543d633746d5b03000f7e3d6f4691c631b4d5abdb19",
+    "ja": "分野別のメモリファイルから、十分に定着した学びを対応する指示ファイルへ統合します。構文: `/memory-merger >domain [scope]`。scope は `global`（既定）、`user`、`workspace`、`ws` のいずれかです。"
+  },
+  "skill:mentoring-juniors": {
+    "sourceHash": "733ea76b65417c19ddce922a23c6e7d31c349c20358ec93068794b60a427d9cc",
+    "ja": "若手開発者や AI 初心者向けのソクラテス式メンタリング。答えを直接示さず、質問を通じて導きます。起動例: 「理解を助けて」「このコードを説明して」「行き詰まった」「混乱している」「理解できない」「教えて」「メンターになって」「案内して」「このエラーはどういう意味」「なぜ動かないの」「初心者です」「勉強中です」「初めてです」「順を追って説明して」「どう動くの」「自分のコードの何が悪いの」「何が問題なの」「かみ砕いて説明して」「ELI5」「一歩ずつ」「どこから始めればいい」「何を見落としているの」「初心者です」「若手開発者」「初めて使う」「どうすれば」「これは何」「これで正しい」「自信がない」「助けが必要」「苦戦している」「見せて」「デバッグを手伝って」「ベストプラクティス」「複雑すぎる」「圧倒されている」「迷っている」「これをデバッグして」、および `/socratic`、`/hint`、`/concept`、`/pseudocode`。段階的なヒント、指導手法、成功指標を備えます。"
+  },
+  "skill:microsoft-skill-creator": {
+    "sourceHash": "ede9fac1797f204d77828cc55ea522a139d8a63129366f168607d7da73b415a4",
+    "ja": "Learn MCP ツールを使い、Microsoft 技術向けのエージェントスキルを作成します。Azure、.NET、M365、VS Code、Bicep など、Microsoft の技術、ライブラリ、フレームワーク、サービスについてエージェントに教えるスキルを作りたい場合に使います。対象を深く調査した後、重要な知識をローカルに保存しつつ、必要に応じて動的に深掘りできるハイブリッド型のスキルを生成します。"
+  },
+  "skill:migrating-oracle-to-postgres-data-access-code": {
+    "sourceHash": "871a8bef60127d54df18d57268cdef0221662914a49724f2b9bda89d422ed45b",
+    "ja": ".NET/C# のデータアクセスコードを Oracle から PostgreSQL（Npgsql）へ移行します。Oracle の NuGet パッケージの置き換え、OracleConnection/OracleCommand/OracleDataReader の使用箇所の書き換え、DbType マッピングの修正、ストアドプロシージャ呼び出しパターンの更新、接続文字列構成の調整を行います。Oracle から PostgreSQL へのデータベース移行で、.NET プロジェクトのアプリケーションコード層を移行する場合に使います。"
+  },
+  "skill:minecraft-plugin-development": {
+    "sourceHash": "db73916ab4a63aff751d373e7186fffa0167f562997231936c5baefc14aac0bc",
+    "ja": "Paper、Spigot、Bukkit 向け Minecraft サーバープラグインの構築や変更に使います。plugin.yml の設定、コマンド、リスナー、スケジューラー、プレイヤー状態、チームやアリーナのシステム、永続的な進行状況、経済やプロフィールのデータ、構成ファイル、Adventure テキスト、バージョン互換性を考慮した API 利用を扱います。「Minecraft プラグインを作って」「Paper のコマンドを追加して」「Bukkit のリスナーを修正して」「plugin.yml を作成して」「ミニゲームの仕組みを実装して」「特典やクエストのシステムを追加して」「サーバープラグインの挙動をデバッグして」などの依頼で起動します。"
+  },
+  "skill:mini-context-graph": {
+    "sourceHash": "a701e5913a80d1d922e1728781105ccc0ae4f0a16b631bddb16a66ae739fbd3b",
+    "ja": "Karpathy の LLM Wiki パターンと構造化ナレッジグラフを組み合わせ、知識を永続的に蓄積、発展させるナレッジベース。文書は一度取り込むだけで、LLM が Wiki ページを作成し、エンティティと関係をグラフに抽出し、根拠を検索できるよう元の内容を保存します。知識は蓄積され、相互参照が加わり、一から導き直すことはありません。"
+  },
+  "skill:mkdocs-translations": {
+    "sourceHash": "8847296d16abd5fb7062b71f6f11d9f67fdfbb11d427e79ba72323e6894e42f2",
+    "ja": "MkDocs のドキュメント構成向けに、指定言語への翻訳を生成します。"
+  },
+  "skill:msgraph-sdk": {
+    "sourceHash": "c9181341d17662bf69d3628e52c0289deaccb400ddfd18639d189643b3118d81",
+    "ja": "Microsoft Graph SDK を .NET、TypeScript/JavaScript、Python の任意のプロジェクトに組み込みます。認証パターン（クライアント資格情報、OBO、マネージド ID）、SDK セットアップ、Graph API の呼び出し、バッチ処理、差分クエリ、変更通知、スロットリング、権限スコープを扱います。あらゆる種類のアプリケーションから Microsoft 365 データ（ユーザー、メール、予定表、Teams、ファイル、SharePoint）へアクセスする場合に使います。"
+  },
+  "skill:msstore-cli": {
+    "sourceHash": "6e757b6ac62fe17eda67718fdda9e63631c1462a948f4f333f2dcca251b9d433",
+    "ja": "Windows アプリケーションを Microsoft Store へ公開するための Microsoft Store Developer CLI（msstore）。Store の資格情報設定、Store アプリの一覧取得、申請状態の確認、申請の公開、パッケージフライト管理、Store 公開用 CI/CD の設定、Partner Center との連携を依頼された場合に使います。Windows App SDK/WinUI、UWP、.NET MAUI、Flutter、Electron、React Native、PWA アプリケーションに対応します。"
+  },
+  "skill:mvvm-toolkit-messenger": {
+    "sourceHash": "79f5563d043cde620650dc99ec0f08b1a7bf1aaf4b3d85d79d699a3a6dbb23a3",
+    "ja": "ViewModel 間、または任意のオブジェクト間で疎結合な通信を行う、CommunityToolkit.Mvvm Messenger の発行/購読方式。WeakReferenceMessenger と StrongReferenceMessenger の違い、IRecipient<TMessage>、RequestMessage<T> / AsyncRequestMessage<T> / CollectionRequestMessage<T>、ValueChangedMessage<T>、チャネル（トークン）、ObservableRecipient のアクティブ化ライフサイクルを扱います。WPF、WinUI 3、.NET MAUI、Uno、Avalonia で使えます。"
+  },
+  "tool:apm": {
+    "sourceHash": "dd9415f9fee87a2eb66e0860f9d8c3405c549e8aa33ea6834153e85239479aaf",
+    "ja": "AI コーディングエージェントのための npm。AGENTS.md、Agent Skills、MCP サーバーを扱うパッケージマネージャーです。1 つのパッケージを、各 AI エージェント（Copilot、Cursor、Claude、Codex、Gemini）のネイティブ形式でインストールできます。"
+  },
+  "tool:chatcrystal": {
+    "sourceHash": "4b1d2461d743cbe52a0cd82dfc696772dab7587d6eb9fb15731a23266fa67ac9",
+    "ja": "AI コーディングの会話を保存する、ローカル優先のナレッジベース。ChatCrystal は Claude Code、Cursor、Codex CLI、Trae、GitHub Copilot の会話を取り込み、検索可能なノートに整理し、stdio MCP サーバーを通じて想起、検索、書き戻しのツールを提供します。"
+  },
+  "tool:context7": {
+    "sourceHash": "fe015aff0a9f6308714c6fa4d5abbd5b978edf6c75d522e17334af778d917873",
+    "ja": "GitHub Copilot のカスタマイズ向けのインテリジェントなドキュメント・コンテキスト管理システム。Context7 は、リポジトリ内のプロンプト、指示、エージェント、スキルを索引化、分析し、横断的なセマンティック検索を提供します。ドキュメントの自動生成、コレクションの検証、AI を活用した探索により、開発者が適切なカスタマイズを見つけてインストールできるようにします。"
+  },
+  "tool:copilot-cockpit": {
+    "sourceHash": "b8f5d1c599a14e0092dc9f6d37bb18484eb5e471ed725002263d8aed538b08a0",
+    "ja": "GitHub Copilot の構造化されたワークフローを提供する VS Code 拡張機能。エディター内に、計画、承認、スケジュール、調査の実行、レビューの確認ポイントを追加します。"
+  },
+  "tool:github-node-vs": {
+    "sourceHash": "8aaf85ae9c7457bb7565756c5e542ce1a2a3a9ba74beb7407a00607d47a71d0f",
+    "ja": "Visual Studio のソリューション エクスプローラーに GitHub と MCP Servers のノードを追加します。Visual Studio を離れることなく、ワークフロー、Copilot の指示、エージェントなど GitHub 固有のファイルと MCP サーバー構成にすばやくアクセスして管理できます。"
+  },
+  "tool:groundhog-day": {
+    "sourceHash": "be5066ef7cb6c85f2bb9d032e16d8e2a799be1d90d620399c8fdd3fe404d6f87",
+    "ja": "GitHub Copilot CLI のスキルを自律的にバックアップするエージェント。~/.copilot/skills/ ディレクトリをリアルタイムで監視し、すべての変更を意味のあるメッセージでコミットして GitHub へ自動プッシュします。macOS の LaunchAgent で起動時に開始し、クラッシュ時には再起動します。セットアップ後の操作は不要です。1 行のインストーラーがバックアップ用リポジトリを作成し、既存スキルを格納して監視を開始します。日次の正常性確認、同期ロック、プッシュの再試行、バックアップ元が空の場合の保護を備えます。"
+  },
+  "tool:ivy-tendril": {
+    "sourceHash": "2c6c45223f2b6d72f5f5faf92ed4a257145a9c6b971ae2dd4bcb2fec6b5c96e7",
+    "ja": "計画ベースのライフサイクルで GitHub Copilot、Claude Code、Codex、Antigravity、OpenCode を管理する、オープンソースの AI コーディングオーケストレーター。タスクを構造化された計画に分解し、分離された Git ワークツリーにエージェントを割り当て、自動検証ゲート（ビルド、テスト、lint、整形、AI レビュー）を実行し、セッションをまたいで自己改善に役立つ記憶を蓄積します。ローカル優先のデスクトップアプリです。"
+  },
+  "tool:mcp-server": {
+    "sourceHash": "bd9d7bbbd79b3668374836c18672b4945a8ebcf5e57dd899d0f2eb1ab7585532",
+    "ja": "このリポジトリから直接、プロンプト、指示、エージェント、スキルを検索、インストールするためのプロンプトを提供する Model Context Protocol（MCP）サーバー。カスタマイズを見つけてエディターに追加する作業を容易にします。"
+  },
+  "tool:prompt-registry": {
+    "sourceHash": "76f107d0041e44c251d02ab55f6ffaa3b71199dd79900d96b5a3f5791c5c01ad",
+    "ja": "複数のソースから GitHub Copilot のプロンプトライブラリを探索、インストール、管理するためのビジュアルなマーケットプレイス。検索、フィルター、ワンクリックインストールを備えたタイル型の画面でバンドルを閲覧できます。GitHub、ローカルディレクトリ、APM リポジトリに対応します。"
+  },
+  "tool:swarm-orchestrator": {
+    "sourceHash": "f5e3ed2c8d676eab960338ae0f3118c512b24f9b4de1391effc5f9e7e742170b",
+    "ja": "AI コーディングエージェントが作成したパッチを独立して検証する一連のテスト。GitHub Copilot CLI、Claude Code、Codex をラップし、各パッチをマージ前に分離された Git ブランチ上で 5 層の反証テスト（意図、リグレッション、解決策の品質、動作、来歴）にかけます。意図やリグレッションのチェックに失敗したパッチは必須ゲートでブロックし、助言的な評価層は総合スコアに反映します。署名付き SLSA 証明を Git note として添付します。"
+  },
+  "tool:vscode-agent-manager": {
+    "sourceHash": "da8df5f79a131e0772ef770899aee4123f1fdcf824b6e6e4a86b5d98e1e2d14b",
+    "ja": "GitHub Copilot の利用体験を強化するためのツールキット、VS Code Agent Manager。VS Code 内から直接、カスタム Copilot エージェントの探索、インストール、管理を手軽に行えます。"
+  },
+  "tool:vscode-extension": {
+    "sourceHash": "507113fe038c4622d1b56e4538dae4b7a8fd6bef472be25d508198e117bac41f",
+    "ja": "awesome-copilot リポジトリから GitHub Copilot のカスタマイズを閲覧、プレビュー、ダウンロードできる VS Code 拡張機能。エージェント、プロンプト、指示、スキルを探索するツリービューと、性能を高めるキャッシュを備えます。"
+  },
+  "tool:workspace-architect": {
+    "sourceHash": "bbd624fca1d81cb3e76d9734a8d3f008372b29ed35379019001fbf057f69748b",
+    "ja": "GitHub Copilot 向けの専門的な AI ペルソナとチャットモードを集めた包括的なライブラリ。アーキテクチャ計画、技術スタックのガイダンス、高度な認知的推論モデルを含みます。npm でインストールし、CLI でペルソナとプロンプトをダウンロードします。"
+  }
+}

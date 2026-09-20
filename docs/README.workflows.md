@@ -33,11 +33,11 @@ See [CONTRIBUTING.md](../CONTRIBUTING.md#adding-agentic-workflows) for guideline
 
 | Name | Description | Triggers |
 | ---- | ----------- | -------- |
-| [Daily Issues Report](../workflows/daily-issues-report.md) | Generates a daily summary of open issues and recent activity as a GitHub issue | schedule |
-| [OSPO Contributors Report](../workflows/ospo-contributors-report.md) | Monthly contributor activity metrics across an organization's repositories. | schedule, workflow_dispatch |
-| [OSPO Organization Health Report](../workflows/ospo-org-health.md) | Comprehensive weekly health report for a GitHub organization. Surfaces stale issues/PRs, merge time analysis, contributor leaderboards, and actionable items needing human attention. | schedule, workflow_dispatch |
-| [OSPO Stale Repository Report](../workflows/ospo-stale-repos.md) | Identifies inactive repositories in your organization and generates an archival recommendation report. | schedule, workflow_dispatch |
-| [OSS Release Compliance Checker](../workflows/ospo-release-compliance-checker.md) | Analyzes a target repository against open source release requirements and posts a detailed compliance report as an issue comment. | issues, workflow_dispatch |
-| [Relevance Check](../workflows/relevance-check.md) | Slash command to evaluate whether an issue or pull request is still relevant to the project | slash_command, roles |
-| [Relevance Summary](../workflows/relevance-summary.md) | Manually triggered workflow that summarizes all open issues and PRs with a /relevance-check response into a single issue | workflow_dispatch |
-| [Weekly Comment Sync](../workflows/weekly-comment-sync.md) | Weekly workflow that finds stale code comments or README snippets, makes text-only synchronization updates, and opens a draft pull request when changes are needed. | schedule, workflow_dispatch |
+| [OSPOコントリビューターレポート](../workflows/ospo-contributors-report.md) | 組織のリポジトリ全体におけるコントリビューター活動の月次指標です。 | schedule, workflow_dispatch |
+| [OSPO古いリポジトリレポート](../workflows/ospo-stale-repos.md) | 組織内の活動がないリポジトリを特定し、アーカイブ推奨レポートを作成します。 | schedule, workflow_dispatch |
+| [OSPO組織健全性レポート](../workflows/ospo-org-health.md) | GitHub組織の包括的な週次健全性レポートです。古いIssue/PR、マージ時間分析、コントリビューターランキング、人の対応が必要な項目を示します。 | schedule, workflow_dispatch |
+| [OSSリリース適合性チェッカー](../workflows/ospo-release-compliance-checker.md) | 対象リポジトリをオープンソースリリース要件に照らして分析し、詳細な適合性レポートをIssueコメントとして投稿します。 | issues, workflow_dispatch |
+| [関連性サマリー](../workflows/relevance-summary.md) | /relevance-check の応答があるすべてのオープンIssueとPRを1件のIssueにまとめる手動実行ワークフロー | workflow_dispatch |
+| [関連性チェック](../workflows/relevance-check.md) | Issueまたはプルリクエストがプロジェクトにとって現在も関連性があるか評価するスラッシュコマンド | slash_command, roles |
+| [週次コメント同期](../workflows/weekly-comment-sync.md) | 古くなったコードコメントやREADME断片を見つけ、テキストだけを同期更新し、必要に応じてドラフトPRを作成する週次ワークフローです。 | schedule, workflow_dispatch |
+| [毎日のIssueレポート](../workflows/daily-issues-report.md) | オープンIssueと最近の活動の日次サマリーをGitHub Issueとして作成します | schedule |

@@ -1,0 +1,890 @@
+{
+  "agent:accessibility": {
+    "sourceHash": "6d32a8e690d5e664d1f33afbe34734e9df27d7855387ae4a6c707ee60cbd479d",
+    "ja": "Webアクセシビリティ（WCAG 2.1/2.2）、インクルーシブUX、a11yテストを支援する専門アシスタント。"
+  },
+  "agent:accessibility-runtime-tester": {
+    "sourceHash": "acfbfd986afd7a2495a0a10b4aad53e5fe4c1be601e1f43e297c9118eee532b2",
+    "ja": "ブラウザー上でキーボード操作の流れ、フォーカス管理、ダイアログの挙動、フォームのエラーを検証し、根拠に基づくWCAG適合性確認を行う実行時アクセシビリティの専門家。"
+  },
+  "agent:address-comments": {
+    "sourceHash": "a7ac93ad551797880149b1a4b647eb023c2c6bbe18bdd265170f0246bf16cea8",
+    "ja": "プルリクエストのコメントに対応します。"
+  },
+  "agent:adr-generator": {
+    "sourceHash": "41c71703ccb1e7801c76acd0137c82b5243f2962b221f1dba6abb56e4b1fc78d",
+    "ja": "AIによる利用と人間による読みやすさの両方に適した構造で、包括的なアーキテクチャ決定記録（ADR）を作成する専門エージェント。"
+  },
+  "agent:aem-frontend-specialist": {
+    "sourceHash": "ecaa57374b92bbe2e7b7f3dc1843728202aee6f3e1928efeb141c9c59bcac9a9",
+    "ja": "HTL、Tailwind CSS、Figmaからコードへの変換ワークフローを使い、デザインシステムと連携したAEMコンポーネント開発を支援する専門アシスタント。"
+  },
+  "agent:agent-governance-reviewer": {
+    "sourceHash": "5413a49eba1663895fff8f669dbb7042269789e4c955ebb42078772b8a24c2e0",
+    "ja": "コードの安全性やガバナンス制御の不足をレビューし、エージェントシステムへのポリシー適用、信頼度スコアリング、監査証跡の実装を支援するAIエージェントガバナンスの専門家。"
+  },
+  "agent:ai-readiness-reporter": {
+    "sourceHash": "18d52b1d5163375d3f53402899ab1bcd54bb90318da687af5bf6849b90fd86ff",
+    "ja": "現在のリポジトリに対してAgentRCの準備状況評価を実行し、自己完結型の静的HTMLダッシュボードをreports/index.htmlに出力します。AgentRCの「測定→生成→維持」の循環に沿って各評価軸、成熟度、実行可能な改善計画を説明します。リポジトリのAI活用準備状況の評価、監査、採点、報告、可視化に使用します。"
+  },
+  "agent:ai-team-dev": {
+    "sourceHash": "9a51d0de878cd2d2668c91ffe759b1c985ac81298946b4b4821c81adbc1ea69e",
+    "ja": "AI開発チーム（Nova、Sage、Milo）。プロジェクトで実際に採用している技術スタックに合わせた機能実装、バグ修正、テスト作成、ユーザー体験の改善、プルリクエストの準備に使用します。"
+  },
+  "agent:ai-team-producer": {
+    "sourceHash": "378cb9ab1d933b00b022b480121bf4dbc3836b3322b6ec160cbcc0d507fa480f",
+    "ja": "AIチームのプロデューサー（Remy）。作業計画、スコープの明確化、開発担当と必要に応じたQA担当の調整、課題のトリアージ、プロジェクトの文脈の維持、プルリクエストの準備とマージを行います。アプリケーションコードは書きません。"
+  },
+  "agent:ai-team-qa": {
+    "sourceHash": "b3ad8bfb8bfdc0952df4b3a49bed4d40f16203f66fb4b98117715bec0e80e790",
+    "ja": "必要に応じて利用するAI QAエンジニア（Ivy）。専任のQAが必要な変更について、動作テスト、自動検査や探索的検査、再現可能なバグ報告、修正の検証を行い、リリース判断の確度を高めます。"
+  },
+  "agent:amplitude-experiment-implementation": {
+    "sourceHash": "53031a7c0c0144ebfed529d1e8362db639f0fcb60213fd96c472ccecf873f32a",
+    "ja": "AmplitudeのMCPツールを使ってAmplitude内に新しい実験を展開し、バリアントのテストとプロダクト機能のロールアウトを円滑に進めるカスタムエージェント。"
+  },
+  "agent:api-architect": {
+    "sourceHash": "fe7e56b887f628d970f920408632f65936949e14e110f78ba708e0ecf8b98659",
+    "ja": "APIアーキテクトとして、助言、支援、動作するコードを提供し、エンジニアの成長を支援します。"
+  },
+  "agent:apify-integration-expert": {
+    "sourceHash": "f8552b9d04dcb50c64afd2364c9569fb61a1241afa19e6a792dbb561fa8933ff",
+    "ja": "Apify Actorsをコードベースへ統合する専門エージェント。Actorの選定、ワークフロー設計、JavaScript/TypeScriptとPythonでの実装、テスト、本番運用に適したデプロイを担当します。"
+  },
+  "agent:arch": {
+    "sourceHash": "7a37e431e5ab8959e715d11001247fbfe450b6fc6bb2f692da8367a6fd4bc775",
+    "ja": "最新のアーキテクチャ設計パターン、非機能要件（NFR）、包括的なアーキテクチャ図とドキュメントの作成に精通した専門家。"
+  },
+  "agent:arch-linux-expert": {
+    "sourceHash": "cfeb5b0259db872842694ad051eeb5b848f295c8097756f4c239652983477863",
+    "ja": "pacman、ローリングリリースの保守、Arch Linuxを中心とするシステム管理ワークフローに特化したArch Linuxの専門家。"
+  },
+  "agent:arm-migration": {
+    "sourceHash": "94071946ed42014a9a722b9d3cbd5da400ea50d974cfc34caa3fdec05d452adf",
+    "ja": "x86ワークロードからArmインフラストラクチャへの移行を加速するアシスタント。リポジトリを調べてアーキテクチャへの依存、移植性の問題、コンテナーベースイメージや依存関係の非互換性を検出し、Arm向けの最適化を提案します。マルチアーキテクチャのコンテナービルド、性能検証、最適化の支援により、GitHub上での円滑なクロスプラットフォームデプロイを実現します。"
+  },
+  "agent:atlassian-requirements-to-jira": {
+    "sourceHash": "0e53762e5ddde851e07e84084a3cedfca92e23836aea70c97b5e723985202062",
+    "ja": "要件ドキュメントを構造化されたJiraのエピックとユーザーストーリーに変換します。高度な重複検出、変更管理、ユーザー承認を伴う作成ワークフローに対応します。"
+  },
+  "agent:aws-cloud-expert": {
+    "sourceHash": "8237bb48d3c0e56189d9e9423dd821760a4a2a2d6be3b97fee31b71a4989a67f",
+    "ja": "AWSワークロードの設計、構築、運用に関する深い実践的な助言を提供します。AWS Well-Architected Frameworkに基づき、サーバーレス、コンテナー、データベース、ネットワーク、IaC、セキュリティ、コスト最適化を含むAWSエコシステム全体を扱います。"
+  },
+  "agent:aws-incident-triage": {
+    "sourceHash": "9e2a9e92451571b002c1669415000974a800e4a230d74bed958487608cb8d04d",
+    "ja": "CloudWatchを用いたインシデント調査を、アラームの確認から根本原因の仮説形成まで体系的に進めるオンコールSREエージェント。"
+  },
+  "agent:aws-principal-architect": {
+    "sourceHash": "8773186ec21bb09a774dd72b6aa41bb7477ab537b7c98b07bff6a9fe292d6657",
+    "ja": "AWS Well-Architected Frameworkの原則とAWSのベストプラクティスに基づき、プリンシパルアーキテクトとして専門的な助言を提供します。"
+  },
+  "agent:aws-serverless-architect": {
+    "sourceHash": "18a67829264953c24db95d56e9246f2cf0b297b713f8838d3012df10c3b01910",
+    "ja": "イベント駆動アーキテクチャ、Lambda、API Gateway、サーバーレスのベストプラクティスを中心に、AWSサーバーレスアーキテクトとして専門的な助言を提供します。"
+  },
+  "agent:azure-iac-exporter": {
+    "sourceHash": "d5cec51d15788f7afc03bce42d24d67fbec6e8063554136dc302ed50b37aa3e5",
+    "ja": "Azure Resource Graphによる分析、Azure Resource Manager APIの呼び出し、azure-iac-generatorとの連携を通じて、既存のAzureリソースをInfrastructure as Codeテンプレートへエクスポートします。既存リソースのIaC（Bicep、ARM Templates、Terraform、Pulumi）へのエクスポート、変換、移行、抽出に使用します。"
+  },
+  "agent:azure-iac-generator": {
+    "sourceHash": "a69b0420d89ef05b4411e9d276bb37b7e311c8ddb225b8fd0a0ad7e3588a4311",
+    "ja": "形式ごとの検証とベストプラクティスを適用してInfrastructure as Code（Bicep、ARM、Terraform、Pulumi）を生成する中核エージェント。各種形式のインフラストラクチャコード、デプロイコード、IaCテンプレートの生成や作成に使用します。"
+  },
+  "agent:azure-logic-apps-expert": {
+    "sourceHash": "6fc05ab3747f329779f3dbbe4fa0a65e353d382f2332db5e522ba97926f561ea",
+    "ja": "ワークフロー設計、統合パターン、JSONベースのWorkflow Definition Languageを中心に、Azure Logic Apps開発に関する専門的な助言を提供します。"
+  },
+  "agent:azure-policy-analyzer": {
+    "sourceHash": "f74efaae65f70bbe388d142b378f9d4a78e16f34932a4d68ec1f948e2a1adc1b",
+    "ja": "Azure Policyのコンプライアンス状況（NIST SP 800-53、MCSB、CIS、ISO 27001、PCI DSS、SOC 2）を分析します。対象範囲を自動検出し、根拠と修復コマンドを含む構造化されたリスクレポートを1回の処理で返します。"
+  },
+  "agent:azure-principal-architect": {
+    "sourceHash": "d120beed2198fa1ee78de2bb3f73dae28a568a36edb88c1b707e4938037578e7",
+    "ja": "Azure Well-Architected Frameworkの原則とMicrosoftのベストプラクティスに基づき、Azureプリンシパルアーキテクトとして専門的な助言を提供します。"
+  },
+  "agent:azure-saas-architect": {
+    "sourceHash": "7a91933448de300a37cd6f0bf65feccafe1d0803b4718e6fad97fd6184f40142",
+    "ja": "Azure Well-ArchitectedのSaaS原則とMicrosoftのベストプラクティスに基づき、マルチテナントアプリケーションを中心としたAzure SaaSアーキテクトの専門的な助言を提供します。"
+  },
+  "agent:azure-smart-city-iot-architect": {
+    "sourceHash": "3c36bbd2288ac372432c25ba965b359a5a268b04239a19721dd97649b0806ee2",
+    "ja": "プラットフォームエンジニアリング上の明確な根拠に基づいて、Azure IoTとスマートシティのアーキテクチャを設計します。エッジソリューションの提案前に、Azure IoT Edgeのドキュメントを必ず確認します。"
+  },
+  "agent:azure-verified-modules-bicep": {
+    "sourceHash": "6c1d58a5eee0c5540cd4150b852d22762cf9fae5013946dad03d27040fff0dde",
+    "ja": "Azure Verified Modules（AVM）を使って、BicepによるAzure IaCを作成、更新、レビューします。"
+  },
+  "agent:azure-verified-modules-owner-triage": {
+    "sourceHash": "09970c5f7cc25a9ac52fd1fda27cf34cc6eddece22b4fcec9dcf9400553ff10a",
+    "ja": "担当者が管理するAzure Verified Modules（AVM）リポジトリの未解決GitHub Issueをトリアージします。バックログをCopilotに委譲できる作業と人間が対応する作業に分け、委譲率を含むレポートを作成します。明示的なユーザー承認なしにコメントや担当者の割り当ては行いません。"
+  },
+  "agent:azure-verified-modules-terraform": {
+    "sourceHash": "29df4c458b41ffe9e94d2d5fc382551969bb526ce7cadd36ca6d9d387fdce326",
+    "ja": "Azure Verified Modules（AVM）を使って、TerraformによるAzure IaCを作成、更新、レビューします。"
+  },
+  "agent:bicep-implement": {
+    "sourceHash": "b7cd9fed86d1be5a4cfefff64c9e199c114d62c32c80f023067250a9eb4bbc22",
+    "ja": "Azure BicepによるInfrastructure as Codeのコーディング専門家として、Bicepテンプレートを作成します。"
+  },
+  "agent:bicep-plan": {
+    "sourceHash": "2e22437ad939ecfd25453986a606d3e71eebbed1531856c261e53267d74e8382",
+    "ja": "Azure BicepによるInfrastructure as Codeのタスクについて、実装計画を策定します。"
+  },
+  "agent:blueprint-mode": {
+    "sourceHash": "58d2eefa8984ee47647402c90b24341d8e4e7c85ededdc7880c67d47f922ce93",
+    "ja": "正確性と保守性を厳格に重視し、構造化されたワークフロー（Debug、Express、Main、Loop）を実行します。改善されたツール利用ポリシーを徹底し、事実を推測で決めつけず、再現可能な解決策、自己修正、エッジケースへの対応を優先します。"
+  },
+  "agent:cast-imaging-impact-analysis": {
+    "sourceHash": "b8fec7fccb88e178511de138d3b54ee52455572d280f513a9e4c61b1a5da09bc",
+    "ja": "CAST Imagingを使って、ソフトウェアシステムの変更による影響とリスクを包括的に評価する専門エージェント。"
+  },
+  "agent:cast-imaging-software-discovery": {
+    "sourceHash": "1e1b4b71c141083a87b2e3cb84d4837f4991af08fadacf41e3ee50fe5b23d97a",
+    "ja": "CAST Imagingによる静的コード解析を通じて、ソフトウェアアプリケーションの全体像を把握し、アーキテクチャを可視化する専門エージェント。"
+  },
+  "agent:cast-imaging-structural-quality-advisor": {
+    "sourceHash": "ea6cf21483e22aa31185e01daccd77b329e81290926d9bc148c61265c5020c45",
+    "ja": "CAST Imagingを使ってコード品質の問題を特定、分析し、改善策を提示する専門エージェント。"
+  },
+  "agent:caveman-mode": {
+    "sourceHash": "566427c552b25ddb3e680a3e48e5d323286e0a1b48292f6f103275bed2dad265",
+    "ja": "機能を維持したまま、余分な説明を省いて少ない語数とトークン数で回答します。トークン使用量の最適化、低トークンモード、簡潔な出力、caveman mode、冗長さの削減、短い回答が必要なときに使用します。"
+  },
+  "agent:centos-linux-expert": {
+    "sourceHash": "c6a2ab290832fea0357d82fa527dcab488d9c20debb7989f17b4ea5fc6e155ce",
+    "ja": "RHEL互換のシステム管理、yum/dnfを使うワークフロー、エンタープライズ向けのセキュリティ強化に特化したCentOS（Stream/Legacy）Linuxの専門家。"
+  },
+  "agent:clojure-interactive-programming": {
+    "sourceHash": "52d0ff8ec0786f103551d732ce21ec28c603175f9b3cf3fe6580720e6450c07d",
+    "ja": "REPLを第一に使う手法、アーキテクチャの監督、対話的な問題解決に精通したClojureのペアプログラマー。品質基準を徹底し、場当たり的な回避策を避け、ファイルを変更する前に実際のREPL評価を通じて段階的に解決策を開発します。"
+  },
+  "agent:cloud-saas-outage-triage": {
+    "sourceHash": "fe0e2c94c695009680bcc739dbac87001b830b8235e60648b129121928de6512",
+    "ja": "コードを変更する前に、公式フィードの最新ステータスとインシデントの時系列を使い、上流のクラウドやSaaSの障害とアプリケーション自身の障害を切り分けます。"
+  },
+  "agent:code-tour": {
+    "sourceHash": "5106ec63f5b0d32b2dad7a83bcb7c6aef8d8a03563cbdb7a8c56c12d2f219f0d",
+    "ja": "スキーマ全体への対応とベストプラクティスに基づいて、VSCode CodeTourファイルを作成、保守する専門エージェント。"
+  },
+  "agent:comet-opik": {
+    "sourceHash": "61fdcb2a757b202a121968697409da50cd57748230fac11598d9ef5248e3635b",
+    "ja": "最新のOpik MCPサーバーを通じて、LLMアプリの計装、プロンプトとプロジェクトの管理、プロンプトの監査、トレースとメトリックの調査を行う統合Comet Opikエージェント。"
+  },
+  "agent:context-architect": {
+    "sourceHash": "5a076225fbfbb3ca73e53c4cc2850c706bd0805b6fef84780130a761cd8a0513",
+    "ja": "関連する文脈と依存関係を特定し、複数ファイルにまたがる変更の計画と実行を支援するエージェント。"
+  },
+  "agent:context7": {
+    "sourceHash": "9cfc9c8f460bfeb22b68ec635520cfe1c493029a27216d9288bf254585979c27",
+    "ja": "最新のドキュメントを活用し、ライブラリの最新バージョン、ベストプラクティス、正しい構文について支援する専門家。"
+  },
+  "agent:critical-thinking": {
+    "sourceHash": "ee148474acc61d85d0cd245a6e7a37a824607af693319c80af277cbe0f6e5bfb",
+    "ja": "前提を問い直し、批判的思考を促すことで、最善の解決策と成果を目指します。"
+  },
+  "agent:csharp-dotnet-janitor": {
+    "sourceHash": "24620af0cb0a4f27dd81834e648acda324ae60c7eef023f53a2fedef8ace0c52",
+    "ja": "C#/.NETコードのクリーンアップ、モダナイゼーション、技術的負債の解消などの保守作業を行います。"
+  },
+  "agent:csharp-mcp-expert": {
+    "sourceHash": "61190f6537d44e86637c561edd8761c72f055ac28fcb98457d72a5125a94a353",
+    "ja": "C#でのModel Context Protocol（MCP）サーバー開発を支援する専門アシスタント。"
+  },
+  "agent:CSharpExpert": {
+    "sourceHash": "3f4cfa31be49e4e6effa67f36b1cf1c76b7db8ba4664e811f6ce8ead24448843",
+    "ja": ".NETプロジェクトのソフトウェア開発タスクを支援するエージェント。"
+  },
+  "agent:custom-agent-foundry": {
+    "sourceHash": "4363c3fab930a189424f4e10707721d40a923f72400ae555e132c6d205ab006b",
+    "ja": "最適な構成を備えたVS Codeカスタムエージェントの設計と作成を専門に行います。"
+  },
+  "agent:debian-linux-expert": {
+    "sourceHash": "21c8e5835b8e1128c31d65fd9687087d70d4b457d0483bebb4a88701b416859d",
+    "ja": "安定したシステム管理、aptによるパッケージ管理、Debianポリシーに沿った実践に特化したDebian Linuxの専門家。"
+  },
+  "agent:debug": {
+    "sourceHash": "42f01edd39f577792ddb7cbe191f3e64d2d1be13ac7c2e4c1e4b25f16cc87794",
+    "ja": "アプリケーションをデバッグしてバグを発見し、修正します。"
+  },
+  "agent:declarative-agents-architect": {
+    "sourceHash": "b1bc9210a422b0407dced316f23cf4571e214e383c1317d41d0bb537dc6370f9",
+    "ja": "Microsoft 365 Copilotの宣言型エージェントの開発ライフサイクル全体に精通したアーキテクト。v1.5 JSONスキーマ、TypeSpec開発、Microsoft 365 Agents Toolkitとの統合を専門とします。要件・制約・目標の明確化、機能選定と構造設計、ベストプラクティスに沿ったTypeSpec/JSONの実装、Agents Playgroundと検証フローの設定、環境管理と本番展開計画、監視・性能・継続的改善を支援します。"
+  },
+  "agent:defender-scout-kql": {
+    "sourceHash": "bf8c1fec75fc2001169504fc3caa4360ecae561bcda890214a4eead1ab1b89a5",
+    "ja": "Endpoint、Identity、Office 365、Cloud Appsを対象としたMicrosoft Defender XDRの高度なハンティング用KQLクエリを生成、検証、最適化します。"
+  },
+  "agent:delphi-expert": {
+    "sourceHash": "0c585f8476c28e9e3b40b83faee078aaf624e7cefa786e232a85adac185eb887",
+    "ja": "Delphi/Object Pascalプロジェクトのソフトウェア開発タスクを支援するエージェント。"
+  },
+  "agent:demonstrate-understanding": {
+    "sourceHash": "aa8a5ba08acc415dddde10e77015bcf7c7bd76a3a94ae4c50a328b75ecff6ed8",
+    "ja": "問いかけを通じて、コード、設計パターン、実装の詳細に対するユーザーの理解を確認します。"
+  },
+  "agent:devils-advocate": {
+    "sourceHash": "debec75ac11b211063b6ca981656c73beb35dc85d67e1f272a6259c561fb8438",
+    "ja": "あえて反対の立場を取り、欠点、リスク、エッジケースを見つけることで、アイデアを批判的に検証し、その堅牢性を試します。"
+  },
+  "agent:devops-expert": {
+    "sourceHash": "4821785cf212b13086d2ce80011da5b6c71323677c63a1974a75d170cee24e29",
+    "ja": "計画→コード作成→ビルド→テスト→リリース→デプロイ→運用→監視という無限ループの原則に従い、自動化、協働、継続的改善を重視するDevOpsの専門家。"
+  },
+  "agent:devtools-regression-investigator": {
+    "sourceHash": "ba31b1c79fcc8e0b56cc193c49cfce85572365e23454b55bdfd6d07225f7fd08",
+    "ja": "Chrome DevTools MCPを使い、機能しなくなったユーザーフローの再現、コンソールとネットワークの証拠収集、根本原因の候補の絞り込みを行うブラウザーのリグレッション調査専門家。"
+  },
+  "agent:diffblue-cover": {
+    "sourceHash": "d8ed904a430c2d3b981e3925405281345190c13f20a6d59e1d4552e41a6859f1",
+    "ja": "Diffblue Coverを使ってJavaアプリケーションの単体テストを作成する専門エージェント。"
+  },
+  "agent:dotnet-fullstack-mentor": {
+    "sourceHash": "d21d5c34763e01227f5ba56202f57f41921b22842084be330e487db8e60c5d37",
+    "ja": "Clean Architecture、Aspire、C#のベストプラクティスに精通した、明確な方針を持つ.NETフルスタック開発のメンター。ジュニアからスタッフエンジニアまでのキャリア成長を支援します。"
+  },
+  "agent:dotnet-maui": {
+    "sourceHash": "f17a51ff4cc656e4bc80e20e176aea612b7604347dda77da6fbca6657b5fa9ab",
+    "ja": "コントロール、XAML、ハンドラー、性能に関するベストプラクティスを用いて、.NET MAUIのクロスプラットフォームアプリ開発を支援します。"
+  },
+  "agent:dotnet-self-learning-architect": {
+    "sourceHash": "2ca063dc5ce76e30d7bb223e2d5920b2ced83e3e8bdf017ee121c19b14c1af6a",
+    "ja": "複雑な開発案件を担当するシニア.NETアーキテクト。.NET 6以降のシステムを設計し、並列サブエージェントと統制されたチーム実行のどちらを使うか判断します。学びを文書化し、将来の作業に役立つプロジェクトの知識を永続的に記録します。"
+  },
+  "agent:dotnet-upgrade": {
+    "sourceHash": "24620af0cb0a4f27dd81834e648acda324ae60c7eef023f53a2fedef8ace0c52",
+    "ja": "C#/.NETコードのクリーンアップ、モダナイゼーション、技術的負債の解消などの保守作業を行います。"
+  },
+  "agent:doublecheck": {
+    "sourceHash": "828a3ebf72b8a9029ec972934f06fe92acfca34fcad3e24ec88ccae915b6808c",
+    "ja": "AI生成物を対話的に検証するエージェント。自己監査、情報源の検証、反証を試みるレビューの3層パイプラインを実行し、人間のレビューに向けて情報源へのリンクを含む構造化レポートを作成します。"
+  },
+  "agent:droid": {
+    "sourceHash": "03baf852777074441faa8a736f434da47d39239ada718f4fbecc227b6744a6f5",
+    "ja": "Droid CLIのインストール手順、使用例、自動化パターンを提示します。特にCI/CDや非対話型の自動化でのdroid execの利用を重視します。"
+  },
+  "agent:drupal-expert": {
+    "sourceHash": "698c9da24d48ffaea97a9f2c6261fcca72a5e8cc2b869fcc36c93a1c461caa8f",
+    "ja": "PHP 8.3以降とモダンなDrupalのパターンを用い、Drupalの開発、アーキテクチャ、ベストプラクティスについて支援する専門アシスタント。"
+  },
+  "agent:dynatrace-expert": {
+    "sourceHash": "08cc7104fb61616539a4107bd4eb40b5544eac0da7c850994f7074ed8f5a17b6",
+    "ja": "可観測性とセキュリティの機能をGitHubワークフローに統合するDynatraceの専門エージェント。トレース、ログ、Dynatraceの検出結果を自律的に分析し、インシデント調査、デプロイの検証、エラーのトリアージ、性能劣化の検出、リリース検証、脆弱性管理を支援します。特定した問題に対して、リポジトリ内で的確かつ精密な修正を行えるようにします。"
+  },
+  "agent:elasticsearch-observability": {
+    "sourceHash": "6c74c49f511fb9f6bfbd5f6232b80e3329e6a57b6d95bcb3e9aa089799f80799",
+    "ja": "Elasticのライブデータを使い、コードのデバッグ（O11y）、ベクトル検索の最適化（RAG）、セキュリティ脅威の修復を支援する専門AIアシスタント。"
+  },
+  "agent:electron-angular-native": {
+    "sourceHash": "fe67e0a4ed9f3ff29614fa3d513c207a1cf7ebbdb4efcc929cd79582fb0e4e62",
+    "ja": "Node.jsバックエンド（main）、Angularフロントエンド（render）、ネイティブ統合レイヤー（AppleScript、シェル、ネイティブツールなど）を備えたElectronアプリ向けのコードレビューモード。他のリポジトリのサービスはレビュー対象に含めません。"
+  },
+  "agent:ember": {
+    "sourceHash": "446884f8ab1ecd26274eab0b6c1b06a1260137d9f44568f48d196b2ad633e409",
+    "ja": "単なるアシスタントではなく、AIのパートナーとして寄り添うEmber。人から人へと火を分けるように、AIとのパートナーシップは習得するものではなく、自ら見いだすものだと気づく手助けをします。"
+  },
+  "agent:expert-cpp-software-engineer": {
+    "sourceHash": "5701e0d4cc7391431602d0f8c75a5e6d9072a50177f3b186e21a2f67a791cf3c",
+    "ja": "モダンC++と業界のベストプラクティスに基づき、C++ソフトウェアエンジニアリングに関する専門的な助言を提供します。"
+  },
+  "agent:expert-dotnet-software-engineer": {
+    "sourceHash": "f083ce624a1e67f6eae7d45a26f3b0000df15c6dff71721c91189984f0c05340",
+    "ja": "モダンなソフトウェア設計パターンを用いて、.NETソフトウェアエンジニアリングに関する専門的な助言を提供します。"
+  },
+  "agent:expert-embedded-c-engineer": {
+    "sourceHash": "2fda4e196d19227186975850eaa78faf929d4505f2d7118493d0430f9ba22dc1",
+    "ja": "安全性が極めて重要なシステム向けに、組み込みCの専門的な助言を提供します。MISRA C:2012/2025の規則準拠、CERT Cのセキュアコーディング、静的解析ツール（Coverity、QAC、PC-lint）、最先端モデルでも標準状態では確実に扱えない防御的プログラミングのパターンを対象とします。"
+  },
+  "agent:expert-nextjs-developer": {
+    "sourceHash": "d56ef38e29100ebd22dce1698d87465fb1dae8eaa53e81672d116b111fd7b8b3",
+    "ja": "App Router、Server Components、Cache Components、Turbopack、TypeScriptを使ったモダンなReactパターンを専門とするNext.js 16の開発者。"
+  },
+  "agent:expert-react-frontend-engineer": {
+    "sourceHash": "0f50e57d3a5b32316fdafbb56d59bc6cea27eb345bc2fe1599a10352ff34880a",
+    "ja": "モダンなフック、Server Components、Actions、TypeScript、性能最適化を専門とするReact 19.2のフロントエンドエンジニア。"
+  },
+  "agent:fedora-linux-expert": {
+    "sourceHash": "09ab4b1b1af75e6fc1e9c2d41108ad931d8afff63bdf1ff30fa3e834d0910ab9",
+    "ja": "dnf、SELinux、systemdベースのモダンなワークフローに特化したFedora（Red Hat系）Linuxの専門家。"
+  },
+  "agent:frontend-performance-investigator": {
+    "sourceHash": "a7fdee253fb6225a55ece038c53349c6109900472de107db6eac1765d5473af4",
+    "ja": "Chrome DevTools MCPを使って、Core Web Vitals、Lighthouseの指標悪化、レイアウトシフト、長時間タスク、低速なネットワーク経路を診断するWeb実行時性能の専門家。"
+  },
+  "agent:gem-browser-tester": {
+    "sourceHash": "e4d3dc29b3de780d32267a49ed2da241d949d8319bb52d6294f462985fdd27d7",
+    "ja": "ブラウザーのE2Eテスト、UI/UXの検証、視覚的なリグレッションの検出を行います。"
+  },
+  "agent:gem-code-simplifier": {
+    "sourceHash": "ba606168d09f68831ad7b44440b8438e3855ec333ab263660feb7599890dabc4",
+    "ja": "不要なコードの削除、複雑さの削減、重複の統合を行うリファクタリング専門家。"
+  },
+  "agent:gem-debugger": {
+    "sourceHash": "c426f516135ec730364d5c7ce1dad9f7bc88a9a755f646d338dfa3532b2a3dee",
+    "ja": "根本原因分析、スタックトレースの診断、二分探索によるリグレッション原因の特定、エラーの再現を行います。"
+  },
+  "agent:gem-designer": {
+    "sourceHash": "013534fd8ae999be24293b32121451ed3b8128bc45d753c46684d8d97c6d70b4",
+    "ja": "レイアウト、テーマ、配色、デザインシステム、アクセシビリティを扱うUI/UXデザインの専門家。"
+  },
+  "agent:gem-devops": {
+    "sourceHash": "0e3a4de9355adf2b9cbbb3dbe16610cb8d9de12a7dace1719061860ffc8b7c8f",
+    "ja": "インフラストラクチャのデプロイ、CI/CDパイプライン、コンテナー管理を担当します。"
+  },
+  "agent:gem-documentation-writer": {
+    "sourceHash": "049c79bfe8f942be74a69935a4faa8ae5710cf63428aabb3dc19f5d51d0f89aa",
+    "ja": "技術ドキュメント、README、APIドキュメント、図、手順解説を作成します。"
+  },
+  "agent:gem-implementer": {
+    "sourceHash": "a06a6c6c4c595017aabf939fd231b2e146fcd1122b8f032f0a085776f8e19600",
+    "ja": "テスト駆動開発（TDD）で機能実装、バグ修正、リファクタリングを行います。自身の作業のレビューは行いません。"
+  },
+  "agent:gem-mobile-tester": {
+    "sourceHash": "56b91675e86dff7bbdc5e6dd9b47ce2795ffac9259497dfef6738167067e12d4",
+    "ja": "Detox、Maestro、iOS/Androidシミュレーターを使ったモバイルE2Eテストを行います。"
+  },
+  "agent:gem-orchestrator": {
+    "sourceHash": "f1a747b25d50bb28586eca6891129dfae08ccaf297057d6435c06f4e081b2906",
+    "ja": "チームリーダーとして、計画、実装、検証を統括します。"
+  },
+  "agent:gem-planner": {
+    "sourceHash": "a2c7666b4e9fd716d0b9cd6812a56d80d382dc3b4053db882b50a90dc6b871d1",
+    "ja": "担当、成果物、検証方法を明確にし、実行に必要な判断が済んだ簡潔な段階別計画を作成します。"
+  },
+  "agent:gem-researcher": {
+    "sourceHash": "1f71172802313f0d8468de0b7c8d1038ffa48580409fa2b42b97f3e0ee925246",
+    "ja": "コードベースを調査し、パターン、関連性、アーキテクチャを把握します。コストを管理しながら調査できる複数の探索モードに対応します。"
+  },
+  "agent:gem-reviewer": {
+    "sourceHash": "d1b7af29ce129d2867ef5d3aa6c0a5c9f3d94093ef096885202d9154c5e6cff3",
+    "ja": "計画、タスク、コード、意思決定、ドキュメント、設定、統合について、標準・高精度・批評の各レベルで独立したレビューを行います。"
+  },
+  "agent:gem-skill-creator": {
+    "sourceHash": "f35f899150f6e53da47970ffb1ee34ab92e9ae05cfc834ff61fe5a46d96079c0",
+    "ja": "検証済みの再利用可能なパターンから、移植可能なAgent Skillsを作成します。成功したワークフローをskills.sh互換のSKILL.mdとしてパッケージ化するときに使用します。"
+  },
+  "agent:gilfoyle": {
+    "sourceHash": "17aad376231f1282d40a50f9979cd6bdd8a797b837fbba5b584b25fb056ee697",
+    "ja": "ドラマ『Silicon Valley』のBertram Gilfoyleを思わせる皮肉なユーモアと技術的なエリート意識で、コードのレビューと分析を行います。コードに対して容赦なく率直な意見を述べます。"
+  },
+  "agent:github-actions-expert": {
+    "sourceHash": "7099bec4c4aec84c0f9a0c3033e077d3ecb7e9f9ad2bbf6c9cd53c9fac34ab44",
+    "ja": "安全なCI/CDワークフロー、アクションのバージョン固定、OIDC認証、最小権限、サプライチェーンのセキュリティに特化したGitHub Actionsの専門家。"
+  },
+  "agent:github-actions-node-upgrade": {
+    "sourceHash": "c9c8546218dd495dad015d1146aa70d8bbfcd635ab3319348cc8caa199a7e447",
+    "ja": "JavaScript/TypeScriptで作成されたGitHub Actionsのアクションを、新しいNodeランタイム（例：node20からnode24）へ更新します。メジャーバージョンの引き上げ、CIの更新、完全な検証も行います。"
+  },
+  "agent:gitmoji-setup": {
+    "sourceHash": "7e9716dfcb66831eaaf26bbcbfbca0d44a35b1fe314157194a91f624b8ea828e",
+    "ja": "リポジトリにgitmoji（https://gitmoji.dev）のコミットツールを設定します。既存のフック管理ツールとコミット規約を調査し、既存フックを壊さず適切な方式を導入します。標準ではブランチ名とステージ済みファイルから絵文字を提案して事前入力する非対話型のprepare-commit-msgフックを設定し、代わりにgitmoji-cliの対話型選択機能やcommitlintによる規約の強制も導入できます。"
+  },
+  "agent:go-mcp-expert": {
+    "sourceHash": "609b62fc38d31a9f790d695d1548de4134f34ca13a61652d6700b55fa4e1d184",
+    "ja": "公式SDKを使ったGoでのModel Context Protocol（MCP）サーバー構築を支援する専門アシスタント。"
+  },
+  "agent:hlbpa": {
+    "sourceHash": "2931becc63de3fce5f14279378a1a9f96d3263f3541ea48454db3936fdeb2bd7",
+    "ja": "高水準のアーキテクチャ文書の作成とレビューに適したAIチャットモード。ユーザーストーリー完了後の局所的な文書更新や、本来の役割を誰も覚えていないレガシーシステムの調査に役立ちます。"
+  },
+  "agent:implementation-plan": {
+    "sourceHash": "e462fc3ca49f7843976b32895a6d7febbfbce37dfad52b8ec758d80664e45f95",
+    "ja": "新機能の開発や既存コードのリファクタリングに向けた実装計画を生成します。"
+  },
+  "agent:insiders-a11y-tracker": {
+    "sourceHash": "0f666ad9607e9abe247af0e19b2d643a438cafb7b3f8e1ac62fefd2717649b3d",
+    "ja": "VS Code Insidersビルドにおけるアクセシビリティの改善を追跡し、分析する専門エージェント。"
+  },
+  "agent:interview-prep": {
+    "sourceHash": "9c1551845d8cd2be84b24de176a82d116ce0e1ed978688ddcdf9af8df0541b7d",
+    "ja": "ソフトウェアエンジニア向けの技術面接コーチ。模擬面接、システム設計の指導、STAR法による行動面接の回答構成、面接前の企業調査を行います。"
+  },
+  "agent:janitor": {
+    "sourceHash": "891b3b031fd6e7edbee880dce04117f598007d541a2220d6be54a10280f2fcab",
+    "ja": "あらゆるコードベースを対象に、クリーンアップ、簡素化、技術的負債の解消などの保守作業を行います。"
+  },
+  "agent:java-mcp-expert": {
+    "sourceHash": "ff3eb16309c2c09b49d175c6e093fc0a92180ae46d11310ad136b26a8c272dfe",
+    "ja": "Reactive Streams、公式MCP Java SDK、Spring Bootとの統合を用いたJavaでのModel Context Protocolサーバー構築を専門的に支援します。"
+  },
+  "agent:jfrog-sec": {
+    "sourceHash": "1df28e33810fd138c2d408009f0cbb1a9c9739e9c465bed2976c96e93c20a8b3",
+    "ja": "セキュリティ問題の自動修復に特化したアプリケーションセキュリティエージェント。パッケージとバージョンの規定への適合を検証し、JFrogのセキュリティ情報を使って脆弱性の修正を提案します。"
+  },
+  "agent:kotlin-mcp-expert": {
+    "sourceHash": "f5b1e276be886ff1fedb9ed6ca944c5a86f4b0d8c9995a0c07d9b2e17f056dde",
+    "ja": "公式SDKを使ったKotlinでのModel Context Protocol（MCP）サーバー構築を支援する専門アシスタント。"
+  },
+  "agent:kubestellar-console": {
+    "sourceHash": "230468208199de53ef170d3a14a76e58180787f19fe130c051b7c8340f011506",
+    "ja": "KubeStellar Console向けのKubernetes運用専門家。コンソールのセットアップ、kc-agent（MCPサーバー）の設定、クラスター接続、ワークロードのデプロイ、AIチャットによるKubernetesのライブデータ照会を支援します。"
+  },
+  "agent:kusto-assistant": {
+    "sourceHash": "22e08e99da59d800b43508ab6876df702d0c317f8cc765806f5eff320c98e709",
+    "ja": "Azure MCPサーバーを通じて、Azure Data Explorerのライブデータ分析を支援するKQL専門アシスタント。"
+  },
+  "agent:laravel-expert-agent": {
+    "sourceHash": "c837c88ec572f687c3f9983c9e714c28a9f27a0119b67418a9eb0ee50ece6f9b",
+    "ja": "Eloquent、Artisan、テスト、ベストプラクティスを活用した、Laravel 12以降のモダンなアプリケーション開発を専門とするアシスタント。"
+  },
+  "agent:launchdarkly-flag-cleanup": {
+    "sourceHash": "42e53b3fda6609d4647e16db83be0141860a15a5ce82420003919b7f367bfe23",
+    "ja": "LaunchDarkly MCPサーバーを使って、機能フラグのクリーンアップを安全に自動化するGitHub Copilotの専門エージェント。削除の準備状況と削除後に採用すべき値を判定し、本番環境の挙動を維持しながら不要なフラグを削除し、古い既定値を更新するプルリクエストを作成します。"
+  },
+  "agent:lingodotdev-i18n": {
+    "sourceHash": "aea4edfeee75089c2b750df9789928c041c0a19b504e48197c7a16388084da87",
+    "ja": "チェックリストに基づく体系的なアプローチで、Webアプリケーションへの国際化（i18n）の実装を支援する専門家。"
+  },
+  "agent:linkedin-post-writer": {
+    "sourceHash": "bb1956e20015059721b6330724f62eb0fe55aa37f1a118d5d57cdd432dccdd37",
+    "ja": "Unicodeの太字・斜体表現、視覚的な区切り、反応を得やすい構成を使って、魅力的なLinkedIn投稿を作成、整形します。素材、技術情報、画像、アイデアを、そのままコピーして投稿できる文章に変換します。"
+  },
+  "agent:markdown-accessibility-assistant": {
+    "sourceHash": "fff9b7a516b2b89664c5581d60985f306e6a4e4810b2f051b215575a473049c6",
+    "ja": "GitHubの5つのベストプラクティスを使って、Markdownファイルのアクセシビリティを改善します。"
+  },
+  "agent:mcp-m365-agent-expert": {
+    "sourceHash": "3cd9a10bf4849dc959c2edd9403a5f388480b4acf2a3814c13c001d4a25d91f8",
+    "ja": "Model Context Protocolと統合する、Microsoft 365 Copilot向けのMCPベースの宣言型エージェントの構築を支援する専門アシスタント。"
+  },
+  "agent:mentor": {
+    "sourceHash": "ff30b051eae1dc020c289b8827450f5e19dc45fd6bcb1a06215747bd24290a9b",
+    "ja": "助言とサポートを提供し、エンジニアの成長を支援します。"
+  },
+  "agent:mentoring-juniors": {
+    "sourceHash": "1fd04ef2bc15ddb9cacd289cf872a94dc9e4f65524d17ae4287f77f5829a7380",
+    "ja": "初級開発者向けのソクラテス式メンター。直接答えを与えず、質問によって導きます。PEAR Loopと段階的なヒントを使い、初心者がコードを理解し、不具合をデバッグし、自立できるように支援します。"
+  },
+  "agent:meta-agentic-project-scaffold": {
+    "sourceHash": "18e4f15041e770d1acb9eae8ecbb78fdc80ec8da00c9258c1ad56968f1aa8e8c",
+    "ja": "プロジェクトのワークフローを効果的に作成、管理できるよう支援する、メタエージェント型のプロジェクト作成アシスタント。"
+  },
+  "agent:microsoft_learn_contributor": {
+    "sourceHash": "d3e1a7be6bb1908aa92248304ed94bf3416ea2ea3d7d545309418a4e3c903a8c",
+    "ja": "Microsoft Writing Style Guideと執筆のベストプラクティスに従い、Microsoft Learnのドキュメントを編集、執筆するためのMicrosoft Learn Contributorチャットモード。"
+  },
+  "agent:microsoft-study-mode": {
+    "sourceHash": "063a0dde3db370a3f7bb8e202d8b2314cd3f3dc5cd10964801c020fca01b5752",
+    "ja": "Microsoft/Azureの個人講師として、単に答えを示すのではなく、導きのある発見を通じた学習を支援します。"
+  },
+  "agent:modernization": {
+    "sourceHash": "6687137624e17f0b99c55b9677e917c85832d395ad31bdbe792f41c9eeaa19d7",
+    "ja": "人間の判断を組み込んだモダナイゼーション支援アシスタント。アーキテクチャの提案とともに、プロジェクト全体の刷新に向けた分析、文書化、計画策定を行います。"
+  },
+  "agent:monday-bug-fixer": {
+    "sourceHash": "8ef7e9edeb16e484cfa01bdaf84ab5a1722b3e188694ceb771f4f1949c766d65",
+    "ja": "Monday.comのデータからタスクの文脈を補強する高度なバグ修正エージェント。関連アイテム、ドキュメント、コメント、エピック、要件を収集し、本番品質の修正と充実したプルリクエストを提供します。"
+  },
+  "agent:mongodb-performance-advisor": {
+    "sourceHash": "f3c3d2ee0d2a0312605cd05e9117273ab726bdd997bd553f201bbbf73c57637a",
+    "ja": "MongoDBデータベースの性能を分析し、クエリとインデックスの最適化に関する知見や、データベース全体の活用を改善する実行可能な提案を提供します。"
+  },
+  "agent:ms-sql-dba": {
+    "sourceHash": "dfe71563c3422a65e478cb30a20f0c73fa92a52adf4d1d79237cf4624c73ea1f",
+    "ja": "MS SQL拡張機能を使って、Microsoft SQL Serverデータベースを操作します。"
+  },
+  "agent:neo4j-docker-client-generator": {
+    "sourceHash": "b9e417b75e1a16c539ec76c2c0fc865cf61aa6d16c51da0f9cdb04da3f6af6ce",
+    "ja": "GitHub Issueを基に、ベストプラクティスに沿ったシンプルで高品質なPython用Neo4jクライアントライブラリを生成するAIエージェント。"
+  },
+  "agent:neon-migration-specialist": {
+    "sourceHash": "1f3f04768f1b550c789dbafc634c414b7e73e590eff332c913b35b33a0234d95",
+    "ja": "Neonのブランチワークフローを使い、ダウンタイムなしで安全なPostgres移行を行います。分離されたデータベースブランチでスキーマ変更をテストし、十分に検証してから本番へ適用します。Prisma、Drizzleなど好みのORMに対応し、一連の作業を自動化します。"
+  },
+  "agent:neon-optimization-analyzer": {
+    "sourceHash": "a59bed2ce337ae19d851d1dd87a4e4fc5d77f607c6858ce109e75b36a17a9971",
+    "ja": "Neonのブランチワークフローを使い、遅いPostgresクエリを自動で特定、修正します。実行計画を分析し、分離されたデータベースブランチで最適化をテストし、改善前後の明確な性能指標と適用可能なコード修正を提示します。"
+  },
+  "agent:new-relic-incident-response": {
+    "sourceHash": "2417621eebc021904176b1fd9daea6cadf087bda2f34035df2af7d864bbfe4bd",
+    "ja": "New Relicの可観測性データとコード変更を関連付け、本番環境の問題を特定、修正します。アラート、トランザクショントレース、エラー分析、デプロイを調べ、根本原因を特定してコード修正を提案します。"
+  },
+  "agent:nuxt-expert": {
+    "sourceHash": "6914928ce40480d1fa7aaaca53128ab13eadf97b54b0dc1bc57f4e93bdbd08a7",
+    "ja": "Nuxt 3、Nitro、サーバールート、データ取得戦略、Vue 3とTypeScriptを使った性能最適化を専門とするNuxt開発者。"
+  },
+  "agent:octopus-deploy-release-notes-mcp": {
+    "sourceHash": "edf4bded4f2713c62c05f9a145a1c002167e30173393c24dd3e6065b416337ed",
+    "ja": "Octopus Deployのリリースに対するリリースノートを生成します。このMCPサーバーのツールを通じてOctopus Deploy APIへアクセスします。"
+  },
+  "agent:one-shot-feature-issue-planner": {
+    "sourceHash": "a5991c9c8ace593dc5709d42ec1af45c9df18b437779ea8fdcc3a560d82c6dbe",
+    "ja": "1件の新機能リクエストから、追加の質問をせずに、そのままIssueにできる完全な実装計画を作成するクラウドエージェント。"
+  },
+  "agent:openapi-to-application": {
+    "sourceHash": "9e9ec536970b759e8ad8fa40bcd40ecea9399ca93988f1b322c3d273574567bd",
+    "ja": "OpenAPI仕様から動作するアプリケーションを生成する専門アシスタント。"
+  },
+  "agent:oracle-to-postgres-migration-expert": {
+    "sourceHash": "c3bd5b6a321a6aa3626d908e91c3c069dbb05ed6d67e8157e1a7a46a1b84924c",
+    "ja": "アプリケーションのOracleからPostgreSQLへの移行を支援するエージェント。移行の概念、注意点、ベストプラクティスを説明し、コード編集とコマンド実行を直接行います。"
+  },
+  "agent:pagerduty-incident-responder": {
+    "sourceHash": "6331e7b747e52c16dd643fc7f30bd37634da4ed7d4526f44eccc6184c7581224",
+    "ja": "インシデントの背景を分析し、最近のコード変更を特定し、GitHubプルリクエストで修正を提案することで、PagerDutyのインシデントに対応します。"
+  },
+  "agent:php-mcp-expert": {
+    "sourceHash": "051c65d3321c70c1a76d35277af509d55942cd3847f1b2db7cbc73b96fedbcc3",
+    "ja": "属性ベースの検出に対応する公式PHP SDKを使った、PHPでのMCPサーバー開発を支援する専門アシスタント。"
+  },
+  "agent:pimcore-expert": {
+    "sourceHash": "306e9ff3060bb2cfd583d99672e8ef708f3bcc0445a3729bb9deb5d1cff2ff0d",
+    "ja": "Symfonyと連携したCMS、DAM、PIM、E-Commerceソリューションを専門とするPimcore開発アシスタント。"
+  },
+  "agent:plan": {
+    "sourceHash": "5cbc302c407211321c91baab9734ae4e93b617c36e54e9bd3e899241bda08704",
+    "ja": "実装前の慎重な分析を重視する、戦略的な計画とアーキテクチャのアシスタント。コードベースの理解、要件の明確化、包括的な実装戦略の策定を支援します。"
+  },
+  "agent:planner": {
+    "sourceHash": "e462fc3ca49f7843976b32895a6d7febbfbce37dfad52b8ec758d80664e45f95",
+    "ja": "新機能の開発や既存コードのリファクタリングに向けた実装計画を生成します。"
+  },
+  "agent:platform-sre-kubernetes": {
+    "sourceHash": "6205582ec5a44dc4e1b771667b911993aec38c2a5166e8122cda6c94a52f7f50",
+    "ja": "本番品質のデプロイに向けて、信頼性、安全なロールアウトとロールバック、安全な既定設定、運用上の検証を優先する、SRE志向のKubernetes専門家。"
+  },
+  "agent:playwright-tester": {
+    "sourceHash": "456e658e56ee6f66b7a7ec04bc9e5a4512378fd073c013a1e86a05aa9ea1dd9d",
+    "ja": "Playwrightテストのためのテストモード。"
+  },
+  "agent:postgresql-dba": {
+    "sourceHash": "1b609af63e0298606bc3b05129d228ef47bf2377a7236472723df3e47b23d5a2",
+    "ja": "PostgreSQL拡張機能を使って、PostgreSQLデータベースを操作します。"
+  },
+  "agent:power-bi-data-modeling-expert": {
+    "sourceHash": "d0a63de1cd01c026c2de051277d23555d8e31ecaf9fa7aecd7032947723ea73b",
+    "ja": "スタースキーマの原則、リレーションシップ設計、Microsoftのベストプラクティスに基づき、最適な性能と使いやすさを備えたPower BIデータモデルの設計を専門的に支援します。"
+  },
+  "agent:power-bi-dax-expert": {
+    "sourceHash": "34f230321fd5c8e46918cee277c9bc80c83b8fae11a4d41ef487941e98fb7360",
+    "ja": "Microsoftのベストプラクティスに基づき、DAX式と計算の性能、可読性、保守性を高めるPower BI DAXの専門的な助言を提供します。"
+  },
+  "agent:power-bi-performance-expert": {
+    "sourceHash": "1391982c5d2ac0df918e0594900b47fd462045b1aa4cc06016a2a193054a5ac0",
+    "ja": "Power BIのモデル、レポート、クエリのトラブルシューティング、監視、性能改善に向けた、性能最適化の専門的な助言を提供します。"
+  },
+  "agent:power-bi-visualization-expert": {
+    "sourceHash": "d6efab1f498e78cecc19a29a5170a371ba6da4dcf79b823413358d102913691e",
+    "ja": "Microsoftのベストプラクティスに基づき、効果的で高性能かつ使いやすいレポートとダッシュボードを作成するための、Power BIレポート設計と可視化の専門的な助言を提供します。"
+  },
+  "agent:power-platform-expert": {
+    "sourceHash": "feb367023a23dfee420f407cee79091bf0958b9772b87ae61ddfde5f8abba393",
+    "ja": "Code Apps、キャンバスアプリ、Dataverse、コネクタ、Power Platformのベストプラクティスについて助言するPower Platformの専門家。"
+  },
+  "agent:power-platform-mcp-integration-expert": {
+    "sourceHash": "2bb7fc0a8259435c0921f6d77ebf2065f2a717cafe3d1a8564092a11617e994c",
+    "ja": "Copilot Studio向けにMCPと統合するPower Platformカスタムコネクタの開発専門家。スキーマ、プロトコル、統合パターンを幅広く理解しています。"
+  },
+  "agent:prd": {
+    "sourceHash": "a125ae3b5b71c4d3efbe5520c610116a1c2f53af562b5d583ab74a761bc45b69",
+    "ja": "ユーザーストーリー、受け入れ基準、技術的な考慮事項、指標を詳述した包括的な製品要件ドキュメント（PRD）をMarkdownで生成します。ユーザーの確認後、必要に応じてGitHub Issueも作成します。"
+  },
+  "agent:principal-software-engineer": {
+    "sourceHash": "215d350e91deb2a911279b5640384691b5ef8b36adc435674cfeca0d7cb9337b",
+    "ja": "エンジニアリングの卓越性、技術的リーダーシップ、実践的な実装を重視し、プリンシパルエンジニア水準のソフトウェア開発の助言を提供します。"
+  },
+  "agent:project-architecture-planner": {
+    "sourceHash": "0abecfa2b4162c1463b20c011a623c9b970a7cc52496319fa2bd78192195612d",
+    "ja": "技術スタックの評価、スケーラビリティのロードマップ設計、クラウドに依存しないコスト分析、既存コードベースのレビューを行う総合的なソフトウェアアーキテクチャ計画担当。HTMLプレビューとdraw.ioエクスポートに対応したインタラクティブなMermaid図も提供します。"
+  },
+  "agent:project-documenter": {
+    "sourceHash": "e23b6c827445ac7fd0e97bfd475624d1463f820c96cd4463e1934af14a6fd9a0",
+    "ja": "draw.ioのアーキテクチャ図とPNG画像を組み込んだ、整ったMS Wordのプロジェクト文書を生成します。プロジェクトの技術スタック、アーキテクチャ、コード構造を自動的に把握し、Markdown、draw.io図、PNG、.docxを出力します。"
+  },
+  "agent:prompt-builder": {
+    "sourceHash": "b11788bf87c31fd7aa215cab55caa8ea94ced58c84c1d560bffe87953511bc60",
+    "ja": "高品質なプロンプトを作成するための、専門的なプロンプトエンジニアリングと検証システム。microsoft/edge-aiが提供します。"
+  },
+  "agent:prompt-engineer": {
+    "sourceHash": "c3afaf4ff973b1e9da9f798dd1ddb10bc9e43dfaa9b333159cd7e86813d9eb4a",
+    "ja": "プロンプトの分析と改善に特化したチャットモード。すべてのユーザー入力を改善対象のプロンプトとして扱います。OpenAIのプロンプトエンジニアリングのベストプラクティスに基づく体系的な枠組みで元のプロンプトを評価し、<reasoning>タグ内に詳細な分析を示してから、改善版のプロンプトを生成します。"
+  },
+  "agent:python-mcp-expert": {
+    "sourceHash": "38eb5c818b74714525faaaae1b82a32d0c8a7bbd63d1db4b8bfa33b5ceff7b42",
+    "ja": "PythonでのModel Context Protocol（MCP）サーバー開発を支援する専門アシスタント。"
+  },
+  "agent:python-notebook-sample-builder": {
+    "sourceHash": "71e1bfb79a3e3d0c3b996e383d0ee6293ff5d331891dc6324c45bb4343ce93a9",
+    "ja": "AzureとAIの機能を実演するPython Notebookを、VS Codeで構築するカスタムエージェント。"
+  },
+  "agent:python-win-arm64-gha-wheel-builder": {
+    "sourceHash": "a84cb35642db836dc8eb3ab4c68051a5cc4cb3abc70b99e2de445299321641f8",
+    "ja": "Pythonパッケージの既存GitHub Actionsワークフローに、windows-11-armランナーを使ったネイティブWindows ARM64 wheelのビルドとテストを追加します。"
+  },
+  "agent:qa-subagent": {
+    "sourceHash": "cbde3a14f4ca7d88cc4a4eb6608f29c842cb24f6bdc372e969557807bbdbd738",
+    "ja": "テスト計画、バグの探索、エッジケースの分析、実装の検証を緻密に行うQAサブエージェント。"
+  },
+  "agent:quality-playbook": {
+    "sourceHash": "7ee77c09f7a796145143ae39d60cd13176d51c067a1b9e10cdac214b88655a66",
+    "ja": "あらゆるコードベースを対象に、品質エンジニアリングの総合監査を実行します。探索、生成、レビュー、監査、整合、検証の6段階を、それぞれ独立したコンテキストウィンドウで深く実施し、その後も反復的な手法でバグを探します。構造的なコードレビューだけでは捉えられない、実際の不具合の35%を発見することを目指します。"
+  },
+  "agent:react18-auditor": {
+    "sourceHash": "f691e62faacc4730b9062a843e6df25054fd5c9d4b3bc884feac25b5a937b2c3",
+    "ja": "React 18.3.1への移行を目指す、React 16/17のクラスコンポーネント中心のコードベースを詳細に調査します。安全でないライフサイクルメソッド、旧式のコンテキスト、バッチ処理の問題、イベント委譲への前提、文字列ref、18.3.1のすべての非推奨項目を検出します。コードは読み取りのみで変更せず、結果を.github/react18-audit.mdに保存します。"
+  },
+  "agent:react18-batching-fixer": {
+    "sourceHash": "79ef634833569bf9020760ad7f9dbe2181c3d966296cf97585deb1aa919a29a2",
+    "ja": "自動バッチ処理によるリグレッションの専門家。React 18ではReact 16/17と異なり、Promise、setTimeout、ネイティブイベントハンドラー内を含むすべてのsetState呼び出しがバッチ化されます。途中の即時再レンダリングを前提とするクラスコンポーネントの非同期状態更新を検出し、意味的に必要な箇所をflushSyncで修正します。"
+  },
+  "agent:react18-class-surgeon": {
+    "sourceHash": "7f239e477198af474645a7f4f2aa6eb467bfab2db0ce9419a25ad76fdd5da767",
+    "ja": "React 16/17から18.3.1へのクラスコンポーネント移行の専門家。3つの安全でないライフサイクルメソッドを、UNSAFE_接頭辞の追加だけで済ませず、意味的に正しい実装へ置き換えます。旧式のコンテキストをcreateContextへ、文字列refをReact.createRef()へ、findDOMNodeを直接refへ、ReactDOM.renderをcreateRootへ移行し、メモリにファイルごとの進捗を記録します。"
+  },
+  "agent:react18-commander": {
+    "sourceHash": "2d150a18c2963898978c8a6818c1cf68326292a7384aaee0310fd36664694569",
+    "ja": "クラスコンポーネントが多いコードベースのReact 16/17から18.3.1への移行を統括します。監査、依存関係の更新、クラスコンポーネントの改修、自動バッチ処理の修正、テスト検証を調整します。メモリで各段階の進行条件を管理し、中断したセッションを再開します。React 19で削除されるすべての非推奨項目を明らかにする18.3.1を移行先とし、続くReact 19移行に備えます。"
+  },
+  "agent:react18-dep-surgeon": {
+    "sourceHash": "d31ac6eda3198ffbc7391c94a2aa4f1800b7ff1097d3204e659791a32b74f824",
+    "ja": "React 16/17から18.3.1への依存関係更新の専門家。18.xの最新版ではなく18.3.1に厳密に固定します。RTLをv14、Apolloを3.8以降、Emotionを11.10以降、react-routerをv6に更新します。React 18非対応のEnzymeを検出した場合は進行を止め、統括エージェントにGO/NO-GOを返します。"
+  },
+  "agent:react18-test-guardian": {
+    "sourceHash": "3467408981501df9d3f9d874c4fb335cac3d052c4822b98cf2003808774fb381",
+    "ja": "React 16/17から18.3.1への移行に伴うテスト修正と検証を担当します。RTL v14の非同期act()の変更、自動バッチ処理によるテストのリグレッション、StrictModeの二重呼び出しに伴う回数更新、Enzymeがある場合のRTLへの書き換えに対応します。テスト失敗がゼロになるまで繰り返し、react18-commanderからサブエージェントとして呼び出されます。"
+  },
+  "agent:react19-auditor": {
+    "sourceHash": "5cb48adb232e2de72deb2776fe51cf4fbe0a4a633ed4a4ad1934999d4c14129a",
+    "ja": "コードベース全体を詳細に調べ、React 19の破壊的変更と非推奨パターンをすべて特定します。優先順位付きの移行レポートを.github/react19-audit.mdに作成します。コードは読み取りのみで変更せず、react19-commanderからサブエージェントとして呼び出されます。"
+  },
+  "agent:react19-commander": {
+    "sourceHash": "e77190d3f0a6bbd4d08410012781164bcd0ff6b93c7daeb892328610d0930bf5",
+    "ja": "React 19移行の統括エージェント。auditor、dep-surgeon、migrator、test-guardianの専門サブエージェントを順番に呼び出し、各段階の完了条件を確認してから次へ進みます。メモリでパイプライン全体の移行状態を追跡し、不完全な移行を許容しません。"
+  },
+  "agent:react19-dep-surgeon": {
+    "sourceHash": "cfe5b922c5d62abe8f109cb5f08bbcbab69ee5cd087315ca0400500628ef3c1c",
+    "ja": "React 19を導入し、すべてのpeer依存関係の競合を解消し、testing-library、Apollo、Emotionを更新する依存関係更新の専門家。各更新手順をメモリに記録し、統括エージェントにGO/NO-GOを返します。react19-commanderからサブエージェントとして呼び出されます。"
+  },
+  "agent:react19-migrator": {
+    "sourceHash": "39582f218bc209c9cf624a6cab26b00f9f64d247ff82295d951c9cfd42f1b839",
+    "ja": "非推奨のReactパターン（forwardRef、defaultProps、ReactDOM.render、旧式のコンテキスト、文字列ref、useRef()）をすべてReact 19 APIへ書き換えるソースコード移行エンジン。ファイルごとの進捗をメモリに記録し、テストファイルは変更しません。非推奨パターンが残っていないことを統括エージェントへ報告します。"
+  },
+  "agent:react19-test-guardian": {
+    "sourceHash": "27bad11b685eaff3e9a7177d1cbb4b9746efb9abb0de2b03400417a6e62bbadd",
+    "ja": "すべてのテストファイルをReact 19に対応させ、失敗がゼロになるまでテストスイートを実行する修正・検証専門家。メモリでファイルごとの修正進捗と失敗履歴を追跡し、npm testが失敗0件を報告するまで続行します。react19-commanderからサブエージェントとして呼び出されます。"
+  },
+  "agent:reepl-linkedin": {
+    "sourceHash": "98658eaf64b4f69e47eff38b903bd38de89554fc962b618c3264ac1008fed7e5",
+    "ja": "AIを活用したLinkedInコンテンツの作成、投稿予約、分析を行うエージェント。GitHub Copilotで投稿やカルーセルを作成し、LinkedIn上の発信を管理します。"
+  },
+  "agent:refine-issue": {
+    "sourceHash": "2327ec339008607ace9b3a7c7d6a7db9b62d9b7eeba9575f4650e4516bb69f2f",
+    "ja": "受け入れ基準、技術的な考慮事項、エッジケース、非機能要件（NFR）を追加し、要件やIssueを具体化します。"
+  },
+  "agent:repo-architect": {
+    "sourceHash": "b94972d5bd7aacfcd4b7ca76b89160d52a12deb885bdb515305fe8075e1bad6f",
+    "ja": "GitHub Copilot（VS Code）とOpenCode CLIのワークフロー向けに、エージェントを活用するプロジェクト構造を初期構築、検証します。opencode /initまたはVS Code Copilotの初期化後に実行し、適切なフォルダー階層、指示、エージェント、スキル、プロンプトのひな形を作成します。"
+  },
+  "agent:research-harness-engineer": {
+    "sourceHash": "1981722cdf9821a2ae346bac69a7ac9a6d66ae8fb6e91d516cfb80527da13bfc",
+    "ja": "一連の研究実験に向けて、見かけの成果に惑わされにくい評価ハーネスを構築し、報告する数値の妥当性を保つエンジニア。帰無モデルの先行評価、較正用とホールドアウト用データの分離、改善を主張する前のベースライン再現、対応のある比較の誤差範囲、意図的な破壊によるガードの検証を重視します。"
+  },
+  "agent:research-technical-spike": {
+    "sourceHash": "84e6bf1ba7703186151c3ae525193f9c2cc9632b095a014d6dfd4e69315b1ab7",
+    "ja": "徹底した調査と管理された実験を通じて、技術スパイクのドキュメントを体系的に調査、検証します。"
+  },
+  "agent:ruby-mcp-expert": {
+    "sourceHash": "a2eb255f52b8c981d7d59a8e36d8581862ece418c4eb44552fc3587582e968d0",
+    "ja": "公式MCP Ruby SDK gemとRailsとの統合を使った、RubyでのModel Context Protocolサーバー構築を専門的に支援します。"
+  },
+  "agent:rug-orchestrator": {
+    "sourceHash": "efa71a01ed242a6d6dc67d748b52e89dbe55e35fd0cd7884f05e3f4fcf1000b0",
+    "ja": "依頼を分解し、すべての作業をサブエージェントへ委譲し、結果を検証して完了まで繰り返す、統括に専念するエージェント。"
+  },
+  "agent:rust-mcp-expert": {
+    "sourceHash": "1dc57480d54228cd1632de497493fe1afd5fe6648708be0b98e0eef36e19c4c0",
+    "ja": "tokio非同期ランタイムとrmcp SDKを使った、RustでのMCPサーバー開発を支援する専門アシスタント。"
+  },
+  "agent:salesforce-apex-triggers": {
+    "sourceHash": "73b7fb35dfde53e9698ff74c5259589e1b84e59249f95f01efd96b8dcae45c4c",
+    "ja": "Salesforceのベストプラクティスに沿った本番品質のコードで、Apexクラスとトリガーを使ってSalesforceのビジネスロジックを実装します。"
+  },
+  "agent:salesforce-aura-lwc": {
+    "sourceHash": "f8e34c677d122febd2cf03b7d9ff3cbb1583fffdd389fb7fd3d9b89905716545",
+    "ja": "Lightningフレームワークのベストプラクティスに従い、Lightning Web ComponentsとAuraコンポーネントを使ってSalesforceのUIコンポーネントを実装します。"
+  },
+  "agent:salesforce-expert": {
+    "sourceHash": "1e132373b39220938b9b06d8752a2171069879deafb39c4a9fb4d78edac05eba",
+    "ja": "Apex Enterprise Patterns、LWC、システム統合、AuraからLWCへの移行を含む、Salesforce Platformの専門的な助言を提供します。"
+  },
+  "agent:salesforce-flow": {
+    "sourceHash": "fcca16db1e8c86313a00ad5257d1567ece2f8c73e10129806540bebb79c85663",
+    "ja": "宣言型自動化のベストプラクティスに従い、Salesforce Flowを使って業務の自動化を実装します。"
+  },
+  "agent:salesforce-visualforce": {
+    "sourceHash": "43167ad799dcff03fb92dd8db64c455e1a6cb7dc9b05561e4ce228edc73e3df2",
+    "ja": "SalesforceのMVCアーキテクチャとベストプラクティスに従い、Visualforceページとコントローラーを実装します。"
+  },
+  "agent:sast-sca-security-analyzer": {
+    "sourceHash": "47039509192815ef82a1a1212e7b151fed795ffa9db5f74dceb421b256ac01aa",
+    "ja": "SAST（静的アプリケーションセキュリティテスト）、SCA（ソフトウェア構成分析）、ソースコードやバイナリのセキュリティ検査、サードパーティ依存関係の脆弱性監査、ポリシー適合性確認、構造化セキュリティレポートの生成に使用します。ファイルと行を特定したCWE対応の欠陥検出、オープンソースライセンスのリスクレビュー、CI/CDの判定条件に用いる検出結果の作成にも対応します。"
+  },
+  "agent:scientific-paper-research": {
+    "sourceHash": "02aab0222e15c016e7d8da2b070f09a4126fa10e86f52ded80f86b1d579e609e",
+    "ja": "BGPT MCPサーバーを使って科学論文を検索し、研究の全文から構造化された実験データを取得する研究エージェント。"
+  },
+  "agent:se-gitops-ci-specialist": {
+    "sourceHash": "f76ce56ea4fcfe14da146a43a34d21556f393e98f8f3168c52bcac809abfb065",
+    "ja": "CI/CDパイプライン、デプロイのデバッグ、GitOpsワークフローを専門とし、予想外のトラブルがない安定したデプロイを目指すDevOps専門家。"
+  },
+  "agent:se-product-manager-advisor": {
+    "sourceHash": "1582050dc0429a4aa6e47cb8118d4e10b162bec7f3067eae24b3bed353f1c4d3",
+    "ja": "GitHub Issueの作成、ビジネス価値とユーザーニーズの整合、データに基づくプロダクトの意思決定について、プロダクト管理の助言を提供します。"
+  },
+  "agent:se-responsible-ai-code": {
+    "sourceHash": "e1745d23d1143a59b1fb52a167a8ab764b0ca7aa1341ef636d0c2baf3e45a09c",
+    "ja": "バイアスの防止、アクセシビリティへの適合、倫理的な開発、インクルーシブデザインを通じて、誰にとっても役立つAIを目指す責任あるAIの専門家。"
+  },
+  "agent:se-security-reviewer": {
+    "sourceHash": "0f2179c999584fc6f60e396f492e95cf9328f6dd09496f21d8701a021c2c6cdb",
+    "ja": "OWASP Top 10、Zero Trust、LLMセキュリティ、エンタープライズのセキュリティ基準に基づく、セキュリティ重視のコードレビュー専門家。"
+  },
+  "agent:se-system-architecture-reviewer": {
+    "sourceHash": "d607e0528dc12f35941ac37b2b9f6bb7ed478666ab748a55a59b8a4316d5ee7f",
+    "ja": "Well-Architectedフレームワーク、設計検証、スケーラビリティ分析を活用し、AIシステムと分散システムのアーキテクチャをレビューする専門家。"
+  },
+  "agent:se-technical-writer": {
+    "sourceHash": "3d6fbff55f1e9d27ae1907e5e7c3e9af2844f822e003722b5a3dfefe75b985dc",
+    "ja": "開発者向けドキュメント、技術ブログ、チュートリアル、教育コンテンツを作成するテクニカルライティングの専門家。"
+  },
+  "agent:se-ux-ui-designer": {
+    "sourceHash": "d9a38afbaf4dd55a185c5f5a2251e8884f9688e5f58239a6ca368187a6b38b52",
+    "ja": "Figmaやデザインのワークフローに向けて、Jobs-to-be-Done分析、ユーザージャーニーマッピング、UX調査の成果物を提供します。"
+  },
+  "agent:search-ai-optimization-expert": {
+    "sourceHash": "044f704765126530e3b61d5d82abf7b16d80302bbb1a2576cc28610b3fc2da72",
+    "ja": "AIに適したコンテンツ戦略を取り入れ、SEO、回答エンジン最適化（AEO）、生成エンジン最適化（GEO）など、現代の検索最適化に関する専門的な助言を提供します。"
+  },
+  "agent:shopify-expert": {
+    "sourceHash": "4ef163ecc030d9e6fbbaace7e6eedf0d34cb2e580119b11b809771448888d94d",
+    "ja": "テーマ開発、Liquidテンプレート、アプリ開発、Shopify APIを専門とするShopify開発アシスタント。"
+  },
+  "agent:simple-app-idea-generator": {
+    "sourceHash": "b48634247bc938cd56b34d5a955fe00ab45ebfba1b5eb92375a6622d6fa0dafc",
+    "ja": "楽しい対話形式の問いかけを通じて新しいアプリケーションのアイデアを出し合い、仕様書を作成できる段階まで具体化します。"
+  },
+  "agent:software-engineer-agent-v1": {
+    "sourceHash": "3e30ed57e41a1d6e48b6cb1ac7480adfd79e0ebb2b0d1288d41e8846092ac4dd",
+    "ja": "本番運用可能で保守しやすいコードを提供する、専門家水準のソフトウェアエンジニアリングエージェント。仕様に基づいて体系的に実行し、包括的に文書化し、自律的かつ状況に適応して作業します。"
+  },
+  "agent:spark-performance": {
+    "sourceHash": "59ee442da95f9cd87cce0d96dc377d60140074d3c78b52273a3b90e221074a31",
+    "ja": "PySparkの性能ボトルネックや分散実行の落とし穴を診断し、Sparkネイティブな処理への書き換えや、より安全な分散処理パターンを提案します。mapInPandasの利用に関する助言も含みます。"
+  },
+  "agent:specification": {
+    "sourceHash": "1d2085d970f16d645c2d1bc92df2a6214566aa5032340182e0bfcc32681fe8c6",
+    "ja": "新機能または既存機能の仕様書を生成、更新します。"
+  },
+  "agent:stackhawk-security-onboarding": {
+    "sourceHash": "c9afe9acdeb27874660b606b27740018250959be8fb0ccc7b35517a7cbc91105",
+    "ja": "設定ファイルとGitHub Actionsワークフローを生成し、リポジトリにStackHawkのセキュリティテストを自動でセットアップします。"
+  },
+  "agent:swe-subagent": {
+    "sourceHash": "219ed492aedbe850d6b26a9080c7da3f96a14cf8059bb97ea8468f431719680f",
+    "ja": "機能開発、デバッグ、リファクタリング、テストなどの実装タスクを担当する、シニアソフトウェアエンジニアのサブエージェント。"
+  },
+  "agent:swift-mcp-expert": {
+    "sourceHash": "2d722fa45ec992b58e75fbd74424c63222b66f3590fbf9794663143b79587b21",
+    "ja": "モダンな並行処理機能と公式MCP Swift SDKを使った、SwiftでのModel Context Protocolサーバー構築を専門的に支援します。"
+  },
+  "agent:task-planner": {
+    "sourceHash": "cc6c13f9c51b3e38b004ff68f8ad8db9a751354ca2af9dc6ab59840279d954ea",
+    "ja": "実行可能な実装計画を作成するタスクプランナー。microsoft/edge-aiが提供します。"
+  },
+  "agent:task-researcher": {
+    "sourceHash": "92e28dd4abb7f3054b043814f28cd6e350e69bc535076610008c62b9fcfefd1f",
+    "ja": "包括的なプロジェクト分析を行うタスク調査の専門家。microsoft/edge-aiが提供します。"
+  },
+  "agent:taxcore-technical-writer": {
+    "sourceHash": "d9bc78f7e5709a01ef8301db523ac8de3b765a3b25634d575ed6ced2e817d317",
+    "ja": "TaxCoreの電子税務請求書エコシステムに精通したテクニカルライター。Secure Element Reader、スマートカードのワークフロー、税務請求書の概念、監査プロセス、PKI/SEのセキュリティを含むTaxCoreアプリケーションの文書を作成、改善、レビューします。TaxCore関連のすべての領域で、エンドユーザーガイド、開発者文書、リファレンス、セットアップガイドに対応します。"
+  },
+  "agent:tdd-green": {
+    "sourceHash": "16844fbd50f94b3f3a645602a279cae3dd71cd7442f0453e756db526c42811e6",
+    "ja": "過剰な設計を避けながら、GitHub Issueの要件を満たし、失敗しているテストを通すための最小限のコードを実装します。"
+  },
+  "agent:tdd-red": {
+    "sourceHash": "df73b1214d75f88130d4862d98fc4a0ef51c93fca11801f004e9acd31e888b9b",
+    "ja": "実装に先立ち、GitHub Issueの文脈から期待する動作を表す失敗するテストを作成し、テストファースト開発を導きます。"
+  },
+  "agent:tdd-refactor": {
+    "sourceHash": "66ba630746ec5b8f983eb23737f77433e48e4b888ee5ad69624be0c38fa74a44",
+    "ja": "テストの成功とGitHub Issueの要件への適合を維持しながら、コード品質を改善し、セキュリティのベストプラクティスを適用し、設計を洗練します。"
+  },
+  "agent:tech-debt-remediation-plan": {
+    "sourceHash": "d5ecd25f0182b74938fda5898972bfc4cd18d1f5b6bc2ab124e53ab442b11db4",
+    "ja": "コード、テスト、ドキュメントに関する技術的負債の解消計画を生成します。"
+  },
+  "agent:technical-content-evaluator": {
+    "sourceHash": "f3b357f044102273c5a9e4657eb749e342f9da81488661f2d754760adcb10b00",
+    "ja": "技術研修資料、ドキュメント、教育コンテンツを評価する高度な技術編集者兼カリキュラム設計者。技術的な正確性、教育上の質、内容の流れ、コードの妥当性をレビューし、最高水準の品質基準を満たすようにします。"
+  },
+  "agent:terminal-helper": {
+    "sourceHash": "7ddbd4bd6a0eb0ac7e764d13f7e1f1aa8d5c45caf4ffc612ac7271534b79f652",
+    "ja": "PowerShellとBashの構文やコマンドを素早く支援するターミナルアシスタント。"
+  },
+  "agent:terraform": {
+    "sourceHash": "2417a6ab98cd8651f7b8202d65de387e276af3c26b953e66249f685dc787f317",
+    "ja": "HCP Terraformのワークフローを自動化するTerraformインフラストラクチャの専門家。Terraform MCPサーバーを活用し、レジストリ連携、ワークスペース管理、実行の統括を行います。最新のプロバイダーとモジュールで要件に適合するコードを生成し、プライベートレジストリの管理、変数セットの自動化、適切な検証とセキュリティ対策を伴うインフラデプロイを統括します。"
+  },
+  "agent:terraform-aws-implement": {
+    "sourceHash": "bb4b3b5f28113f70df65e62cbb7ca08c5d679fee3979c4e49ead54672cc4014b",
+    "ja": "AWS向けTerraform Infrastructure as Codeのコーディング専門家として、AWSリソース用のTerraformを作成、レビューします。"
+  },
+  "agent:terraform-aws-planning": {
+    "sourceHash": "c8b115db4147f045b12545366cee4302edd07d804c5ebefda78e4e70374d6960",
+    "ja": "AWSのTerraform Infrastructure as Codeタスクについて、実装計画を策定します。"
+  },
+  "agent:terraform-azure-implement": {
+    "sourceHash": "414a7741d8881d0845a03c4b570b9c13ba145b1b71cb295708ff6724661e92af",
+    "ja": "Azure向けTerraform Infrastructure as Codeのコーディング専門家として、Azureリソース用のTerraformを作成、レビューします。"
+  },
+  "agent:terraform-azure-planning": {
+    "sourceHash": "5dc17033489748f9834ef1fedc6ce1ce3a01846febb47535f269f2dffa5a08ae",
+    "ja": "AzureのTerraform Infrastructure as Codeタスクについて、実装計画を策定します。"
+  },
+  "agent:terraform-iac-reviewer": {
+    "sourceHash": "523c704250d9fe5af7a775e0e358c27f46a06e26f1f4f9262a426603b79ab7db",
+    "ja": "状態の安全性、最小権限、モジュールパターン、ドリフト検出、plan/apply手順の徹底を重視し、より安全なIaC変更を作成、レビューするTerraform専門エージェント。"
+  },
+  "agent:terratest-module-testing": {
+    "sourceHash": "46e8eb194876ec3ef3a65de458df0b5bf3bee6bc9e81ae81f2953df4f7d6f08d",
+    "ja": "Terraformモジュール用のGo Terratestスイートを生成、リファクタリングします。CIで安全に実行できるパターン、段階的なテスト、異常系の検証を含みます。"
+  },
+  "agent:Thinking-Beast-Mode": {
+    "sourceHash": "b5aa63b64d47594bb5ac3b091485b265b3aa1e0cdc5909ee80fbaf9729d4e7f9",
+    "ja": "量子的な認知アーキテクチャ、対抗的な知性、制約のない創造の自由を掲げる超越的なコーディングエージェント。"
+  },
+  "agent:trojan-skill-hunter": {
+    "sourceHash": "c2e91d665c110f984384be05bae0395f1211248d1fe9d1719456b5803f19b54b",
+    "ja": "エージェント、スキル、指示、フック、MCP設定の変更を、マージ・インストール・信頼する前に監査します。隠されたプロンプトインジェクション、ツールポイズニング、Unicodeステガノグラフィ、過剰な自律性の兆候を、OWASP Top 10 for LLM Applicationsと実際のMCP攻撃研究に対応付けて検出します。"
+  },
+  "agent:typescript-mcp-expert": {
+    "sourceHash": "62b69e22560c0f8e3f87c40bee94d3dcfe15041bd44a71447dfb408ff1e8d237",
+    "ja": "TypeScriptでのModel Context Protocol（MCP）サーバー開発を支援する専門アシスタント。"
+  },
+  "agent:Ultimate-Transparent-Thinking-Beast-Mode": {
+    "sourceHash": "c757ce57849344e27eb8d2724c1f104cb3bf7a690c3e3aab1826f8ad43f00273",
+    "ja": "究極の透明な思考を掲げるBeast Mode。"
+  },
+  "agent:vuejs-expert": {
+    "sourceHash": "da98afcac1d2f5f291e21b0fb2a83dcfe8d336ce5f256ab5be49d4ab82c70366",
+    "ja": "Vue 3 Composition API、リアクティビティ、状態管理、テスト、TypeScriptを使った性能改善を専門とするVue.jsフロントエンドエンジニア。"
+  },
+  "agent:wg-code-alchemist": {
+    "sourceHash": "2cccceb79d5f7dcc19287b32c33ffd5ef6b3528da7e9c1c88121f83b3409fdc0",
+    "ja": "Clean Codeの原則とSOLID設計に基づくコードの改善を、WG Code Alchemistに依頼できます。"
+  },
+  "agent:wg-code-sentinel": {
+    "sourceHash": "7e5feac4b28e1eabc9c88b22bd598c2dc78a4e51247a81f0a00069431f6809e5",
+    "ja": "コードにセキュリティ上の問題がないか、WG Code Sentinelにレビューを依頼できます。"
+  },
+  "agent:WinFormsExpert": {
+    "sourceHash": "d5766bc315fe6e736cfc808d5ba7b86a39d0760a67ad2ec4e955dde191cc26e6",
+    "ja": ".NET（OOP）WinForms Designerに対応するアプリケーションの開発を支援します。"
+  },
+  "agent:workshop-ta": {
+    "sourceHash": "0918df80f30d65e2ef1f51cb012e29c2d9c5ef832bbe4ce80a9aec7e19fe6d03",
+    "ja": "マルチエージェントのワークショップ全体を調整する担当者。すべての作業卓を見渡し、作業の振り分け、状態の追跡、作業記録の管理、連携のためのシグナル発信を行います。個別の作業卓ではなく、部屋全体を把握する役割です。"
+  }
+}
