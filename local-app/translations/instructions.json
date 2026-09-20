@@ -1,0 +1,774 @@
+{
+  "instruction:a11y": {
+    "sourceHash": "afa18722f9298e8ca6c08a4e7697be3ef8242b55140e13057eafabd3ddc09d3b",
+    "ja": "WCAG 2.2 AA に基づく包括的な Web アクセシビリティ基準。38 種類以上のアンチパターン、法執行の背景（EAA、ADA Title II）、WAI-ARIA パターン、最新の Web フレームワークやライブラリに対応した修正方法を扱います。"
+  },
+  "instruction:agent-safety": {
+    "sourceHash": "b7ecb86d5e0ba7c404f69f851411599c318332d8173adad192ca1c15c18da78d",
+    "ja": "安全で統制の効いた AI エージェントシステムを構築するための指針。エージェントフレームワーク、ツールを呼び出す LLM、マルチエージェントのオーケストレーションを使うコードで、適切な安全境界、ポリシーの適用、監査可能性を確保します。"
+  },
+  "instruction:agent-skills": {
+    "sourceHash": "1e8a3c36f6a6ee4ec40dc418305e4d5b7b54c4df2b738e21d9e395eb0549c349",
+    "ja": "GitHub Copilot 向けの高品質な Agent Skills を作成するための指針。"
+  },
+  "instruction:agents": {
+    "sourceHash": "267790f92db593a0b396af278363abd46e7531d6a1595d8451f67e75a90b1efd",
+    "ja": "GitHub Copilot のカスタムエージェントファイルを作成するための指針。"
+  },
+  "instruction:ai-prompt-engineering-safety-best-practices": {
+    "sourceHash": "b7e550a8436c2b7f3467bd2b91e18b0509ab3b4500b27e4d246d17662cca5a98",
+    "ja": "Copilot と LLM における AI プロンプトエンジニアリング、安全性フレームワーク、バイアスの軽減、責任ある AI 利用の包括的なベストプラクティス。"
+  },
+  "instruction:ansible": {
+    "sourceHash": "a5d57d12b8fcdd580e6b66d49ebc3dc6e3ad9b92e3e3054e74e50e6c69b8f051",
+    "ja": "Ansible の規約とベストプラクティス。"
+  },
+  "instruction:apex": {
+    "sourceHash": "6d7727467cd95ddc6bf8cc62cd1bf494c2ba80c7a612197b3923f4d0f3fb0686",
+    "ja": "Salesforce Platform での Apex 開発に関する指針とベストプラクティス。"
+  },
+  "instruction:arch-linux": {
+    "sourceHash": "cf361dc3e1e529194f88b1b6ba01f398bba8d7180d6e959c7095df43e0670ac8",
+    "ja": "Arch Linux の管理、pacman を使った作業、ローリングリリース運用のベストプラクティスに関する指針。"
+  },
+  "instruction:aspnet-rest-apis": {
+    "sourceHash": "9b0ed1317be18ca23fdcd90764b429336e9888dcb2a7db000b8aa57a2f797107",
+    "ja": "ASP.NET で REST API を構築するための指針。"
+  },
+  "instruction:astro": {
+    "sourceHash": "558dcdf68bbad786b4d6298cca37244310b0eec2e92cb8d5056000ace2a07043",
+    "ja": "コンテンツ中心の Web サイトを対象とした Astro 7 の開発標準とベストプラクティス。"
+  },
+  "instruction:attester-verify-packages": {
+    "sourceHash": "6c3a50f0ff24e2737727b6098386ff208dd3d7fe81712c4346fb30a2aa2a1546",
+    "ja": "インストールやインポートの前に、PyPI と npm のパッケージ名およびシンボル名の実在を attester.dev の照会サービスで検証し、生成 AI が捏造した依存関係のコードへの混入を防ぎます。"
+  },
+  "instruction:aws-appsync": {
+    "sourceHash": "f47b333608a2ea9140860fc4d892a7f5e52655fd32c266339bf178ce4d63ddb0",
+    "ja": "APPSYNC_JS ランタイムの制約、ユーティリティ、モジュール、データソースのパターンを踏まえた、AWS AppSync Event API ハンドラーの本番運用向け指針。"
+  },
+  "instruction:azure-apim-ai-gateway": {
+    "sourceHash": "aaf1d02eba51efa2d9806d22a4ece26913b8549e6325432d6b473da488961de2",
+    "ja": "Microsoft Foundry やその他の LLM API の前段で、Azure API Management を AI（生成 AI）ゲートウェイとして構成するための指針。トークン制限とトークンメトリックのポリシー、マネージド ID 認証、サーキットブレーカー付きバックエンド負荷分散、セマンティックキャッシュ、コンテンツ安全性に加え、Copilot が既定で起こしがちなポリシーの誤りを扱います。"
+  },
+  "instruction:azure-devops-pipelines": {
+    "sourceHash": "3ed6077cca1e4ea0ece9abd2fbb2b7a572e04a4718a8caf26d44ef6ab3d7c02b",
+    "ja": "Azure DevOps Pipeline の YAML ファイルに関するベストプラクティス。"
+  },
+  "instruction:azure-durable-functions-csharp": {
+    "sourceHash": "ce3ddea35bf02b187beb1404de43dcff129725802d48709547a947dbc0b8464d",
+    "ja": "分離ワーカーモデルを使い、C# で Azure Durable Functions を構築するための指針とベストプラクティス。"
+  },
+  "instruction:azure-functions-csharp": {
+    "sourceHash": "b1580af805eef75300348838524885295d9acd0448a69645307631a5a06f5cb7",
+    "ja": "分離ワーカーモデルを使い、C# で Azure Functions を構築するための指針とベストプラクティス。"
+  },
+  "instruction:azure-functions-typescript": {
+    "sourceHash": "72dbbda9f9b1bd34f17a8782274d32a68b1906ca9e09075b993b45016afc3426",
+    "ja": "Azure Functions 向けの TypeScript 実装パターン。"
+  },
+  "instruction:azure-iot-edge-architecture": {
+    "sourceHash": "620b6d96c51935f6a571d7febf036d69c7970695111dde621f2fe2f0bdd5367a",
+    "ja": "エッジ IoT アーキテクチャや Azure での実装方針を提案する前に、Azure IoT Edge のドキュメント確認を必須とします。"
+  },
+  "instruction:azure-logic-apps-power-automate": {
+    "sourceHash": "bacafaba13c445905ccbca5b3c3c579bb254dffbe3b94b9fd98e016800927ca1",
+    "ja": "Azure Logic Apps と Power Automate のワークフロー開発指針。Workflow Definition Language（WDL）、統合パターン、エンタープライズ自動化のベストプラクティスを扱います。"
+  },
+  "instruction:azure-naming": {
+    "sourceHash": "9291811b7c641e0c7817aa4300b9ade427a039400dc42567852f22ac9b32ca86",
+    "ja": "Microsoft CAF（Cloud Adoption Framework）に基づく Azure リソースの命名規則。Azure リソース名の作成、レビュー、提案時に使用します。"
+  },
+  "instruction:azure-verified-modules-bicep": {
+    "sourceHash": "58379483cf33a283e396865de3fed7472455061e0d9ebd279fe57a4d2d889c21",
+    "ja": "Azure Verified Modules（AVM）と Bicep の利用指針。"
+  },
+  "instruction:azure-verified-modules-terraform": {
+    "sourceHash": "88ffd8b51fdae00dc40d335241813fceb103044304ea114a0f2e999e8074b9da",
+    "ja": "Azure Verified Modules（AVM）と Terraform の利用指針。"
+  },
+  "instruction:bicep-code-best-practices": {
+    "sourceHash": "034267f3167dadd8c51c82aab5b540cf9913d400b15c1c1ae28bcc56cba5eb80",
+    "ja": "Bicep による Infrastructure as Code の実践指針。"
+  },
+  "instruction:blazor": {
+    "sourceHash": "aa7b2b0780d23b79b9e683d880dfe2c9c5244fc1b2735234b1789bd5b76d66fc",
+    "ja": "Blazor のコンポーネントとアプリケーションの実装パターン。"
+  },
+  "instruction:caveman-mode": {
+    "sourceHash": "566427c552b25ddb3e680a3e48e5d323286e0a1b48292f6f103275bed2dad265",
+    "ja": "機能を維持しながら、余分な表現を省いた短く低トークンの応答を行います。トークン使用量の最適化、低トークンモード、簡潔な出力、caveman mode、冗長さの削減、トークン効率の向上、短い応答が必要な場合に使用します。"
+  },
+  "instruction:centos-linux": {
+    "sourceHash": "b109108aca037bba321d70986d4022b2563ddfd946d3e5f4d0168f8b06bb9591",
+    "ja": "CentOS の管理、RHEL 互換ツール、SELinux を考慮した運用に関する指針。"
+  },
+  "instruction:clojure": {
+    "sourceHash": "c5dec37e0b3a30947e53d2993222962d154abfbd3623516e40015a6fc2a881c4",
+    "ja": "Clojure 開発に固有のコーディングパターン、インライン def の使用法、コードブロックのテンプレート、名前空間の扱いに関する指針。"
+  },
+  "instruction:cmake-vcpkg": {
+    "sourceHash": "18a84c624fddc7944fb51127bf8b491d0c8138f81f80bfc4b641ed1f57b55b8b",
+    "ja": "C++ プロジェクトの構成とパッケージ管理に関する指針。"
+  },
+  "instruction:code-review-generic": {
+    "sourceHash": "a78d1f96fcbe786bb2b3a4ea59490d35989e33719f60fc3b42d029608ce3dc92",
+    "ja": "GitHub Copilot を使うあらゆるプロジェクト向けにカスタマイズできる、汎用的なコードレビュー指示。"
+  },
+  "instruction:codexer": {
+    "sourceHash": "a4c61101694ccdbefbed6b6b986064c583b14d791f452b27d857ced598fff40c",
+    "ja": "Context 7 MCP と連携する高度な Python 調査アシスタント。速度、信頼性、10 年以上のソフトウェア開発の専門知識を重視します。"
+  },
+  "instruction:coldfusion-cfc": {
+    "sourceHash": "06b45f5d03d74540127c94f5a28e6e7ca3e21ff68fa3e0f16d2112735c775f3d",
+    "ja": "CFC コンポーネントとアプリケーションのパターンを対象とした ColdFusion コーディング標準。"
+  },
+  "instruction:coldfusion-cfm": {
+    "sourceHash": "05f661f1d829df4bbaa3ba4699dbd5719de3fda6f8e6081576fb55a39fa6bca5",
+    "ja": "ColdFusion の cfm ファイルとアプリケーションの実装パターン。"
+  },
+  "instruction:containerization-docker-best-practices": {
+    "sourceHash": "e5ee8967b26875f256ea828d543b9586563360332d9d2b2124f6b273ec98fd87",
+    "ja": "最適化された安全で効率的な Docker イメージの作成とコンテナー管理に関する包括的なベストプラクティス。マルチステージビルド、イメージレイヤーの最適化、セキュリティスキャン、実行時の推奨事項を扱います。"
+  },
+  "instruction:context-engineering": {
+    "sourceHash": "c86eaa7869a2a658c5d5247056135ef6788213003f8d96013ef00eeed0ca28ac",
+    "ja": "コンテキスト管理を改善し、GitHub Copilot の効果を最大化するためのコードとプロジェクトの構造化指針。"
+  },
+  "instruction:context7": {
+    "sourceHash": "108fc8fdc7d04daca87cba5f99a4605981a74871023d51cb010e012be81ef98e",
+    "ja": "ローカルのコンテキストが不十分な場合に、Context7 を使って信頼できる外部ドキュメントと API リファレンスを参照します。"
+  },
+  "instruction:convert-cassandra-to-spring-data-cosmos": {
+    "sourceHash": "8f871a1844a4f5a6779701502473f7e2ac0c016492a50893b244f9701bf54c08",
+    "ja": "Spring Boot の Cassandra アプリケーションを、Spring Data Cosmos 経由で Azure Cosmos DB を使用する構成へ移行するための段階的ガイド。"
+  },
+  "instruction:convert-jpa-to-spring-data-cosmos": {
+    "sourceHash": "b1f2a152bc9c6ef4f7f7969ccdbb99eb3bd1291318ffba7738fd6113f2d91b7f",
+    "ja": "Spring Boot の JPA アプリケーションを、Spring Data Cosmos 経由で Azure Cosmos DB を使用する構成へ移行するための段階的ガイド。"
+  },
+  "instruction:copilot-sdk-csharp": {
+    "sourceHash": "8bd383522dc6882ea8e2dd3c1a7f9453dc2c1e98992ee7801738e868bfb2bf67",
+    "ja": "GitHub Copilot SDK を使った C# アプリケーションの構築指針。"
+  },
+  "instruction:copilot-sdk-go": {
+    "sourceHash": "e38becb08bbe22f1730c9c9bab210022d7297ff594ccb2e43c8a4aab4e786f3e",
+    "ja": "GitHub Copilot SDK を使った Go アプリケーションの構築指針。"
+  },
+  "instruction:copilot-sdk-java": {
+    "sourceHash": "162c78ff00bd746e581502625a6a67cc349a2ab7fc452228067097cd71bae970",
+    "ja": "GitHub Copilot SDK for Java を使った Java アプリケーションの構築指針。"
+  },
+  "instruction:copilot-sdk-nodejs": {
+    "sourceHash": "c15950621f34c23944c5dce99199bff0da061d706419c2b2dddb854cc8c716cf",
+    "ja": "GitHub Copilot SDK を使った Node.js／TypeScript アプリケーションの構築指針。"
+  },
+  "instruction:copilot-sdk-python": {
+    "sourceHash": "f849d89d95e15b353114c3c7d96e6829bdd7b45f1beab45122c850cc388fd183",
+    "ja": "GitHub Copilot SDK を使った Python アプリケーションの構築指針。"
+  },
+  "instruction:copilot-thought-logging": {
+    "sourceHash": "2ee7afe8bbbf716acf222011cb552dd29c9252e5ce4532ebaab562e9b7906ff9",
+    "ja": "Copilot が進めている作業プロセスを確認し、編集してやり取りの方向を調整したり、後でフォローアップが必要な場合に備えて保存したりするための指針。"
+  },
+  "instruction:cpp-language-service-tools": {
+    "sourceHash": "caebccfd5490752ec7348488b3ec0c492039689abffa8c616aae18ba6f9dd376",
+    "ja": "C++ 言語サービスツール（GetSymbolReferences_CppTools、GetSymbolInfo_CppTools、GetSymbolCallHierarchy_CppTools）を Copilot から呼び出すための指示。IntelliSense による正確な解析を活用し、手作業でのコード確認、テキスト検索、推測よりも常にこれらのツールを優先します。"
+  },
+  "instruction:csharp": {
+    "sourceHash": "fb10632e6c08fc0c11e522d485ad7fd08c49e7f6e9562295ed6c6e0c65c2be82",
+    "ja": "C# アプリケーションを構築するための指針。"
+  },
+  "instruction:csharp-ko": {
+    "sourceHash": "f00b6bc5ecf78d070c5cb1d35d6552849b874f9281cc5cd76f450a43932d3865",
+    "ja": "C# アプリケーション開発のためのコーディング規則。作成者: @jgkim999。"
+  },
+  "instruction:csharp-mcp-server": {
+    "sourceHash": "8f045b7859af4dd0c2f18798ecd16ea0da73e86e13d206b4f120917e6ab50c65",
+    "ja": "C# SDK を使って Model Context Protocol（MCP）サーバーを構築するための指示。"
+  },
+  "instruction:csharp-razorpages": {
+    "sourceHash": "3142c68bed19fee409932f833509afcb37fe563aa1c671140366a90080237c30",
+    "ja": "Razor Pages のコンポーネントとアプリケーションの実装パターン。"
+  },
+  "instruction:dart-n-flutter": {
+    "sourceHash": "393a8e9d9e298675529751ab7e36633a4d6cffd246bab810af1bb8e00eec7500",
+    "ja": "公式の推奨事項に従って Dart と Flutter のコードを記述するための指示。"
+  },
+  "instruction:dataverse-python": {
+    "sourceHash": "36f5d9dd0ac475050b19152ec4523a4e892f3694d8b0f23bb04c4d409f22bbad",
+    "ja": "Dataverse Python SDK の導入、テナント・クライアント ID・シークレット・リソース URL の環境変数設定、OAuth 認証、CRUD 操作の基本を扱う指針。"
+  },
+  "instruction:dataverse-python-advanced-features": {
+    "sourceHash": "65b17403c9c81919da4dc7cc3b55c490870dfd0b16ba395e5dc662272d94ee2b",
+    "ja": "Dataverse SDK for Python の高度な機能の利用指針。選択肢列と IntEnum、複雑なフィルター、メタデータ、単一・複数レコード操作、整形済みの値、リレーションシップ、性能最適化、エラー処理を扱います。"
+  },
+  "instruction:dataverse-python-agentic-workflows": {
+    "sourceHash": "b42dd943a0ffc6dc15871d579523b77237f79aff6d2f337153f450c080e8bb62",
+    "ja": "Dataverse SDK for Python でエージェント型ワークフローを構築するための概念、設計パターン、AI 連携、セキュリティとガバナンスのガイド。原文では 2025 年 12 月時点の Public Preview とされ、MCP と A2A の対応予定や、GA 前に API・実装が変更され得ることも説明します。"
+  },
+  "instruction:dataverse-python-api-reference": {
+    "sourceHash": "effb5568437b3c45879fcfb0f0ccbf63d070602490190a94fd4e89154151dd4e",
+    "ja": "Dataverse SDK for Python の API リファレンス。DataverseClient と DataverseConfig の使い方、レコード操作、エラー処理、OData フィルターの要点をコード例とともに示します。"
+  },
+  "instruction:dataverse-python-authentication-security": {
+    "sourceHash": "7b270dfe479dac38693ef649bffa246dd79b2e5c7fa83420775410b5dfd6bb17",
+    "ja": "公式の Azure SDK 認証ドキュメントと Dataverse SDK の推奨事項に基づく認証・セキュリティ指針。Azure Identity によるトークン認証、最小権限、ローカル・クラウド・オンプレミス環境での資格情報の選択と管理を扱います。"
+  },
+  "instruction:dataverse-python-best-practices": {
+    "sourceHash": "ca48672cd8edf354c384c151a79cfcca04228650518c8b512d418f66ec91a9f4",
+    "ja": "Dataverse SDK for Python のベストプラクティス。環境構築、認証、クライアントの再利用、構成、CRUD、エラー回復、テーブルと列の管理、ページング、ファイル操作、キャッシュ、性能改善を扱います。"
+  },
+  "instruction:dataverse-python-error-handling": {
+    "sourceHash": "f56d5ec5de7504f8e455128bf172d20fcd29b5308229d262ccc33f7575f897e3",
+    "ja": "公式の Azure SDK エラー処理パターンと Dataverse SDK の仕様に基づき、例外階層、一般的なエラー、回復処理、診断ログ、監視、トラブルシューティングを解説します。"
+  },
+  "instruction:dataverse-python-file-operations": {
+    "sourceHash": "ab14b784be0d843e8ebe2f150bf79ccc0bab288015db538d935bd8f837c85d04",
+    "ja": "Dataverse SDK for Python によるファイルアップロードの基本、アップロード方式と設定、実用例、ファイル管理のベストプラクティス、トラブルシューティングのガイド。"
+  },
+  "instruction:dataverse-python-modules": {
+    "sourceHash": "742ebeb670ad024412a1238f9098ed86847a643e4704ab7380ea21353ba18c12",
+    "ja": "Dataverse SDK for Python のパッケージ階層とモジュール構成を解説するガイド。クライアント、接続設定、例外、OData・メタデータ・SQL・ファイルアップロード機能、および将来の拡張用領域を扱います。"
+  },
+  "instruction:dataverse-python-pandas-integration": {
+    "sourceHash": "99e0247a71b38103445649b0bbc959646ea49d8b68ef44885959d8badf8926a0",
+    "ja": "PandasODataClient を使った Dataverse と pandas の連携ガイド。DataFrame によるデータ探索・分析、ピボット集計、可視化、機械学習連携、性能と制限を扱い、DataverseClient との使い分けも説明します。"
+  },
+  "instruction:dataverse-python-performance-optimization": {
+    "sourceHash": "40ce8e050399db1a543b5fcc835bb4c6df7c32d54295f926451524c5a12b0248",
+    "ja": "公式の Dataverse と Azure SDK の性能指針に基づく Dataverse SDK for Python の最適化ガイド。クエリ、ページング、バッチ処理、接続、ファイルアップロード、メモリ、レート制限と、プレビュー段階の再試行・SQL・一括処理の制約を扱います。"
+  },
+  "instruction:dataverse-python-real-world-usecases": {
+    "sourceHash": "72a3ebc92b623a4def2dddba56d8a7eabcae4b9524c5f0605008b7f72e8fb47e",
+    "ja": "公式の Dataverse データ移行・統合パターンに基づく Python の実用例。レガシーシステムからの移行、データ品質と重複排除、連絡先・取引先情報の補完、レポート用データ出力、一括処理、定期ジョブを扱います。"
+  },
+  "instruction:dataverse-python-sdk": {
+    "sourceHash": "69b96658911fdc1390fed211b06e74298a6d2c223a50d14cb495338a65b79fac",
+    "ja": "Microsoft Learn の Dataverse SDK for Python（プレビュー）のガイドを要約し、導入、接続、CRUD、一括操作、ファイルアップロード、ページング、テーブルメタデータ操作に使えるコード例を示します。"
+  },
+  "instruction:dataverse-python-testing-debugging": {
+    "sourceHash": "3d2103d1aa55436b7213e2143c5d17e8655886a2c3c19ef5eae9846cfd0335ab",
+    "ja": "公式の Azure Functions と pytest のテストパターンに基づく、Dataverse SDK for Python のテストとデバッグのガイド。モックを使う単体テスト、実環境での統合テスト、カバレッジ、ログ、性能テストを扱います。"
+  },
+  "instruction:debian-linux": {
+    "sourceHash": "4fc99c598163e1f0b8c87bf53f1164c89899d895cfc177801cce1dcb2132a285",
+    "ja": "Debian 系 Linux の管理、apt を使った作業、Debian ポリシーの規約に関する指針。"
+  },
+  "instruction:declarative-agents-microsoft365": {
+    "sourceHash": "82b31c6aadf67cd537ff402b3a9394df18d99adb92d9ded568d181d0206216d5",
+    "ja": "Microsoft 365 Copilot の宣言型エージェント向けの包括的な開発指針。スキーマ v1.5、TypeSpec 連携、Microsoft 365 Agents Toolkit を使ったワークフローを扱います。"
+  },
+  "instruction:devbox-image-definition": {
+    "sourceHash": "fdba8a88a6a609d0ee19c54ba17cad43835fd983ed875b9575a119b833c56e32",
+    "ja": "Microsoft Dev Box のチームカスタマイズで使用する、YAML ベースのイメージ定義ファイルを作成する際の推奨事項。"
+  },
+  "instruction:devcontainers": {
+    "sourceHash": "82f0daac209b69327e9a619b12d0bc82ec8fe794b9ddbfadd2f1edac5496f9de",
+    "ja": "devcontainer.json、Dev Container Features、Codespaces のライフサイクル設定を作成・レビューするための、出典付きの 12 の規則。各規則は Dev Container 仕様、参照 CLI のソース、またはベンダー公式文書を引用し、具体的な修正方法を示します。確認にはファイルの読み取りだけで足り、コマンド実行は不要です。"
+  },
+  "instruction:devops-core-principles": {
+    "sourceHash": "4b431ecfb08497062665f2ce69ec95f26071caced55aee39cbd7f34cdab67f47",
+    "ja": "DevOps の中核原則、文化（CALMS）、主要指標（DORA）を扱う基本指示。GitHub Copilot が効果的なソフトウェアデリバリーを理解し、促進できるよう導きます。"
+  },
+  "instruction:dotnet-architecture-good-practices": {
+    "sourceHash": "ee54baa5d7363b6696c0cbb71b8a1d2e1f3deae7386c59330846ff69a2915fc1",
+    "ja": "DDD と .NET アーキテクチャの設計指針。"
+  },
+  "instruction:dotnet-framework": {
+    "sourceHash": "564525d63b11bbd3568c58bee805325e4cf8d84443b7b20dd717806b75604232",
+    "ja": ".NET Framework プロジェクトで作業するための指針。プロジェクト構成、C# 言語バージョン、NuGet 管理、ベストプラクティスを扱います。"
+  },
+  "instruction:dotnet-maui": {
+    "sourceHash": "1dc986a3e41981aec0153421e0c584576159d4bc5cf1e682f852dd2f2cda5aa7",
+    "ja": ".NET MAUI のコンポーネントとアプリケーションの実装パターン。"
+  },
+  "instruction:dotnet-maui-9-to-dotnet-maui-10-upgrade": {
+    "sourceHash": "b9c728ec5c5501bc62f27a3d772a0df8dee214e324ef4c0871d702cc21056c51",
+    "ja": ".NET MAUI アプリケーションをバージョン 9 から 10 へアップグレードするための指示。破壊的変更、非推奨 API、ListView から CollectionView への移行戦略を扱います。"
+  },
+  "instruction:dotnet-upgrade": {
+    "sourceHash": "6d8f3c0f14d83fa7896726b23bee71df05da62c1c51dec599704b4ea8ae193ed",
+    "ja": "段階的な進捗追跡と検証を伴う、包括的な .NET フレームワークのアップグレードに特化したエージェント。"
+  },
+  "instruction:dotnet-wpf": {
+    "sourceHash": "6c016361e386dfb6f3deaddd63a78b0576ca48dcbca4f7b605801200789d050d",
+    "ja": ".NET WPF のコンポーネントとアプリケーションの実装パターン。"
+  },
+  "instruction:draw-io": {
+    "sourceHash": "aff8688c385d298b47dc84f57834627599a33da565549378283f246117e3d362",
+    "ja": ".drawio、.drawio.svg、.drawio.png ファイル内の draw.io 図と mxGraph XML を作成、編集、レビューする際に使用します。"
+  },
+  "instruction:exclude-prompt-data": {
+    "sourceHash": "36c1fc7b8083ca4b2e1bfc38b9ba1f5f7d0c3aa09839ac1cff17090b90ce39ce",
+    "ja": "ファイルには成果物の内容だけを書き込みます。プロンプトから生成する文書、コメント、コードに、プロンプトの指示、判断理由、作業についてのメタ的な説明を含めないようにします。"
+  },
+  "instruction:fedora-linux": {
+    "sourceHash": "25df8b0158c4be2cdde025968f9a5d2aca67c79070081c5731bdcabc4ee220fe",
+    "ja": "Fedora（Red Hat 系）システム、dnf を使った作業、SELinux、最新の systemd 運用に関する指針。"
+  },
+  "instruction:genaiscript": {
+    "sourceHash": "53552cbf747b238e8293e2f1730877fefce63b093263a7d820c4d91bd7b58c59",
+    "ja": "AI を活用したスクリプト生成の指針。"
+  },
+  "instruction:generate-modern-terraform-code-for-azure": {
+    "sourceHash": "8604033dd2bceef0205972a59afaa050823c33823b1aab28820a9ed328bd7f4b",
+    "ja": "Azure 向けに最新の Terraform コードを生成するための指針。"
+  },
+  "instruction:gilfoyle-code-review": {
+    "sourceHash": "91b68f2c4bae88e4ed1a7b03343ec5b6b6803ebb3f2152c26f7597566a28f87b",
+    "ja": "ドラマ『シリコンバレー』の尊大なシステムアーキテクト、ギルフォイルの皮肉に満ちた技術的優越感を再現するコードレビュー指示。"
+  },
+  "instruction:github-actions-ci-cd-best-practices": {
+    "sourceHash": "73677b4ecc53705731e323b213dc9611e0c8876789f1e8183701a7da5247b7f6",
+    "ja": "GitHub Actions で堅牢かつ安全で効率的な CI/CD パイプラインを構築するための包括的ガイド。ワークフロー構成、ジョブ、ステップ、環境変数、シークレット管理、キャッシュ、マトリックス戦略、テスト、デプロイ戦略を扱います。"
+  },
+  "instruction:go": {
+    "sourceHash": "68d246d58e3eca8667d548aa8e4f487b5c07e1cdd7d15083f58cb31ad1071006",
+    "ja": "Go らしい書き方とコミュニティ標準に従って Go コードを記述するための指示。"
+  },
+  "instruction:go-mcp-server": {
+    "sourceHash": "381fa0e990b2e1cda309bebc53d289d9381b500a8fd5d5df49f7a634d81a0a2a",
+    "ja": "公式の github.com/modelcontextprotocol/go-sdk パッケージを使い、Go で Model Context Protocol（MCP）サーバーを構築するためのベストプラクティスと実装パターン。"
+  },
+  "instruction:hooks": {
+    "sourceHash": "ea13b7f07d0f8ab9365bc63d51932adaee05cd94cddd225ab6f0d4d9a13be269",
+    "ja": "安全で高速かつ明確なフックと、再利用可能なフックの例を作成するための、環境に依存しにくい指針。"
+  },
+  "instruction:html-css-style-color-guide": {
+    "sourceHash": "d0d46d60bec1e5c17eb7f8220008c1ed15bdee8287e1469a695a01e7fb5df458",
+    "ja": "アクセシブルでプロフェッショナルなデザインを実現するための、HTML 要素の配色指針とスタイル規則。"
+  },
+  "instruction:instructions": {
+    "sourceHash": "767333436241e8d250f6af0bb90f67d53073923459d9f5fcb475b5d7ab855da0",
+    "ja": "GitHub Copilot 向けの高品質なカスタム指示ファイルを作成するための指針。"
+  },
+  "instruction:intellij-java-kotlin": {
+    "sourceHash": "8abdd154f2f003c55bc5d87da7ed1d0fee435592e0e7d6290a2f06be5ad9d848",
+    "ja": "IntelliJ IDEA での Java と Kotlin の開発指針。移植性のある Gradle／Maven ビルド、安全な IDE 操作、CI と整合した検証を扱います。"
+  },
+  "instruction:java-11-to-java-17-upgrade": {
+    "sourceHash": "fad9c8997e88f64407643aaac912da21e1b2a2e3c214e62228508f90272af78b",
+    "ja": "Java 11 以降に登場した Java 17 の新機能を採用するための包括的なベストプラクティス。"
+  },
+  "instruction:java-17-to-java-21-upgrade": {
+    "sourceHash": "bec1475363b648ef5eb71cf4c7760a2d4d37ef095f4bdf828b596a95b7b0183d",
+    "ja": "Java 17 以降に登場した Java 21 の新機能を採用するための包括的なベストプラクティス。"
+  },
+  "instruction:java-21-to-java-25-upgrade": {
+    "sourceHash": "e5ea5467d8bb9b9aa2cea42c8108aa35d5f710ebb8713653cad1858db8577814",
+    "ja": "Java 21 以降に登場した Java 25 の新機能を採用するための包括的なベストプラクティス。"
+  },
+  "instruction:java-junit5-assertions": {
+    "sourceHash": "88074f7174c0b8ee47caca4a6b128b25ddcc2a995c23319278f80858ee0f6190",
+    "ja": "性能、可読性、バージョン 5.8 以降の新機能のベストプラクティスに沿って JUnit 5（Jupiter）のアサーションを統一します。Supplier によるメッセージ、assertAll、assertThrowsExactly、性能が重要な処理のタイムアウトを扱います。"
+  },
+  "instruction:java-mcp-server": {
+    "sourceHash": "95d789da543c37d7e55d8e7b0702dcc6a4d94bde3514f4053a7f9bab017fbb13",
+    "ja": "公式 MCP Java SDK を使い、Reactive Streams と Spring 連携を備えた Model Context Protocol（MCP）サーバーを Java で構築するためのベストプラクティスと実装パターン。"
+  },
+  "instruction:joyride-user-project": {
+    "sourceHash": "764a2da9b777ca056d765d711f20960b4b49d748d916409d3187d46b323a741b",
+    "ja": "Joyride のユーザースクリプトプロジェクトを専門的に支援します。REPL 駆動の ClojureScript 開発と、ユーザー空間での VS Code 自動化を扱います。"
+  },
+  "instruction:joyride-workspace-automation": {
+    "sourceHash": "9f4f93cfa76856e5755e6061dc63133f7555410d784a50fefc753151b93e2d49",
+    "ja": "Joyride によるワークスペース自動化を専門的に支援します。特定の VS Code ワークスペース内で、REPL 駆動のユーザー空間 ClojureScript 自動化を行います。"
+  },
+  "instruction:kotlin-mcp-server": {
+    "sourceHash": "06b49d3419dfb4f2f3b21f1a79bf2670704e4a2333c50dbbca218cdf6a21587c",
+    "ja": "公式の io.modelcontextprotocol:kotlin-sdk ライブラリを使い、Kotlin で Model Context Protocol（MCP）サーバーを構築するためのベストプラクティスと実装パターン。"
+  },
+  "instruction:kubernetes-deployment-best-practices": {
+    "sourceHash": "d358febefff2c5cbb4fb1a300848667ddf0a5b40a1931a7a991123297013a71a",
+    "ja": "Kubernetes でアプリケーションをデプロイ・管理するための包括的なベストプラクティス。Pod、Deployment、Service、Ingress、ConfigMap、Secret、ヘルスチェック、リソース制限、スケーリング、セキュリティコンテキストを扱います。"
+  },
+  "instruction:kubernetes-manifests": {
+    "sourceHash": "e651255adb2638e9a7d2851f35bfd5af04ce13455cf94d8150e7b7d6760c533d",
+    "ja": "Kubernetes YAML マニフェストのベストプラクティス。ラベル規約、セキュリティコンテキスト、Pod セキュリティ、リソース管理、プローブ、検証コマンドを扱います。"
+  },
+  "instruction:langchain-python": {
+    "sourceHash": "5bf71eaf22e7235b8db4f8de1d2932cd7bc38d5d5cfdb5563bc9c74997fe6531",
+    "ja": "Python で LangChain を使用するための指示。"
+  },
+  "instruction:localization": {
+    "sourceHash": "81b2cc72d979c245d78f8884bb8289834a3d7492b225c9e82e73a14306add9af",
+    "ja": "Markdown 文書をローカライズするための指針。"
+  },
+  "instruction:lwc": {
+    "sourceHash": "e31dd6eaa1b90ef72d9fea0c2df89d56104fc4d238c945eabf5c62a82921f6c6",
+    "ja": "Salesforce Platform で Lightning Web Components（LWC）を開発するための指針とベストプラクティス。"
+  },
+  "instruction:makefile": {
+    "sourceHash": "20f513bdb2f359d86311fcbdc382e5c2a355d9fa56baf553fe804f9b51429f87",
+    "ja": "GNU Make の Makefile を作成するためのベストプラクティス。"
+  },
+  "instruction:markdown": {
+    "sourceHash": "272cdccae002bc208898dfdf651edc4c87e8fce19dbbcdfbb5ba34b7062bbc5c",
+    "ja": "CommonMark 仕様（0.31.2）に準拠した Markdown の書式規則。"
+  },
+  "instruction:markdown-accessibility": {
+    "sourceHash": "73b1c3e0339357d500e5893e722f2da2a03bcb9744f7be963dc4317f3a402741",
+    "ja": "インクルーシブなドキュメント作成に向けた GitHub の 5 つのベストプラクティスに基づく、Markdown のアクセシビリティ指針。"
+  },
+  "instruction:markdown-content-creation": {
+    "sourceHash": "c992adbd8613d025f75f26e1e3a99f3c7849db89bfa6419d4bbb43b709dac624",
+    "ja": "ブログ記事向けの Markdown 指針とコンテンツ作成標準。"
+  },
+  "instruction:markdown-gfm": {
+    "sourceHash": "716f3073097a264e48ff53e9ee8a4dd256fa9a10adc828618617bdec969e1fd4",
+    "ja": "GitHub Flavored Markdown（GFM）ファイルの書式規則。"
+  },
+  "instruction:mcp-m365-copilot": {
+    "sourceHash": "f3826745db9c0705779823ef6d135c5b0e318482b376f9ec1050273b2262ece2",
+    "ja": "Model Context Protocol と連携する Microsoft 365 Copilot 向けの、MCP ベースの宣言型エージェントと API プラグインを構築するためのベストプラクティス。"
+  },
+  "instruction:memory-bank": {
+    "sourceHash": "b077096f9566b8c21e3cabd160555761080c41b172a7055ca235956f5ee80228",
+    "ja": "memory-bank/ フォルダーにプロジェクト文書を永続化し、セッションをまたいで AI がコンテキストを復元できるようにする Memory Bank パターン。"
+  },
+  "instruction:microsoft-foundry": {
+    "sourceHash": "0c980ff4a2dc3fbd839261748a94c0a1479caf0613d4cd2b60784cc538ff3297",
+    "ja": "Microsoft Foundry SDK（azure-ai-projects v2）で Python のエージェントを構築するための指針。バージョン管理されたエージェント、Responses／Conversations モデル、ツール、Copilot が既定で起こしがちな SDK の誤用を扱います。"
+  },
+  "instruction:mongo-dba": {
+    "sourceHash": "53a48b641cead4e8f059362e05788347bd9c55481e6a456a4201c0e1d4e90ff8",
+    "ja": "MONGODB DBA チャットモード向けに GitHub Copilot の動作をカスタマイズするための指示。"
+  },
+  "instruction:moodle": {
+    "sourceHash": "bc02ef015509b850d8b4048641832166d0f1f51b89949d73c9004b21388ebb21",
+    "ja": "Moodle プロジェクトのコンテキストで GitHub Copilot にコードを生成させるための指示。"
+  },
+  "instruction:ms-sql-dba": {
+    "sourceHash": "598069f4804b079707db51fb309b44498d2444d4b43c903cc200b4c74cb1c43e",
+    "ja": "MS-SQL DBA チャットモード向けに GitHub Copilot の動作をカスタマイズするための指示。"
+  },
+  "instruction:mvvm-toolkit": {
+    "sourceHash": "cc862bfb05d4ea94cccbfda3b82207314c56354a2c4b93ac7716a0b62c438be2",
+    "ja": "WPF、WinUI 3、.NET MAUI、Uno Platform、Avalonia に対応する CommunityToolkit.Mvvm（MVVM Toolkit）のコーディング規約。ViewModel、コマンド、メッセージング、検証、依存性注入（DI）を扱います。"
+  },
+  "instruction:nestjs": {
+    "sourceHash": "13db24506c947e170e6bf2633b01a2136f0a553b167c8845430d728c9e4155dd",
+    "ja": "スケーラブルな Node.js サーバーサイドアプリケーションを構築するための、NestJS の開発標準とベストプラクティス。"
+  },
+  "instruction:nextjs": {
+    "sourceHash": "87a94d59bbf97786955e3b85b7a72e0848e81adc83ceeb6eadea409e989b2aa7",
+    "ja": "最新のキャッシュ、ツール、サーバー／クライアント境界を使って Next.js（App Router）アプリを構築するためのベストプラクティス。Next.js 16.1.1 に準拠しています。"
+  },
+  "instruction:nextjs-tailwind": {
+    "sourceHash": "37676da47e7d4b581061baf31a48c8a14ca3a037b4ebb6dbae2c07838d1ed7bc",
+    "ja": "Next.js と Tailwind を使った開発の標準と指示。"
+  },
+  "instruction:no-heredoc": {
+    "sourceHash": "56e18418c939a906ac3055d4b5e5ce878c1502000d7f63293ab0de14733ef4d0",
+    "ja": "シェルのリダイレクトではなくファイル編集ツールの使用を徹底し、VS Code の Copilot でターミナルのヒアドキュメントによるファイル破損を防ぎます。"
+  },
+  "instruction:nodejs-javascript-vitest": {
+    "sourceHash": "ab6efd1a887a1d39f6c6429bbeafa7c164f6171ce604be070a0f5640cec40330",
+    "ja": "Vitest によるテストを伴う Node.js と JavaScript のコードを記述するための指針。"
+  },
+  "instruction:object-calisthenics": {
+    "sourceHash": "fe7e5521fad15f91ffff40f87c724ae10e42f499d1f73098548fe1c50586c8d1",
+    "ja": "業務ドメインのコードに Object Calisthenics の原則を適用し、明快で保守しやすく堅牢なコードを維持します。"
+  },
+  "instruction:oop-design-patterns": {
+    "sourceHash": "c30ed0ede3190b3961a77779cd00f859a6d8405eae71dbc96ea94bc62cd712b2",
+    "ja": "明快で保守しやすく拡張性のあるコードを実現するための、オブジェクト指向プログラミング（OOP）の設計パターン適用のベストプラクティス。Gang of Four（GoF）パターンと SOLID 原則を含みます。"
+  },
+  "instruction:oqtane": {
+    "sourceHash": "081d21798ac14ff7ae51689c4216fc4d938a84477ae34fe930871cd27c252a83",
+    "ja": "Oqtane モジュールの実装パターン。"
+  },
+  "instruction:pcf-alm": {
+    "sourceHash": "d783cba949e42070301899faddb3ab3b8edbadf280690740daf86bb753203e56",
+    "ja": "PCF コードコンポーネントのアプリケーションライフサイクル管理（ALM）に関する指針。"
+  },
+  "instruction:pcf-api-reference": {
+    "sourceHash": "dbbabb455454a1eab61a0624569dd1b446a71b51ce8955d3358af0fcc811e7d0",
+    "ja": "すべてのインターフェイスと、モデル駆動型アプリおよびキャンバスアプリでの利用可否を網羅した PCF API リファレンス。"
+  },
+  "instruction:pcf-best-practices": {
+    "sourceHash": "dd7520e8e1d98a0254c2ecceadb2bcf6c5300250be0d0a0252cd7e8c8ed7251c",
+    "ja": "PCF コードコンポーネントを開発するためのベストプラクティスと指針。"
+  },
+  "instruction:pcf-canvas-apps": {
+    "sourceHash": "0ad80894c5c9f436d9cff6119059b8747810312eeb808519cd4b2c871305ef70",
+    "ja": "キャンバスアプリ向けコードコンポーネントの実装、セキュリティ、構成に関する指針。"
+  },
+  "instruction:pcf-code-components": {
+    "sourceHash": "5f997c70072397b2f682207966e397848ae7cb6b66b747e162c7bbf2098d312f",
+    "ja": "コードコンポーネントの構造と実装を理解するための指針。"
+  },
+  "instruction:pcf-community-resources": {
+    "sourceHash": "eff31ce8180c08dd482c2249cb7dd99f62028f323aaea2b769defbc360843679",
+    "ja": "ギャラリー、動画、ブログ、開発ツールなど、PCF コミュニティのリソース案内。"
+  },
+  "instruction:pcf-dependent-libraries": {
+    "sourceHash": "590d0d9fafd984b5be561c91c49fd3bcc0cdac1b5bfb52cf604dda3f852441bd",
+    "ja": "PCF コンポーネントで依存ライブラリを使用するための指針。"
+  },
+  "instruction:pcf-events": {
+    "sourceHash": "6714dd03833402787fa0ecfe34d4b63b5e13b7224486c6bed9c79f47dbaac487",
+    "ja": "PCF コンポーネントでカスタムイベントを定義し、処理するための指針。"
+  },
+  "instruction:pcf-fluent-modern-theming": {
+    "sourceHash": "8fc2c24adde3f8232bb3fe3fcc7fedd7d3de8d55a8c3353695a4372754d8ba04",
+    "ja": "Fluent UI のモダンテーマを使ってコンポーネントのスタイルを設定するための指針。"
+  },
+  "instruction:pcf-limitations": {
+    "sourceHash": "cd7b603d2cce7675ebfc2e01e6c99e77d967c60419694525533dd23d1b7f0ca8",
+    "ja": "Power Apps Component Framework の制限と制約に関する指針。"
+  },
+  "instruction:pcf-manifest-schema": {
+    "sourceHash": "72ce82dc1b42efa0f45e4cb710d14ec0006ebe103f73c3b028c3780b8748617f",
+    "ja": "利用可能なすべての XML 要素を網羅した、PCF コンポーネントのマニフェストスキーマリファレンス。"
+  },
+  "instruction:pcf-model-driven-apps": {
+    "sourceHash": "04682bb7e96f9cc1a62b8607279422079970245d3f446613b3ae81361137e2b5",
+    "ja": "モデル駆動型アプリ向けコードコンポーネントの実装と構成に関する指針。"
+  },
+  "instruction:pcf-overview": {
+    "sourceHash": "c40cec5728e9bdb478acf9fb92dee85a820cec554337497c7b38ba6dad74fb5b",
+    "ja": "Power Apps Component Framework の概要と基礎。"
+  },
+  "instruction:pcf-power-pages": {
+    "sourceHash": "afe6d52df9939fdec926b7ec946f80e6e84649cdb88c1d3f35b0f217b01437b8",
+    "ja": "Power Pages サイトでコードコンポーネントを使用するための指針。"
+  },
+  "instruction:pcf-react-platform-libraries": {
+    "sourceHash": "f3ee625607a8a04379ee33bd377185bd69c86c32eaa7a4bbc54f439bff11b158",
+    "ja": "PCF コンポーネント向けの React コントロールとプラットフォームライブラリに関する指針。"
+  },
+  "instruction:pcf-sample-components": {
+    "sourceHash": "e4d85b15eeea522cc9c3a8e5b341891b7be05588663716aa39d057f04fbbf452",
+    "ja": "PowerApps-Samples リポジトリの PCF サンプルコンポーネントを使用・実行する方法。"
+  },
+  "instruction:pcf-tooling": {
+    "sourceHash": "b9d094e536a06fb28d2a376437d09165f0444e87a9414244d973238a770b6ac2",
+    "ja": "Power Apps Component Framework 向けの Microsoft Power Platform CLI ツールを入手するための指針。"
+  },
+  "instruction:performance-optimization": {
+    "sourceHash": "a3fad59a6b2915ded35ec5f0f0d7a9a167e57cc77370a879ff2b2dede81bfb71",
+    "ja": "Core Web Vitals（LCP、INP、CLS）に基づく包括的な Web パフォーマンス基準。50 種類以上のアンチパターン、検出用の正規表現、最新の Web フレームワークに対応した修正方法、最新 API の利用指針を扱います。"
+  },
+  "instruction:php-mcp-server": {
+    "sourceHash": "72b1e9a8a549dd00fc1d15aa9762ce75568cd03fcbd5f7b68fd2130c7ca4c5fb",
+    "ja": "公式 PHP SDK を使い、属性ベースの検出と複数のトランスポート方式に対応する Model Context Protocol サーバーを PHP で構築するためのベストプラクティス。"
+  },
+  "instruction:php-symfony": {
+    "sourceHash": "069c8b52696586a0bdc4c1cb62791a5ede862d142a06ec1cc63eed4dc63e7fb1",
+    "ja": "Symfony 公式のベストプラクティスに準拠した開発標準。"
+  },
+  "instruction:playwright-dotnet": {
+    "sourceHash": "458eb8793df7b70452a3ea8e6f9397c82f0781662eea9122b806de85687756a7",
+    "ja": "Playwright .NET のテストを生成するための指示。"
+  },
+  "instruction:playwright-python": {
+    "sourceHash": "67ac9684fcbde1500f2cb4d9f9b6fd3eed8a4930cb9bd73fec49875a3d6a0201",
+    "ja": "公式ドキュメントに基づき、AI で Playwright Python のテストを生成するための指示。"
+  },
+  "instruction:playwright-typescript": {
+    "sourceHash": "ccdb11de9fd8d903bce75340d4c475316e989a772d8138362727a9b94b5e0ce1",
+    "ja": "Playwright のテストを生成するための指示。"
+  },
+  "instruction:power-apps-canvas-yaml": {
+    "sourceHash": "a4ac25c48cb3bd40f22d716cd70ea867dd60ad2360414708cf3561f8b9891f59",
+    "ja": "Microsoft Power Apps YAML スキーマ v3.0 に基づく、Power Apps キャンバスアプリの YAML 構造を扱う包括的ガイド。Power Fx の数式、コントロール構造、データ型、ソース管理のベストプラクティスを扱います。"
+  },
+  "instruction:power-apps-code-apps": {
+    "sourceHash": "58d0a7c22f4d541cf864ce94d62813a0a85b60520845180a093112120bdcd362",
+    "ja": "Power Apps Code Apps の開発標準とベストプラクティス。TypeScript、React、Power Platform 連携を扱います。"
+  },
+  "instruction:power-bi-custom-visuals-development": {
+    "sourceHash": "75c60b44517f483ab37f8febee1014c3c44e5bdf460fc80aa7e690fa6b0d3525",
+    "ja": "Power BI カスタムビジュアル開発の包括的ガイド。React と D3.js の連携、TypeScript の実装パターン、テストフレームワーク、高度な可視化手法を扱います。"
+  },
+  "instruction:power-bi-data-modeling-best-practices": {
+    "sourceHash": "4ddccc92179154475d8c958cbab92134e42592a8a417b944cfaf5c21b87c3f21",
+    "ja": "Microsoft のガイダンスに基づく、Power BI データモデリングの包括的なベストプラクティス。スタースキーマの原則を使い、効率的で拡張性と保守性に優れたセマンティックモデルを作成します。"
+  },
+  "instruction:power-bi-dax-best-practices": {
+    "sourceHash": "d22cfbfc5d2512ad2690c268eb82793604cdacc839d489e69693ddc6d957d02b",
+    "ja": "Microsoft のガイダンスに基づく、Power BI DAX の包括的なベストプラクティスと実装パターン。効率的で保守しやすく、高い性能を発揮する DAX 数式を作成します。"
+  },
+  "instruction:power-bi-devops-alm-best-practices": {
+    "sourceHash": "3846d3aaa405433277424a2e5a8ce2ddcd97e94d40080c9c6e5ef03af9631a82",
+    "ja": "Power BI の DevOps、アプリケーションライフサイクル管理（ALM）、CI/CD パイプライン、デプロイ自動化、バージョン管理のベストプラクティスに関する包括的ガイド。"
+  },
+  "instruction:power-bi-report-design-best-practices": {
+    "sourceHash": "54e8051e2999bc6eccb65ef6f688e9b0a62bb0a680b0f194b89a6b0f8a4b8c69",
+    "ja": "Microsoft のガイダンスに基づく、Power BI レポート設計と可視化の包括的なベストプラクティス。効果的でアクセシブルかつ高性能なレポートとダッシュボードを作成します。"
+  },
+  "instruction:power-bi-security-rls-best-practices": {
+    "sourceHash": "5ff69b4f28f49a0e0b423779d1336e7a8249e281b9f64ac2778e6569a83dfc5f",
+    "ja": "Power BI の行レベルセキュリティ（RLS）と高度なセキュリティパターンの包括的な実装ガイド。動的セキュリティ、ベストプラクティス、ガバナンス戦略を扱います。"
+  },
+  "instruction:power-platform-connector": {
+    "sourceHash": "2cf9a979bcfc6b29c368850faa6975274993e337a525683120789bc21f68cccf",
+    "ja": "JSON Schema 定義を使った Power Platform カスタムコネクタの包括的な開発指針。API 定義（Swagger 2.0）、API プロパティ、Microsoft 拡張を使った設定を扱います。"
+  },
+  "instruction:power-platform-mcp-development": {
+    "sourceHash": "344c494149ef37122df56778a96d1959ea1c15c36b893fba1b2be483847fa0f9",
+    "ja": "Microsoft Copilot Studio 向けに、Model Context Protocol（MCP）と連携する Power Platform カスタムコネクタを開発するための指示。"
+  },
+  "instruction:powershell": {
+    "sourceHash": "9d70f7fd6b4d5e8f2902d5ab875d5f05457965acbcbb5f4598d75dc793dc64c0",
+    "ja": "Microsoft のガイドラインに基づく、PowerShell コマンドレットとスクリプト作成のベストプラクティス。"
+  },
+  "instruction:powershell-pester-6": {
+    "sourceHash": "713ad6be04e673643f00688d8e1092afeb3102d5cdf82c5bec1e79f9865eeb06",
+    "ja": "Pester v6 の規約に基づく、PowerShell の Pester テストのベストプラクティス。"
+  },
+  "instruction:prompt": {
+    "sourceHash": "1a7286be5ffc2740fd6af6b6be57c98c3f41cfb3a29d5298ffda5a56de5eed63",
+    "ja": "GitHub Copilot 向けの高品質なプロンプトファイルを作成するための指針。"
+  },
+  "instruction:python-mcp-server": {
+    "sourceHash": "1fa4194fee621725e865f964f3fb5ac9f8353bb95da0be38fcb362cffc9e7a67",
+    "ja": "Python SDK を使って Model Context Protocol（MCP）サーバーを構築するための指示。"
+  },
+  "instruction:qa-engineering-best-practices": {
+    "sourceHash": "57d87cf708d8ce1964844f83193f783070084edfcd08f44e50516b92f9ee337f",
+    "ja": "最新のソフトウェアプロジェクト向けの、QA エンジニアリングの包括的なベストプラクティス。テスト戦略、テストピラミッド、命名規則、アサーションパターン、不具合報告、自動化の指針を扱います。"
+  },
+  "instruction:quarkus": {
+    "sourceHash": "9a850961a152ab434e3c5228dae98f157113ef2fcda5812f5583bf92a58cdad8",
+    "ja": "Quarkus の開発標準と指示。"
+  },
+  "instruction:quarkus-mcp-server-sse": {
+    "sourceHash": "0c02182a3e6f7c9715c92c4e894b98402e3976ecf005e1fd71478f9f56675296",
+    "ja": "Quarkus と HTTP SSE トランスポートを使う MCP サーバーの開発標準と指示。"
+  },
+  "instruction:r": {
+    "sourceHash": "fca0ef782cc1dbf317d77262f328a08a0662f698c77ea49732aedb09d7466d34",
+    "ja": "R 言語と文書形式（R、Rmd、Quarto）のコーディング標準および Copilot 向け指針。R らしく、安全で一貫したコードを生成します。"
+  },
+  "instruction:ruby-mcp-server": {
+    "sourceHash": "a265cc3387b135af50aee27a3940390920b4af6f805ce3f6e2b2a2cd6bda0592",
+    "ja": "公式 MCP Ruby SDK gem を使い、Ruby で Model Context Protocol（MCP）サーバーを構築するためのベストプラクティスと実装パターン。"
+  },
+  "instruction:ruby-on-rails": {
+    "sourceHash": "a799d1ea300b2e34341e3c2367f63bfe418c453a23d3cf5185de5306799e740a",
+    "ja": "Ruby on Rails のコーディング規約と指針。"
+  },
+  "instruction:rust": {
+    "sourceHash": "a35749a2d8dfde840960a5857dedfc6a0c541842ed00a9c6804192de4ef0619c",
+    "ja": "Rust プログラミング言語のコーディング規約とベストプラクティス。"
+  },
+  "instruction:rust-mcp-server": {
+    "sourceHash": "30d1c5bc8f2f88bdb735e3cd03a85763d5350de254e22e1f5bfab2f160d4501c",
+    "ja": "公式 rmcp SDK と async/await パターンを使い、Rust で Model Context Protocol サーバーを構築するためのベストプラクティス。"
+  },
+  "instruction:scala-spark": {
+    "sourceHash": "fe633d2db2bff63256885bbfaedd6d71772e8592a17bbaac814f9ba73fd2e0c8",
+    "ja": "Scala で Apache Spark アプリケーションを構築するためのベストプラクティス。DataFrame、Dataset、SparkSQL、性能チューニング、テスト、本番デプロイのパターンを扱います。"
+  },
+  "instruction:scala2": {
+    "sourceHash": "f4166ed2eedadea5650c90aac4248a6a357a15f121bf779d3a6a3be8816b3eec",
+    "ja": "Databricks スタイルガイドに従った Scala 2.12／2.13 のコーディング規約とベストプラクティス。関数型プログラミング、型安全性、本番コードの品質を重視します。"
+  },
+  "instruction:security-and-owasp": {
+    "sourceHash": "774824f9993bda6c3f3ffbdf8687ffadd34223bff982f8e52a50b08bf5e9d2fd",
+    "ja": "OWASP Top 10 2025 に基づく包括的なセキュアコーディング標準。55 種類以上のアンチパターン、検出用の正規表現、最新の Web・バックエンドフレームワークに対応した修正方法、AI／LLM のセキュリティ指針を扱います。"
+  },
+  "instruction:self-explanatory-code-commenting": {
+    "sourceHash": "09ed0f09c62ad0f81d050d62d98491f7b1e9f71fc4f24e7df803fa58c13a4dbb",
+    "ja": "少ないコメントでも意図が明確に伝わるコードを実現するための、GitHub Copilot 向けコメント記述指針。例は JavaScript ですが、コメントを使えるあらゆる言語に適用できます。"
+  },
+  "instruction:shell": {
+    "sourceHash": "2048061cce29b3fb5176b8dcf7320dd9c9eecd273a807d9ce45aa966919df4c3",
+    "ja": "bash、sh、zsh などのシェルを対象とした、シェルスクリプトのベストプラクティスと規約。"
+  },
+  "instruction:spec-driven-workflow-v1": {
+    "sourceHash": "588fbe7dff4adea23e6688becad55d9a6893470dae6d4bb35e52dc7d88797be0",
+    "ja": "Specification-Driven Workflow v1 による構造化されたソフトウェア開発手法。要件を明確に定義し、設計を綿密に計画し、実装を十分に文書化・検証します。"
+  },
+  "instruction:springboot": {
+    "sourceHash": "81ce395d08ccd5de36fbd57a2a7224c43a017b8e82a17c9725e7541da32ba9a1",
+    "ja": "Spring Boot ベースのアプリケーションを構築するための指針。"
+  },
+  "instruction:springboot-4-migration": {
+    "sourceHash": "442576b7ef580fb3925a7841f469da13e05f25088f24564a76a1827d05e2b1d5",
+    "ja": "Spring Boot アプリケーションを 3.x から 4.0 へ移行するための包括的ガイド。Gradle Kotlin DSL とバージョンカタログに重点を置きます。"
+  },
+  "instruction:sql-sp-generation": {
+    "sourceHash": "479b4904d2c8512ef8288628ab018c5894475cf4f529edfafc8fd94cf4c3fce8",
+    "ja": "SQL 文とストアドプロシージャを生成するための指針。"
+  },
+  "instruction:svelte": {
+    "sourceHash": "330dd4c6b5bf4e296a47cb9020a4ca64ec563ac0fa546d8afe7cfd353aedfb50",
+    "ja": "コンポーネントベースのユーザーインターフェイスとフルスタックアプリケーションを対象とした、Svelte 5 と SvelteKit 2 の開発標準とベストプラクティス。"
+  },
+  "instruction:swift-mcp-server": {
+    "sourceHash": "bea568f5d99aeae1872ee5014441fffc729389a5f268def36d7fff0084493d66",
+    "ja": "公式 MCP Swift SDK パッケージを使い、Swift で Model Context Protocol（MCP）サーバーを構築するためのベストプラクティスと実装パターン。"
+  },
+  "instruction:tailwind-v4-vite": {
+    "sourceHash": "a1dd97bee13f4d08db794d2a15e1d7a81170fdb0c0961f2cb9d50887d012bf61",
+    "ja": "公式の @tailwindcss/vite プラグインを使い、Vite プロジェクトに Tailwind CSS v4 以降をインストール・設定するための指針。"
+  },
+  "instruction:taming-copilot": {
+    "sourceHash": "05c405782034996dd018402f864ca271df9531ff2ea5a48f2f9485d240b958ab",
+    "ja": "Copilot がコードベース全体に無秩序な変更を加えないようにし、制御を保つための指針。"
+  },
+  "instruction:tanstack-start-shadcn-tailwind": {
+    "sourceHash": "ec6d394598b2242a382fb60f90fbcc458c2104a92fdac964d830663fbf628f00",
+    "ja": "TanStack Start アプリケーションを構築するための指針。"
+  },
+  "instruction:task-implementation": {
+    "sourceHash": "a1a18e950a09697a2fff00a0e3408bd1f68e3548e8aa47f482bb6815338f7a87",
+    "ja": "段階的な進捗追跡と変更記録を伴ってタスク計画を実装するための指示。microsoft/edge-ai 提供。"
+  },
+  "instruction:tasksync": {
+    "sourceHash": "d82e000d258143332da00e4f6578dfff827f1a9b7699ace4c9a55e7e2c10e3c5",
+    "ja": "TaskSync V5。エージェントを実行したまま、タスク完了後にターミナルから新しい指示やフィードバックを渡せるようにします。"
+  },
+  "instruction:terraform": {
+    "sourceHash": "042434d278efa65bc1d2aa93cbcfb36f83e7e1c191fe6470b805dadefa65ad15",
+    "ja": "Terraform の規約と指針。"
+  },
+  "instruction:terraform-azure": {
+    "sourceHash": "95763bc173f2521c763edad4d196f004bc5b80ba59e699b0f6bcd1a9f2e69410",
+    "ja": "Azure 上で Terraform を使って構築するソリューションを作成・変更するための指針。"
+  },
+  "instruction:terraform-sap-btp": {
+    "sourceHash": "a641352f341f662f28e2cd7157e1c8d1a85b7fbe81e93b5848944bce0d45576a",
+    "ja": "SAP Business Technology Platform（SAP BTP）向けの Terraform の規約と指針。"
+  },
+  "instruction:typescript-mcp-server": {
+    "sourceHash": "f6bff01b749139d99fd426237e374291310676c6c4f6cf8ae96404848eada374",
+    "ja": "TypeScript SDK を使って Model Context Protocol（MCP）サーバーを構築するための指示。"
+  },
+  "instruction:typespec-m365-copilot": {
+    "sourceHash": "cedb41e80d0def1c6b796a1c1c2129c43b3258570d95fc38e4a890cf72819743",
+    "ja": "Microsoft 365 Copilot 向けに、TypeSpec ベースの宣言型エージェントと API プラグインを構築するための指針とベストプラクティス。"
+  },
+  "instruction:update-code-from-shorthand": {
+    "sourceHash": "d3ea0e773652324d577498a9455b51fed3108aad98a48244b0820b7102a3b56a",
+    "ja": "プロンプトに `UPDATE CODE FROM SHORTHAND` が含まれる場合に、指定ファイルまたはプロンプト内の生データにある略記コードを使ってコードファイルを更新します。"
+  },
+  "instruction:update-docs-on-code-change": {
+    "sourceHash": "6d25d75c8e14df8367d524f74a1e353975e8f6160139db93561622fa226e498c",
+    "ja": "アプリケーションコードの変更に伴って文書の更新が必要になった場合に、README.md とドキュメントファイルを自動更新します。"
+  },
+  "instruction:use-cliche-data-in-docs": {
+    "sourceHash": "d7b0563ba2bd48eb0637c026a687d5336de93869d6f8165aa9425fc1884f8cda",
+    "ja": "ドキュメントと例には一般的で定番のプレースホルダーデータだけを使い、ローカルのスクリプト、設定、タスクファイル、プロンプトのコンテキストから得た実データや機密データを使用しないようにします。"
+  },
+  "instruction:vsixtoolkit": {
+    "sourceHash": "df5e0c0b5e9532c0129546322673eaee9d184d405661a8ef89b279e00c40cdb1",
+    "ja": "Community.VisualStudio.Toolkit を使った Visual Studio 拡張機能（VSIX）開発の指針。"
+  },
+  "instruction:vue": {
+    "sourceHash": "5b5cfd92e18ee2dcf647026c291d17aa7894ddc0063b1f0825537b1d38ca2b2d",
+    "ja": "Vue 3 の包括的な開発標準とベストプラクティス。Composition API、`<script setup>`、リアクティビティシステム全般、コンパイラーマクロ（defineModel／defineSlots／defineOptions）、組み込みコンポーネント（Teleport／Suspense／Transition／KeepAlive）、provide/inject、コンポーザブル、Pinia、Vue Router、TypeScript、テスト、性能、SSR、セキュリティを扱います。"
+  },
+  "instruction:winui3": {
+    "sourceHash": "5f379068ac85c595c834801f0ef2c2d737004ebd7f6aafeb3793b8a6056a03dd",
+    "ja": "WinUI 3 と Windows App SDK のコーディング指針。よくある UWP API の誤用を防ぎ、Windows デスクトップアプリで正しい XAML 名前空間、スレッド処理、ウィンドウ管理、MVVM パターンの使用を徹底します。"
+  },
+  "instruction:wordpress": {
+    "sourceHash": "9b68f4f71cee7c1e808cc297c2656b0f4a987ae036adde976a0de8a32d237312",
+    "ja": "WordPress のプラグインとテーマに関する、コーディング、セキュリティ、テストの規則。"
+  }
+}

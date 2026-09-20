@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Awesome GitHub Copilot の日本語カタログ。リソースを検索し、お気に入りをローカルに保存できます。">
+  <title>Copilot Library — 日本語カタログ</title>
+  <script>
+    (() => {
+      const param = new URLSearchParams(window.location.search).get("scoutTheme");
+      const theme = param === "dark" || param === "light"
+        ? param : (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      document.documentElement.setAttribute("data-theme", theme);
+    })();
+  </script>
+  <style>/* APP_STYLES */</style>
+</head>
+<body>
+  <a class="skip-link" href="#main">カタログへ移動</a>
+  <div class="app-layout">
+    <aside class="sidebar" aria-label="ライブラリのナビゲーション">
+      <a class="brand" href="./" aria-label="Copilot Library ホーム">
+        <span class="brand-symbol" aria-hidden="true">✳</span>
+        <span>Copilot<span class="brand-sub">LIBRARY / 日本語版</span></span>
+      </a>
+      <div class="side-label">あなたのライブラリ</div>
+      <nav class="library-nav" aria-label="表示対象">
+        <button id="browse" class="nav-button active" aria-pressed="true"><span>すべてのリソース</span><span id="total-count" class="count"></span></button>
+        <button id="saved" class="nav-button" aria-pressed="false"><span>☆ 保存済み</span><span id="saved-count" class="count">0</span></button>
+      </nav>
+      <div class="side-label">カテゴリー</div>
+      <nav id="categories" class="categories" aria-label="リソースの種類"></nav>
+      <div class="side-bottom">
+        <span class="local-dot" aria-hidden="true"></span><strong>ローカル・ファースト</strong>
+        <p>お気に入りはこのブラウザーだけに。<br>アカウントも API キーも不要です。</p>
+        <a href="https://awesome-copilot.github.com/" target="_blank" rel="noopener noreferrer">公式サイト ↗</a>
+        <a href="LICENSE.txt" target="_blank" rel="noopener">MIT License ↗</a>
+      </div>
+    </aside>
+    <main id="main" tabindex="-1">
+      <header class="topbar">
+        <span class="breadcrumb">COMMUNITY COLLECTION <span>/ JA</span></span>
+        <div class="top-actions">
+          <button id="export" class="quiet-button">保存をエクスポート</button>
+          <label class="quiet-button file-label">インポート<input id="import" type="file" accept=".json,application/json" aria-label="保存データをインポート"></label>
+          <button id="theme" class="theme-button" aria-label="ダークテーマに切り替え">◐</button>
+        </div>
+      </header>
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="eyebrow"><span class="local-dot" aria-hidden="true"></span> AWESOME GITHUB COPILOT · LOCAL EDITION</div>
+        <h1 id="hero-title">次のひらめきを、<br><span>自分のライブラリに。</span></h1>
+        <p>コミュニティの知恵を、日本語で見つける。<br class="mobile-break">気になるリソースを保存して、開発の道具箱を育てましょう。</p>
+        <div class="hero-stats"><span><strong id="hero-total">—</strong> リソース</span><span><strong>10</strong> カテゴリー</span><span>すべて日本語の説明付き</span></div>
+      </section>
+      <section class="catalog" aria-label="リソースカタログ">
+        <div id="error" class="error" role="alert" hidden></div>
+        <p id="notice" class="notice" role="status" aria-live="polite"></p>
+        <div class="search-row">
+          <div class="search-box">
+            <span aria-hidden="true">⌕</span>
+            <label class="sr-only" for="search">リソースを検索</label>
+            <input id="search" type="search" placeholder="キーワードで探す — 例：テスト、Azure、コードレビュー" autocomplete="off">
+            <kbd aria-hidden="true">/</kbd>
+          </div>
+          <div class="sort-control"><label for="sort">並べ替え</label>
+            <select id="sort">
+              <option value="name">名前順（昇順）</option>
+              <option value="name-desc">名前順（降順）</option>
+              <option value="updated">更新が新しい順</option>
+              <option value="saved">保存が新しい順</option>
+            </select>
+          </div>
+        </div>
+        <div class="results-header">
+          <h2 id="list-title">すべてのリソース</h2>
+          <div><span id="result-count" role="status" aria-live="polite"></span><button id="clear" class="text-button" hidden>絞り込みを解除</button></div>
+        </div>
+        <p id="storage-note" class="storage-note" hidden>保存先は現在のブラウザーです。バックアップには「保存をエクスポート」をお使いください。</p>
+        <div id="cards" class="cards"></div>
+        <div id="empty" class="empty-state" hidden><span aria-hidden="true">◇</span><h3 id="empty-title"></h3><p id="empty-text"></p></div>
+        <nav id="pagination" class="pagination" aria-label="結果のページ">
+          <button id="previous" class="quiet-button">← 前へ</button><span id="page-count"></span><button id="next" class="quiet-button">次へ →</button>
+        </nav>
+      </section>
+      <footer class="footer">
+        <span>コミュニティがつくる。あなたが選ぶ。</span>
+        <span id="snapshot"></span>
+        <p>このリポジトリのスナップショットを使った非公式の日本語版です。説明文を翻訳・要約しており、リソース本体と公式サイトは原文のままです。リンク先の閲覧にはインターネット接続が必要です。</p>
+      </footer>
+    </main>
+  </div>
+  <dialog id="detail" aria-labelledby="detail-title">
+    <div class="dialog-top"><span id="detail-type" class="type-pill"></span><button id="detail-close" class="quiet-button" aria-label="詳細を閉じる">閉じる ×</button></div>
+    <h2 id="detail-title"></h2>
+    <p id="detail-description" class="full-description"></p>
+    <p id="detail-provenance" class="muted"></p>
+    <details><summary>原文の説明を確認する</summary><p id="detail-original" class="full-description" lang="en"></p></details>
+    <div id="detail-tags" class="tags"></div>
+    <div class="dialog-actions"><button id="detail-save" class="primary-button"></button><a id="detail-link" class="quiet-button" target="_blank" rel="noopener noreferrer">公式ページ・ソースを開く ↗</a></div>
+  </dialog>
+  <noscript><p class="error">検索と保存機能を使うには、ブラウザーで JavaScript を有効にしてください。</p></noscript>
+  <script id="catalog-data" type="application/json">/* APP_DATA */</script>
+  <script type="module">/* APP_SCRIPT */</script>
+</body>
+</html>

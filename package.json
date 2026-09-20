@@ -5,6 +5,11 @@
   "main": "./eng/update-readme.mjs",
   "private": true,
   "scripts": {
+    "local:build": "npm run website:data && node ./eng/build-local-app.mjs",
+    "local:dev": "npm run local:build && node ./eng/serve-local-app.mjs",
+    "local:preview": "node ./eng/serve-local-app.mjs",
+    "local:test": "node --test ./local-app/*.test.mjs ./eng/local-catalog.test.mjs",
+    "local:test:browser": "node ./local-app/browser-check.mjs",
     "start": "npm run build",
     "build": "node ./eng/update-readme.mjs && node ./eng/generate-marketplace.mjs",
     "contributors:add": "all-contributors add",
@@ -42,7 +47,9 @@
     "@microsoft/vally": "^0.12.0",
     "ajv": "^8.20.0",
     "ajv-formats": "^3.0.1",
-    "all-contributors-cli": "^6.26.1"
+    "all-contributors-cli": "^6.26.1",
+    "axe-core": "^4.10.2",
+    "playwright": "^1.49.0"
   },
   "dependencies": {
     "js-yaml": "^5.4.1",

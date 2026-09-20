@@ -1,6 +1,6 @@
 ---
 name: gtm-enterprise-account-planning
-エンタープライズ案件の戦略的なアカウント計画と実行。複雑な販売サイクルの計画、複数の関係者の管理、MEDDICC による評価、案件健全性の追跡、Mutual Action Plan の作成に使う。「古い MAP は死んだ案件と同じ」というパターンを含む。
+description: 'エンタープライズ案件の戦略的なアカウント計画と実行。複雑な販売サイクルの計画、複数の関係者の管理、MEDDICC による評価、案件健全性の追跡、Mutual Action Plan の作成に使う。「古い MAP は死んだ案件と同じ」というパターンを含む。'
 license: MIT
 metadata:
   author: Smit Patel (https://linkedin.com/in/smitkpatel)
